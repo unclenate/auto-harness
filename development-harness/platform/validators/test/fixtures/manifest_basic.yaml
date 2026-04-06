@@ -1,0 +1,14 @@
+schemaVersion: 1
+project:
+  id: test-project
+  name: Test Project
+  maturity: prototype
+  criticality: low
+modules:
+  core:
+    - kernel/base
+  management:
+    - discovery-intake
+overrides:
+  requiredArtifacts: []
+  disabledValidations: []

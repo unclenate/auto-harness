@@ -1,0 +1,27 @@
+id: fixture-module
+type: management
+version: 1.0.0
+summary: Test fixture module with a companion rule matching the discovery-intake pattern.
+dependsOn:
+  - kernel/base
+conflictsWith: []
+requiredArtifacts:
+  - docs/discovery/intake-questionnaire.md
+  - docs/discovery/mvp-scope.md
+optionalArtifacts: []
+sensitivePaths: []
+companionRules:
+  - description: Requirements changes must be reflected in change-log or a new ADR
+    triggerPaths:
+      - ^docs/product/requirements\.md$
+      - ^docs/discovery/mvp-scope\.md$
+    requiredAny:
+      - ^docs/project/change-log\.md$
+      - ^docs/adr/ADR-
+    humanReview: Reviewers verify scope changes are intentional and out-of-scope items are still named.
+validators:
+  - validate-required-artifacts
+  - validate-companions
+reviewGates: []
+agentAdapters: []
+compiledFragments: []

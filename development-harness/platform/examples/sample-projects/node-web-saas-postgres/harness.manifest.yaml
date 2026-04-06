@@ -16,6 +16,7 @@ modules:
   delivery:
     - production-saas
   management:
+    - discovery-intake
     - product-lite
     - project-standard
   agents:

@@ -1,54 +1,67 @@
-# Modular Meta-Harness Platform
+# Modular Harness Platform
 
-`platform/` is the new source-of-truth layout for the development harness framework.
+`platform/` is the source of truth for the development harness framework.
+
+See the top-level [`README.md`](../README.md) for the full introduction, trust tier model,
+companion rules explainer, module system overview, and getting-started guide.
+
+---
 
 ## Front Door
 
-Projects can start from a raw idea, a set of mockups, a Vercel prototype, or a detailed spec —
-the intake questionnaire meets the project wherever it is and extracts what is needed to produce
-product artifacts and select the right module composition.
+Projects can start from a raw idea, a set of mockups, a Vercel prototype, or a detailed spec.
 
-**Start here:** [`platform/workflow/discovery-to-composition.md`](workflow/discovery-to-composition.md)
-— walks from first idea to a running `harness.manifest.yaml` in eight steps.
+| Starting point | Guide |
+| -------------- | ----- |
+| Raw idea, no stack chosen | [`workflow/discovery-to-composition.md`](workflow/discovery-to-composition.md) |
+| Know your stack | [`workflow/bootstrap-quickstart.md`](workflow/bootstrap-quickstart.md) |
+| Web3 project | [`workflow/bootstrap-web3-quickstart.md`](workflow/bootstrap-web3-quickstart.md) |
 
-**Intake questionnaire:** [`platform/templates/discovery/intake-questionnaire.md`](templates/discovery/intake-questionnaire.md)
-— a structured 8-section instrument for use with clients, stakeholders, or as a self-interview.
+**Intake questionnaire:** [`templates/discovery/intake-questionnaire.md`](templates/discovery/intake-questionnaire.md)
+— an 8-section instrument usable with clients, stakeholders, or as a self-interview.
 
-**Starter composition for the discovery phase:** [`platform/compositions/new-product-discovery.yaml`](compositions/new-product-discovery.yaml)
-— use this manifest before your stack is chosen; replace it after Step 6 of the workflow.
+**Starter compositions:** [`compositions/`](compositions/) — copy the closest match to
+`harness.manifest.yaml` and adjust. Use `new-product-discovery.yaml` if your stack isn't
+chosen yet.
+
+---
 
 ## Documentation
 
-This platform is organized as a GitBook. The full table of contents is at
-[`SUMMARY.md`](SUMMARY.md). The `.gitbook.yaml` at the platform root configures GitBook
-to serve the `platform/` directory directly.
+This platform is organized as a GitBook. Full table of contents: [`SUMMARY.md`](SUMMARY.md).
 
 For projects using the harness that want GitBook navigation for their own docs, activate
-the `domains/gitbook` module. It requires `docs/SUMMARY.md` and provides guidance on
-chapter structure, TOC maintenance, and the human/agent documentation split.
+the `domains/gitbook` module.
+
+---
 
 ## Structure
 
-- `core/`: universal doctrine, lifecycle rules, schemas, and kernel metadata
-- `profiles/`: stack, architecture, data, delivery, management, and domain overlays
-- `agents/`: AI-tool operating packs and compatibility fragments
-- `templates/`: reusable artifact skeletons
-- `validators/`: module-driven validation entrypoints
-- `compositions/`: recommended module bundles
-- `examples/`: sample outputs and sample project layouts
+```text
+platform/
+├── core/           # Kernel doctrine, trust model, lifecycle controls, schemas
+├── profiles/       # Stack, architecture, data, delivery, management, domain overlays
+├── agents/         # AI-tool operating packs: base, claude-code, generic-llm
+├── skills/         # Harness-native Agent Skills: harness-governance, harness-web3
+├── templates/      # Artifact skeletons — see templates/README.md for placeholder reference
+├── validators/     # validate-*.sh scripts + Ruby harness_registry library
+├── compositions/   # Starter manifests for common project types
+├── examples/       # Sample project with all artifacts filled in
+└── workflow/       # Guides: bootstrap, discovery, CI, troubleshooting
+```
+
+---
 
 ## Operating Model
 
-Each module declares its own:
+Each module (`module.yaml`) declares its own governance contract:
 
-- identity and type
-- dependencies and conflicts
+- identity, type, version, dependencies, conflicts
 - required and optional artifacts
-- sensitive path patterns
-- companion artifact rules
-- validators
-- human review gates
-- agent adapters
-- compatibility fragments
+- sensitive path patterns and companion artifact rules
+- validator IDs and human review gates
+- agent adapter paths and compiled fragments
+- recommended skills (Agent Skills format + OpenClaw/ClawHub)
 
-Projects compose modules through `harness.manifest.yaml`.
+Projects compose modules through `harness.manifest.yaml`. The validator chain enforces
+the contract at development time and in CI.

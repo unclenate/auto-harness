@@ -1,0 +1,61 @@
+schemaVersion: 1
+project:
+  id: brownfield-project         # Replace with your project's kebab-case id
+  name: Brownfield Project        # Replace with your project's display name
+  maturity: prototype             # Start here; upgrade to mvp or production after assessment
+  criticality: low                # Adjust after the harness-onboarding assessment
+modules:
+  core:
+    - kernel/base
+  # Populate the sections below based on the harness-onboarding skill assessment output.
+  # See platform/workflow/brownfield-onboarding.md for the full workflow.
+  #
+  # stacks:                       # Pick at most one — node-typescript or python
+  #   - node-typescript           # evidence: package.json + TypeScript, tsconfig.json
+  #   - python                    # evidence: pyproject.toml, requirements.txt
+  #
+  # architectures:                # May combine
+  #   - web-app                   # Web UI / SSR framework
+  #   - api-service               # REST or GraphQL API for external consumers
+  #   - event-driven              # Queue workers, background jobs, event bus
+  #
+  # data:                         # May combine
+  #   - relational-postgres       # Migrations, ORM, SQL
+  #   - document-store            # MongoDB, Firestore, DynamoDB
+  #   - object-storage            # S3, GCS, R2, Supabase Storage
+  #
+  delivery:
+    - prototype                   # Replace with production-saas if repo serves real users
+  #
+  # management:                   # Select applicable
+  #   - product-lite              # Any real product (problem statement, requirements, release intent)
+  #   - project-standard          # Scope plan, milestones, change log, dependency log
+  #   - testing-standard          # Formal test strategy and coverage thresholds
+  #   - program-lite              # Multi-team or multi-workstream (requires project-standard)
+  #
+  # domains:                      # Select if applicable
+  #   - supabase                  # Supabase (requires relational-postgres)
+  #   - media-pipeline            # Media processing (requires object-storage)
+  #   - web3                      # Blockchain / on-chain data
+  #   - gitbook                   # GitBook documentation site
+  #
+  agents:
+    - base
+  #   - claude-code               # Claude Code is the AI assistant for this project
+  #   - generic-llm               # Other AI assistant in use
+overrides:
+  requiredArtifacts: []
+  disabledValidations:
+    - required-artifacts
+# required-artifacts is disabled because this is a brownfield repo that has not yet been
+# assessed against harness artifact requirements.
+#
+# Workflow:
+#   1. Run the harness-onboarding skill to produce a gap analysis and project-specific manifest
+#   2. Replace the module comments above with the modules discovered in the assessment
+#   3. Create kernel artifacts first: HARNESS.md, AGENTS.md, docs/operating-principles.md
+#   4. Remove required-artifacts from disabledValidations as each module's artifacts are created
+#   5. Wire to CI per platform/workflow/ci-integration.md when all validators pass locally
+#
+# See: platform/workflow/brownfield-onboarding.md
+# Skill: platform/skills/harness-onboarding/SKILL.md

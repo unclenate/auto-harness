@@ -16,6 +16,7 @@ Projects can start from a raw idea, a set of mockups, a Vercel prototype, or a d
 | Raw idea, no stack chosen | [`workflow/discovery-to-composition.md`](workflow/discovery-to-composition.md) |
 | Know your stack | [`workflow/bootstrap-quickstart.md`](workflow/bootstrap-quickstart.md) |
 | Web3 project | [`workflow/bootstrap-web3-quickstart.md`](workflow/bootstrap-web3-quickstart.md) |
+| Existing codebase, not built with the harness | [`workflow/brownfield-onboarding.md`](workflow/brownfield-onboarding.md) |
 
 **Intake questionnaire:** [`templates/discovery/intake-questionnaire.md`](templates/discovery/intake-questionnaire.md)
 — an 8-section instrument usable with clients, stakeholders, or as a self-interview.

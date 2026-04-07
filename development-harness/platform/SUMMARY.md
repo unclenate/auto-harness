@@ -6,6 +6,7 @@
 * [Bootstrap Quickstart](workflow/bootstrap-quickstart.md)
 * [Web3 Bootstrap Quickstart](workflow/bootstrap-web3-quickstart.md)
 * [Discovery to Composition](workflow/discovery-to-composition.md)
+* [Brownfield Onboarding](workflow/brownfield-onboarding.md)
 * [Skills and Agents](workflow/skills-and-agents.md)
 
 ## Core Governance
@@ -88,12 +89,14 @@ other compliant clients. Install to `.agents/skills/` or `.claude/skills/`.
 * [harness-governance](skills/harness-governance/SKILL.md)
 * [harness-web3](skills/harness-web3/SKILL.md)
 * [harness-testing](skills/harness-testing/SKILL.md)
+* [harness-onboarding](skills/harness-onboarding/SKILL.md)
 
 ## Starter Compositions
 
 Pre-built manifests for common project types. Copy the closest match to
 `harness.manifest.yaml` and adjust.
 
+* [Brownfield Lite](compositions/brownfield-lite.yaml) — existing repo, not yet harness-compliant
 * [New Product Discovery](compositions/new-product-discovery.yaml) — discovery phase, no stack chosen
 * [Node Web SaaS + Postgres](compositions/node-web-saas-postgres.yaml) — Node/TS + PostgreSQL web app
 * [Python API Service + Postgres](compositions/python-api-service-postgres.yaml) — Python API backend

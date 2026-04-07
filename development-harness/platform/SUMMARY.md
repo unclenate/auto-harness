@@ -100,6 +100,14 @@
 * [Incident Response](templates/incident.md)
 * [Ownership Map](templates/ownership-map.md)
 
+### Web3
+
+* [Chain Configuration](templates/web3/chain-config.md)
+* [Contract Registry](templates/web3/contract-registry.md)
+* [Token Strategy](templates/web3/token-strategy.md)
+* [ADR — Web3 Variant](templates/web3/adr-web3.md)
+* [Web3 Intake Supplement](templates/web3/web3-intake-supplement.md)
+
 ### Documentation
 
 * [Project SUMMARY.md](templates/docs/SUMMARY.md)

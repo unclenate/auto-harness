@@ -1,0 +1,48 @@
+schemaVersion: 1
+project:
+  id: web3-risk-analytics
+  name: Web3 Risk Analytics Platform
+  maturity: mvp
+  criticality: medium
+modules:
+  core:
+    - kernel/base
+  stacks:
+    - python
+  architectures:
+    - api-service
+  data:
+    - relational-postgres
+  delivery:
+    - production-saas
+  management:
+    - discovery-intake
+    - product-lite
+    - project-standard
+  domains:
+    - web3
+  agents:
+    - base
+overrides:
+  requiredArtifacts: []
+  disabledValidations: []
+# This composition is suited for:
+#   - On-chain risk scoring and analytics platforms (e.g., RiskClaw / BaseGuard)
+#   - Token contract analysis tools
+#   - Blockchain data indexing and reporting APIs
+#   - Any read-heavy Web3 platform with a Python/FastAPI backend and Postgres storage
+#
+# Key governance properties activated by this composition:
+#   - domains/web3: chain-config required, UNKNOWN propagation review gate, rate limit gate,
+#     evidence requirement, scoring rule ADR companion rule
+#   - data/relational-postgres: migration discipline, human-directed migration apply
+#   - delivery/production-saas: environment inventory, release checklist, rollback checklist,
+#     risk register all required
+#   - management/discovery-intake: intake questionnaire + MVP scope required;
+#     use templates/web3/web3-intake-supplement.md alongside standard intake
+#
+# Adjust for your project:
+#   - If token is planned: add docs/web3/token-strategy.md as an artifact
+#   - If contracts are deployed: add docs/web3/contract-registry.md as an artifact
+#   - If event-driven processing is added: include architectures/event-driven
+#   - If multi-workstream: add management/program-lite

@@ -57,3 +57,23 @@ Each `module.yaml` file supports the following fields. All fields except `recomm
 | `agentAdapters` | string[] | Files or module paths that configure agent tooling |
 | `compiledFragments` | string[] | Platform docs loaded into agent context at every session start — always-on governance floor. Distinct from skills: compiled fragments are mandatory context; skills are loaded on demand when a task matches. |
 | `recommendedSkills` | string[] | **Optional.** Skill names and ecosystem slugs relevant to this module. Two namespaces: (1) Agent Skills format skill names installable as `SKILL.md` directories (source: `platform/skills/`); (2) OpenClaw/ClawHub slugs installed via `clawhub install`. Not enforced by validators — developer discipline step. See `platform/workflow/skills-and-agents.md`. |
+
+---
+
+## compiledFragments vs. recommendedSkills
+
+These two fields are complementary, not redundant. A module can and often does list the
+same domain in both fields. They serve different purposes:
+
+| | `compiledFragments` | `recommendedSkills` |
+| - | ------------------- | ------------------- |
+| Loaded | Always, at every session start | On demand — only when a task matches the skill |
+| Enforced | Yes — validator checks that the file exists | No — developer installs the skill |
+| Token cost | Full content every session | ~100 tokens at startup; full body only on activation |
+| Purpose | Governance rules that must always be in context | Deeper domain guidance loaded when the task needs it |
+| Example | `platform/core/kernel/base/trust-model.md` | `platform/skills/harness-governance/SKILL.md` |
+
+**Example:** `kernel/base` lists `trust-model.md` as a compiled fragment (always-on, ensures
+every session starts with trust tier rules in context) AND lists `harness-governance` in
+`recommendedSkills` (on-demand, loads full companion rule detail and validator commands only
+when a governance task is active). The fragment provides the floor; the skill provides depth.

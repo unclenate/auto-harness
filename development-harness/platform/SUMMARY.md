@@ -4,6 +4,7 @@
 
 * [Introduction](README.md)
 * [Bootstrap Quickstart](workflow/bootstrap-quickstart.md)
+* [Web3 Bootstrap Quickstart](workflow/bootstrap-web3-quickstart.md)
 * [Discovery to Composition](workflow/discovery-to-composition.md)
 * [Skills and Agents](workflow/skills-and-agents.md)
 
@@ -23,10 +24,14 @@
 
 ### Stacks
 
+Language, runtime, and framework adaptations.
+
 * [Node / TypeScript](profiles/stacks/node-typescript/README.md)
 * [Python](profiles/stacks/python/README.md)
 
 ### Architectures
+
+Interaction and deployment patterns.
 
 * [Web App](profiles/architectures/web-app/README.md)
 * [API Service](profiles/architectures/api-service/README.md)
@@ -34,17 +39,23 @@
 
 ### Data
 
+Storage and state-management overlays.
+
 * [Relational Postgres](profiles/data/relational-postgres/README.md)
 * [Document Store](profiles/data/document-store/README.md)
 * [Object Storage](profiles/data/object-storage/README.md)
 
 ### Delivery
 
+Lifecycle and operational posture overlays.
+
 * [Prototype](profiles/delivery/prototype/README.md)
 * [Production SaaS](profiles/delivery/production-saas/README.md)
 * [Internal Platform](profiles/delivery/internal-platform/README.md)
 
 ### Management
+
+Product, project, and program governance overlays.
 
 * [Discovery Intake](profiles/management/discovery-intake/README.md)
 * [Product Lite](profiles/management/product-lite/README.md)
@@ -53,6 +64,8 @@
 
 ### Domains
 
+Vendor, ecosystem, or specialist overlays.
+
 * [Supabase](profiles/domains/supabase/README.md)
 * [Media Pipeline](profiles/domains/media-pipeline/README.md)
 * [Web3](profiles/domains/web3/README.md)
@@ -60,14 +73,30 @@
 
 ### Agents
 
+AI-tool packs and operating adapters.
+
 * [Base](agents/base/README.md)
 * [Claude Code](agents/claude-code/README.md)
 * [Generic LLM](agents/generic-llm/README.md)
 
 ## Harness-Native Skills
 
+Skills in Agent Skills format, discoverable by Claude Code, VS Code Copilot, Cursor, and
+other compliant clients. Install to `.agents/skills/` or `.claude/skills/`.
+
 * [harness-governance](skills/harness-governance/SKILL.md)
 * [harness-web3](skills/harness-web3/SKILL.md)
+
+## Starter Compositions
+
+Pre-built manifests for common project types. Copy the closest match to
+`harness.manifest.yaml` and adjust.
+
+* [New Product Discovery](compositions/new-product-discovery.yaml) — discovery phase, no stack chosen
+* [Node Web SaaS + Postgres](compositions/node-web-saas-postgres.yaml) — Node/TS + PostgreSQL web app
+* [Python API Service + Postgres](compositions/python-api-service-postgres.yaml) — Python API backend
+* [Research Pipeline (Python + Object Storage)](compositions/research-pipeline-python-object-storage.yaml) — data / ML pipeline
+* [Web3 Risk Analytics](compositions/web3-risk-analytics.yaml) — blockchain-integrated Python platform
 
 ## Templates
 
@@ -106,18 +135,21 @@
 * [Incident Response](templates/incident.md)
 * [Ownership Map](templates/ownership-map.md)
 * [Runbook Index](templates/ops/runbook-index.md)
+* [Runbook Template](templates/ops/runbook-template.md)
 
 ### Web3
 
 * [Chain Configuration](templates/web3/chain-config.md)
 * [Contract Registry](templates/web3/contract-registry.md)
 * [Token Strategy](templates/web3/token-strategy.md)
+* [Risk Register — Web3](templates/web3/risk-register-web3.md)
 * [ADR — Web3 Variant](templates/web3/adr-web3.md)
 * [Web3 Intake Supplement](templates/web3/web3-intake-supplement.md)
 
 ### Documentation
 
 * [Project SUMMARY.md](templates/docs/SUMMARY.md)
+* [Templates Reference](templates/README.md)
 
 ## Validators and CI
 

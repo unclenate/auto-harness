@@ -196,6 +196,41 @@ gates in each module's `reviewGates` field are the backstop for content quality.
 
 ## validate-companions.sh
 
+### How Companion Rules Work
+
+Companion rules enforce a paper trail for changes that affect governance-sensitive areas.
+A companion rule says: "when file A changes, file B must also change in the same PR."
+
+**Example:** When `docs/product/requirements.md` changes, either `docs/project/change-log.md`
+or a new `docs/adr/ADR-XXXX-*.md` must also be in the PR. This ensures that requirements
+changes don't happen silently — they require either a changelog entry (lightweight) or an
+ADR (for architectural impact).
+
+**How it's checked:** `validate-companions.sh` runs `git diff --name-only <base-branch>...HEAD`
+to get all files changed in the PR. For each changed file that matches a `triggerPaths`
+pattern in any active module, it checks whether at least one file matching `requiredAny`
+is also in the diff.
+
+**The rule fires per-PR, not per-commit.** A companion file touched in a previous commit on
+the same branch satisfies the rule. A companion file touched in a separate PR does not.
+
+**Common companion rules in the default modules:**
+
+| Module | Trigger | Required companion |
+| ------ | ------- | ------------------ |
+| `product-lite` | `docs/product/requirements.md` | change-log or ADR |
+| `discovery-intake` | `docs/discovery/mvp-scope.md` | change-log or ADR |
+| `project-standard` | `docs/project/scope-plan.md` | change-log |
+| `relational-postgres` | `migrations/` | `docs/database/migration-readiness.md` |
+| `domains/web3` | `contracts/`, `src/wallet/` | risk register or ADR |
+| `domains/web3` | `src/scoring/` | ADR |
+| `domains/web3` | `chain_config` | ADR |
+| `claude-code` agent | `CLAUDE.md`, `.claude/` | `AGENTS.md` or ADR |
+
+For the full list, read each active module's `module.yaml` `companionRules` section.
+
+---
+
 ### `✗ Companion validation failed`
 
 **`module-id: [rule description]`**

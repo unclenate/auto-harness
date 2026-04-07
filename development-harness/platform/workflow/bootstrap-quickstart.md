@@ -149,6 +149,18 @@ See the `platform/agents/` directory for the expected file contents.
 Skills work in two ecosystems. Each module's `module.yaml` has a `recommendedSkills` field
 listing entries from both. Install from whichever ecosystems your team uses.
 
+### Which path should I use?
+
+| Your situation | Install to |
+| -------------- | ---------- |
+| Single project, want skills available to all AI clients | `<project>/.agents/skills/` |
+| Single project, Claude Code only | `<project>/.claude/skills/` |
+| Skills for all your projects, all clients | `~/.agents/skills/` |
+| Skills for all your projects, Claude Code only | `~/.claude/skills/` |
+
+Project-level skills override user-level skills of the same name. Start with project-level
+unless you want the skill available everywhere.
+
 ### Agent Skills format (SKILL.md directories)
 
 [Agent Skills](https://agentskills.io/specification) is the canonical open standard for AI

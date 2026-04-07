@@ -55,5 +55,5 @@ Each `module.yaml` file supports the following fields. All fields except `recomm
 | `validators` | string[] | Validator IDs that apply to this module |
 | `reviewGates` | string[] | Human review conditions that this module activates |
 | `agentAdapters` | string[] | Files or module paths that configure agent tooling |
-| `compiledFragments` | string[] | Platform docs compiled into agent context at session start |
-| `recommendedSkills` | string[] | **Optional.** External AI tool skill IDs that provide domain-specific knowledge relevant to this module. These are installed by the developer in their AI tool, not enforced by validators. See `platform/workflow/skills-and-agents.md`. |
+| `compiledFragments` | string[] | Platform docs loaded into agent context at every session start — always-on governance floor. Distinct from skills: compiled fragments are mandatory context; skills are loaded on demand when a task matches. |
+| `recommendedSkills` | string[] | **Optional.** Skill names and ecosystem slugs relevant to this module. Two namespaces: (1) Agent Skills format skill names installable as `SKILL.md` directories (source: `platform/skills/`); (2) OpenClaw/ClawHub slugs installed via `clawhub install`. Not enforced by validators — developer discipline step. See `platform/workflow/skills-and-agents.md`. |

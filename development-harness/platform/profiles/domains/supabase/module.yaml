@@ -42,4 +42,8 @@ agentAdapters:
 compiledFragments:
   - platform/profiles/domains/supabase/README.md
 recommendedSkills:
-  - supabase   # clawhub install supabase — database ops, vector search, storage
+  # --- Agent Skills format (SKILL.md directories) ---
+  - harness-governance   # trust tiers and companion rules (source: platform/skills/)
+
+  # --- OpenClaw / ClawHub ecosystem (clawhub install <slug>) ---
+  - supabase             # database ops, vector search, storage (curated list)

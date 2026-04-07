@@ -43,9 +43,12 @@ agentAdapters:
 compiledFragments:
   - platform/profiles/stacks/node-typescript/README.md
 recommendedSkills:
-  # clawhub install <slug>
-  - next-best-practices     # Next.js file conventions, RSC boundaries, data patterns, async APIs
-  - next-cache-components   # Next.js 16 PPR, use cache directive, cacheLife, cacheTag (if on Next.js 16+)
-  - lb-vercel-skill         # Vercel CLI — deployments, env vars, domains (install when deploying to Vercel)
-  - react-perf              # React and Next.js performance optimization patterns
-  - supabase                # Supabase database ops (install when using Supabase as data layer)
+  # --- Agent Skills format (SKILL.md directories) ---
+  - harness-governance   # trust tiers and companion rules (source: platform/skills/)
+
+  # --- OpenClaw / ClawHub ecosystem (clawhub install <slug>) ---
+  - next-best-practices     # Next.js file conventions, RSC boundaries, data patterns (curated list)
+  - next-cache-components   # Next.js 16 PPR, use cache, cacheLife, cacheTag (curated list)
+  - lb-vercel-skill         # Vercel CLI — deployments, env vars, domains (curated list)
+  - react-perf              # React and Next.js performance optimization (curated list)
+  - supabase                # Supabase database ops (curated list; install when using Supabase)

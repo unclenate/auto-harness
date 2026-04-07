@@ -83,24 +83,22 @@ agentAdapters:
 compiledFragments:
   - platform/profiles/domains/web3/README.md
 recommendedSkills:
-  # -----------------------------------------------------------------------
-  # NOTE: Web3 skills are NOT in the curated awesome-openclaw-skills list.
-  # They are available from the full ClawHub registry (clawskills.sh).
-  # SECURITY WARNING: Most Web3 skills are early experimental versions and
-  # may contain unknown vulnerabilities. Always run azhua-skill-vetter first.
-  # Never deploy skills touching live transaction signing without security review.
-  # See platform/workflow/skills-and-agents.md §Web3.
-  # -----------------------------------------------------------------------
+  # --- Agent Skills format (SKILL.md directories) ---
+  # Install to .agents/skills/ or .claude/skills/
+  # Source: platform/skills/; copy to project skill directory
+  - harness-governance   # trust tiers, companion rules, lifecycle controls
+  - harness-web3         # UNKNOWN propagation, rate limits, evidence requirements, Tier 5 gates
 
-  # Security — install first (azhua-skill-vetter IS in the curated list)
-  - azhua-skill-vetter   # security-first vetting before installing any other skill
-  - goplus-agent-guard   # real-time threat blocking; pre-execution safety (full registry)
-  - mist-track           # address risk analysis and AML compliance (full registry)
-
-  # On-chain data (analytics/read-only platforms)
-  - dune-mcp             # on-chain data querying via Dune MCP server (full registry)
-  - nansen               # wallet and token analytics (full registry)
-
-  # Write-capable platforms only — commented out by default; uncomment when in scope
-  # - clawnch             # ERC-20 deployment on Base (full registry)
-  # - okx-onchain-os      # 20+ chain wallet/transaction surface (full registry)
+  # --- OpenClaw / ClawHub ecosystem ---
+  # Install via: clawhub install <slug>; or copy skill folder to ~/.openclaw/skills/
+  # Web3 skills are NOT in the curated awesome-openclaw-skills list — available from
+  # the full ClawHub registry at clawskills.sh
+  # SECURITY: run azhua-skill-vetter (in curated list) before any Web3 registry skill
+  # - azhua-skill-vetter   # skill security vetter (curated list — install this first)
+  # - goplus-agent-guard   # pre-execution threat blocking (full registry)
+  # - mist-track           # AML compliance, address risk classification (full registry)
+  # - dune-mcp             # on-chain data queries via Dune MCP server (full registry)
+  # - nansen               # wallet and token analytics (full registry)
+  # Write-capable only — uncomment when contract deployment or signing is in scope:
+  # - clawnch              # ERC-20 deployment on Base (full registry)
+  # - okx-onchain-os       # 20+ chain wallet/transaction surface (full registry)

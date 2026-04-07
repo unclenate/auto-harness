@@ -53,3 +53,6 @@ compiledFragments:
   - platform/core/kernel/base/enforcement-model.md
   - platform/core/kernel/base/audit-model.md
   - platform/core/kernel/base/ops-readiness.md
+recommendedSkills:
+  # Agent Skills format (SKILL.md directory). Install to .agents/skills/ or .claude/skills/
+  - harness-governance   # platform/skills/harness-governance — trust tiers, companion rules, lifecycle

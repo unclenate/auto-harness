@@ -146,18 +146,44 @@ See the `platform/agents/` directory for the expected file contents.
 
 ## Step 6.5 — Install Recommended Skills
 
-After the agent pack validates, check which external skills your active modules recommend.
-Each module's `module.yaml` has a `recommendedSkills` field listing relevant skill IDs.
+Skills work in two ecosystems. Each module's `module.yaml` has a `recommendedSkills` field
+listing entries from both. Install from whichever ecosystems your team uses.
 
-Quick lookup by module:
+### Agent Skills format (SKILL.md directories)
 
-Skills are installed via `clawhub install <slug>`. All slugs are in the curated directory
-at `https://github.com/unclenate/awesome-openclaw-skills`.
+[Agent Skills](https://agentskills.io/specification) is the canonical open standard for AI
+agent skills, supported by Claude Code, VS Code Copilot, GitHub Copilot, Cursor, Gemini CLI,
+and other compliant clients. Harness-native skills live in `platform/skills/`.
+
+```bash
+# Cross-client installation (works with all compliant clients)
+cp -r platform/skills/harness-governance .agents/skills/   # all projects
+cp -r platform/skills/harness-web3 .agents/skills/         # Web3 projects only
+
+# Claude Code native path (Claude Code also scans .claude/skills/)
+cp -r platform/skills/harness-governance .claude/skills/
+cp -r platform/skills/harness-web3 .claude/skills/         # Web3 projects only
+```
+
+At session start, agents load only the skill name and description (~100 tokens per skill).
+The full body loads on demand when a task matches the skill's domain — this keeps startup
+context lean without losing domain expertise when it's needed.
+
+### OpenClaw / ClawHub ecosystem
+
+If your team uses OpenClaw as a development participant or part of the solution stack,
+install the relevant ClawHub slugs. Curated directory:
+`https://github.com/unclenate/awesome-openclaw-skills`
+
+```bash
+clawhub install <slug>
+```
 
 | Active module | Slug(s) to install |
 | ------------- | ------------------ |
 | `stacks/node-typescript` (Next.js) | `next-best-practices`, `next-cache-components` |
 | `stacks/node-typescript` (Vercel) | `lb-vercel-skill` |
+| `stacks/node-typescript` (perf) | `react-perf` |
 | `domains/supabase` or Supabase data layer | `supabase` |
 | `data/relational-postgres` | `postgres-perf` |
 | `domains/media-pipeline` | `ffmpeg-master`, `mediaproc` |
@@ -167,10 +193,9 @@ at `https://github.com/unclenate/awesome-openclaw-skills`.
 registry. Always install `azhua-skill-vetter` first (`clawhub install azhua-skill-vetter`) and
 run it against any Web3 skill before activation. These are experimental releases that may
 contain vulnerabilities. Never connect to a live wallet or production API key without testing
-in an isolated environment first. See `platform/workflow/skills-and-agents.md §Web3`.
+in an isolated environment first. See `platform/workflow/skills-and-agents.md` → Web3 Skills Security.
 
-Skills are installed in your AI tool (Claude Code skill registry, etc.). There is no CI gate
-for skill installation — it is a developer discipline step.
+Skill installation has no CI gate — it is a developer discipline step.
 
 ---
 

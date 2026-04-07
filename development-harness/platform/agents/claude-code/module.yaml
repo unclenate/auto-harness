@@ -36,12 +36,15 @@ agentAdapters:
 compiledFragments:
   - platform/agents/claude-code/README.md
 recommendedSkills:
-  # Skills supplement built-in knowledge. Install with `clawhub install <slug>`.
+  # --- Agent Skills format (SKILL.md directories) ---
+  # Install to .agents/skills/ or .claude/skills/; source: platform/skills/
+  - harness-governance   # always — trust tiers, companion rules, lifecycle controls
+  # Add harness-web3 for Web3 projects (source: platform/skills/)
+
+  # --- OpenClaw / ClawHub ecosystem (clawhub install <slug>) ---
+  # Core (most projects — curated list):
+  #   next-best-practices, next-cache-components  — Next.js projects
+  #   lb-vercel-skill                             — Vercel delivery
+  #   supabase                                    — Supabase data layer
+  # Web3: see domains/web3/module.yaml — run azhua-skill-vetter first
   # Full mapping: platform/workflow/skills-and-agents.md
-  #
-  # Core skills (most projects):
-  #   next-best-practices   — Next.js projects
-  #   lb-vercel-skill       — any project deploying to Vercel
-  #   supabase              — any project using Supabase
-  #
-  # Web3: see domains/web3/module.yaml — always start with azhua-skill-vetter.

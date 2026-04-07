@@ -43,5 +43,8 @@ agentAdapters:
 compiledFragments:
   - platform/profiles/stacks/python/README.md
 recommendedSkills:
-  # clawhub install <slug>
-  - supabase   # Install when using Supabase as the data layer (redundant with domains/supabase if active)
+  # --- Agent Skills format (SKILL.md directories) ---
+  - harness-governance   # trust tiers and companion rules (source: platform/skills/)
+
+  # --- OpenClaw / ClawHub ecosystem (clawhub install <slug>) ---
+  - supabase             # Supabase database ops (curated list; install when using Supabase)

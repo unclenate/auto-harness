@@ -1,5 +1,6 @@
 # Skills and Agents
-## How the Harness Integrates with External AI Tool Skills
+
+## How the Harness Integrates with Agent Skills and External Ecosystems
 
 The harness operates at three layers of agent knowledge. Understanding all three prevents
 gaps where an agent knows governance rules but lacks domain-specific tool knowledge, or
@@ -9,183 +10,220 @@ knows a tool well but has no governance context.
 
 ## The Three-Layer Model
 
-```
+```text
 Layer 1 — Kernel doctrine + compiled fragments
   Provided by: harness modules (compiledFragments field)
   Contents: trust tier model, lifecycle controls, companion rules, module READMEs
-  Agent reads these at session start via AGENTS.md or CLAUDE.md shims
+  Agent reads at session start via AGENTS.md or CLAUDE.md shims
+  Always loaded — provides the governance floor
 
-Layer 2 — External skills (OpenClaw / ClawHub)
-  Provided by: developer installs skills via `clawhub install <slug>`
-  Contents: vendor-specific APIs, deployment patterns, library best practices
-  Examples: supabase, next-best-practices, lb-vercel-skill, ffmpeg-master
+Layer 2 — Skills (Agent Skills format + external ecosystems)
+  Provided by: developer installs skill directories in the project or agent tool
+  Contents: domain-specific instructions, vendor APIs, tool patterns
+  Agent discovers at startup, loads full body on activation
+  Progressively disclosed — loaded on demand, not upfront
 
 Layer 3 — Project contract
   Provided by: project's own AGENTS.md and CLAUDE.md
   Contents: project-specific constraints, overrides, agent scope boundaries
-  Agent reads this at session start
+  Agent reads at session start
 ```
 
 Layer 1 tells the agent *how to govern work*. Layer 2 tells the agent *how the tools work*.
-Layer 3 tells the agent *what this specific project allows*. A project that installs Layer 2
-skills without Layer 1 gets a well-informed agent with no governance. A project that enforces
-Layer 1 without Layer 2 gets a well-governed agent that guesses at framework APIs.
+Layer 3 tells the agent *what this specific project allows*.
 
 ---
 
-## Skill Ecosystem: OpenClaw and ClawHub
+## The Agent Skills Standard
 
-Skills in this harness reference the **OpenClaw / ClawHub** ecosystem. OpenClaw is a
-locally-running AI assistant; ClawHub is its public skills registry.
+Agent Skills is an **open format maintained by Anthropic** for giving agents new capabilities
+and expertise. It is the canonical standard for skills in Claude Code, VS Code Copilot,
+GitHub Copilot, Cursor, Gemini CLI, OpenAI Codex, and other compliant clients.
 
-**Curated skill directory:** `https://github.com/unclenate/awesome-openclaw-skills`
+**Specification:** `https://agentskills.io/specification`
 
-This repository is a curated subset of the full ClawHub registry (~13,700 skills), filtered
-for quality, security, and relevance. Skills referenced in harness module declarations are
-drawn from this curated list unless explicitly noted otherwise.
+A skill is a directory containing a `SKILL.md` file:
 
-**Installation:**
-
-```bash
-# Install a skill by slug
-clawhub install <skill-slug>
-
-# Or copy manually
-cp -r <skill-folder> ~/.openclaw/skills/     # global
-cp -r <skill-folder> <project>/skills/       # workspace (takes priority)
+```text
+.agents/skills/
+└── skill-name/
+    ├── SKILL.md          # Required: YAML frontmatter + Markdown instructions
+    ├── scripts/          # Optional: executable code
+    ├── references/       # Optional: additional documentation
+    └── assets/           # Optional: templates and static resources
 ```
 
-Skills can also be installed by pasting a skill's GitHub repository URL directly into the
-OpenClaw chat — the assistant will handle setup automatically.
+**`SKILL.md` frontmatter** (see spec for full rules):
+
+```yaml
+---
+name: skill-name               # required; kebab-case; must match directory name
+description: "When to use..."  # required; 1-1024 chars; quoted if it contains colons
+license: Apache-2.0            # optional
+compatibility: "For..."        # optional; describe environment requirements
+---
+```
+
+**Progressive disclosure:** At session start, agents load only `name` + `description` (~100
+tokens per skill). When a task matches, the full body loads. Referenced scripts and docs load
+on demand. This is more context-efficient than loading everything at startup.
+
+**Installation paths** (agents scan these at startup):
+
+| Scope | Path | Notes |
+| ----- | ---- | ----- |
+| Project (cross-client) | `<project>/.agents/skills/` | Standard cross-client location |
+| Project (Claude Code) | `<project>/.claude/skills/` | Claude Code native location |
+| User (cross-client) | `~/.agents/skills/` | Available across all projects |
+| User (Claude Code) | `~/.claude/skills/` | Available in all Claude Code sessions |
+
+Project-level skills override user-level skills of the same name.
+
+**Validation:** Use `skills-ref` from the agentskills repo to validate SKILL.md files:
+
+```bash
+pip install skills-ref
+skills-ref validate ./my-skill
+```
+
+---
+
+## Harness-Native Skills
+
+The harness provides two skills in Agent Skills format, defined at `platform/skills/`.
+These encapsulate governance knowledge as first-class skills that any compliant agent can
+discover and activate.
+
+| Skill | Directory | Purpose |
+| ----- | --------- | ------- |
+| `harness-governance` | `platform/skills/harness-governance/` | Trust tiers, companion rules, lifecycle controls, validator chain |
+| `harness-web3` | `platform/skills/harness-web3/` | UNKNOWN propagation, rate limit budgets, evidence requirements, Tier 5 gates |
+
+**Why skills instead of (only) compiled fragments?**
+
+Compiled fragments are always loaded — they form the governance floor regardless of task.
+Skills are loaded on demand — they provide deeper, domain-specific guidance when the task
+needs it. Both serve different purposes and complement each other.
+
+Compiled fragments = always-on governance enforcement
+Skills = on-demand domain expertise
+
+### Installing Harness-Native Skills
+
+During project bootstrap (after Step 6 in the quickstart), copy harness skills to your
+project's skill directory:
+
+```bash
+# Cross-client (works with Claude Code, VS Code Copilot, Cursor, etc.)
+cp -r platform/skills/harness-governance .agents/skills/
+cp -r platform/skills/harness-web3 .agents/skills/    # Web3 projects only
+
+# Claude Code native path
+cp -r platform/skills/harness-governance .claude/skills/
+cp -r platform/skills/harness-web3 .claude/skills/    # Web3 projects only
+```
+
+Skills installed in `.agents/skills/` are automatically discovered by all compliant clients.
+Skills in `.claude/skills/` are Claude Code specific.
 
 ---
 
 ## `recommendedSkills` in module.yaml
 
-Each module can declare `recommendedSkills` — a list of ClawHub skill slugs that provide
-domain-specific knowledge relevant to that module. This field is:
+Each module declares `recommendedSkills` — a list of skill names that provide relevant
+domain knowledge. The field uses two namespaces:
 
-- **Optional.** Modules with no relevant external skills omit it.
-- **Not enforced by validators.** Skills are installed by the developer, not checked by CI.
-- **Informational.** The harness documents what to install; it does not install it.
-
-Example from `domains/supabase/module.yaml`:
+**Agent Skills format entries** — skill directory names, installable per the paths above:
 
 ```yaml
 recommendedSkills:
-  - supabase
+  - harness-governance   # Agent Skills format; source: platform/skills/
+  - harness-web3         # Agent Skills format; source: platform/skills/
 ```
 
-The slug matches the ClawHub registry identifier — pass it directly to `clawhub install`.
+**OpenClaw / ClawHub entries** — commented slugs for the OpenClaw ecosystem:
+
+```yaml
+  # --- OpenClaw / ClawHub ecosystem (clawhub install <slug>) ---
+  - supabase             # Supabase database ops (curated list)
+```
+
+The field is **not enforced by validators** — skill installation is a developer discipline
+step, not a CI gate.
 
 ---
 
-## Skill Installation by Module
+## OpenClaw / ClawHub Ecosystem
 
-Skills marked **required** are effectively mandatory for correct agent behavior in that domain.
-All slugs can be verified in `https://github.com/unclenate/awesome-openclaw-skills`.
+OpenClaw is a separate locally-running AI assistant with its own skill registry (ClawHub).
+It is one possible development participant or technology in the stack. Its skills are installed
+via `clawhub install <slug>` and live in `~/.openclaw/skills/` (not in `.agents/skills/`).
 
-| Active module | Slug | Priority | Purpose |
-| ------------- | ---- | -------- | ------- |
-| `stacks/node-typescript` (Next.js) | `next-best-practices` | Recommended | File conventions, RSC boundaries, data patterns, async APIs |
-| `stacks/node-typescript` (Next.js 16+) | `next-cache-components` | Recommended | PPR, `use cache` directive, `cacheLife`, `cacheTag` |
-| `stacks/node-typescript` (Vercel deploy) | `lb-vercel-skill` | Recommended | Vercel CLI — projects, deployments, env vars, domains |
-| `stacks/node-typescript` (React perf) | `react-perf` | Optional | React and Next.js performance optimization patterns |
-| `stacks/node-typescript` + Supabase | `supabase` | Recommended | Supabase database ops, vector search, storage |
-| `stacks/python` + Supabase | `supabase` | Recommended | Same — Python Supabase client usage |
-| `domains/supabase` | `supabase` | Recommended | Supabase database ops, vector search, storage |
-| `data/relational-postgres` | `postgres-perf` | Optional | PostgreSQL performance optimization and best practices |
-| `domains/media-pipeline` | `ffmpeg-master` | Recommended | Video and audio processing tasks |
-| `domains/media-pipeline` | `mediaproc` | Optional | Process media files in a locked-down SSH container |
-| `domains/web3` | See Web3 section below | — | Not in curated list — see full registry |
+**Curated skill directory:** `https://github.com/unclenate/awesome-openclaw-skills`
+(~5,200 curated skills from the full ClawHub registry of ~13,700)
 
----
+**Installation:**
 
-## Web3 Skills
+```bash
+clawhub install <slug>
+# or: copy skill folder to ~/.openclaw/skills/ (global) or <project>/skills/ (workspace)
+```
 
-Web3 skills are **not included in the curated awesome-openclaw-skills list** — they were
-intentionally filtered out due to the volume of low-quality and spam entries in that category
-of the ClawHub registry.
+### Module-to-Slug Mapping (OpenClaw)
 
-Web3 skills are available directly from the full ClawHub registry at `clawskills.sh`.
+| Active module | Slug | Purpose |
+| ------------- | ---- | ------- |
+| `stacks/node-typescript` | `next-best-practices` | Next.js conventions, RSC, async APIs |
+| `stacks/node-typescript` | `next-cache-components` | Next.js 16 PPR, use cache directive |
+| `stacks/node-typescript` (Vercel) | `lb-vercel-skill` | Vercel CLI, deployments, env vars |
+| `stacks/node-typescript` (perf) | `react-perf` | React and Next.js performance |
+| `domains/supabase` or Supabase data layer | `supabase` | Database ops, vector search, storage |
+| `data/relational-postgres` | `postgres-perf` | PostgreSQL performance optimization |
+| `domains/media-pipeline` | `ffmpeg-master` | Video and audio processing |
+| `domains/media-pipeline` | `mediaproc` | Batch media processing in a locked container |
+| `domains/web3` (security, first) | `azhua-skill-vetter` | Vet other skills before installation |
+| `domains/web3` (analytics) | `mist-track` | AML compliance, address risk (full registry) |
+| `domains/web3` (data) | `dune-mcp` | On-chain data queries (full registry) |
+| `domains/web3` (data) | `nansen` | Wallet and token analytics (full registry) |
 
-**Security requirements before installing any Web3 skill from the full registry:**
+### Web3 Skills Security
 
-1. Install a skill vetter first. The curated list includes `azhua-skill-vetter`
-   (`clawhub install azhua-skill-vetter`) — a security-first skill vetting tool for AI agents.
-   Run it against any Web3 skill before activation.
+Web3 skills are **not in the curated list** — they come from the full ClawHub registry.
 
-2. Test all Web3 skills in an isolated environment before connecting to any live wallet,
-   contract, or API key with production access.
+Before installing any Web3 registry skill:
 
-3. Skills that touch transaction signing must be reviewed against the trust tier model
-   in `platform/core/kernel/base/trust-model.md`. Transaction signing is Tier 5 —
-   irreversible, permanent consequences.
-
-4. Install a pre-execution threat blocker before enabling any write capability. GoPlus
-   AgentGuard (`goplus-agent-guard` on ClawHub) provides real-time threat blocking.
-
-5. Most Web3 registry entries are in early experimental versions and **may contain unknown
-   vulnerabilities**. Treat them as untrusted third-party code until audited.
-
-**Web3 skills referenced in `domains/web3/module.yaml`** (full ClawHub registry, not curated):
-
-| Slug | Purpose |
-| ---- | ------- |
-| `goplus-agent-guard` | Pre-execution security scanning and threat blocking |
-| `mist-track` | AML compliance and address risk classification |
-| `dune-mcp` | On-chain data queries via Dune MCP server |
-| `nansen` | Wallet and token analytics |
-| `clawnch` | ERC-20 deployment on Base (write-capable platforms only) |
-| `okx-onchain-os` | Multi-chain wallet/transaction surface (write-capable only) |
-
-> Read-only analytics platforms (risk scoring, address analysis, chain data indexing) need
-> only MistTrack and Dune. Wallet and deployment skills are not needed for MVP analytics.
-
----
-
-## How to Discover Which Skills to Install
-
-After your manifest is valid and module graph is green:
-
-1. Read the `recommendedSkills` field in each active module's `module.yaml`.
-2. Cross-reference with the table above.
-3. For each slug: `clawhub install <slug>` or find it in the curated directory.
-4. For Web3 projects: run `azhua-skill-vetter` before installing anything from the full registry.
-5. Confirm the skill is active by checking your OpenClaw skill list.
-
-There is no validator for skill installation. It is a developer discipline step, not a CI gate.
+1. Install `azhua-skill-vetter` first (`clawhub install azhua-skill-vetter`) and run it
+   against the target skill.
+2. Test in an isolated environment before connecting to live wallets, contracts, or production
+   API keys.
+3. Skills touching transaction signing require Tier 5 review — see `harness-web3` skill.
+4. Most Web3 registry entries are experimental — treat as untrusted until audited.
 
 ---
 
 ## Skills and the Bootstrap Sequence
 
-Skills fit into the bootstrap sequence between agent pack validation and CI wiring:
-
-```
-Step 6 — validate-agent-pack.sh      (agent CLAUDE.md / AGENTS.md exist)
-Step 6.5 — install recommended skills (this document)
+```text
+Step 6 — validate-agent-pack.sh
+Step 6.5 — install skills
+    a. Copy harness-governance to .agents/skills/ (all projects)
+    b. Copy harness-web3 to .agents/skills/ (Web3 projects)
+    c. Install OpenClaw skills per module table above (if using OpenClaw)
 Step 7 — wire up CI
 ```
 
-The `bootstrap-quickstart.md` guide includes a skills discovery step after agent pack validation.
-
 ---
 
-## Skills vs. compiledFragments
+## Relationship Between Skills and compiledFragments
 
-These are complementary, not competing:
-
-| | `compiledFragments` | External skills |
-| - | ------------------- | --------------- |
-| Source | Harness platform docs | ClawHub registry |
-| Content | Governance rules, module READMEs, trust model | API patterns, library usage, deployment config |
-| Installed by | Read at agent session start via AGENTS.md | Developer installs via `clawhub install` |
-| Enforced | Yes — validator can check file existence | No — informational only |
-| Example | `platform/profiles/domains/supabase/README.md` | `supabase` |
-
-A well-configured project uses both: compiled fragments for governance context, external skills
-for tool/API accuracy.
+| | `compiledFragments` | Agent Skills |
+| - | ------------------- | ------------ |
+| Source | Harness platform docs | SKILL.md directories |
+| Loaded | Always, at session start | On demand, when task matches |
+| Enforced | Yes — validator checks file existence | No — developer installs |
+| Token cost | Full content every session | ~100 tokens at startup; full body only when activated |
+| Best for | Governance rules that must always be in context | Domain-specific guidance loaded when needed |
+| Example | `platform/core/kernel/base/trust-model.md` | `platform/skills/harness-governance/SKILL.md` |
 
 ---
 
@@ -193,10 +231,9 @@ for tool/API accuracy.
 
 | Resource | Path |
 | -------- | ---- |
-| Curated skill directory | `https://github.com/unclenate/awesome-openclaw-skills` |
-| Trust tier model | `platform/core/kernel/base/trust-model.md` |
+| Agent Skills specification | `https://agentskills.io/specification` |
+| Harness-native skills | `platform/skills/` |
 | Module field reference | `platform/core/registry/module-types.md` |
 | Bootstrap quickstart | `platform/workflow/bootstrap-quickstart.md` |
-| Agent pack guide | `platform/agents/claude-code/README.md` |
-| Web3 domain module | `platform/profiles/domains/web3/module.yaml` |
-| Supabase domain module | `platform/profiles/domains/supabase/module.yaml` |
+| Curated OpenClaw skills | `https://github.com/unclenate/awesome-openclaw-skills` |
+| Trust tier model | `platform/core/kernel/base/trust-model.md` |

@@ -64,6 +64,11 @@
 * [Claude Code](agents/claude-code/README.md)
 * [Generic LLM](agents/generic-llm/README.md)
 
+## Harness-Native Skills
+
+* [harness-governance](skills/harness-governance/SKILL.md)
+* [harness-web3](skills/harness-web3/SKILL.md)
+
 ## Templates
 
 ### Discovery

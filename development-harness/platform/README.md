@@ -17,6 +17,16 @@ product artifacts and select the right module composition.
 **Starter composition for the discovery phase:** [`platform/compositions/new-product-discovery.yaml`](compositions/new-product-discovery.yaml)
 — use this manifest before your stack is chosen; replace it after Step 6 of the workflow.
 
+## Documentation
+
+This platform is organized as a GitBook. The full table of contents is at
+[`SUMMARY.md`](SUMMARY.md). The `.gitbook.yaml` at the platform root configures GitBook
+to serve the `platform/` directory directly.
+
+For projects using the harness that want GitBook navigation for their own docs, activate
+the `domains/gitbook` module. It requires `docs/SUMMARY.md` and provides guidance on
+chapter structure, TOC maintenance, and the human/agent documentation split.
+
 ## Structure
 
 - `core/`: universal doctrine, lifecycle rules, schemas, and kernel metadata

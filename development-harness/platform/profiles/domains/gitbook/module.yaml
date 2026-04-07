@@ -1,0 +1,36 @@
+id: gitbook
+type: domain
+version: 1.0.0
+summary: GitBook documentation overlay for projects that publish human-navigable docs with table of contents, chapter structure, and index navigation.
+dependsOn:
+  - kernel/base
+conflictsWith: []
+requiredArtifacts:
+  - docs/SUMMARY.md
+optionalArtifacts:
+  - .gitbook.yaml
+  - docs/README.md
+sensitivePaths:
+  - description: GitBook structure and navigation configuration
+    patterns:
+      - ^docs/SUMMARY\.md$
+      - ^\.gitbook\.yaml$
+companionRules:
+  - description: GitBook structural configuration changes must be reflected in the project change-log or an ADR
+    triggerPaths:
+      - ^docs/SUMMARY\.md$
+      - ^\.gitbook\.yaml$
+    requiredAny:
+      - ^docs/project/change-log\.md$
+      - ^docs/adr/ADR-
+    humanReview: Reviewers verify that the table of contents accurately reflects the current documentation structure and that no pages are orphaned or missing.
+validators:
+  - validate-required-artifacts
+  - validate-companions
+reviewGates:
+  - Human reviewer must verify docs/SUMMARY.md is current — every doc page reachable from a link, no broken paths, no orphaned pages not listed.
+  - Human reviewer must confirm chapter groupings reflect how this project's participants actually navigate documentation.
+agentAdapters:
+  - platform/agents/base
+compiledFragments:
+  - platform/profiles/domains/gitbook/README.md

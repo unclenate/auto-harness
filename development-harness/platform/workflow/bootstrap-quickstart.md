@@ -1,4 +1,5 @@
 # Bootstrap Quickstart
+
 ## From Zero to a Running Harness in One Session
 
 This is the fast path. It assumes you know what you're building and which stack you're using.
@@ -50,7 +51,8 @@ bash $PLATFORM/validators/validate-manifest.sh harness.manifest.yaml
 ```
 
 **Expected output:**
-```
+
+```text
 ✓ Manifest structure is valid: harness.manifest.yaml
 ```
 
@@ -65,7 +67,8 @@ bash $PLATFORM/validators/validate-module-graph.sh harness.manifest.yaml
 ```
 
 **Expected output:**
-```
+
+```text
 ✓ Module graph is valid for harness.manifest.yaml
 ```
 
@@ -86,7 +89,7 @@ bash $PLATFORM/validators/validate-required-artifacts.sh harness.manifest.yaml .
 For a discovery-phase manifest, this validation is disabled by default. For a production
 composition, you'll see output like:
 
-```
+```text
 ✗ Required artifact validation failed:
   - missing HARNESS.md
   - missing AGENTS.md
@@ -98,7 +101,7 @@ composition, you'll see output like:
 Create each missing file using the templates in `platform/templates/`. The match is direct:
 
 | Missing artifact | Template |
-|-----------------|----------|
+| ---------------- | -------- |
 | `docs/product/problem-statement.md` | `platform/templates/product/problem-statement.md` |
 | `docs/product/requirements.md` | `platform/templates/product/requirements.md` |
 | `docs/product/personas.md` | `platform/templates/product/personas.md` |
@@ -141,6 +144,30 @@ See the `platform/agents/` directory for the expected file contents.
 
 ---
 
+## Step 6.5 — Install Recommended Skills
+
+After the agent pack validates, check which external skills your active modules recommend.
+Each module's `module.yaml` has a `recommendedSkills` field listing relevant skill IDs.
+
+Quick lookup by module:
+
+| Active module | Skill to install |
+| ------------- | ---------------- |
+| `stacks/node-typescript` + Vercel | `vercel-plugin:nextjs`, `vercel-plugin:vercel-cli` |
+| `domains/supabase` | `supabase-postgres-best-practices` |
+| `domains/web3` | `openlaw:skill-vetter` (first), `openlaw:goplus-agent-guard`, `openlaw:mist-track` |
+| `domains/web3` + data layer | `openlaw:dune-mcp`, `openlaw:nansen` |
+
+**Web3 projects:** Install `openlaw:skill-vetter` before any other Web3 skill. Web3 agent skills
+are early experimental releases and may contain vulnerabilities. Test in an isolated environment
+before connecting to any live wallet, contract, or production API key. See
+`platform/workflow/skills-and-agents.md` for the full security guidance.
+
+Skills are installed in your AI tool (Claude Code skill registry, etc.). There is no CI gate
+for skill installation — it is a developer discipline step.
+
+---
+
 ## Step 7 — Wire Up CI
 
 Copy the minimal workflow from `platform/workflow/ci-integration.md` into
@@ -175,7 +202,7 @@ Bootstrap Complete vs. Harness Ready.
 ## Choosing the Right Starting Composition
 
 | Your situation | Start with |
-|---------------|-----------|
+| -------------- | ---------- |
 | Raw idea, no stack chosen | `new-product-discovery.yaml` |
 | Node.js + TypeScript + PostgreSQL web app | `node-web-saas-postgres.yaml` |
 | Python API service with PostgreSQL | `python-api-service-postgres.yaml` |
@@ -189,7 +216,7 @@ Bootstrap Complete vs. Harness Ready.
 See `platform/workflow/troubleshooting.md` for detailed fixes. Quick reference:
 
 | Error | Likely cause |
-|-------|-------------|
+| ----- | ------------ |
 | `Missing module definition for management:X at ...` | Module `X` doesn't exist — check spelling or available modules |
 | `X conflicts with active module Y` | Two conflicting modules active — remove one (e.g., remove `prototype` if adding `production-saas`) |
 | `X depends on missing module Y` | A required dependency isn't declared — add `Y` to the appropriate module group |
@@ -201,10 +228,11 @@ See `platform/workflow/troubleshooting.md` for detailed fixes. Quick reference:
 ## Reference
 
 | Resource | Path |
-|----------|------|
+| -------- | ---- |
 | Discovery workflow (idea → manifest) | `platform/workflow/discovery-to-composition.md` |
 | CI integration guide | `platform/workflow/ci-integration.md` |
 | Troubleshooting | `platform/workflow/troubleshooting.md` |
+| Skills and agents guide | `platform/workflow/skills-and-agents.md` |
 | All templates | `platform/templates/` |
 | All compositions | `platform/compositions/` |
 | Sample project (filled in) | `platform/examples/sample-projects/node-web-saas-postgres/` |

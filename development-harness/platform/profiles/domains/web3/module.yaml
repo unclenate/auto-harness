@@ -82,3 +82,23 @@ agentAdapters:
   - platform/agents/base
 compiledFragments:
   - platform/profiles/domains/web3/README.md
+recommendedSkills:
+  # -----------------------------------------------------------------------
+  # SECURITY WARNING: Most Web3 agent skills are early experimental versions
+  # and may contain unknown vulnerabilities. Test only in isolated environments.
+  # Never deploy skills that touch live transaction signing without a dedicated
+  # security review. See platform/workflow/skills-and-agents.md §Web3.
+  # -----------------------------------------------------------------------
+
+  # Security — install first, before any other Web3 skills
+  - openlaw:skill-vetter          # audits other skills for vulnerabilities before installation
+  - openlaw:goplus-agent-guard    # real-time threat blocking; blocks dangerous operations pre-execution
+  - openlaw:mist-track            # address risk analysis and AML compliance; core to risk analytics output
+
+  # On-chain data (analytics/read-only platforms)
+  - openlaw:dune-mcp              # on-chain data querying via Dune MCP server
+  - openlaw:nansen                # wallet and token analytics layer
+
+  # Write-capable platforms only (not needed for read-only analytics)
+  # - openlaw:clawnch             # ERC-20 deployment on Base — add if contract deployment is in scope
+  # - openlaw:okx-onchain-os      # 20+ chain wallet/transaction surface — add if write capability added

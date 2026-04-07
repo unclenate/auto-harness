@@ -35,3 +35,14 @@ agentAdapters:
   - .claude/settings.json
 compiledFragments:
   - platform/agents/claude-code/README.md
+recommendedSkills:
+  # Skills here supplement the agent's built-in knowledge. Install per your active domain modules.
+  # The full skill-to-module mapping lives in platform/workflow/skills-and-agents.md.
+  #
+  # Core skills applicable to most projects:
+  #   vercel-plugin:vercel-cli      — if deploying to Vercel
+  #   supabase-postgres-best-practices — if using Supabase
+  #   vercel-plugin:nextjs          — if building a Next.js app
+  #
+  # Web3 projects: see domains/web3/module.yaml recommendedSkills for the full list
+  # including mandatory security skills (goplus-agent-guard, skill-vetter).

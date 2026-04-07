@@ -41,3 +41,5 @@ agentAdapters:
   - platform/agents/base
 compiledFragments:
   - platform/profiles/domains/supabase/README.md
+recommendedSkills:
+  - supabase-postgres-best-practices

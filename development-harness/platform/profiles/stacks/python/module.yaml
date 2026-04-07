@@ -42,3 +42,6 @@ agentAdapters:
   - platform/agents/claude-code
 compiledFragments:
   - platform/profiles/stacks/python/README.md
+recommendedSkills:
+  # Install when using Supabase as the data layer (redundant with domains/supabase if active)
+  - supabase-postgres-best-practices

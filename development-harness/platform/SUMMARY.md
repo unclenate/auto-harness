@@ -5,6 +5,7 @@
 * [Introduction](README.md)
 * [Bootstrap Quickstart](workflow/bootstrap-quickstart.md)
 * [Discovery to Composition](workflow/discovery-to-composition.md)
+* [Skills and Agents](workflow/skills-and-agents.md)
 
 ## Core Governance
 

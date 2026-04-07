@@ -75,6 +75,11 @@
     "compiledFragments": {
       "type": "array",
       "items": { "type": "string" }
+    },
+    "recommendedSkills": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "External AI tool skills (e.g., Claude Code skill IDs) that provide domain-specific context relevant to this module. Not required — omit if no external skills apply."
     }
   },
   "$defs": {

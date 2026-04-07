@@ -42,3 +42,9 @@ agentAdapters:
   - platform/agents/claude-code
 compiledFragments:
   - platform/profiles/stacks/node-typescript/README.md
+recommendedSkills:
+  # Install when delivery target is Vercel (web app or API service)
+  - vercel-plugin:nextjs          # Next.js deployment, routing, and rendering strategies
+  - vercel-plugin:vercel-cli      # CLI usage, env vars, project linking, preview deployments
+  # Install when using Supabase (redundant with domains/supabase if that module is active)
+  - supabase-postgres-best-practices

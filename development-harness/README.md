@@ -85,7 +85,7 @@ bash $PLATFORM/validators/validate-manifest.sh harness.manifest.yaml
 bash $PLATFORM/validators/validate-module-graph.sh harness.manifest.yaml
 bash $PLATFORM/validators/validate-required-artifacts.sh harness.manifest.yaml .
 bash $PLATFORM/validators/validate-placeholders.sh harness.manifest.yaml .
-bash $PLATFORM/validators/validate-agent-pack.sh harness.manifest.yaml .
+bash $PLATFORM/validators/validate-agent-pack.sh harness.manifest.yaml .  # if agents/* modules are active
 bash $PLATFORM/validators/validate-companions.sh harness.manifest.yaml main
 ```
 

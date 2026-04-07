@@ -90,14 +90,16 @@ skills-ref validate ./my-skill
 
 ## Harness-Native Skills
 
-The harness provides two skills in Agent Skills format, defined at `platform/skills/`.
+The harness provides four skills in Agent Skills format, defined at `platform/skills/`.
 These encapsulate governance knowledge as first-class skills that any compliant agent can
 discover and activate.
 
 | Skill | Directory | Purpose |
 | ----- | --------- | ------- |
 | `harness-governance` | `platform/skills/harness-governance/` | Trust tiers, companion rules, lifecycle controls, validator chain |
+| `harness-testing` | `platform/skills/harness-testing/` | Test strategy patterns, coverage enforcement, framework-specific guidance |
 | `harness-web3` | `platform/skills/harness-web3/` | UNKNOWN propagation, rate limit budgets, evidence requirements, Tier 5 gates |
+| `harness-onboarding` | `platform/skills/harness-onboarding/` | Brownfield assessment, gap analysis, lite manifest generation |
 
 **Why skills instead of (only) compiled fragments?**
 
@@ -116,11 +118,14 @@ project's skill directory:
 ```bash
 # Cross-client (works with Claude Code, VS Code Copilot, Cursor, etc.)
 cp -r platform/skills/harness-governance .agents/skills/
-cp -r platform/skills/harness-web3 .agents/skills/    # Web3 projects only
+cp -r platform/skills/harness-testing .agents/skills/     # testing-standard active
+cp -r platform/skills/harness-web3 .agents/skills/        # Web3 projects only
+cp -r platform/skills/harness-onboarding .agents/skills/  # brownfield onboarding
 
 # Claude Code native path
 cp -r platform/skills/harness-governance .claude/skills/
-cp -r platform/skills/harness-web3 .claude/skills/    # Web3 projects only
+cp -r platform/skills/harness-testing .claude/skills/     # testing-standard active
+cp -r platform/skills/harness-web3 .claude/skills/        # Web3 projects only
 ```
 
 Skills installed in `.agents/skills/` are automatically discovered by all compliant clients.
@@ -138,6 +143,7 @@ domain knowledge. The field uses two namespaces:
 ```yaml
 recommendedSkills:
   - harness-governance   # Agent Skills format; source: platform/skills/
+  - harness-testing      # Agent Skills format; source: platform/skills/
   - harness-web3         # Agent Skills format; source: platform/skills/
 ```
 
@@ -207,8 +213,10 @@ Before installing any Web3 registry skill:
 Step 6 — validate-agent-pack.sh
 Step 6.5 — install skills
     a. Copy harness-governance to .agents/skills/ (all projects)
-    b. Copy harness-web3 to .agents/skills/ (Web3 projects)
-    c. Install OpenClaw skills per module table above (if using OpenClaw)
+    b. Copy harness-testing to .agents/skills/ (testing-standard active)
+    c. Copy harness-web3 to .agents/skills/ (Web3 projects)
+    d. Copy harness-onboarding to .agents/skills/ (brownfield onboarding)
+    e. Install OpenClaw skills per module table above (if using OpenClaw)
 Step 7 — wire up CI
 ```
 

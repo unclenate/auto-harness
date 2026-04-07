@@ -9,6 +9,8 @@ and what companion documentation must accompany every significant change.
 > [`platform/workflow/bootstrap-quickstart.md`](platform/workflow/bootstrap-quickstart.md).
 > Starting from just an idea? Use
 > [`platform/workflow/discovery-to-composition.md`](platform/workflow/discovery-to-composition.md).
+> Existing codebase? Use
+> [`platform/workflow/brownfield-onboarding.md`](platform/workflow/brownfield-onboarding.md).
 > Web3 project? Use
 > [`platform/workflow/bootstrap-web3-quickstart.md`](platform/workflow/bootstrap-web3-quickstart.md).
 
@@ -146,7 +148,7 @@ declares its governance contract. You compose them to match your project.
 | **Architectures** | Deployment and interaction patterns | `web-app`, `api-service`, `event-driven` |
 | **Data** | Storage overlays | `relational-postgres`, `document-store`, `object-storage` |
 | **Delivery** | Lifecycle posture | `prototype`, `production-saas`, `internal-platform` |
-| **Management** | Product, project, and program governance | `discovery-intake`, `product-lite`, `project-standard`, `program-lite` |
+| **Management** | Product, project, program, and testing governance | `discovery-intake`, `product-lite`, `project-standard`, `program-lite`, `testing-standard` |
 | **Domains** | Vendor or specialist overlays | `supabase`, `web3`, `media-pipeline`, `gitbook` |
 | **Agents** | AI-tool operating packs | `base`, `claude-code`, `generic-llm` |
 
@@ -170,6 +172,7 @@ Pre-built manifests for common project types. Copy the closest match and adjust:
 
 | Composition | Stack | Use When |
 | ----------- | ----- | -------- |
+| [`brownfield-lite.yaml`](platform/compositions/brownfield-lite.yaml) | Any | Existing codebase — assessment pending |
 | [`new-product-discovery.yaml`](platform/compositions/new-product-discovery.yaml) | Stack TBD | Discovery phase — idea to first manifest |
 | [`node-web-saas-postgres.yaml`](platform/compositions/node-web-saas-postgres.yaml) | Node / TS | Web app with PostgreSQL |
 | [`python-api-service-postgres.yaml`](platform/compositions/python-api-service-postgres.yaml) | Python | API service with PostgreSQL |
@@ -191,6 +194,7 @@ cp platform/compositions/node-web-saas-postgres.yaml harness.manifest.yaml
 | [`discovery-to-composition.md`](platform/workflow/discovery-to-composition.md) | Idea / mockup / spec → `harness.manifest.yaml` in 8 steps |
 | [`skills-and-agents.md`](platform/workflow/skills-and-agents.md) | Agent Skills standard, harness-native skills, OpenClaw ecosystem |
 | [`ci-integration.md`](platform/workflow/ci-integration.md) | Wiring validators into GitHub Actions |
+| [`brownfield-onboarding.md`](platform/workflow/brownfield-onboarding.md) | Bring an existing codebase into the harness progressively |
 | [`troubleshooting.md`](platform/workflow/troubleshooting.md) | Every validator error, cause, and fix |
 
 ---
@@ -233,6 +237,7 @@ Template categories:
 - **Product** — problem statement, personas, requirements, release intent
 - **Project** — scope plan, milestones, change log, dependency log
 - **Program** — workstream map, stakeholder report, governance cadence
+- **Testing** — test strategy, coverage thresholds, test plan
 - **Architecture and Ops** — ADR, architecture overview, release checklist, risk register,
   incident response, ownership map, runbook index, runbook template
 - **Web3** — chain config, contract registry, token strategy, Web3 risk register, Web3 ADR
@@ -244,22 +249,28 @@ reference and a table mapping each template to the module that requires it.
 
 ## Agent Skills
 
-The harness provides two skills in [Agent Skills](https://agentskills.io/specification) format
+The harness provides four skills in [Agent Skills](https://agentskills.io/specification) format
 — the open standard supported by Claude Code, VS Code Copilot, GitHub Copilot, Cursor,
 Gemini CLI, and others:
 
 | Skill | Install When | Provides |
 | ----- | ------------ | -------- |
 | [`harness-governance`](platform/skills/harness-governance/SKILL.md) | All projects | Trust tiers, companion rules, lifecycle controls, validator commands |
+| [`harness-testing`](platform/skills/harness-testing/SKILL.md) | Projects with `testing-standard` active | Test strategy patterns, coverage enforcement, framework-specific guidance |
 | [`harness-web3`](platform/skills/harness-web3/SKILL.md) | Web3 projects | UNKNOWN propagation, rate limit budgets, evidence requirements, Tier 5 gates |
+| [`harness-onboarding`](platform/skills/harness-onboarding/SKILL.md) | Brownfield onboarding | Repository assessment, gap analysis, lite manifest generation |
 
 Skills are progressively disclosed — agents load only the name and description (~100 tokens)
 at startup. The full body loads on demand when a task matches the skill's domain.
 
 ```bash
-# Cross-client installation
+# Cross-client installation (all projects)
 cp -r platform/skills/harness-governance .agents/skills/
-cp -r platform/skills/harness-web3 .agents/skills/   # Web3 only
+
+# Install additional skills based on active modules
+cp -r platform/skills/harness-testing .agents/skills/    # testing-standard active
+cp -r platform/skills/harness-web3 .agents/skills/       # Web3 projects
+cp -r platform/skills/harness-onboarding .agents/skills/  # brownfield onboarding
 
 # Claude Code native path
 cp -r platform/skills/harness-governance .claude/skills/
@@ -297,15 +308,15 @@ development-harness/
 │   │   ├── architectures/       # web-app, api-service, event-driven
 │   │   ├── data/                # relational-postgres, document-store, object-storage
 │   │   ├── delivery/            # prototype, production-saas, internal-platform
-│   │   ├── management/          # discovery-intake, product-lite, project-standard, program-lite
+│   │   ├── management/          # discovery-intake, product-lite, project-standard, program-lite, testing-standard
 │   │   └── domains/             # supabase, web3, media-pipeline, gitbook
 │   ├── agents/                  # Agent operating packs: base, claude-code, generic-llm
-│   ├── skills/                  # Harness-native Agent Skills: harness-governance, harness-web3
+│   ├── skills/                  # Agent Skills: harness-governance, harness-testing, harness-web3, harness-onboarding
 │   ├── templates/               # Artifact skeletons for every required file
 │   ├── validators/              # validate-*.sh scripts + Ruby harness_registry lib
 │   ├── compositions/            # Starter manifests for common project types
 │   ├── examples/                # Sample project with all artifacts filled in
-│   ├── workflow/                # Guides: bootstrap, discovery, CI, troubleshooting
+│   ├── workflow/                # Guides: bootstrap, discovery, brownfield, CI, troubleshooting
 │   ├── SUMMARY.md               # Full GitBook table of contents
 │   └── README.md                # Platform front door
 └── legacy/v3/                   # Frozen v3 harness — preserved as historical baseline
@@ -321,6 +332,7 @@ development-harness/
 | --------- | ----------- |
 | Raw idea, no stack chosen | [`workflow/discovery-to-composition.md`](platform/workflow/discovery-to-composition.md) |
 | Know your stack, ready to build | [`workflow/bootstrap-quickstart.md`](platform/workflow/bootstrap-quickstart.md) |
+| Existing codebase, not harness-compliant | [`workflow/brownfield-onboarding.md`](platform/workflow/brownfield-onboarding.md) |
 | Web3 project | [`workflow/bootstrap-web3-quickstart.md`](platform/workflow/bootstrap-web3-quickstart.md) |
 | Already have a manifest | Run `validate-manifest.sh` and go from there |
 

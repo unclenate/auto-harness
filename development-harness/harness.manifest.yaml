@@ -1,3 +1,8 @@
+# This manifest describes the harness platform itself — it is a self-governing meta-project.
+# If you are onboarding a project INTO the harness, do not copy this file.
+# Use a starter composition from platform/compositions/ instead.
+# See: platform/workflow/brownfield-onboarding.md (existing codebase)
+#      platform/workflow/bootstrap-quickstart.md (new project)
 schemaVersion: 1
 project:
   id: development-harness-framework

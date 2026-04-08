@@ -102,6 +102,11 @@ ruby -I platform/validators/lib platform/validators/test/test_validators_integra
 
 ## Test Fixtures
 
+> **Not documentation.** Fixture projects are test data — they contain intentionally
+> broken manifests, missing artifacts, and other conditions that exercise validator error
+> paths. Do not treat fixture content as canonical or exemplary. For real examples of
+> harnessed projects, see [`examples/`](../examples/README.md).
+
 Fixture projects in `test/fixtures/projects/` provide controlled test inputs:
 
 | Fixture | Purpose |

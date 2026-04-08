@@ -106,39 +106,86 @@ Templates that share a category directory keep the subdirectory structure intact
 
 ## Template Directory Map
 
+Jump to: [Discovery](#discovery) | [Product](#product) | [Project](#project) |
+[Program](#program) | [Testing](#testing) | [Governance](#governance) |
+[Architecture and Ops](#architecture-and-operations) | [Database](#database) |
+[Web3](#web3-templates)
+
+### Discovery
+
 | Template | Required By Module | Path |
 | -------- | ------------------ | ---- |
 | Intake questionnaire | `management/discovery-intake` | `templates/discovery/intake-questionnaire.md` |
 | MVP scope | `management/discovery-intake` | `templates/discovery/mvp-scope.md` |
 | Starting assets | `management/discovery-intake` (optional) | `templates/discovery/starting-assets.md` |
+
+### Product
+
+| Template | Required By Module | Path |
+| -------- | ------------------ | ---- |
 | Problem statement | `management/product-lite` | `templates/product/problem-statement.md` |
 | Personas | `management/product-lite` (optional) | `templates/product/personas.md` |
 | Requirements | `management/product-lite` | `templates/product/requirements.md` |
 | Release intent | `management/product-lite` | `templates/product/release-intent.md` |
 | PRD | `management/product-lite` | `templates/product/prd.md` |
+
+### Project
+
+| Template | Required By Module | Path |
+| -------- | ------------------ | ---- |
 | Scope plan | `management/project-standard` | `templates/project/scope-plan.md` |
 | Milestones | `management/project-standard` | `templates/project/milestones.md` |
 | Change log | `management/project-standard` | `templates/project/change-log.md` |
 | Dependency log | `management/project-standard` | `templates/project/dependency-log.md` |
+
+### Program
+
+| Template | Required By Module | Path |
+| -------- | ------------------ | ---- |
 | Workstream map | `management/program-lite` | `templates/program/workstream-map.md` |
 | Stakeholder report | `management/program-lite` | `templates/program/stakeholder-report.md` |
 | Governance cadence | `management/program-lite` | `templates/program/governance-cadence.md` |
+
+### Testing
+
+| Template | Required By Module | Path |
+| -------- | ------------------ | ---- |
 | Test strategy | `management/testing-standard` | `templates/testing/test-strategy.md` |
 | Coverage thresholds | `management/testing-standard` | `templates/testing/coverage-thresholds.md` |
 | Test plan | `management/testing-standard` (optional) | `templates/testing/test-plan.md` |
+
+### Governance
+
+| Template | Required By Module | Path |
+| -------- | ------------------ | ---- |
 | Operating principles | `core/kernel/base` | `templates/operating-principles.md` |
+
+### Architecture and Operations
+
+| Template | Required By Module | Path |
+| -------- | ------------------ | ---- |
 | Architecture overview | All production modules | `templates/architecture-overview.md` |
 | ADR | All modules with arch decisions | `templates/adr.md` |
 | Release checklist | `delivery/production-saas` | `templates/release-checklist.md` |
 | Risk register | `delivery/production-saas` | `templates/risk-register.md` |
-| Web3 risk register | `domains/web3` | `templates/web3/risk-register-web3.md` |
 | Incident response | `delivery/production-saas` | `templates/incident.md` |
 | Ownership map | `delivery/production-saas` | `templates/ownership-map.md` |
 | Runbook index | `delivery/production-saas` | `templates/ops/runbook-index.md` |
 | Environment inventory | `delivery/production-saas` | `templates/ops/environment-inventory.md` |
 | Rollback checklist | `delivery/production-saas` | `templates/ops/rollback-checklist.md` |
 | Runbook (individual) | Populated from runbook index | `templates/ops/runbook-template.md` |
+
+### Database
+
+| Template | Required By Module | Path |
+| -------- | ------------------ | ---- |
 | Migration readiness | `data/relational-postgres` | `templates/database/migration-readiness.md` |
+
+### Web3 Templates
+
+| Template | Required By Module | Path |
+| -------- | ------------------ | ---- |
+| Web3 risk register | `domains/web3` | `templates/web3/risk-register-web3.md` |
 | Chain config | `domains/web3` | `templates/web3/chain-config.md` |
 | Contract registry | `domains/web3` (optional) | `templates/web3/contract-registry.md` |
 | Token strategy | `domains/web3` (optional) | `templates/web3/token-strategy.md` |
@@ -154,4 +201,4 @@ Templates that share a category directory keep the subdirectory structure intact
 | Placeholder validator | `platform/validators/validate-placeholders.sh` |
 | Bootstrap quickstart | `platform/workflow/bootstrap-quickstart.md` |
 | Discovery workflow | `platform/workflow/discovery-to-composition.md` |
-| SUMMARY.md | `platform/SUMMARY.md` |
+| SUMMARY.md | `SUMMARY.md` (repository root) |

@@ -1,4 +1,4 @@
-# [[PROJECT_NAME]]
+# [[PROJECT_NAME]] — Project GitBook Stub
 
 > **How to use this template:**
 > Replace `[[PROJECT_NAME]]` with your project name. Remove sections that don't apply.

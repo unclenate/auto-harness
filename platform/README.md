@@ -1,25 +1,39 @@
-# Development Harness
+# Platform Overview
 
-A modular governance framework for AI-assisted software development.
+The `platform/` directory is the source of truth for the Development Harness framework.
+Everything that defines the governance contract — modules, validators, templates, skills,
+workflows — lives here.
 
-**Version:** Alpha (April 2026)
-**Audience:** Developers, tech leads, and AI agents working with governed codebases
-**License:** Apache-2.0
+**Version:** Beta (April 2026)
+
+> **Docs changelog:** Beta documentation adds a [glossary](reference/glossary.md) of
+> shared terminology, a [how-to-read guide](reference/how-to-read.md) with reader paths
+> by intent and an authority stack, a [topic index](reference/index.md), restructured
+> GitBook navigation with semantic grouping, folder-level READMEs for
+> [compositions](compositions/README.md) and [examples](examples/README.md), and
+> `.gitbookignore` exclusion of test fixtures.
+
+For the full introduction to the harness — what it does, trust tiers, module system,
+companion rules, templates, and getting started — see the
+[top-level README](../README.md).
 
 ---
 
-## What Is This?
+## Directory Structure
 
-The development harness gives AI coding agents (Claude Code, Cursor, GitHub Copilot, and
-others) a structured operating contract. It defines what agents can do, what artifacts must
-exist, when human review is required, and what documentation must accompany every
-significant change.
-
-You declare which modules are active in a `harness.manifest.yaml`. The harness provides
-trust tiers, companion rules, artifact requirements, sensitive path governance, and a
-validator chain that enforces all of the above locally and in CI.
-
-For the full introduction, see the [top-level README](../README.md).
+```text
+platform/
+├── core/           # Kernel doctrine, trust model, lifecycle controls, schemas
+├── profiles/       # Stack, architecture, data, delivery, management, domain overlays
+├── agents/         # AI-tool operating packs: base, claude-code, generic-llm
+├── skills/         # Agent Skills: harness-governance, harness-testing, harness-web3, harness-onboarding
+├── templates/      # Artifact skeletons — see templates/README.md for placeholder reference
+├── validators/     # Validator scripts, shared Ruby library, test suite, fixtures
+├── compositions/   # Starter manifests for common project types
+├── examples/       # Sample project with all artifacts filled in
+├── reference/      # Glossary, how-to-read guide, topic index
+└── workflow/       # Guides: bootstrap, discovery, brownfield, CI, troubleshooting
+```
 
 ---
 
@@ -40,39 +54,13 @@ For the full introduction, see the [top-level README](../README.md).
 
 ---
 
-## How to Read This Documentation
+## Key Reference Pages
 
-This platform is organized as a GitBook. The full table of contents is in
-[SUMMARY.md](SUMMARY.md).
-
-**Recommended reading order for new users:**
-
-1. This page (you're here)
-2. [Bootstrap Quickstart](workflow/bootstrap-quickstart.md) or [Brownfield Onboarding](workflow/brownfield-onboarding.md) depending on your situation
-3. [Trust Model](core/kernel/base/trust-model.md) — the six tiers that govern agent behavior
-4. [Doctrine](core/kernel/base/doctrine.md) — the design principles behind the harness
-5. [Skills and Agents](workflow/skills-and-agents.md) — how the harness integrates with AI tools
-6. [Validators Overview](validators/README.md) — the enforcement chain
-
-For projects using the harness that want GitBook navigation for their own docs, activate
-the `domains/gitbook` module.
-
----
-
-## Platform Structure
-
-```text
-platform/
-├── core/           # Kernel doctrine, trust model, lifecycle controls, schemas
-├── profiles/       # Stack, architecture, data, delivery, management, domain overlays
-├── agents/         # AI-tool operating packs: base, claude-code, generic-llm
-├── skills/         # Agent Skills: harness-governance, harness-testing, harness-web3, harness-onboarding
-├── templates/      # Artifact skeletons — see templates/README.md for placeholder reference
-├── validators/     # Validator scripts, shared Ruby library, test suite, fixtures
-├── compositions/   # Starter manifests for common project types
-├── examples/       # Sample project with all artifacts filled in
-└── workflow/       # Guides: bootstrap, discovery, brownfield, CI, troubleshooting
-```
+- [Glossary](reference/glossary.md) — shared terminology for the harness
+- [How to Use This Documentation](reference/how-to-read.md) — reader paths by intent, authority stack
+- [Topic Index](reference/index.md) — find any concept across the docs
+- [Module Types](core/registry/module-types.md) — the eight families and field reference
+- [Templates Reference](templates/README.md) — all templates, placeholder convention, naming rules
 
 ---
 

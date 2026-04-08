@@ -298,14 +298,16 @@ are the only runtime requirements.
 
 ```text
 ./
-├── README.md                        # This file — repo front door
+├── README.md                        # This file — repo and GitBook front door
+├── SUMMARY.md                       # GitBook table of contents
+├── .gitbook.yaml                    # GitBook configuration
 ├── harness.manifest.yaml            # Meta-manifest (governs the harness itself)
 ├── platform/                        # Source of truth for the harness framework
 │   ├── core/                        # Kernel doctrine, trust model, schemas, registry
 │   │   └── kernel/base/             # trust-model.md, doctrine.md, lifecycle-controls.md
 │   ├── profiles/                    # All module definitions
 │   │   ├── stacks/                  # node-typescript, python
-│   │   ├── architectures/          # web-app, api-service, event-driven
+│   │   ├── architectures/           # web-app, api-service, event-driven
 │   │   ├── data/                    # relational-postgres, document-store, object-storage
 │   │   ├── delivery/                # prototype, production-saas, internal-platform
 │   │   ├── management/              # discovery-intake, product-lite, project-standard, program-lite, testing-standard
@@ -316,9 +318,9 @@ are the only runtime requirements.
 │   ├── validators/                  # validate-*.sh scripts, Ruby library, test suite
 │   ├── compositions/                # Starter manifests for common project types
 │   ├── examples/                    # Sample project with all artifacts filled in
+│   ├── reference/                   # Glossary, how-to-read guide, topic index
 │   ├── workflow/                    # Guides: bootstrap, discovery, brownfield, CI, troubleshooting
-│   ├── SUMMARY.md                   # Full GitBook table of contents
-│   └── README.md                    # Platform front door
+│   └── README.md                    # Platform overview
 └── legacy/                          # Archived historical files
 ```
 
@@ -383,11 +385,29 @@ These principles are from the kernel doctrine and apply across all modules:
 
 ---
 
+## Contributing
+
+This repository has two README files with distinct roles:
+
+- **Root `README.md`** (this file) — the repository and GitBook front door. Comprehensive
+  overview for someone discovering the project for the first time.
+- **`platform/README.md`** — the platform overview. Focused on the `platform/` directory
+  structure, operating model, and quick links to key reference pages.
+
+If you update the opening blurb or feature list in one, check whether the other needs a
+corresponding update. They should complement each other, not duplicate.
+
+For shared terminology, see the [Glossary](platform/reference/glossary.md).
+
+---
+
 ## Reference
 
 | Resource | Path |
 | -------- | ---- |
-| Platform table of contents | [`platform/SUMMARY.md`](platform/SUMMARY.md) |
+| Table of contents | [`SUMMARY.md`](SUMMARY.md) |
+| Glossary | [`platform/reference/glossary.md`](platform/reference/glossary.md) |
+| How to read the docs | [`platform/reference/how-to-read.md`](platform/reference/how-to-read.md) |
 | Bootstrap quickstart | [`platform/workflow/bootstrap-quickstart.md`](platform/workflow/bootstrap-quickstart.md) |
 | Discovery workflow | [`platform/workflow/discovery-to-composition.md`](platform/workflow/discovery-to-composition.md) |
 | All templates | [`platform/templates/`](platform/templates/) |

@@ -1,0 +1,17 @@
+# GitBook syncs the entire repo root. Exclude content that is not documentation.
+
+# Validator test fixtures — test data, not documentation
+platform/validators/test/fixtures/**
+
+# Legacy archived files
+legacy/**
+
+# Git and editor artifacts
+.git/**
+.DS_Store
+.claude/**
+
+# Self-governance project artifacts (canonical but not part of the platform book)
+# These are the harness's own governance docs, not the framework documentation.
+# Uncomment the next line if these cause noise in the GitBook:
+# docs/**

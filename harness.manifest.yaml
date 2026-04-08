@@ -16,11 +16,8 @@ modules:
     - internal-platform
   management:
     - project-standard
+    - product-lite
   agents:
     - base
     - generic-llm
-overrides:
-  requiredArtifacts: []
-  disabledValidations:
-    - required-artifacts
-    - agent-pack
+overrides: {}

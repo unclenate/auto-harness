@@ -38,8 +38,8 @@ deployed by others, use the "Analyzed Contracts" section below and leave this em
 |----------|------|-------|
 | [[function name]] | [[description of risk]] | [[e.g., owner-only, can drain, can pause]] |
 
-**Deployment ADR:** [ADR-XXXX](../adr/ADR-XXXX-contract-deployment.md)
-*(Create from `platform/templates/web3/adr-web3.md` or `platform/templates/adr.md`)*
+**Deployment ADR:** `docs/adr/ADR-XXXX-contract-deployment.md`
+*(Create from [`adr-web3.md`](./adr-web3.md) or [`adr.md`](../adr.md); the `docs/adr/…` path is project-local.)*
 
 ---
 

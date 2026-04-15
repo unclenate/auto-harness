@@ -20,4 +20,5 @@ modules:
   agents:
     - base
     - generic-llm
+    - openclaw
 overrides: {}

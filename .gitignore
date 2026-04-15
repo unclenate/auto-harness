@@ -1,2 +1,5 @@
 .DS_Store
 legacy/Docs.pdf
+
+# Claude Code runtime state (session lock files, scheduled task state)
+.claude/

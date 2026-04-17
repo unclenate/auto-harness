@@ -81,6 +81,20 @@ Date placeholders (`YYYY-MM-DD`) are also treated as unfilled by the placeholder
 | `[[REQUIREMENT]]` | PRD template | Specific functional requirement description |
 | `[[FINDING_DESCRIPTION]]` | Revision tracker | One-line description of the finding |
 | `[[AFFECTED_DOCS]]` | Revision tracker | Documents affected by the finding |
+| `[[OBSERVATION_STRUCTURE]]` | Knowledge README | Foundational choice: `Structured Template`, `Freeform prose`, or `Severity-prefixed findings` |
+| `[[LOCKING_ADR]]` | Knowledge README | The ADR number that locks the observation structure choice (e.g., `ADR-0015`) |
+| `[[WRITE_POLICY]]` | Knowledge README, distilled learnings | Current write policy: `autonomous`, `heartbeat-only`, or `draft-to-promote` |
+| `[[WRITE_POLICY_RATIONALE]]` | Knowledge README | Why the project is in the current write policy mode |
+| `[[DRAFT_CADENCE]]` | Knowledge README | How often agents draft distilled learnings (e.g., `weekly`) |
+| `[[REVIEW_CADENCE]]` | Knowledge README | How often the team reviews drafts (e.g., `biweekly`) |
+| `[[FIRST_OBSERVATION_TITLE]]` | Shared observations | Title of the seed observation (in the initial template) |
+| `[[CONTEXT]]` | Shared observations | What situation prompted the observation |
+| `[[OBSERVATION]]` | Shared observations | What was noticed, specific and factual |
+| `[[IMPLICATION]]` | Shared observations | What this observation suggests for the project or harness |
+| `[[CONFIDENCE]]` | Shared observations | `low`, `medium`, or `high` |
+| `[[SEVERITY]]` | Shared observations | `informational`, `governance-relevant`, `architectural`, or `risk-bearing` |
+| `[[CONTRIBUTOR]]` | Shared observations | Agent name or `@handle` |
+| `[[OBSERVATION_COUNT]]` | Distilled learnings | Count of observations since last review |
 | `[[REVIEWER]]` | Review log | Name/handle of the reviewer (e.g., `@unclenate`) |
 | `[[REVIEW_SUBJECT]]` | Review log | What was reviewed (e.g., `ADR-0007`, `docs/product/requirements.md §3`) |
 | `[[REVIEW_CONTEXT]]` | Review log | Why the review happened (e.g., `Tier 3 commit gate`, `ADR status change`) |
@@ -171,6 +185,14 @@ Jump to: [Discovery](#discovery) | [Product](#product) | [Project](#project) |
 | Dependency log | `management/project-standard` | `templates/project/dependency-log.md` |
 | Revision tracker | `management/project-standard` | `templates/project/revision-tracker.md` |
 | Review log | `management/project-standard` (optional) | `templates/project/review-log.md` |
+
+### Knowledge
+
+| Template | Required By Module | Path |
+| -------- | ------------------ | ---- |
+| Knowledge README | `management/knowledge-capture` | `templates/knowledge/README.md` |
+| Shared observations | `management/knowledge-capture` | `templates/knowledge/shared-observations.md` |
+| Distilled learnings | `management/knowledge-capture` | `templates/knowledge/distilled-learnings.md` |
 
 ### Program
 

@@ -80,6 +80,7 @@ Product, project, and program governance overlays.
 * [Project Standard](platform/profiles/management/project-standard/README.md)
 * [Program Lite](platform/profiles/management/program-lite/README.md)
 * [Testing Standard](platform/profiles/management/testing-standard/README.md)
+* [Knowledge Capture](platform/profiles/management/knowledge-capture/README.md)
 
 ### Domains
 
@@ -207,6 +208,12 @@ A complete sample project with all governance artifacts filled in.
 * [Dependency Log](platform/templates/project/dependency-log.md)
 * [Revision Tracker](platform/templates/project/revision-tracker.md)
 * [Review Log](platform/templates/project/review-log.md)
+
+### Knowledge
+
+* [Knowledge README](platform/templates/knowledge/README.md)
+* [Shared Observations](platform/templates/knowledge/shared-observations.md)
+* [Distilled Learnings](platform/templates/knowledge/distilled-learnings.md)
 
 ### Program
 

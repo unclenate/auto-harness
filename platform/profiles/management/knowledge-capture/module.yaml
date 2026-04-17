@@ -1,0 +1,52 @@
+id: knowledge-capture
+type: management
+version: 1.0.0
+summary: "Shared knowledge capture module. Provides docs/knowledge/ as a durable, reviewable, project-level surface where agent and human observations accumulate and are distilled into longitudinal institutional knowledge."
+dependsOn:
+  - kernel/base
+  - project-standard
+conflictsWith: []
+requiredArtifacts:
+  - docs/knowledge/README.md
+  - docs/knowledge/shared-observations.md
+  - docs/knowledge/distilled-learnings.md
+optionalArtifacts: []
+sensitivePaths:
+  - description: "Knowledge capture policies — the foundational Observation Structure choice, write policy, cadences, and escalation table"
+    patterns:
+      - "^docs/knowledge/README\\.md$"
+  - description: "Curated institutional knowledge — distillation edits require team review"
+    patterns:
+      - "^docs/knowledge/distilled-learnings\\.md$"
+companionRules:
+  - description: "Shared observation additions must be accompanied by a pointer in that day's daily memory log. Establishes the audit trail floor for all observations regardless of severity. Higher-severity observations ALSO trigger additional companion rules declared by other modules (revision tracker, ADR, risk register) via the escalation table in the project's knowledge README."
+    triggerPaths:
+      - "^docs/knowledge/shared-observations\\.md$"
+    requiredAny:
+      - "^memory/\\d{4}-\\d{2}-\\d{2}\\.md$"
+      - "^docs/project/change-log\\.md$"
+    humanReview: "Reviewers verify the observation has an audit trail entry and that severity-driven escalations (if any) have been applied per the knowledge README's escalation table."
+  - description: "Changes to the foundational Observation Structure choice require an ADR. This is the governance floor for any change to how knowledge is captured project-wide."
+    triggerPaths:
+      - "^docs/knowledge/README\\.md$"
+    requiredAny:
+      - "^docs/adr/ADR-"
+    humanReview: "Reviewers verify the ADR explicitly addresses the structural change (not merely a tangential README update)."
+  - description: "Distillation edits must reference a review session date. Curation of learnings is a team activity; untraced edits undermine the longitudinal record."
+    triggerPaths:
+      - "^docs/knowledge/distilled-learnings\\.md$"
+    requiredAny:
+      - "^memory/\\d{4}-\\d{2}-\\d{2}\\.md$"
+      - "^docs/project/review-log\\.md$"
+    humanReview: "Reviewers verify the distillation edit reflects a genuine team review and captures supersession history rather than silently overwriting."
+validators:
+  - validate-required-artifacts
+  - validate-companions
+reviewGates:
+  - "The foundational Observation Structure choice is a one-way decision in practice. Reviewers treat ADRs changing it with extra scrutiny."
+  - "Distilled learnings should cite the observations that produced them. Unsourced assertions are not institutional knowledge — they're opinions."
+  - "Write Policy changes are adjustable but should be accompanied by a rationale for why the signal/noise balance needs adjusting."
+agentAdapters:
+  - platform/agents/base
+compiledFragments:
+  - platform/profiles/management/knowledge-capture/README.md

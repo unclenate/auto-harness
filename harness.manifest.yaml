@@ -17,6 +17,7 @@ modules:
   management:
     - project-standard
     - product-lite
+    - knowledge-capture
   agents:
     - base
     - generic-llm

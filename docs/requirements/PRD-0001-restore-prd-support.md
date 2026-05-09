@@ -1,9 +1,18 @@
 # PRD-0001: Restore PRD Support as First-Class Governance Record
 
+**Version:** 1.0 | **Owner:** @unclenate | **Last Updated:** 2026-05-09 | **Review Cycle:** On-change
+
 **Status:** Accepted
 **Date:** 2026-04-07
 **Author:** @unclenate
 **Reviewers:** @unclenate
+
+## Cross-references
+
+- Related ADRs: ADR-0001 (Modular governance architecture)
+- KPI definitions: `docs/standards/kpi-dictionary.md` *(no inline KPIs in this PRD)*
+- Architecture context: `docs/architecture/overview.md`
+- Other: `legacy/project-specific/CentralCityApp.Development.Harness.txt` (legacy PRD format), `platform/profiles/management/product-lite/README.md` § Connecting to PRDs
 
 ## Overview
 
@@ -12,6 +21,20 @@ records created alongside ADRs to capture product decisions during development. 
 modular redesign collapsed this into "update requirements.md and log in change-log.md,"
 losing the longitudinal institutional memory for product choices. This PRD restores
 the PRD process as a first-class governance record type.
+
+## Goals & Non-Goals
+
+**Goals** — outcomes this PRD commits to delivering:
+
+- Re-establish PRDs as a first-class governance record type alongside ADRs.
+- Ensure PRDs are accepted by the existing companion-rule infrastructure across product-facing modules without introducing a new validator surface.
+- Provide a structured PRD template that preserves the institutional memory pattern from the legacy monolithic harness.
+
+**Non-Goals** — outcomes explicitly out of scope:
+
+- Building a PRD-specific content validator — *(presence is sufficient at current scale; content quality stays a human review gate).*
+- Automating PRD numbering — *(manual PRD-NNNN remains adequate until a project accumulates 50+ PRDs).*
+- Web3 module PRD support — *(web3's companion rules guard architecture and security boundaries, not product decisions).*
 
 ## Target Audience
 
@@ -49,6 +72,22 @@ the PRD process as a first-class governance record type.
 - Must use existing companion rule infrastructure (no new validator needed)
 - Must follow the same `requiredAny` pattern as ADRs
 - Web3 module excluded — its companion rules guard architecture/security boundaries
+
+## Tech Stack
+
+*N/A — governance PRD, not a build spec.*
+
+## API & Data Contracts
+
+*N/A — governance PRD, no API surface or data shape changes.*
+
+## UI/UX Notes
+
+*N/A — governance PRD, no user-facing surface.*
+
+## CI/CD Gates
+
+*N/A — additions are markdown templates and companion-rule entries; existing validator chain (`validate-required-artifacts.sh`, `validate-companions.sh`) covers them without new gates.*
 
 ## Success Metrics
 

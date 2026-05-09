@@ -166,6 +166,23 @@ the change, and log in `change-log.md`.
 
 The PRD template is at `platform/templates/product/prd.md`.
 
+**Two flavors of PRD, one template.** The template carries a governance core
+(Cross-references, Goals & Non-Goals, FRs, Success Metrics) plus four
+*optional* execution-spec sections — **Tech Stack, API & Data Contracts,
+UI/UX Notes, CI/CD Gates** — borrowed from hackathon-style PRD frameworks.
+
+- **Governance PRDs** (the historical default — scope pivots, monetization
+  decisions, etc.) leave the four optional sections marked
+  *N/A — governance PRD, not a build spec* (see PRD-0001 for the pattern).
+- **Execution-spec PRDs** (driving an AI-agent build of a discrete feature)
+  fill the optional sections concretely: which stack is decided, which
+  endpoints exist, which empty/loading/error states must be handled, which
+  CI/CD gates the implementation must clear.
+
+When in doubt, default to governance flavor. Build PRDs are appropriate when
+a single agent will execute the work end-to-end and ambiguity in any of those
+four areas would cause drift.
+
 ---
 
 ## Calibrating Depth by Stage

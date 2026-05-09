@@ -79,6 +79,36 @@ Date placeholders (`YYYY-MM-DD`) are also treated as unfilled by the placeholder
 | `[[RELATED_ADR]]` | PRD template | ADR numbers this PRD depends on or extends |
 | `[[REVIEW_CYCLE]]` | PRD template, standards docs | Review cadence (e.g., `Quarterly`, `Semi-annually`, `Annually`) |
 | `[[REQUIREMENT]]` | PRD template | Specific functional requirement description |
+| `[[GOAL_1]]` | PRD template (Goals & Non-Goals) | Outcome the PRD commits to delivering |
+| `[[NON_GOAL_1]]` | PRD template (Goals & Non-Goals) | Outcome explicitly out of scope, with reason |
+| `[[STACK_LANGUAGE]]` | PRD template (Tech Stack) | Decided language / runtime |
+| `[[STACK_FRAMEWORK]]` | PRD template (Tech Stack) | Decided framework |
+| `[[STACK_DATA_STORE]]` | PRD template (Tech Stack) | Decided data store |
+| `[[STACK_HOSTING]]` | PRD template (Tech Stack) | Decided hosting / deploy target |
+| `[[STACK_AUTH]]` | PRD template (Tech Stack) | Decided auth provider or strategy |
+| `[[STACK_OTHER]]` | PRD template (Tech Stack) | Other infra (queue, cache, observability, etc.) |
+| `[[API_METHOD]]` | PRD template (API & Data) | HTTP method |
+| `[[API_PATH]]` | PRD template (API & Data) | Endpoint path |
+| `[[API_AUTH]]` | PRD template (API & Data) | Auth requirement for the endpoint |
+| `[[API_REQUEST]]` | PRD template (API & Data) | Request body shape |
+| `[[API_RESPONSE]]` | PRD template (API & Data) | Response body shape |
+| `[[DATA_ENTITY]]` | PRD template (API & Data) | Primary data entity name |
+| `[[DATA_SCHEMA_LINK]]` | PRD template (API & Data) | Link to authoritative schema (OpenAPI, Prisma, SQL, Pydantic) |
+| `[[VIEW_NAME]]` | PRD template (UI/UX) | Major view name |
+| `[[VIEW_LAYOUT_DESCRIPTION]]` | PRD template (UI/UX) | One-paragraph layout description |
+| `[[UI_EMPTY_STATE]]` | PRD template (UI/UX) | Empty-state behavior |
+| `[[UI_LOADING_STATE]]` | PRD template (UI/UX) | Loading-state behavior |
+| `[[UI_ERROR_STATE]]` | PRD template (UI/UX) | Error-state behavior |
+| `[[UI_SUCCESS_STATE]]` | PRD template (UI/UX) | Success / completion-state behavior |
+| `[[UI_WCAG_TARGET]]` | PRD template (UI/UX) | Accessibility target (e.g., `WCAG 2.1 AA`) |
+| `[[UI_BREAKPOINTS]]` | PRD template (UI/UX) | Breakpoints / device support |
+| `[[GATE_LINT]]` | PRD template (CI/CD Gates) | Yes/No — lint required |
+| `[[GATE_TYPECHECK]]` | PRD template (CI/CD Gates) | Yes/No — type-check required |
+| `[[GATE_COVERAGE]]` | PRD template (CI/CD Gates) | Coverage threshold (e.g., `≥80%`) |
+| `[[GATE_TESTS]]` | PRD template (CI/CD Gates) | Yes/No — required tests added |
+| `[[GATE_VALIDATORS]]` | PRD template (CI/CD Gates) | Yes/No — validator chain passes |
+| `[[GATE_COMPANIONS]]` | PRD template (CI/CD Gates) | Yes/No — companion-rule check passes |
+| `[[GATE_CHANGELOG]]` | PRD template (CI/CD Gates) | Yes/No — change log updated |
 | `[[FINDING_DESCRIPTION]]` | Revision tracker | One-line description of the finding |
 | `[[AFFECTED_DOCS]]` | Revision tracker | Documents affected by the finding |
 | `[[OBSERVATION_STRUCTURE]]` | Knowledge README | Foundational choice: `Structured Template`, `Freeform prose`, or `Severity-prefixed findings` |

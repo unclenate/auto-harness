@@ -35,6 +35,26 @@
 set -euo pipefail
 
 # ---------------------------------------------------------------------------
+# Bash version preflight. This script uses associative arrays (`declare -A`)
+# at line ~129, which require Bash 4+. macOS ships Bash 3.2 due to GPL-v3
+# licensing, so the default `/bin/bash` will fail with a cryptic
+# `declare: -A: invalid option` — bail early with a helpful message instead.
+# Uses only Bash 3-compatible syntax so the check itself doesn't trigger
+# the very error it's trying to explain.
+# ---------------------------------------------------------------------------
+if [ "${BASH_VERSINFO[0]:-0}" -lt 4 ]; then
+  echo "error: install.sh requires Bash 4+ (you have Bash ${BASH_VERSION:-unknown})." >&2
+  echo "" >&2
+  echo "macOS ships Bash 3.2 due to GPL-v3 licensing. To get a newer one:" >&2
+  echo "  brew install bash" >&2
+  echo "" >&2
+  echo "Then re-run this script through the newer bash:" >&2
+  echo "  /opt/homebrew/bin/bash $0 $*    # Apple Silicon" >&2
+  echo "  /usr/local/bin/bash $0 $*       # Intel Mac" >&2
+  exit 1
+fi
+
+# ---------------------------------------------------------------------------
 # Script root (the auto-harness submodule mount). SCRIPT_DIR/../.. → the mount
 # point, regardless of where the submodule lives in the consumer repo.
 # ---------------------------------------------------------------------------

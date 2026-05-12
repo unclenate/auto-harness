@@ -112,9 +112,9 @@ Date placeholders (`YYYY-MM-DD`) are also treated as unfilled by the placeholder
 | `[[FINDING_DESCRIPTION]]` | Revision tracker | One-line description of the finding |
 | `[[AFFECTED_DOCS]]` | Revision tracker | Documents affected by the finding |
 | `[[OBSERVATION_STRUCTURE]]` | Knowledge README | Foundational choice: `Structured Template`, `Freeform prose`, or `Severity-prefixed findings` |
-| `[[LOCKING_ADR]]` | Knowledge README | The ADR number that locks the observation structure choice (e.g., `ADR-0015`) |
-| `[[WRITE_POLICY]]` | Knowledge README, distilled learnings | Current write policy: `autonomous`, `heartbeat-only`, or `draft-to-promote` |
-| `[[WRITE_POLICY_RATIONALE]]` | Knowledge README | Why the project is in the current write policy mode |
+| `[[LOCKING_ADR]]` | Knowledge & opportunity README templates | The ADR number that locks the foundational structural choice (e.g., `ADR-0015` for observation structure, `ADR-0004` for opportunity record structure) |
+| `[[WRITE_POLICY]]` | Knowledge & opportunity README templates, distilled learnings | Current write policy: `autonomous`, `heartbeat-only`, or `draft-to-promote` |
+| `[[WRITE_POLICY_RATIONALE]]` | Knowledge & opportunity README templates | Why the project is in the current write policy mode |
 | `[[DRAFT_CADENCE]]` | Knowledge README | How often agents draft distilled learnings (e.g., `weekly`) |
 | `[[REVIEW_CADENCE]]` | Knowledge README | How often the team reviews drafts (e.g., `biweekly`) |
 | `[[FIRST_OBSERVATION_TITLE]]` | Shared observations | Title of the seed observation (in the initial template) |
@@ -151,6 +151,13 @@ Date placeholders (`YYYY-MM-DD`) are also treated as unfilled by the placeholder
 | `[[EXIT_CRITERIA]]` | Fallback matrix | When to return to normal mode |
 | `[[FALLBACK_TYPE]]` | Fallback matrix | Which fallback mode was exercised (degraded or manual) |
 | `[[NOTES]]` | Fallback matrix | Issues found during a fallback exercise |
+| `[[OPP_TITLE]]` | Opportunity template | Title of the candidate (e.g., `Exportable governance contract for runtime harnesses`) |
+| `[[OPP_OWNER]]` | Opportunity template | GitHub handle accountable for moving the candidate through its lifecycle |
+| `[[OPP_CONFIDENCE]]` | Opportunity template | `low`, `medium`, or `high` |
+| `[[OPP_THESIS]]` | Opportunity template | One to three sentences: what the opportunity is, in plain language |
+| `[[OPP_ORIGIN_EVIDENCE]]` | Opportunity template | Links to observations, external signals, or a `thesis-only` marker with stated reason |
+| `[[OPP_WHY_NOW]]` | Opportunity template | Timing signal or `n/a` |
+| `[[OPP_RISKS_OPEN_QUESTIONS]]` | Opportunity template | What would have to be true; what could kill it |
 
 ---
 

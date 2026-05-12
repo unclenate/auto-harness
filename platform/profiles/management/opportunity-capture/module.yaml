@@ -1,0 +1,40 @@
+id: opportunity-capture
+type: management
+version: 1.0.0
+summary: "Forward-looking opportunity capture module. Provides docs/opportunities/ as a per-project surface for pre-PRD candidate records — one structured file per candidate (OPP-NNNN-slug.md) with explicit status, evidence-linkage to shared-observations.md, and a binding promotion contract (status=accepted requires a PRD in the same commit)."
+dependsOn:
+  - kernel/base
+  - project-standard
+conflictsWith: []
+requiredArtifacts:
+  - docs/opportunities/README.md
+optionalArtifacts: []
+sensitivePaths:
+  - description: "Opportunity capture policies — the foundational record-structure choice (locked by ADR), Write Policy, status definitions, and companion-rule references"
+    patterns:
+      - "^docs/opportunities/README\\.md$"
+companionRules:
+  - description: "Edits to any opportunity record (OPP-NNNN-slug.md) require an audit-trail entry in the day's daily memory log or the project change-log. Floor rule for all candidate edits. humanReview verifies the substantive checks the regex layer cannot enforce: (a) status changes from `proposed` accompanied by a populated Disposition field with rationale, (b) status flipping to `accepted` accompanied by a PRD created or referenced in the same commit, (c) status flipping to `declined` or `superseded` accompanied by substantive rationale (not just a status-line edit)."
+    triggerPaths:
+      - "^docs/opportunities/OPP-"
+    requiredAny:
+      - "^memory/\\d{4}-\\d{2}-\\d{2}\\.md$"
+      - "^docs/project/change-log\\.md$"
+    humanReview: "Reviewers verify (a) appropriate Disposition rationale when status changed from proposed, (b) `accepted` status accompanied by a PRD created/referenced in the same commit, (c) `declined`/`superseded` status accompanied by substantive rationale rather than just a status-line edit."
+  - description: "Changes to the project-level opportunity-capture policy (docs/opportunities/README.md) require an ADR. This is the governance floor for any structural change to how candidates are captured."
+    triggerPaths:
+      - "^docs/opportunities/README\\.md$"
+    requiredAny:
+      - "^docs/adr/ADR-"
+    humanReview: "Reviewers verify the ADR explicitly addresses the structural change (not merely a tangential README update)."
+validators:
+  - validate-required-artifacts
+  - validate-companions
+reviewGates:
+  - "The foundational record-structure choice is a one-way decision in practice. Reviewers treat ADRs changing it with extra scrutiny."
+  - "Accepted candidates must spawn a real PRD in the same commit. An 'accepted' status without a PRD is a contract violation — block or fix in review."
+  - "The Origin / Evidence field is the gap-closer between forward-looking ideas and backward-looking observations. A `thesis-only` marker without a stated reason undermines the entire module's purpose; reviewers push back."
+agentAdapters:
+  - platform/agents/base
+compiledFragments:
+  - platform/profiles/management/opportunity-capture/README.md

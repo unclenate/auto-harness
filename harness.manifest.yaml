@@ -18,6 +18,7 @@ modules:
     - project-standard
     - product-lite
     - knowledge-capture
+    - opportunity-capture
   agents:
     - base
     - generic-llm

@@ -4,3 +4,6 @@
 platform/**
 legacy/**
 README.md
+# Implementation plans legitimately contain template content showing
+# file bodies to be created — the [[PLACEHOLDER_NAME]] tokens are illustrative.
+docs/superpowers/plans/**

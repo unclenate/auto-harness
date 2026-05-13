@@ -1,7 +1,7 @@
 # Operating Principles — Development Harness Framework
 
 > Owner: @unclenate
-> Last updated: 2026-04-07
+> Last updated: 2026-05-12
 
 These principles govern how the harness platform itself is built and evolved.
 They are derived from the kernel doctrine and adapted to this project's context.
@@ -36,6 +36,7 @@ Documentation is not follow-up work. A change is not complete until its document
 - New modules require README.md and module.yaml in the same commit
 - Template changes require templates/README.md directory map update
 - Workflow changes require SUMMARY.md and cross-reference updates
+- Active-module catalog changes propagate to HARNESS.md, SUMMARY.md, README.md (directory tree), `platform/skills/harness-onboarding/SKILL.md` (module catalog), and `platform/workflow/discovery-to-composition.md` (decision rubric) in the same pass
 
 ---
 

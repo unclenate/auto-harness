@@ -204,6 +204,8 @@ modules. Use it to populate `harness.manifest.yaml`.
 | Other LLM tool? (§7.2) | `agents/generic-llm` |
 | Always include for real products | `management/product-lite` + `management/project-standard` |
 | Discovery phase active (now) | `management/discovery-intake` |
+| Multi-participant project (agents + humans) producing longitudinal observations? | `management/knowledge-capture` |
+| Capturing forward-looking product candidates with a promotion path to PRDs? | `management/opportunity-capture` |
 
 **Starter manifest for a project in discovery** (before stack is chosen):
 

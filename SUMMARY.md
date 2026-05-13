@@ -82,6 +82,7 @@ Product, project, and program governance overlays.
 * [Program Lite](platform/profiles/management/program-lite/README.md)
 * [Testing Standard](platform/profiles/management/testing-standard/README.md)
 * [Knowledge Capture](platform/profiles/management/knowledge-capture/README.md)
+* [Opportunity Capture](platform/profiles/management/opportunity-capture/README.md)
 
 ### Domains
 
@@ -215,6 +216,11 @@ A complete sample project with all governance artifacts filled in.
 * [Knowledge README](platform/templates/knowledge/README.md)
 * [Shared Observations](platform/templates/knowledge/shared-observations.md)
 * [Distilled Learnings](platform/templates/knowledge/distilled-learnings.md)
+
+### Opportunity
+
+* [Opportunity README](platform/templates/opportunity/README.md)
+* [Opportunity Record (OPP-NNNN)](platform/templates/opportunity/opp-template.md)
 
 ### Program
 

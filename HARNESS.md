@@ -17,10 +17,13 @@ module system, validators, and companion rules.
 |--------|--------|---------|
 | Core | `kernel/base` | Governance kernel — doctrine, trust tiers, lifecycle controls |
 | Delivery | `internal-platform` | Internal platform delivery posture |
-| Management | `project-standard` | Scope, milestones, change tracking |
+| Management | `project-standard` | Scope, milestones, change tracking, revision tracker, review log |
 | Management | `product-lite` | Problem framing, requirements, release intent, PRDs |
+| Management | `knowledge-capture` | Append-only shared observations and distilled longitudinal learnings (`docs/knowledge/`) |
+| Management | `opportunity-capture` | Forward-looking pre-PRD candidate records with promotion-to-PRD contract (`docs/opportunities/`) |
 | Agents | `base` | Cross-agent trust tier contract |
 | Agents | `generic-llm` | Neutral adapter for non-Claude AI tooling |
+| Agents | `openclaw` | OpenClaw agent pack (self-dogfood) |
 
 ---
 
@@ -36,6 +39,10 @@ module system, validators, and companion rules.
 | Milestones | `docs/project/milestones.md` |
 | Change log | `docs/project/change-log.md` |
 | Dependency log | `docs/project/dependency-log.md` |
+| Revision tracker | `docs/project/revision-tracker.md` |
+| Shared observations | `docs/knowledge/shared-observations.md` |
+| Distilled learnings | `docs/knowledge/distilled-learnings.md` |
+| Opportunity records | `docs/opportunities/` (policy README + `OPP-NNNN-slug.md` per candidate) |
 | ADRs | `docs/adr/` |
 | PRDs | `docs/requirements/` |
 

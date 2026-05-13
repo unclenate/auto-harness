@@ -231,6 +231,13 @@ Jump to: [Discovery](#discovery) | [Product](#product) | [Project](#project) |
 | Shared observations | `management/knowledge-capture` | `templates/knowledge/shared-observations.md` |
 | Distilled learnings | `management/knowledge-capture` | `templates/knowledge/distilled-learnings.md` |
 
+### Opportunity
+
+| Template | Required By Module | Path |
+| -------- | ------------------ | ---- |
+| Opportunity README | `management/opportunity-capture` | `templates/opportunity/README.md` |
+| Opportunity record (`OPP-NNNN-slug.md`) | `management/opportunity-capture` | `templates/opportunity/opp-template.md` |
+
 ### Program
 
 | Template | Required By Module | Path |

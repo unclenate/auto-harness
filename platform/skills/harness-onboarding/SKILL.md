@@ -461,8 +461,10 @@ No required artifacts for `delivery/prototype` or `delivery/internal-platform`.
 | `management/project-standard` | Active project management, milestones, or scope tracking needed | `docs/project/scope-plan.md`, `docs/project/dependency-log.md`, `docs/project/milestones.md`, `docs/project/change-log.md`, `docs/project/revision-tracker.md` |
 | `management/program-lite` | Multi-team or multi-workstream coordination | `docs/program/workstream-map.md`, `docs/program/stakeholder-report.md`, `docs/program/governance-cadence.md` |
 | `management/testing-standard` | Formal test strategy and enforced coverage thresholds required | `docs/testing/test-strategy.md`, `docs/testing/coverage-thresholds.md` |
+| `management/knowledge-capture` | Multi-participant project (agents + humans) producing longitudinal observations and institutional knowledge worth distilling over time | `docs/knowledge/README.md`, `docs/knowledge/shared-observations.md`, `docs/knowledge/distilled-learnings.md` |
+| `management/opportunity-capture` | Capturing pre-PRD product candidates with explicit status, evidence linkage to observations, and a promotion path to PRDs | `docs/opportunities/README.md` |
 
-Dependency: `management/program-lite` requires `management/project-standard`.
+Dependency: `management/program-lite` requires `management/project-standard`. `management/knowledge-capture` and `management/opportunity-capture` both depend on `management/project-standard`. `management/opportunity-capture` does not require `management/knowledge-capture` to be active, but its Origin / Evidence field is most useful when paired with `shared-observations.md` from `knowledge-capture`.
 
 ---
 

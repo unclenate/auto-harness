@@ -312,7 +312,7 @@ are the only runtime requirements.
 │   │   ├── architectures/           # web-app, api-service, event-driven
 │   │   ├── data/                    # relational-postgres, document-store, object-storage
 │   │   ├── delivery/                # prototype, production-saas, internal-platform
-│   │   ├── management/              # discovery-intake, product-lite, project-standard, program-lite, testing-standard
+│   │   ├── management/              # discovery-intake, product-lite, project-standard, program-lite, testing-standard, knowledge-capture, opportunity-capture
 │   │   └── domains/                 # supabase, web3, media-pipeline, gitbook
 │   ├── agents/                      # Agent operating packs: base, claude-code, generic-llm, openclaw
 │   ├── skills/                      # Agent Skills: harness-governance, harness-testing, harness-web3, harness-onboarding, harness-tools

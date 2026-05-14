@@ -222,8 +222,7 @@ cat platform/examples/sample-projects/node-web-saas-postgres/docs/operating-prin
 
 ## Step 6 — Progressive Compliance Roadmap
 
-Remove `required-artifacts` from `disabledValidations` module by module as each module's
-artifacts are created — not all at once.
+Brownfield adoption is a *phased* compliance ramp, not a single bootstrap event. The high-level phases are:
 
 | Phase | Focus | Validator state |
 | ----- | ----- | --------------- |
@@ -232,9 +231,7 @@ artifacts are created — not all at once.
 | **Phase 3** (week 2–4) | Ops docs (if `delivery/production-saas` active): environment inventory, release checklist, risk register | All validators enabled locally |
 | **Phase 4** (ongoing) | CI wired; `harness-governance` skill installed; all validators green in CI | **Harness Ready** |
 
-To selectively re-enable validation after creating a module's artifacts: remove the
-`required-artifacts` entry from `disabledValidations` in the manifest and run
-`validate-required-artifacts.sh` locally to confirm green before committing.
+The detailed re-enablement walkthrough — how to selectively turn validators back on as each module's artifacts come online, and the long-term discipline of treating `disabledValidations` as visible technical debt — lives in **[Maintenance & Operations](maintenance-operations.md#re-enabling-validators-disabled-during-adoption)**. Follow this guide for adoption-phase orientation; follow the maintenance guide for the per-validator re-enablement procedure.
 
 ### Using templates for missing artifacts
 

@@ -149,20 +149,7 @@ This is intentional: companion checks enforce PR hygiene, not post-merge state.
 
 ## Disabling Validators Per-Manifest
 
-If a validator is not appropriate for a project's current stage (e.g., `required-artifacts`
-during early discovery), disable it in `harness.manifest.yaml`:
-
-```yaml
-overrides:
-  disabledValidations:
-    - required-artifacts
-    - companions
-```
-
-The validator script exits 0 cleanly when disabled. Remove the override when the project matures.
-
-See `platform/compositions/new-product-discovery.yaml` for an example discovery-phase manifest
-that disables `required-artifacts`.
+Disabling validators during early discovery or brownfield adoption — and the discipline of re-enabling them as artifacts are created — is covered in **[Maintenance & Operations](maintenance-operations.md#re-enabling-validators-disabled-during-adoption)**. The short form: add the validator id to `overrides.disabledValidations` in `harness.manifest.yaml`; remove the entry once the relevant artifacts exist. See `platform/compositions/new-product-discovery.yaml` for a discovery-phase example that disables `required-artifacts`.
 
 ---
 

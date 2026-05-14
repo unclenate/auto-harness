@@ -120,30 +120,7 @@ The `install.sh` bootstrap and all generated artifacts reference `$HARNESS_SUBMO
 
 ## Upgrade flow
 
-To pull in upstream improvements:
-
-```bash
-git submodule update --remote .harness
-```
-
-Review the diff with `git diff HEAD -- .harness` (shows the new submodule commit SHA).
-
-If the upstream change touched skills or compositions you use, the changes are now live — no re-bootstrap needed, because your consumer references `platform/` via symlinks.
-
-If the upstream change touched something that affects your generated files (e.g., a new required artifact), re-running `install.sh` surfaces it:
-
-```bash
-bash .harness/platform/bootstrap/install.sh --dry-run
-```
-
-The dry-run summary tells you whether anything needs action. If so, run without `--dry-run` (and `--force` if you want to regenerate harness-style files).
-
-Commit:
-
-```bash
-git add .harness
-git commit -m "chore: update auto-harness submodule"
-```
+Pulling upstream improvements, detecting new required artifacts after an upgrade, version pinning, and rollback are covered in the dedicated **[Maintenance & Operations](maintenance-operations.md)** guide. The short form for first-time readers: `git submodule update --remote .harness` pulls upstream changes; review the diff and commit. See the maintenance guide for the full upgrade workflow.
 
 ## Brownfield integration (existing repo with other platforms)
 
@@ -175,23 +152,7 @@ Your existing content outside the markers is preserved verbatim. If the file did
 
 ## Troubleshooting
 
-### "harness skills dir not found"
-
-`link-skills.sh` reports this if `.harness/platform/skills/` doesn't exist. Usually means the submodule is registered but not initialized:
-
-```bash
-git submodule update --init --recursive
-```
-
-### Symlinks not working on Windows
-
-Git on Windows doesn't create symlinks by default. One-time fix:
-
-```bash
-git config --global core.symlinks true
-```
-
-Then re-clone your repo or run `git submodule update --force`.
+Submodule-related operational issues — broken symlinks, "harness skills dir not found", Windows symlink configuration, recovering from drift, post-update re-initialization — are documented in **[Maintenance & Operations](maintenance-operations.md)**. The items below are setup-time symptoms specific to first-time integration.
 
 ### `[CONFLICT] .agents/skills/<name> is a directory`
 

@@ -1,0 +1,72 @@
+# Copyright 2026 Nate DiNiro <nate@bdits.io>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+name: Feature Request
+description: Propose a new module, validator, workflow, skill, template, or improvement.
+title: "[Feature]: "
+labels: ["enhancement", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for proposing a change. The most useful feature requests describe the *problem* before the *solution* — that lets us evaluate alternatives before locking in an approach.
+
+        If you have a more open-ended idea that isn't fully formed yet, consider opening an **Observation** issue instead — the harness has a dedicated knowledge-capture surface for pre-feature candidates.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem are you trying to solve?
+      description: Describe the situation you ran into, not the solution. Be specific about who hits this and how often.
+      placeholder: "When a consumer project pulls a new harness version, there is no clear way to..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed approach
+      description: Your best current idea for how to solve the problem. It is okay to leave this rough or list multiple options.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: What kind of change is this?
+      options:
+        - New module
+        - New validator
+        - Existing validator improvement
+        - New workflow document or guide
+        - Existing workflow improvement
+        - New skill or skill improvement
+        - New template
+        - Documentation reorganization
+        - Bootstrap or installer change
+        - Other (explain below)
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: What other approaches did you think about, and why did you set them aside? This is the section reviewers find most valuable.
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope and impact
+      description: Which files, modules, or workflows would change? Is this an additive change or does it modify existing behavior?
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Contribution intent
+      options:
+        - label: I am willing to open a pull request to implement this change.
+          required: false
+        - label: I have read CONTRIBUTING.md and understand the companion-rule discipline.
+          required: false
+        - label: I searched existing issues and did not find a duplicate.
+          required: true

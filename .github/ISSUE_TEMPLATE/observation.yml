@@ -1,0 +1,80 @@
+# Copyright 2026 Nate DiNiro <nate@bdits.io>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+name: Structured Observation
+description: Share a field observation about how the harness behaved in a real project — feeds the knowledge-capture flow.
+title: "[Observation]: "
+labels: ["observation", "knowledge-capture"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Observations are field notes — concrete things you noticed while *using* the harness in a real project. They are different from bug reports (which are reproducible failures) and feature requests (which are proposed changes).
+
+        Strong observations describe what happened, the context, and what you took away from it. They feed the harness's own `docs/knowledge/shared-observations.md` surface, and can be promoted into PRDs, ADRs, or opportunity records over time.
+
+        See the [knowledge-capture module](../../platform/profiles/management/knowledge-capture/README.md) for the broader context.
+
+  - type: input
+    id: date
+    attributes:
+      label: Date observed
+      placeholder: "2026-05-13"
+    validations:
+      required: true
+
+  - type: textarea
+    id: observation
+    attributes:
+      label: What did you notice?
+      description: Describe the thing you observed. Be concrete about what you saw, not what you concluded from it (the takeaway goes below).
+      placeholder: "While onboarding a brownfield Python repo, the bootstrap installer..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Which project type, which modules were active, which skills loaded, what was the operator trying to do?
+
+  - type: dropdown
+    id: orientation
+    attributes:
+      label: Forward or backward looking?
+      description: |
+        - **Backward-looking** observations describe what *happened* (lesson learned, pattern noticed).
+        - **Forward-looking** observations identify a *future opportunity* or candidate change.
+      options:
+        - Backward-looking (lesson learned)
+        - Forward-looking (opportunity candidate)
+        - Both — describe below
+    validations:
+      required: true
+
+  - type: dropdown
+    id: confidence
+    attributes:
+      label: Confidence
+      description: How sure are you that this observation is real and generalizable?
+      options:
+        - Low (one-off; might not repeat)
+        - Medium (seen a couple of times; pattern is plausible)
+        - High (seen repeatedly; pattern is robust)
+    validations:
+      required: true
+
+  - type: textarea
+    id: takeaway
+    attributes:
+      label: Takeaway or candidate next step
+      description: What did you take away? If forward-looking, what change might be worth exploring?
+
+  - type: checkboxes
+    id: pre-flight
+    attributes:
+      label: Pre-flight checks
+      options:
+        - label: I searched existing observations and opportunity records to avoid duplicates.
+          required: true
+        - label: This is a field observation, not a bug report or fully-formed feature proposal. (Use those templates if applicable.)
+          required: true

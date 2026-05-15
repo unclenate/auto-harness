@@ -1,3 +1,9 @@
+<!--
+Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+SPDX-License-Identifier: MIT OR Apache-2.0
+Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
+-->
+
 # Web3 Discovery Intake — Supplement
 
 **Use with:** `platform/templates/discovery/intake-questionnaire.md` Section 8 (Technical Context)

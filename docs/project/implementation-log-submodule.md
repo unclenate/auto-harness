@@ -1,3 +1,9 @@
+<!--
+Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+SPDX-License-Identifier: MIT OR Apache-2.0
+Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
+-->
+
 # Implementation Log: Auto-Harness Submodule Integration
 
 This log records the step-by-step journey of implementing the submodule-integration work scoped by [ADR-0003](../adr/ADR-0003-submodule-integration.md). It is **not** a summary written after the fact; it is a running log updated as each step is completed, capturing surprises, deviations from the plan, decisions made in-flight, and context that would otherwise be lost.

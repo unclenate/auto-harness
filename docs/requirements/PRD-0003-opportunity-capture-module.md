@@ -1,3 +1,9 @@
+<!--
+Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+SPDX-License-Identifier: MIT OR Apache-2.0
+Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
+-->
+
 # PRD-0003: Opportunity Capture — Forward-Looking Candidate Module
 
 **Version:** 1.0 | **Owner:** @unclenate | **Last Updated:** 2026-05-12 | **Review Cycle:** On-change

@@ -1,5 +1,5 @@
 <!--
-Copyright 2026 Nate DiNiro <nate@bdits.io>
+Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
 SPDX-License-Identifier: MIT OR Apache-2.0
 Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 -->
@@ -24,7 +24,7 @@ This Code of Conduct applies in all project spaces — including issues, pull re
 
 If you experience or witness conduct that does not align with the standards described in the Contributor Covenant v2.1, please report it privately:
 
-**Contact:** Nate DiNiro — nate@bdits.io
+**Contact:** Nate DiNiro — UncleNate@gmail.com
 
 When sending a report, please include:
 

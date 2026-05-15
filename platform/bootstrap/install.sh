@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+# Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 # install.sh — bootstrap a consumer repo after adding auto-harness as a git
 # submodule. Brownfield-safe: never clobbers pre-existing files from other AI
 # platforms (Cursor, Windsurf, Copilot, Codex, OpenClaw, Hermes, …) and

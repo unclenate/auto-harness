@@ -1,3 +1,9 @@
+<!--
+Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+SPDX-License-Identifier: MIT OR Apache-2.0
+Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
+-->
+
 # Management Overlay: Opportunity Capture
 
 This overlay adds a durable, reviewable, project-level surface for forward-looking

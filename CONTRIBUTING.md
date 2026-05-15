@@ -1,5 +1,5 @@
 <!--
-Copyright 2026 Nate DiNiro <nate@bdits.io>
+Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
 SPDX-License-Identifier: MIT OR Apache-2.0
 Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 -->
@@ -131,7 +131,7 @@ Do not file public issues for security vulnerabilities. See [SECURITY.md](SECURI
 
 ## Code of Conduct
 
-This project follows the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md). By participating, you agree to abide by its terms. Concerns should be raised privately to nate@bdits.io.
+This project follows the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md). By participating, you agree to abide by its terms. Concerns should be raised privately to UncleNate@gmail.com.
 
 ---
 

@@ -4,6 +4,8 @@
 platform/**
 legacy/**
 README.md
+# CONTRIBUTING.md explains the placeholder convention to outside contributors.
+CONTRIBUTING.md
 # Implementation plans legitimately contain template content showing
 # file bodies to be created — the [[PLACEHOLDER_NAME]] tokens are illustrative.
 docs/superpowers/plans/**

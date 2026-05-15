@@ -1,3 +1,9 @@
+<!--
+Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+SPDX-License-Identifier: MIT OR Apache-2.0
+Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
+-->
+
 # Data Overlay: Object Storage
 
 This overlay is for systems that store blobs, media files, derived artifacts, or large binary

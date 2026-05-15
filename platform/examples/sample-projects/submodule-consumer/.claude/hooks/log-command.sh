@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+# Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 # log-command.sh — Claude Code audit trail hook
 #
 # This hook fires before every tool call Claude Code makes. It writes a

@@ -1,3 +1,9 @@
+<!--
+Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+SPDX-License-Identifier: MIT OR Apache-2.0
+Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
+-->
+
 # `platform/bootstrap/` — consumer-side bootstrap for auto-harness
 
 Two peer tools for integrating auto-harness into a consumer repo that has mounted auto-harness as a git submodule:

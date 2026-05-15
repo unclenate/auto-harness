@@ -1,5 +1,5 @@
 <!--
-Copyright 2026 Nate DiNiro <nate@bdits.io>
+Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
 SPDX-License-Identifier: MIT OR Apache-2.0
 Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 -->
@@ -15,7 +15,7 @@ A modular governance framework for AI-assisted software development. It gives AI
 know what they're allowed to do, what artifacts must exist, when human review is required,
 and what companion documentation must accompany every significant change.
 
-**Maintainer:** Nate DiNiro &middot; <nate@bdits.io>
+**Maintainer:** Nate DiNiro &middot; <UncleNate@gmail.com>
 **Contributing:** see [CONTRIBUTING.md](CONTRIBUTING.md) &middot; **Security:** see [SECURITY.md](SECURITY.md) &middot; **Conduct:** see [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
 
 > **Starting a new project?** Go straight to

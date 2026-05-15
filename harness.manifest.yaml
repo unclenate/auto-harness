@@ -1,3 +1,5 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
 # This manifest describes the harness platform itself — it is a self-governing meta-project.
 # If you are onboarding a project INTO the harness, do not copy this file.
 # Use a starter composition from platform/compositions/ instead.

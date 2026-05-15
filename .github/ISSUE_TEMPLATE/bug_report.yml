@@ -1,4 +1,4 @@
-# Copyright 2026 Nate DiNiro <nate@bdits.io>
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
 # SPDX-License-Identifier: MIT OR Apache-2.0
 name: Bug Report
 description: Report a bug, validator failure, or other unexpected behavior in auto-harness.
@@ -78,5 +78,5 @@ body:
           required: true
         - label: I ran the full validator chain locally and confirmed the failure is reproducible.
           required: false
-        - label: This is not a security issue. (Security issues go to nate@bdits.io per SECURITY.md.)
+        - label: This is not a security issue. (Security issues go to UncleNate@gmail.com per SECURITY.md.)
           required: true

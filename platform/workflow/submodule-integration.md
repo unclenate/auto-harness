@@ -1,3 +1,9 @@
+<!--
+Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+SPDX-License-Identifier: MIT OR Apache-2.0
+Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
+-->
+
 # Integrating auto-harness as a git submodule
 
 This is the canonical guide for adopting auto-harness in a consumer repository by mounting it as a git submodule. It supersedes the copy-based flow in [bootstrap-quickstart.md](bootstrap-quickstart.md) for any consumer that wants upstream improvements to flow in automatically.

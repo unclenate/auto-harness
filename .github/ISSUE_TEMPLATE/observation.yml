@@ -1,4 +1,4 @@
-# Copyright 2026 Nate DiNiro <nate@bdits.io>
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
 # SPDX-License-Identifier: MIT OR Apache-2.0
 name: Structured Observation
 description: Share a field observation about how the harness behaved in a real project — feeds the knowledge-capture flow.

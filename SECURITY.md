@@ -1,5 +1,5 @@
 <!--
-Copyright 2026 Nate DiNiro <nate@bdits.io>
+Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
 SPDX-License-Identifier: MIT OR Apache-2.0
 Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 -->
@@ -20,7 +20,7 @@ auto-harness is currently at **alpha** maturity. Only the `main` branch is activ
 
 **Please do not file public GitHub issues for vulnerabilities.** Public reports give adversaries the same head start as defenders. Instead, contact the project privately.
 
-- **Email:** nate@bdits.io
+- **Email:** UncleNate@gmail.com
 - **Subject prefix:** `[auto-harness security]`
 
 Please include in your report:

@@ -210,7 +210,7 @@ context lean without losing domain expertise when it's needed.
 
 If your team uses OpenClaw as a development participant or part of the solution stack,
 install the relevant ClawHub slugs. Curated directory:
-`https://github.com/unclenate/awesome-openclaw-skills`
+`https://github.com/VoltAgent/awesome-openclaw-skills`
 
 ```bash
 clawhub install <slug>

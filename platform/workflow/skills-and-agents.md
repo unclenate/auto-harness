@@ -172,7 +172,7 @@ OpenClaw is a separate locally-running AI assistant with its own skill registry 
 It is one possible development participant or technology in the stack. Its skills are installed
 via `clawhub install <slug>` and live in `~/.openclaw/skills/` (not in `.agents/skills/`).
 
-**Curated skill directory:** `https://github.com/unclenate/awesome-openclaw-skills`
+**Curated skill directory:** `https://github.com/VoltAgent/awesome-openclaw-skills`
 (~5,200 curated skills from the full ClawHub registry of ~13,700)
 
 **Installation:**
@@ -250,5 +250,5 @@ Step 7 — wire up CI
 | Harness-native skills | `platform/skills/` |
 | Module field reference | `platform/core/registry/module-types.md` |
 | Bootstrap quickstart | `platform/workflow/bootstrap-quickstart.md` |
-| Curated OpenClaw skills | `https://github.com/unclenate/awesome-openclaw-skills` |
+| Curated OpenClaw skills | `https://github.com/VoltAgent/awesome-openclaw-skills` |
 | Trust tier model | `platform/core/kernel/base/trust-model.md` |

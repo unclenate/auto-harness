@@ -8,17 +8,30 @@
 * [Glossary](platform/reference/glossary.md)
 * [Topic Index](platform/reference/index.md)
 
-## Workflows
+## Adoption Workflows
 
-Step-by-step guides for adopting and operating the harness.
+How to start using the harness on a project. Walk through one of these once per project.
 
-* [Submodule Integration](platform/workflow/submodule-integration.md)
-* [Bootstrap Quickstart](platform/workflow/bootstrap-quickstart.md)
-* [Web3 Bootstrap Quickstart](platform/workflow/bootstrap-web3-quickstart.md)
-* [Discovery to Composition](platform/workflow/discovery-to-composition.md)
-* [Brownfield Onboarding](platform/workflow/brownfield-onboarding.md)
+* [Submodule Integration](platform/workflow/submodule-integration.md) — recommended consumption pattern
+* [Bootstrap Quickstart](platform/workflow/bootstrap-quickstart.md) — greenfield, stack known
+* [Web3 Bootstrap Quickstart](platform/workflow/bootstrap-web3-quickstart.md) — Web3-specific bootstrap
+* [Discovery to Composition](platform/workflow/discovery-to-composition.md) — idea → manifest
+* [Brownfield Onboarding](platform/workflow/brownfield-onboarding.md) — existing codebase
+
+## Day-to-Day Workflows
+
+How to use the harness during normal development on a project that has already adopted it.
+
 * [Skills and Agents](platform/workflow/skills-and-agents.md)
+* [CI Integration](platform/workflow/ci-integration.md)
 * [Standards Pattern](platform/workflow/standards-pattern.md)
+
+## Maintenance & Operations
+
+How to keep the harness itself healthy after adoption — upgrades, version pinning, drift recovery, governance audits.
+
+* [Maintenance & Operations Guide](platform/workflow/maintenance-operations.md) — upgrade flow, pinning, rollback, drift detection, copy-to-submodule migration, lifecycle transitions, periodic audits
+* [Validator Error Solver (Troubleshooting)](platform/workflow/troubleshooting.md)
 
 ## Kernel — Governance Foundation
 
@@ -102,9 +115,9 @@ AI-tool packs and operating adapters.
 * [Generic LLM](platform/agents/generic-llm/README.md)
 * [OpenClaw](platform/agents/openclaw/README.md)
 
-## Operating the Harness
+## Validator Reference
 
-### Validators and CI
+The six validator scripts and their shared Ruby library. CI wiring and troubleshooting live in the workflow sections above.
 
 * [Validators Overview](platform/validators/README.md)
 * [validate-manifest.sh](platform/validators/validate-manifest.sh)
@@ -114,8 +127,6 @@ AI-tool packs and operating adapters.
 * [validate-agent-pack.sh](platform/validators/validate-agent-pack.sh)
 * [validate-companions.sh](platform/validators/validate-companions.sh)
 * [Shared Library: harness\_registry.rb](platform/validators/lib/harness_registry.rb)
-* [CI Integration](platform/workflow/ci-integration.md)
-* [Troubleshooting](platform/workflow/troubleshooting.md)
 
 ### Test Suite
 
@@ -274,3 +285,25 @@ A complete sample project with all governance artifacts filled in.
 
 * [Project GitBook Stub (SUMMARY.md)](platform/templates/docs/SUMMARY.md)
 * [Templates Reference](platform/templates/README.md)
+
+## Project Governance & Community
+
+Open-source-cut metadata: license, contribution flow, community standards, and the project's own decision records.
+
+* [Contributing Guide](CONTRIBUTING.md)
+* [Code of Conduct](CODE_OF_CONDUCT.md)
+* [Security Policy](SECURITY.md)
+* [License — MIT](LICENSE-MIT)
+* [License — Apache 2.0](LICENSE-APACHE)
+* [NOTICE](NOTICE)
+* [Authors and Maintainers](AUTHORS)
+* [Self-Governance Entrypoint (HARNESS.md)](HARNESS.md)
+* [Cross-Agent Operating Manual (AGENTS.md)](AGENTS.md)
+
+### Architecture Decision Records (this project)
+
+* [ADR-0001: Modular Governance](docs/adr/ADR-0001-modular-governance.md)
+* [ADR-0002: Knowledge Capture — Structured Observations](docs/adr/ADR-0002-knowledge-capture-structured-observations.md)
+* [ADR-0003: Submodule Integration](docs/adr/ADR-0003-submodule-integration.md)
+* [ADR-0004: Opportunity Capture — Record Structure](docs/adr/ADR-0004-opportunity-capture-record-structure.md)
+* [ADR-0005: Open-Source Cut](docs/adr/ADR-0005-open-source-cut.md)

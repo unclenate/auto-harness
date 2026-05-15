@@ -1,9 +1,22 @@
+<!--
+Copyright 2026 Nate DiNiro <nate@bdits.io>
+SPDX-License-Identifier: MIT OR Apache-2.0
+Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
+-->
+
 # Development Harness
+
+[![License: MIT OR Apache-2.0](https://img.shields.io/badge/License-MIT_OR_Apache--2.0-blue.svg)](#license)
+[![Status: Alpha](https://img.shields.io/badge/Status-Alpha-orange.svg)](HARNESS.md)
+[![Contributions: Welcome](https://img.shields.io/badge/Contributions-Welcome-brightgreen.svg)](CONTRIBUTING.md)
 
 A modular governance framework for AI-assisted software development. It gives AI agents
 (Claude Code, Cursor, GitHub Copilot, and others) a structured operating contract — so they
 know what they're allowed to do, what artifacts must exist, when human review is required,
 and what companion documentation must accompany every significant change.
+
+**Maintainer:** Nate DiNiro &middot; <nate@bdits.io>
+**Contributing:** see [CONTRIBUTING.md](CONTRIBUTING.md) &middot; **Security:** see [SECURITY.md](SECURITY.md) &middot; **Conduct:** see [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
 
 > **Starting a new project?** Go straight to
 > [`platform/workflow/bootstrap-quickstart.md`](platform/workflow/bootstrap-quickstart.md).
@@ -13,6 +26,28 @@ and what companion documentation must accompany every significant change.
 > [`platform/workflow/brownfield-onboarding.md`](platform/workflow/brownfield-onboarding.md).
 > Web3 project? Use
 > [`platform/workflow/bootstrap-web3-quickstart.md`](platform/workflow/bootstrap-web3-quickstart.md).
+> Already adopted and need to update or audit? Use
+> [`platform/workflow/maintenance-operations.md`](platform/workflow/maintenance-operations.md).
+
+---
+
+## Table of Contents
+
+- [What It Does](#what-it-does)
+- [How It Works](#how-it-works)
+- [Concepts](#concepts) — Trust Tier Model, Module System, Companion Rules
+- [Starter Compositions](#starter-compositions)
+- [Operator Workflows](#operator-workflows) — Adoption, Day-to-Day, Maintenance & Operations
+- [Agent Skills](#agent-skills)
+- [Validators](#validators)
+- [Templates](#templates)
+- [Getting Started](#getting-started)
+- [Integrating into Your Repo](#integrating-into-your-repo)
+- [Platform Structure](#platform-structure)
+- [Design Principles](#design-principles)
+- [Contributing](#contributing)
+- [License](#license)
+- [Reference](#reference)
 
 ---
 
@@ -113,7 +148,9 @@ and artifact guidance.
 
 ---
 
-## Trust Tier Model
+## Concepts
+
+### Trust Tier Model
 
 Every action an agent can take is classified into one of six tiers:
 
@@ -130,14 +167,10 @@ Agents may always operate at a lower tier than their adapter declares. They may 
 self-elevate. This model is the kernel — it applies regardless of which other modules
 are active.
 
----
-
-## Module System
+### Module System
 
 Modules are the building blocks. Each module is a directory with a `module.yaml` that
 declares its governance contract. You compose them to match your project.
-
-### Module Families
 
 | Family | Purpose | Examples |
 | ------ | ------- | ------- |
@@ -146,11 +179,9 @@ declares its governance contract. You compose them to match your project.
 | **Architectures** | Deployment and interaction patterns | `web-app`, `api-service`, `event-driven` |
 | **Data** | Storage overlays | `relational-postgres`, `document-store`, `object-storage` |
 | **Delivery** | Lifecycle posture | `prototype`, `production-saas`, `internal-platform` |
-| **Management** | Product, project, program, and testing governance | `discovery-intake`, `product-lite`, `project-standard`, `program-lite`, `testing-standard` |
+| **Management** | Product, project, program, knowledge, opportunity, and testing governance | `discovery-intake`, `product-lite`, `project-standard`, `program-lite`, `testing-standard`, `knowledge-capture`, `opportunity-capture` |
 | **Domains** | Vendor or specialist overlays | `supabase`, `web3`, `media-pipeline`, `gitbook` |
 | **Agents** | AI-tool operating packs | `base`, `claude-code`, `generic-llm`, `openclaw` |
-
-### What a Module Declares
 
 Each `module.yaml` specifies:
 
@@ -162,42 +193,7 @@ Each `module.yaml` specifies:
 - **`compiledFragments`** — docs loaded into agent context at every session start
 - **`recommendedSkills`** — Agent Skills and OpenClaw/ClawHub skills for this module
 
----
-
-## Starter Compositions
-
-Pre-built manifests for common project types. Copy the closest match and adjust:
-
-| Composition | Stack | Use When |
-| ----------- | ----- | -------- |
-| [`brownfield-lite.yaml`](platform/compositions/brownfield-lite.yaml) | Any | Existing codebase — assessment pending |
-| [`new-product-discovery.yaml`](platform/compositions/new-product-discovery.yaml) | Stack TBD | Discovery phase — idea to first manifest |
-| [`node-web-saas-postgres.yaml`](platform/compositions/node-web-saas-postgres.yaml) | Node / TS | Web app with PostgreSQL |
-| [`python-api-service-postgres.yaml`](platform/compositions/python-api-service-postgres.yaml) | Python | API service with PostgreSQL |
-| [`research-pipeline-python-object-storage.yaml`](platform/compositions/research-pipeline-python-object-storage.yaml) | Python | Data / ML pipeline |
-| [`web3-risk-analytics.yaml`](platform/compositions/web3-risk-analytics.yaml) | Python | Blockchain-integrated platform |
-
-```bash
-cp platform/compositions/node-web-saas-postgres.yaml harness.manifest.yaml
-```
-
----
-
-## Workflow Guides
-
-| Guide | What It Covers |
-| ----- | -------------- |
-| [`bootstrap-quickstart.md`](platform/workflow/bootstrap-quickstart.md) | Zero to running harness in one session |
-| [`bootstrap-web3-quickstart.md`](platform/workflow/bootstrap-web3-quickstart.md) | Web3-specific bootstrap with chain config and skill setup |
-| [`discovery-to-composition.md`](platform/workflow/discovery-to-composition.md) | Idea / mockup / spec → `harness.manifest.yaml` in 8 steps |
-| [`skills-and-agents.md`](platform/workflow/skills-and-agents.md) | Agent Skills standard, harness-native skills, OpenClaw ecosystem |
-| [`ci-integration.md`](platform/workflow/ci-integration.md) | Wiring validators into GitHub Actions |
-| [`brownfield-onboarding.md`](platform/workflow/brownfield-onboarding.md) | Bring an existing codebase into the harness progressively |
-| [`troubleshooting.md`](platform/workflow/troubleshooting.md) | Every validator error, cause, and fix |
-
----
-
-## Companion Rules
+### Companion Rules
 
 Companion rules are the harness's paper-trail mechanism. They enforce the discipline that
 documentation is part of the change, not follow-up work.
@@ -220,28 +216,67 @@ Key companion rules by domain:
 - **Smart contract surface** → risk register or architecture update
 - **Scoring rules change** → ADR required
 - **Claude adapter change** → `AGENTS.md` or ADR in same PR
+- **Governance entrypoint change** (HARNESS.md, AGENTS.md) → ADR or `docs/operating-principles.md` update
 
 ---
 
-## Templates
+## Starter Compositions
 
-Every required artifact has a template. Templates use `[[PLACEHOLDER_NAME]]` tokens
-for fields that must be filled. The `validate-placeholders.sh` validator fails if any
-token remains in a tracked file.
+Pre-built manifests for common project types. Copy the closest match and adjust:
 
-Template categories:
+| Composition | Stack | Use When |
+| ----------- | ----- | -------- |
+| [`brownfield-lite.yaml`](platform/compositions/brownfield-lite.yaml) | Any | Existing codebase — assessment pending |
+| [`new-product-discovery.yaml`](platform/compositions/new-product-discovery.yaml) | Stack TBD | Discovery phase — idea to first manifest |
+| [`node-web-saas-postgres.yaml`](platform/compositions/node-web-saas-postgres.yaml) | Node / TS | Web app with PostgreSQL |
+| [`python-api-service-postgres.yaml`](platform/compositions/python-api-service-postgres.yaml) | Python | API service with PostgreSQL |
+| [`research-pipeline-python-object-storage.yaml`](platform/compositions/research-pipeline-python-object-storage.yaml) | Python | Data / ML pipeline |
+| [`web3-risk-analytics.yaml`](platform/compositions/web3-risk-analytics.yaml) | Python | Blockchain-integrated platform |
 
-- **Discovery** — intake questionnaire, MVP scope, starting assets log
-- **Product** — problem statement, personas, requirements, release intent
-- **Project** — scope plan, milestones, change log, dependency log
-- **Program** — workstream map, stakeholder report, governance cadence
-- **Testing** — test strategy, coverage thresholds, test plan
-- **Architecture and Ops** — ADR, architecture overview, release checklist, risk register,
-  incident response, ownership map, runbook index, runbook template
-- **Web3** — chain config, contract registry, token strategy, Web3 risk register, Web3 ADR
+```bash
+cp platform/compositions/node-web-saas-postgres.yaml harness.manifest.yaml
+```
 
-See [`platform/templates/README.md`](platform/templates/README.md) for the full placeholder
-reference and a table mapping each template to the module that requires it.
+---
+
+## Operator Workflows
+
+The harness journeys split into three phases. Use the right guide for the right phase:
+
+### Adoption Workflows — One-Time Setup
+
+How to *start* using the harness on a project. You generally walk through one of these once per project.
+
+| Guide | What It Covers |
+| ----- | -------------- |
+| [`bootstrap-quickstart.md`](platform/workflow/bootstrap-quickstart.md) | Zero to running harness in one session (stack known, copy-mode flow) |
+| [`bootstrap-web3-quickstart.md`](platform/workflow/bootstrap-web3-quickstart.md) | Web3-specific bootstrap with chain config and skill setup |
+| [`discovery-to-composition.md`](platform/workflow/discovery-to-composition.md) | Idea / mockup / spec → `harness.manifest.yaml` in 8 steps |
+| [`brownfield-onboarding.md`](platform/workflow/brownfield-onboarding.md) | Bring an existing codebase into the harness progressively |
+| [`submodule-integration.md`](platform/workflow/submodule-integration.md) | **Recommended** consumption pattern — auto-harness as a git submodule, with `install.sh` brownfield-safe bootstrap |
+
+### Day-to-Day Workflows — Active Development
+
+How to *use* the harness during normal development on a project that has already adopted it.
+
+| Guide | What It Covers |
+| ----- | -------------- |
+| [`skills-and-agents.md`](platform/workflow/skills-and-agents.md) | Agent Skills standard, harness-native skills, OpenClaw ecosystem |
+| [`ci-integration.md`](platform/workflow/ci-integration.md) | Wiring validators into GitHub Actions and other CI systems |
+| [`standards-pattern.md`](platform/workflow/standards-pattern.md) | Standards governance workflow |
+
+Running validators locally before each commit, honoring companion rules per PR, and keeping skills active are the day-to-day practices that the validator chain enforces.
+
+### Maintenance & Operations — Keeping It Healthy
+
+How to *keep the harness itself healthy* after adoption — upgrade flow, version pinning, drift recovery, governance audits.
+
+| Guide | What It Covers |
+| ----- | -------------- |
+| [`maintenance-operations.md`](platform/workflow/maintenance-operations.md) | Upstream improvements, version pinning, rollback, validator lifecycle after adoption, drift detection, copy-to-submodule migration, lifecycle transitions, periodic governance audits |
+| [`troubleshooting.md`](platform/workflow/troubleshooting.md) | Validator error solver — per-error cause and fix reference |
+
+A consumer project that adopts the harness once needs the maintenance guide indefinitely. Treat it as the long-term operator manual.
 
 ---
 
@@ -269,7 +304,7 @@ cp -r platform/skills/harness-governance .agents/skills/
 # Install additional skills based on active modules
 cp -r platform/skills/harness-testing .agents/skills/    # testing-standard active
 cp -r platform/skills/harness-web3 .agents/skills/       # Web3 projects
-cp -r platform/skills/harness-onboarding .agents/skills/  # brownfield onboarding
+cp -r platform/skills/harness-onboarding .agents/skills/ # brownfield onboarding
 cp -r platform/skills/harness-tools .agents/skills/      # agents/openclaw active
 
 # Claude Code native path
@@ -296,35 +331,30 @@ are the only runtime requirements.
 
 ---
 
-## Platform Structure
+## Templates
 
-```text
-./
-├── README.md                        # This file — repo and GitBook front door
-├── SUMMARY.md                       # GitBook table of contents
-├── .gitbook.yaml                    # GitBook configuration
-├── harness.manifest.yaml            # Meta-manifest (governs the harness itself)
-├── platform/                        # Source of truth for the harness framework
-│   ├── core/                        # Kernel doctrine, trust model, schemas, registry
-│   │   └── kernel/base/             # trust-model.md, doctrine.md, lifecycle-controls.md
-│   ├── profiles/                    # All module definitions
-│   │   ├── stacks/                  # node-typescript, python
-│   │   ├── architectures/           # web-app, api-service, event-driven
-│   │   ├── data/                    # relational-postgres, document-store, object-storage
-│   │   ├── delivery/                # prototype, production-saas, internal-platform
-│   │   ├── management/              # discovery-intake, product-lite, project-standard, program-lite, testing-standard, knowledge-capture, opportunity-capture
-│   │   └── domains/                 # supabase, web3, media-pipeline, gitbook
-│   ├── agents/                      # Agent operating packs: base, claude-code, generic-llm, openclaw
-│   ├── skills/                      # Agent Skills: harness-governance, harness-testing, harness-web3, harness-onboarding, harness-tools
-│   ├── templates/                   # Artifact skeletons for every required file
-│   ├── validators/                  # validate-*.sh scripts, Ruby library, test suite
-│   ├── compositions/                # Starter manifests for common project types
-│   ├── examples/                    # Sample project with all artifacts filled in
-│   ├── reference/                   # Glossary, how-to-read guide, topic index
-│   ├── workflow/                    # Guides: bootstrap, discovery, brownfield, CI, troubleshooting
-│   └── README.md                    # Platform overview
-└── legacy/                          # Archived historical files
-```
+Every required artifact has a template. Templates use `[[PLACEHOLDER_NAME]]` tokens
+for fields that must be filled. The `validate-placeholders.sh` validator fails if any
+token remains in a tracked file.
+
+Template categories:
+
+- **Discovery** — intake questionnaire, MVP scope, starting assets log
+- **Product** — problem statement, personas, requirements, release intent, PRD
+- **Project** — scope plan, milestones, change log, dependency log, revision tracker, review log
+- **Knowledge** — shared observations, distilled learnings
+- **Opportunity** — opportunity record (OPP-NNNN) for pre-PRD candidates
+- **Program** — workstream map, stakeholder report, governance cadence
+- **Testing** — test strategy, coverage thresholds, test plan
+- **Governance** — operating principles, tools registry
+- **Standards** — KPI dictionary
+- **Architecture and Ops** — ADR, architecture overview, release checklist, risk register,
+  incident response, ownership map, runbook index, runbook template, fallback matrix
+- **Database** — migration readiness
+- **Web3** — chain config, contract registry, token strategy, Web3 risk register, Web3 ADR, Web3 intake supplement
+
+See [`platform/templates/README.md`](platform/templates/README.md) for the full placeholder
+reference and a table mapping each template to the module that requires it.
 
 ---
 
@@ -357,7 +387,7 @@ bash platform/validators/validate-module-graph.sh harness.manifest.yaml
 **Step 4 — Create required artifacts:**
 
 ```bash
-bash $PLATFORM/validators/validate-required-artifacts.sh harness.manifest.yaml .
+bash platform/validators/validate-required-artifacts.sh harness.manifest.yaml .
 # Follow the output — each missing file maps to a template in platform/templates/
 ```
 
@@ -371,9 +401,11 @@ cp -r platform/skills/harness-governance .agents/skills/
 
 The harness is Bootstrap Complete when all validators exit 0 and your CI is green.
 
+After adoption, the [Maintenance & Operations guide](platform/workflow/maintenance-operations.md) is the operator manual you return to for upgrades, audits, and lifecycle transitions.
+
 ---
 
-## Integrating into your repo
+## Integrating into Your Repo
 
 The steps above show the "platform-at-root" / self-dogfood pattern — auto-harness's `platform/` tree lives inside the repo. For consumer projects, the recommended pattern is **auto-harness as a git submodule**:
 
@@ -385,9 +417,49 @@ bash .harness/platform/bootstrap/install.sh
 
 The bootstrap is brownfield-safe — it never overwrites pre-existing files from other AI platforms (Cursor, Windsurf, Copilot, Codex, OpenClaw, Hermes) and merges the cross-client `AGENTS.md` via a stable marker block. Skills are delivered as relative symlinks into `.agents/skills/` and `.claude/skills/`, so `git submodule update --remote .harness` pulls upstream improvements automatically with no re-sync step.
 
-- Full guide: [`platform/workflow/submodule-integration.md`](platform/workflow/submodule-integration.md)
+- Adoption guide: [`platform/workflow/submodule-integration.md`](platform/workflow/submodule-integration.md)
 - Decision record: [`docs/adr/ADR-0003-submodule-integration.md`](docs/adr/ADR-0003-submodule-integration.md)
 - Bootstrap tools reference: [`platform/bootstrap/README.md`](platform/bootstrap/README.md)
+- Long-term maintenance: [`platform/workflow/maintenance-operations.md`](platform/workflow/maintenance-operations.md)
+
+---
+
+## Platform Structure
+
+```text
+./
+├── README.md                        # This file — repo and GitBook front door
+├── SUMMARY.md                       # GitBook table of contents
+├── HARNESS.md                       # Self-governance entrypoint (this repo)
+├── AGENTS.md                        # Cross-agent operating manual (this repo)
+├── CONTRIBUTING.md                  # Contribution guide
+├── CODE_OF_CONDUCT.md               # Community standards (Contributor Covenant v2.1 by reference)
+├── SECURITY.md                      # Vulnerability disclosure policy
+├── LICENSE-MIT, LICENSE-APACHE      # Dual-license at consumer option
+├── NOTICE, AUTHORS                  # Attribution and maintainer list
+├── .gitbook.yaml                    # GitBook configuration
+├── harness.manifest.yaml            # Meta-manifest (governs the harness itself)
+├── platform/                        # Source of truth for the harness framework
+│   ├── core/                        # Kernel doctrine, trust model, schemas, registry
+│   │   └── kernel/base/             # trust-model.md, doctrine.md, lifecycle-controls.md
+│   ├── profiles/                    # All module definitions
+│   │   ├── stacks/                  # node-typescript, python
+│   │   ├── architectures/           # web-app, api-service, event-driven
+│   │   ├── data/                    # relational-postgres, document-store, object-storage
+│   │   ├── delivery/                # prototype, production-saas, internal-platform
+│   │   ├── management/              # discovery-intake, product-lite, project-standard, program-lite, testing-standard, knowledge-capture, opportunity-capture
+│   │   └── domains/                 # supabase, web3, media-pipeline, gitbook
+│   ├── agents/                      # Agent operating packs: base, claude-code, generic-llm, openclaw
+│   ├── skills/                      # Agent Skills: harness-governance, harness-testing, harness-web3, harness-onboarding, harness-tools
+│   ├── templates/                   # Artifact skeletons for every required file
+│   ├── validators/                  # validate-*.sh scripts, Ruby library, test suite
+│   ├── compositions/                # Starter manifests for common project types
+│   ├── examples/                    # Sample project with all artifacts filled in
+│   ├── reference/                   # Glossary, how-to-read guide, topic index
+│   ├── workflow/                    # Adoption, day-to-day, and maintenance guides
+│   └── README.md                    # Platform overview
+└── legacy/                          # Archived historical files
+```
 
 ---
 
@@ -407,6 +479,14 @@ These principles are from the kernel doctrine and apply across all modules:
 
 ## Contributing
 
+auto-harness welcomes contributions. The full guide lives in [CONTRIBUTING.md](CONTRIBUTING.md) — it covers issue filing, the pull-request workflow, the validator chain you must run before submitting, companion-rule discipline, and the project's dual-license inbound-equals-outbound convention.
+
+Quick links:
+
+- **File an issue:** [bug report](.github/ISSUE_TEMPLATE/bug_report.yml) &middot; [feature request](.github/ISSUE_TEMPLATE/feature_request.yml) &middot; [structured observation](.github/ISSUE_TEMPLATE/observation.yml)
+- **Code of Conduct:** [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) (Contributor Covenant v2.1 by reference)
+- **Security issues:** see [SECURITY.md](SECURITY.md) — do not file public issues for vulnerabilities
+
 This repository has two README files with distinct roles:
 
 - **Root `README.md`** (this file) — the repository and GitBook front door. Comprehensive
@@ -421,6 +501,19 @@ For shared terminology, see the [Glossary](platform/reference/glossary.md).
 
 ---
 
+## License
+
+auto-harness is dual-licensed at your option under:
+
+- The **[MIT License](LICENSE-MIT)**, or
+- The **[Apache License, Version 2.0](LICENSE-APACHE)**
+
+Either license is sufficient — consumers select the one that fits their own project's distribution constraints. See [NOTICE](NOTICE) for attribution requirements and [ADR-0005](docs/adr/ADR-0005-open-source-cut.md) for the rationale behind the dual-license choice.
+
+Contributions are accepted under both licenses on the same terms. See [CONTRIBUTING.md](CONTRIBUTING.md#licensing--contributor-agreement) for details.
+
+---
+
 ## Reference
 
 | Resource | Path |
@@ -428,11 +521,18 @@ For shared terminology, see the [Glossary](platform/reference/glossary.md).
 | Table of contents | [`SUMMARY.md`](SUMMARY.md) |
 | Glossary | [`platform/reference/glossary.md`](platform/reference/glossary.md) |
 | How to read the docs | [`platform/reference/how-to-read.md`](platform/reference/how-to-read.md) |
-| Bootstrap quickstart | [`platform/workflow/bootstrap-quickstart.md`](platform/workflow/bootstrap-quickstart.md) |
-| Discovery workflow | [`platform/workflow/discovery-to-composition.md`](platform/workflow/discovery-to-composition.md) |
+| Adoption — Bootstrap quickstart | [`platform/workflow/bootstrap-quickstart.md`](platform/workflow/bootstrap-quickstart.md) |
+| Adoption — Discovery workflow | [`platform/workflow/discovery-to-composition.md`](platform/workflow/discovery-to-composition.md) |
+| Adoption — Brownfield onboarding | [`platform/workflow/brownfield-onboarding.md`](platform/workflow/brownfield-onboarding.md) |
+| Adoption — Submodule integration | [`platform/workflow/submodule-integration.md`](platform/workflow/submodule-integration.md) |
+| Day-to-day — Skills and agents | [`platform/workflow/skills-and-agents.md`](platform/workflow/skills-and-agents.md) |
+| Day-to-day — CI integration | [`platform/workflow/ci-integration.md`](platform/workflow/ci-integration.md) |
+| Maintenance & Operations | [`platform/workflow/maintenance-operations.md`](platform/workflow/maintenance-operations.md) |
+| Validator error solver | [`platform/workflow/troubleshooting.md`](platform/workflow/troubleshooting.md) |
 | All templates | [`platform/templates/`](platform/templates/) |
 | All compositions | [`platform/compositions/`](platform/compositions/) |
-| Skills guide | [`platform/workflow/skills-and-agents.md`](platform/workflow/skills-and-agents.md) |
-| Troubleshooting | [`platform/workflow/troubleshooting.md`](platform/workflow/troubleshooting.md) |
 | Sample project | [`platform/examples/sample-projects/node-web-saas-postgres/`](platform/examples/sample-projects/node-web-saas-postgres/) |
+| Self-governance entrypoint | [`HARNESS.md`](HARNESS.md) |
+| Cross-agent operating manual | [`AGENTS.md`](AGENTS.md) |
+| Open-source cut decision | [`docs/adr/ADR-0005-open-source-cut.md`](docs/adr/ADR-0005-open-source-cut.md) |
 | Legacy / archived files | [`legacy/`](legacy/) |

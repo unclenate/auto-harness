@@ -8,6 +8,8 @@ module system, validators, and companion rules.
 **Manifest:** `harness.manifest.yaml`
 **Maturity:** Platform (Alpha)
 **Owner:** @unclenate
+**License:** Dual MIT / Apache-2.0 at consumer option — see [LICENSE-MIT](LICENSE-MIT), [LICENSE-APACHE](LICENSE-APACHE), and [ADR-0005](docs/adr/ADR-0005-open-source-cut.md)
+**Contributing:** see [CONTRIBUTING.md](CONTRIBUTING.md) · **Security:** see [SECURITY.md](SECURITY.md) · **Conduct:** see [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
 
 ---
 
@@ -64,4 +66,11 @@ This file is the project-level entrypoint. The platform modules are the authorit
 
 ## Consuming auto-harness in other projects
 
-Auto-harness can be mounted as a git submodule in downstream projects, with `install.sh` providing brownfield-safe bootstrap and `link-skills.sh` providing symlink-based skill delivery. See [platform/workflow/submodule-integration.md](platform/workflow/submodule-integration.md) for the canonical guide and [docs/adr/ADR-0003-submodule-integration.md](docs/adr/ADR-0003-submodule-integration.md) for the design rationale.
+Auto-harness can be mounted as a git submodule in downstream projects, with `install.sh` providing brownfield-safe bootstrap and `link-skills.sh` providing symlink-based skill delivery.
+
+| Phase | Guide |
+| ----- | ----- |
+| Adoption (one-time setup) | [platform/workflow/submodule-integration.md](platform/workflow/submodule-integration.md) |
+| Day-to-day governance | [platform/workflow/skills-and-agents.md](platform/workflow/skills-and-agents.md) and [platform/workflow/ci-integration.md](platform/workflow/ci-integration.md) |
+| Long-term maintenance | [platform/workflow/maintenance-operations.md](platform/workflow/maintenance-operations.md) — upgrades, version pinning, drift recovery, periodic governance audits |
+| Design rationale | [docs/adr/ADR-0003-submodule-integration.md](docs/adr/ADR-0003-submodule-integration.md) |

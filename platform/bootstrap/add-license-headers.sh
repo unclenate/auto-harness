@@ -52,11 +52,20 @@ count_skipped_excluded=0
 count_would_change=0
 
 # Path-based exclusions.
+#
+# Curated team records (knowledge captures, opportunity records, observations)
+# are governance artifacts whose edits are gated by companion rules. Bulk
+# header insertion would falsely trigger those rules. The dual license still
+# applies via LICENSE-MIT / LICENSE-APACHE at the repository root; per-file
+# indicia on those files is helpful but not legally required.
 is_excluded() {
   local path="$1"
   case "$path" in
     .git/*|.remember/*|legacy/*|node_modules/*) return 0 ;;
     platform/validators/test/fixtures/*) return 0 ;;
+    docs/knowledge/distilled-learnings.md) return 0 ;;
+    docs/knowledge/shared-observations.md) return 0 ;;
+    docs/opportunities/OPP-*.md) return 0 ;;
     *.DS_Store) return 0 ;;
   esac
   return 1

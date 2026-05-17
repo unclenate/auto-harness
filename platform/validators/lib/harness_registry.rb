@@ -70,6 +70,38 @@ module HarnessRegistry
     artifacts.uniq
   end
 
+  # Returns true when the artifact entry is satisfied relative to project_root.
+  # entry may be a literal path string, a path with glob characters (* or ?),
+  # or a hash of the form { "oneOf" => [<path-or-glob>, ...] } which is satisfied
+  # when at least one alternative is satisfied.
+  def self.artifact_satisfied?(entry, project_root)
+    if entry.is_a?(Hash) && entry.key?("oneOf")
+      Array(entry["oneOf"]).any? { |alt| path_or_glob_exists?(alt, project_root) }
+    else
+      path_or_glob_exists?(entry, project_root)
+    end
+  end
+
+  # Human-readable label for an artifact entry — used in validator error output.
+  def self.artifact_label(entry)
+    if entry.is_a?(Hash) && entry.key?("oneOf")
+      "one of: #{Array(entry['oneOf']).join(', ')}"
+    else
+      entry.to_s
+    end
+  end
+
+  def self.path_or_glob_exists?(pattern, project_root)
+    return false unless pattern.is_a?(String) && !pattern.empty?
+
+    full = File.join(project_root, pattern)
+    if pattern.include?("*") || pattern.include?("?") || pattern.include?("[")
+      !Dir.glob(full).empty?
+    else
+      File.exist?(full)
+    end
+  end
+
   def self.changed_files(project_root, base_branch)
     Dir.chdir(project_root) do
       prefix = `git rev-parse --show-prefix 2>/dev/null`.strip

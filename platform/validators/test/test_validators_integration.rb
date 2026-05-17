@@ -180,6 +180,126 @@ class TestValidateRequiredArtifacts < Minitest::Test
       assert_match(/missing/, err)
     end
   end
+
+  # ---------------------------------------------------------------------------
+  # oneOf semantics + glob support (see ADR-0006)
+  #
+  # These tests drive validate-required-artifacts.sh against synthesized
+  # manifests that exercise oneOf entries via overrides.requiredArtifacts.
+  # Going through overrides avoids coupling the integration test to any
+  # specific module's yaml — the heavy lifting is in HarnessRegistry, and the
+  # shell validator is just a thin wrapper.
+  # ---------------------------------------------------------------------------
+  def write_kernel_artifacts(root)
+    File.write(File.join(root, "HARNESS.md"), "# HARNESS.md\n")
+    File.write(File.join(root, "AGENTS.md"), "# AGENTS.md\n")
+    FileUtils.mkdir_p(File.join(root, "docs"))
+    File.write(File.join(root, "docs/operating-principles.md"), "# OP\n")
+  end
+
+  # override_yaml is the body for overrides.requiredArtifacts, written one entry
+  # per element. Each element is either a literal string (e.g. "docs/PRD.md")
+  # or a Hash like { "oneOf" => ["docs/PRD.md", "docs/PRD-*.md"] }. Building the
+  # YAML programmatically avoids fragile heredoc-in-heredoc indentation.
+  def write_oneof_manifest(path, override_entries)
+    lines = [
+      "schemaVersion: 1",
+      "project:",
+      "  id: test-oneof",
+      "  name: Test OneOf",
+      "  maturity: prototype",
+      "  criticality: low",
+      "modules:",
+      "  core:",
+      "    - kernel/base",
+      "overrides:",
+      "  requiredArtifacts:"
+    ]
+    Array(override_entries).each do |entry|
+      if entry.is_a?(Hash) && entry["oneOf"]
+        lines << "    - oneOf:"
+        entry["oneOf"].each { |alt| lines << "        - \"#{alt}\"" }
+      else
+        lines << "    - \"#{entry}\""
+      end
+    end
+    lines << "  disabledValidations: []"
+    File.write(path, lines.join("\n") + "\n")
+  end
+
+  def test_oneOf_alternative_present_passes
+    Dir.mktmpdir do |tmpdir|
+      write_kernel_artifacts(tmpdir)
+      File.write(File.join(tmpdir, "docs/PRD-v2.md"), "# PRD\n")
+      manifest = File.join(tmpdir, "harness.manifest.yaml")
+      write_oneof_manifest(manifest, [
+        { "oneOf" => ["docs/PRD.md", "docs/PRD-*.md", "docs/product/requirements.md"] }
+      ])
+
+      out, err, code = run_validator("validate-required-artifacts.sh", manifest, tmpdir)
+      assert_equal 0, code, "oneOf with glob match must pass. stderr: #{err}\nstdout: #{out}"
+      assert_match(/✓/, out)
+    end
+  end
+
+  def test_oneOf_all_alternatives_missing_fails_with_one_of_label
+    Dir.mktmpdir do |tmpdir|
+      write_kernel_artifacts(tmpdir)
+      manifest = File.join(tmpdir, "harness.manifest.yaml")
+      write_oneof_manifest(manifest, [
+        { "oneOf" => ["docs/PRD.md", "docs/PRD-*.md"] }
+      ])
+
+      _out, err, code = run_validator("validate-required-artifacts.sh", manifest, tmpdir)
+      assert_equal 1, code, "all oneOf alternatives missing must fail"
+      assert_match(/missing.*one of/i, err)
+      assert_match(/PRD\.md/, err)
+    end
+  end
+
+  def test_glob_in_literal_entry_matches
+    Dir.mktmpdir do |tmpdir|
+      write_kernel_artifacts(tmpdir)
+      FileUtils.mkdir_p(File.join(tmpdir, "docs"))
+      File.write(File.join(tmpdir, "docs/PRD-v3-final.md"), "# PRD\n")
+      manifest = File.join(tmpdir, "harness.manifest.yaml")
+      write_oneof_manifest(manifest, ["docs/PRD-*.md"])
+
+      out, _err, code = run_validator("validate-required-artifacts.sh", manifest, tmpdir)
+      assert_equal 0, code, "literal glob entry should match. stdout: #{out}"
+      assert_match(/✓/, out)
+    end
+  end
+
+  def test_mixed_literal_and_oneOf_entries_both_satisfied_passes
+    Dir.mktmpdir do |tmpdir|
+      write_kernel_artifacts(tmpdir)
+      FileUtils.mkdir_p(File.join(tmpdir, "docs"))
+      File.write(File.join(tmpdir, "docs/full-plan.md"), "# Plan\n")
+      File.write(File.join(tmpdir, "docs/PRD-v1.md"), "# PRD\n")
+      manifest = File.join(tmpdir, "harness.manifest.yaml")
+      write_oneof_manifest(manifest, [
+        "docs/full-plan.md",
+        { "oneOf" => ["docs/PRD.md", "docs/PRD-*.md"] }
+      ])
+
+      out, err, code = run_validator("validate-required-artifacts.sh", manifest, tmpdir)
+      assert_equal 0, code, "mixed entries all satisfied must pass. stderr: #{err}"
+      assert_match(/✓/, out)
+    end
+  end
+
+  def test_existing_modules_with_literal_artifacts_still_work
+    # Backwards-compat smoke test — the existing valid-prototype fixture uses
+    # only literal artifacts and must continue to validate green unchanged.
+    out, err, code = run_validator(
+      "validate-required-artifacts.sh",
+      fixture_manifest("valid-prototype"),
+      fixture_project("valid-prototype")
+    )
+    assert_equal 0, code, "literal-only modules must keep passing. stderr: #{err}"
+    assert_match(/✓/, out)
+  end
 end
 
 # ---------------------------------------------------------------------------

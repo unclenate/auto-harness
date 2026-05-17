@@ -24,15 +24,15 @@ if HarnessRegistry.disabled_validation?(manifest, "required-artifacts")
 end
 
 modules = HarnessRegistry.active_modules(platform_root, manifest)
-missing = HarnessRegistry.required_artifacts(modules, manifest).reject do |artifact|
-  File.exist?(File.join(project_root, artifact))
+missing = HarnessRegistry.required_artifacts(modules, manifest).reject do |entry|
+  HarnessRegistry.artifact_satisfied?(entry, project_root)
 end
 
 if missing.empty?
   puts "✓ Required artifacts are present in #{project_root}"
 else
   warn "✗ Required artifact validation failed:"
-  missing.each { |artifact| warn "  - missing #{artifact}" }
+  missing.each { |entry| warn "  - missing #{HarnessRegistry.artifact_label(entry)}" }
   exit 1
 end
 RUBY

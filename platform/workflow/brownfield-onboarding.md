@@ -25,6 +25,19 @@ without disrupting active development.
 Brownfield onboarding is also the right path if you are evaluating a fork or external repository
 against the harness before deciding whether to bring it under governance.
 
+### Soft-entry option for monolithic-docs projects
+
+If the consumer's docs already live in a single PRD (e.g. `docs/PRD.md` or `docs/PRD-v2.md`), a
+single decision-complete plan (e.g. `docs/full-plan.md`), and an AI-facing interview/spec prompt,
+skip the canonical `discovery-intake + product-lite + project-standard` triple and use the
+`management/interview-driven` overlay instead. It recognizes the monolithic shape natively via
+`oneOf` required-artifact semantics, so the harness validates green without
+`overrides.disabledValidations`. The composition lives at
+[`platform/compositions/interview-driven-discovery.yaml`](../compositions/interview-driven-discovery.yaml);
+the overlay's philosophy and upgrade path to `product-lite + project-standard` is documented in
+[`platform/profiles/management/interview-driven/README.md`](../profiles/management/interview-driven/README.md).
+See [ADR-0006](../../docs/adr/ADR-0006-interview-driven-management.md) for the rationale.
+
 ---
 
 ## Workflow at a Glance

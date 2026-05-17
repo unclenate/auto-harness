@@ -321,6 +321,13 @@ This repo adopts auto-harness for governance, mounted at \`${MOUNT_PATH}/\`.
 Cross-agent operating rules come from the kernel trust model and active agent
 packs declared in \`harness.manifest.yaml\`.
 
+### Keeping the harness up to date
+
+Periodically run \`git submodule update --remote ${MOUNT_PATH}\` to pick up harness
+improvements (new modules, validator fixes, new compositions). Review the
+diff and commit. See \`${MOUNT_PATH}/platform/workflow/maintenance-operations.md\`
+for the full upgrade workflow.
+
 ${AGENTS_MARKER_END}
 EOF
 }

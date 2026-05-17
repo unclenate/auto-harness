@@ -1,0 +1,26 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+# Starter composition for projects whose product / project documentation lives
+# in monolithic, interview-driven artifacts rather than the canonical multi-file
+# product-lite + project-standard set. See:
+#   - platform/profiles/management/interview-driven/README.md
+#   - docs/adr/ADR-0006-interview-driven-management.md
+#   - platform/examples/sample-projects/interview-driven-hackathon/
+schemaVersion: 1
+project:
+  id: example-interview-driven
+  name: Example Interview-Driven Project
+  maturity: prototype
+  criticality: low
+modules:
+  core:
+    - kernel/base
+  delivery:
+    - prototype
+  management:
+    - interview-driven
+  agents:
+    - base
+overrides:
+  requiredArtifacts: []
+  disabledValidations: []

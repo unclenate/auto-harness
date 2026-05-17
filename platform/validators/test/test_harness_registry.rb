@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: MIT OR Apache-2.0
 # Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 require "minitest/autorun"
+require "tmpdir"
+require "fileutils"
 require "harness_registry"
 
 # ---------------------------------------------------------------------------
@@ -138,6 +140,145 @@ class TestRequiredArtifacts < Minitest::Test
     mods = [{ "requiredArtifacts" => nil }]
     result = HarnessRegistry.required_artifacts(mods, manifest_with_overrides)
     assert_equal [], result
+  end
+
+  def test_mixed_literal_and_oneOf_entries_aggregated
+    one_of = { "oneOf" => ["docs/PRD.md", "docs/PRD-*.md"] }
+    mods = [module_stub(["docs/operating-principles.md", one_of])]
+    result = HarnessRegistry.required_artifacts(mods, manifest_with_overrides)
+    assert_equal 2, result.length
+    assert_includes result, "docs/operating-principles.md"
+    assert_includes result, one_of
+  end
+
+  def test_duplicate_oneOf_deduplicated
+    a = { "oneOf" => ["docs/PRD.md", "docs/PRD-*.md"] }
+    b = { "oneOf" => ["docs/PRD.md", "docs/PRD-*.md"] }
+    mods = [module_stub([a]), module_stub([b])]
+    result = HarnessRegistry.required_artifacts(mods, manifest_with_overrides)
+    assert_equal 1, result.length, "structurally identical oneOf entries must dedupe"
+  end
+end
+
+# ---------------------------------------------------------------------------
+# artifact_satisfied? — supports literal paths, oneOf alternatives, and globs
+#
+# Spec (see ADR-0006):
+#   - Literal path string: satisfied iff the file exists relative to project root
+#   - oneOf hash: satisfied iff at least one alternative is satisfied
+#   - Glob characters (`*`, `?`) in any path expand via Dir.glob
+# ---------------------------------------------------------------------------
+class TestArtifactSatisfied < Minitest::Test
+  def with_files(files)
+    Dir.mktmpdir do |tmpdir|
+      Array(files).each do |rel|
+        full = File.join(tmpdir, rel)
+        FileUtils.mkdir_p(File.dirname(full))
+        File.write(full, "")
+      end
+      yield tmpdir
+    end
+  end
+
+  def test_literal_path_present
+    with_files("docs/operating-principles.md") do |root|
+      assert HarnessRegistry.artifact_satisfied?("docs/operating-principles.md", root)
+    end
+  end
+
+  def test_literal_path_missing
+    with_files([]) do |root|
+      refute HarnessRegistry.artifact_satisfied?("docs/operating-principles.md", root)
+    end
+  end
+
+  def test_oneOf_all_missing_fails
+    with_files([]) do |root|
+      entry = { "oneOf" => ["docs/PRD.md", "docs/full-plan.md"] }
+      refute HarnessRegistry.artifact_satisfied?(entry, root)
+    end
+  end
+
+  def test_oneOf_first_alternative_present_passes
+    with_files("docs/PRD.md") do |root|
+      entry = { "oneOf" => ["docs/PRD.md", "docs/product/requirements.md"] }
+      assert HarnessRegistry.artifact_satisfied?(entry, root)
+    end
+  end
+
+  def test_oneOf_second_alternative_present_passes
+    with_files("docs/product/requirements.md") do |root|
+      entry = { "oneOf" => ["docs/PRD.md", "docs/product/requirements.md"] }
+      assert HarnessRegistry.artifact_satisfied?(entry, root)
+    end
+  end
+
+  def test_glob_in_literal_match
+    with_files("docs/PRD-v2.md") do |root|
+      assert HarnessRegistry.artifact_satisfied?("docs/PRD-*.md", root)
+    end
+  end
+
+  def test_glob_in_literal_no_match
+    with_files("docs/other.md") do |root|
+      refute HarnessRegistry.artifact_satisfied?("docs/PRD-*.md", root)
+    end
+  end
+
+  def test_glob_in_oneOf_alternative_matches
+    with_files("docs/PRD-v2-revised.md") do |root|
+      entry = { "oneOf" => ["docs/PRD.md", "docs/PRD-*.md"] }
+      assert HarnessRegistry.artifact_satisfied?(entry, root)
+    end
+  end
+
+  def test_glob_no_match_in_any_oneOf_alternative_fails
+    with_files("docs/unrelated.md") do |root|
+      entry = { "oneOf" => ["docs/PRD.md", "docs/PRD-*.md"] }
+      refute HarnessRegistry.artifact_satisfied?(entry, root)
+    end
+  end
+
+  def test_question_mark_glob_matches_single_char
+    with_files("docs/v1.md") do |root|
+      assert HarnessRegistry.artifact_satisfied?("docs/v?.md", root)
+    end
+  end
+
+  def test_backwards_compat_existing_literal_required_artifact
+    # Existing modules use only literal strings — must continue to work unchanged.
+    with_files("docs/product/requirements.md") do |root|
+      assert HarnessRegistry.artifact_satisfied?("docs/product/requirements.md", root)
+    end
+  end
+
+  def test_empty_string_entry_is_not_satisfied
+    with_files([]) do |root|
+      refute HarnessRegistry.artifact_satisfied?("", root)
+    end
+  end
+
+  def test_oneOf_with_empty_list_is_not_satisfied
+    with_files("docs/PRD.md") do |root|
+      refute HarnessRegistry.artifact_satisfied?({ "oneOf" => [] }, root)
+    end
+  end
+end
+
+# ---------------------------------------------------------------------------
+# artifact_label — human-readable description for error reporting
+# ---------------------------------------------------------------------------
+class TestArtifactLabel < Minitest::Test
+  def test_literal_label_returns_path
+    assert_equal "docs/PRD.md", HarnessRegistry.artifact_label("docs/PRD.md")
+  end
+
+  def test_oneOf_label_lists_alternatives
+    entry = { "oneOf" => ["docs/PRD.md", "docs/PRD-*.md"] }
+    label = HarnessRegistry.artifact_label(entry)
+    assert_match(/one of/i, label)
+    assert_match(/PRD\.md/, label)
+    assert_match(/PRD-\*\.md/, label)
   end
 end
 

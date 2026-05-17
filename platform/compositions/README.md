@@ -20,6 +20,7 @@ cp platform/compositions/node-web-saas-postgres.yaml harness.manifest.yaml
 | Composition | Stack | Use When |
 |-------------|-------|----------|
 | [brownfield-lite.yaml](brownfield-lite.yaml) | Any | Existing codebase — assessment pending |
+| [interview-driven-discovery.yaml](interview-driven-discovery.yaml) | Any | Monolithic-docs project (one PRD, one plan, one interview prompt) — small teams and hackathon-tier work |
 | [new-product-discovery.yaml](new-product-discovery.yaml) | Stack TBD | Discovery phase — idea to first manifest |
 | [node-web-saas-postgres.yaml](node-web-saas-postgres.yaml) | Node / TS | Web app with PostgreSQL |
 | [python-api-service-postgres.yaml](python-api-service-postgres.yaml) | Python | API service with PostgreSQL |

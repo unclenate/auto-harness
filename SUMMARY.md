@@ -96,6 +96,7 @@ Lifecycle and operational posture overlays.
 Product, project, and program governance overlays.
 
 * [Discovery Intake](platform/profiles/management/discovery-intake/README.md)
+* [Interview-Driven](platform/profiles/management/interview-driven/README.md)
 * [Product Lite](platform/profiles/management/product-lite/README.md)
 * [Project Standard](platform/profiles/management/project-standard/README.md)
 * [Program Lite](platform/profiles/management/program-lite/README.md)
@@ -159,6 +160,7 @@ Pre-built manifests for common project types. Copy the closest match to
 
 * [Compositions Overview](platform/compositions/README.md)
 * [Brownfield Lite](platform/compositions/brownfield-lite.yaml)
+* [Interview-Driven Discovery](platform/compositions/interview-driven-discovery.yaml)
 * [New Product Discovery](platform/compositions/new-product-discovery.yaml)
 * [Node Web SaaS + Postgres](platform/compositions/node-web-saas-postgres.yaml)
 * [Python API Service + Postgres](platform/compositions/python-api-service-postgres.yaml)
@@ -177,6 +179,19 @@ files reference the harness governance contract.
 * [HARNESS.md](platform/examples/composed-entrypoints/HARNESS.md)
 * [AGENTS.md](platform/examples/composed-entrypoints/AGENTS.md)
 * [CLAUDE.md](platform/examples/composed-entrypoints/CLAUDE.md)
+
+#### Interview-Driven Hackathon — Sample Project
+
+A minimal sample project using the `interview-driven` overlay with a monolithic PRD, a
+decision-complete plan, and an AI-facing interview/spec prompt.
+
+* [HARNESS.md](platform/examples/sample-projects/interview-driven-hackathon/HARNESS.md)
+* [AGENTS.md](platform/examples/sample-projects/interview-driven-hackathon/AGENTS.md)
+* [CLAUDE.md](platform/examples/sample-projects/interview-driven-hackathon/CLAUDE.md)
+* [PRD (monolithic)](platform/examples/sample-projects/interview-driven-hackathon/docs/PRD.md)
+* [Full Plan (decision-complete)](platform/examples/sample-projects/interview-driven-hackathon/docs/full-plan.md)
+* [Interview / Spec Prompt](platform/examples/sample-projects/interview-driven-hackathon/docs/prd-interview-spec-prompt.md)
+* [Operating Principles](platform/examples/sample-projects/interview-driven-hackathon/docs/operating-principles.md)
 
 #### Node Web SaaS Postgres — Sample Project
 
@@ -313,3 +328,4 @@ Open-source-cut metadata: license, contribution flow, community standards, and t
 * [ADR-0003: Submodule Integration](docs/adr/ADR-0003-submodule-integration.md)
 * [ADR-0004: Opportunity Capture — Record Structure](docs/adr/ADR-0004-opportunity-capture-record-structure.md)
 * [ADR-0005: Open-Source Cut](docs/adr/ADR-0005-open-source-cut.md)
+* [ADR-0006: Interview-Driven Management](docs/adr/ADR-0006-interview-driven-management.md)

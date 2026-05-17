@@ -1,0 +1,51 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+id: interview-driven
+type: management
+version: 1.0.0
+summary: Monolithic-docs management overlay for small teams and hackathon-tier projects. Recognizes a single PRD, a decision-complete plan, and an interview-driven downstream prompt instead of the canonical product-lite + project-standard file set. Designed for interoperability — co-exists with product-lite / project-standard so projects can upgrade later without ripping out governance.
+dependsOn:
+  - kernel/base
+conflictsWith: []
+requiredArtifacts:
+  - oneOf:
+      - docs/PRD.md
+      - "docs/PRD-*.md"
+      - "docs/requirements/PRD-*.md"
+      - docs/product/requirements.md
+  - oneOf:
+      - docs/full-plan.md
+      - docs/plan.md
+      - docs/project/scope-plan.md
+optionalArtifacts:
+  - oneOf:
+      - "docs/*interview*.md"
+      - "docs/*spec-prompt*.md"
+  - docs/product/problem-statement.md
+sensitivePaths: []
+companionRules:
+  - description: PRD changes must be reflected in change-log, a new ADR, an updated decision-complete plan, or an updated interview/spec prompt
+    triggerPaths:
+      - ^docs/PRD\.md$
+      - ^docs/PRD-.+\.md$
+      - ^docs/requirements/PRD-.+\.md$
+      - ^docs/product/requirements\.md$
+    requiredAny:
+      - ^docs/project/change-log\.md$
+      - ^docs/adr/ADR-
+      - ^docs/full-plan\.md$
+      - ^docs/plan\.md$
+      - ^docs/project/scope-plan\.md$
+      - ^docs/.*interview.*\.md$
+      - ^docs/.*spec-prompt.*\.md$
+    humanReview: Reviewers verify the PRD change is intentional, explicit out-of-scope items remain named, and the downstream plan or interview/spec prompt has been refreshed so agents and engineers do not work from a stale derivation.
+validators:
+  - validate-required-artifacts
+  - validate-companions
+reviewGates:
+  - Human review must verify the monolithic PRD names explicit out-of-scope items, not just in-scope items.
+  - Human review must confirm the decision-complete plan reflects the current PRD — drift between PRD and plan is the most common failure mode for this style.
+agentAdapters:
+  - platform/agents/base
+compiledFragments:
+  - platform/profiles/management/interview-driven/README.md

@@ -144,11 +144,13 @@ each batch to confirm progress.
 ## Step 5 — Scan for Unfilled Placeholders
 
 ```bash
-bash $PLATFORM/validators/validate-placeholders.sh harness.manifest.yaml .
+bash $PLATFORM/validators/validate-placeholders.sh .
 ```
 
-This scans for any remaining `[[PLACEHOLDER_NAME]]` tokens in tracked files. A passing run means
-all templates have been filled in.
+This scans for any remaining `[[PLACEHOLDER_NAME]]` tokens (and bare `YYYY-MM-DD` placeholders)
+in tracked files under the project root. The script takes a single project-root argument; a
+`.placeholder-ignore` file at the project root controls excluded paths. A passing run means all
+templates have been filled in.
 
 ---
 

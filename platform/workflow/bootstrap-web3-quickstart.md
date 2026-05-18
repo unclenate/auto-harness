@@ -198,7 +198,7 @@ configuration changes:
 - run: bash $PLATFORM/validators/validate-manifest.sh harness.manifest.yaml
 - run: bash $PLATFORM/validators/validate-module-graph.sh harness.manifest.yaml
 - run: bash $PLATFORM/validators/validate-required-artifacts.sh harness.manifest.yaml .
-- run: bash $PLATFORM/validators/validate-companions.sh harness.manifest.yaml $BASE_BRANCH
+- run: bash $PLATFORM/validators/validate-companions.sh harness.manifest.yaml . $BASE_BRANCH
 ```
 
 Set `BASE_BRANCH` to your main branch (typically `main`). The companion validator checks

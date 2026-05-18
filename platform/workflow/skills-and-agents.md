@@ -96,7 +96,7 @@ skills-ref validate ./my-skill
 
 ## Harness-Native Skills
 
-The harness provides four skills in Agent Skills format, defined at `platform/skills/`.
+The harness provides five skills in Agent Skills format, defined at `platform/skills/`.
 These encapsulate governance knowledge as first-class skills that any compliant agent can
 discover and activate.
 

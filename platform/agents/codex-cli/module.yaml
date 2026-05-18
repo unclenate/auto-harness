@@ -1,0 +1,55 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+id: codex-cli
+type: agent
+version: 0.1.0
+summary: OpenAI Codex CLI operating pack. Maps approval_policy and sandbox_mode settings to harness trust tiers and forbids AGENTS.override.md from entering the repository.
+
+dependsOn:
+  - kernel/base
+  - base
+
+conflictsWith: []
+
+requiredArtifacts: []
+
+optionalArtifacts:
+  - .codex/config.toml
+  - CODEX.md
+
+sensitivePaths:
+  - description: Codex CLI configuration and optional shim — changes must align with AGENTS.md
+    patterns:
+      - ^\.codex/
+      - ^CODEX\.md$
+      - ^AGENTS\.override\.md$
+
+companionRules:
+  - description: Codex CLI configuration or shim changes require AGENTS.md cross-reference or an ADR
+    triggerPaths:
+      - ^\.codex/
+      - ^CODEX\.md$
+      - ^AGENTS\.override\.md$
+    requiredAny:
+      - ^AGENTS\.md$
+      - ^docs/adr/ADR-
+      - ^docs/requirements/PRD-
+    humanReview: Reviewers verify approval_policy and sandbox_mode still honor kernel trust tiers and that AGENTS.override.md is not committed.
+
+validators:
+  - validate-agent-pack
+  - validate-companions
+
+reviewGates:
+  - approval_policy=never combined with sandbox_mode=danger-full-access is prohibited outside disposable environments.
+  - AGENTS.override.md must not be committed — Codex lets it silently win over AGENTS.md.
+
+agentAdapters:
+  - AGENTS.md
+  - .codex/config.toml
+
+compiledFragments:
+  - platform/agents/codex-cli/README.md
+
+recommendedSkills:
+  - harness-governance

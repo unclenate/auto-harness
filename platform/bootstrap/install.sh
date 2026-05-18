@@ -2,6 +2,10 @@
 # Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
 # SPDX-License-Identifier: MIT OR Apache-2.0
 # Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
+# shellcheck disable=SC2034
+# SC2034: NON_INTERACTIVE flag is documented in usage, parsed in the case
+# block, but currently a no-op (install.sh has no prompts). Reserved for
+# future use; remove the disable when a prompt path consults the variable.
 # install.sh — bootstrap a consumer repo after adding auto-harness as a git
 # submodule. Brownfield-safe: never clobbers pre-existing files from other AI
 # platforms (Cursor, Windsurf, Copilot, Codex, OpenClaw, Hermes, …) and
@@ -83,6 +87,12 @@ COMPOSITION="brownfield-lite"
 SKILLS="harness-governance,harness-onboarding"
 DRY_RUN=false
 FORCE=false
+# NON_INTERACTIVE is reserved for future use. The flag is documented in the
+# usage block above and parsed in the case-branch below, but install.sh
+# currently has no prompts, so the boolean is a no-op. Kept so consumers can
+# pass --non-interactive without breaking; remove (or actually read) when a
+# prompt path is added that consults it. shellcheck SC2034 is suppressed
+# inline on the case-branch where the assignment fires.
 NON_INTERACTIVE=false
 MOUNT_PATH=""  # auto-detected after PROJECT_ROOT is known
 
@@ -191,8 +201,6 @@ SKIPPED=()
 CONFLICTS=()
 FOLLOWUPS=()
 BLOCKING_CONFLICTS=0
-
-dry_prefix() { $DRY_RUN && echo "[DRY-RUN] " || echo ""; }
 
 write_file() {
   local path="$1" content="$2"

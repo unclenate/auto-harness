@@ -37,7 +37,15 @@ companionRules:
       - ^docs/adr/ADR-
       - ^docs/operating-principles\.md$
       - ^docs/requirements/PRD-
-    humanReview: Reviewers must verify that governance changes are intentional and not merely mechanical.
+      - ^docs/project/change-log\.md$
+      - ^docs/project/dependency-log\.md$
+    humanReview: |
+      Reviewers must verify that governance changes are intentional and not merely
+      mechanical. Substantive decisions (new authentication model, new CI surface,
+      new ownership boundary) require ADR / PRD / operating-principles. Routine
+      maintenance (Dependabot version bumps, CODEOWNERS line additions for new
+      maintainers, minor workflow ergonomics) may satisfy via change-log or
+      dependency-log entry that names the change and the reviewer.
 validators:
   - validate-manifest
   - validate-module-graph

@@ -1,5 +1,16 @@
 # Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
 # SPDX-License-Identifier: MIT OR Apache-2.0
+#
+# This manifest is INTENTIONALLY byte-identical to
+# ../node-web-saas-postgres/harness.manifest.yaml. The two samples
+# demonstrate that integration topology (subtree / submodule / vendored
+# copy) is DECOUPLED from the governance manifest — the same modules
+# activate the same governance regardless of where auto-harness is
+# mounted. See ADR-0003 for the design decision and README.md in this
+# directory ("Topology-agnostic manifests" section) for the
+# corresponding narrative explanation. Do not "fix" the duplication
+# by giving this sample distinct project.id / modules — that would
+# eliminate the pedagogical point.
 schemaVersion: 1
 project:
   id: node-web-saas-postgres

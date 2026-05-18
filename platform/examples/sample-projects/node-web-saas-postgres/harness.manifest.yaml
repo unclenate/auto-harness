@@ -1,5 +1,10 @@
 # Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
 # SPDX-License-Identifier: MIT OR Apache-2.0
+#
+# This manifest is also reused byte-identical by
+# ../submodule-consumer/harness.manifest.yaml to demonstrate that the
+# governance manifest is topology-agnostic per ADR-0003 — the same
+# modules activate the same governance regardless of mount topology.
 schemaVersion: 1
 project:
   id: node-web-saas-postgres

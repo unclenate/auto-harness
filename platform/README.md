@@ -10,12 +10,12 @@ The `platform/` directory is the source of truth for the Development Harness fra
 Everything that defines the governance contract — modules, validators, templates, skills,
 workflows — lives here.
 
-**Version:** Beta (April 2026)
+**Version:** Alpha, pre-1.0 — matches [HARNESS.md](../HARNESS.md) `Maturity: Platform (Alpha)` and [SECURITY.md](../SECURITY.md) "alpha maturity"
 
-> **Docs changelog:** Beta documentation adds a [glossary](reference/glossary.md) of
-> shared terminology, a [how-to-read guide](reference/how-to-read.md) with reader paths
-> by intent and an authority stack, a [topic index](reference/index.md), restructured
-> GitBook navigation with semantic grouping, folder-level READMEs for
+> **Recent docs additions:** a [glossary](reference/glossary.md) of shared terminology, a
+> [how-to-read guide](reference/how-to-read.md) with reader paths by intent and an
+> authority stack, a [topic index](reference/index.md), restructured GitBook navigation
+> with semantic grouping, folder-level READMEs for
 > [compositions](compositions/README.md) and [examples](examples/README.md), and
 > `.gitbookignore` exclusion of test fixtures.
 
@@ -32,7 +32,7 @@ platform/
 ├── core/           # Kernel doctrine, trust model, lifecycle controls, schemas
 ├── profiles/       # Stack, architecture, data, delivery, management, domain overlays
 ├── agents/         # AI-tool operating packs: base, claude-code, generic-llm
-├── skills/         # Agent Skills: harness-governance, harness-testing, harness-web3, harness-onboarding
+├── skills/         # Agent Skills: harness-governance, harness-testing, harness-web3, harness-onboarding, harness-tools, harness-agentic-interfaces, harness-mcp
 ├── templates/      # Artifact skeletons — see templates/README.md for placeholder reference
 ├── validators/     # Validator scripts, shared Ruby library, test suite, fixtures
 ├── compositions/   # Starter manifests for common project types

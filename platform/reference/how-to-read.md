@@ -7,8 +7,18 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 # How to Use This Documentation
 
 This page helps you find the right starting point based on what you are trying to do.
-The harness documentation is large — 24 modules, 35 templates, 6 validators, 4 skills —
+The harness documentation is large — 26 modules, 55 templates, 7 validators, 7 skills —
 but most readers need only a narrow slice at any given time.
+
+<!--
+Catalog counts above are verified by:
+  modules:    find platform/profiles -name module.yaml | wc -l      (excludes core/agents; profile families only)
+  templates:  find platform/templates -type f -name '*.md' ! -name 'README.md' | wc -l
+  validators: ls platform/validators/validate-*.sh | wc -l
+  skills:     ls -d platform/skills/*/ | wc -l
+If you grow the catalog, re-run these and update both this paragraph and the
+diagram in "Authority Stack" below.
+-->
 
 ---
 
@@ -74,7 +84,7 @@ precedence.
                               │
                     ┌─────────▼───────────┐
                     │   module.yaml tree   │  Contractual: each module's machine-
-                    │   (24 modules)       │  readable governance declaration.
+                    │   (26 modules)       │  readable governance declaration.
                     │                      │  Validators enforce these.
                     └─────────┬───────────┘
                               │
@@ -82,7 +92,7 @@ precedence.
               │               │               │
     ┌─────────▼─────┐ ┌──────▼──────┐ ┌──────▼──────┐
     │  validators   │ │  templates  │ │  workflows  │
-    │  (6 scripts)  │ │  (35 files) │ │  (7 guides) │
+    │  (7 scripts)  │ │  (55 files) │ │ (13 guides) │
     │               │ │             │ │             │
     │  Operational: │ │  Generative:│ │  Procedural:│
     │  enforce the  │ │  produce    │ │  how to use │

@@ -20,7 +20,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 ### Governance
 
-- [ ] All six validators pass against this project's manifest and sample project
+- [ ] All seven validators pass against this project's manifest and sample project
 - [ ] Companion validation passes for this release's PRs
 - [ ] No High/High risks open in `docs/security/risk-register.md` without mitigation
 

@@ -94,7 +94,7 @@ harness provides:
 - **Artifact requirements** — the files that must exist for a module to be considered active
   and governed (problem statement, ADRs, risk register, release checklist, etc.)
 - **Sensitive path governance** — patterns that trigger elevated human review when changed
-- **Validator chain** — six shell scripts you run locally or in CI that enforce all of the above
+- **Validator chain** — seven shell scripts you run locally or in CI that enforce all of the above
 - **Agent adapters** — `CLAUDE.md`, `AGENTS.md`, and `.claude/settings.json` shims that load
   the governance rules into agent context at session start
 
@@ -145,7 +145,8 @@ bash platform/validators/validate-module-graph.sh harness.manifest.yaml
 bash platform/validators/validate-required-artifacts.sh harness.manifest.yaml .
 bash platform/validators/validate-placeholders.sh .
 bash platform/validators/validate-agent-pack.sh harness.manifest.yaml .  # if agents/* modules are active
-bash platform/validators/validate-companions.sh harness.manifest.yaml main
+bash platform/validators/validate-companions.sh harness.manifest.yaml . main
+bash platform/validators/validate-doc-references.sh .
 ```
 
 Each exits 0 on pass, 1 on failure, with a specific error message per issue.
@@ -252,11 +253,13 @@ Pre-built manifests for common project types. Copy the closest match and adjust:
 | ----------- | ----- | -------- |
 | [`brownfield-lite.yaml`](platform/compositions/brownfield-lite.yaml) | Any | Existing codebase — assessment pending |
 | [`new-product-discovery.yaml`](platform/compositions/new-product-discovery.yaml) | Stack TBD | Discovery phase — idea to first manifest |
+| [`interview-driven-discovery.yaml`](platform/compositions/interview-driven-discovery.yaml) | Stack TBD | Monolithic-PRD or hackathon-style intake — one structured interview produces the artifact spine |
 | [`node-web-saas-postgres.yaml`](platform/compositions/node-web-saas-postgres.yaml) | Node / TS | Web app with PostgreSQL |
 | [`python-api-service-postgres.yaml`](platform/compositions/python-api-service-postgres.yaml) | Python | API service with PostgreSQL |
 | [`research-pipeline-python-object-storage.yaml`](platform/compositions/research-pipeline-python-object-storage.yaml) | Python | Data / ML pipeline |
 | [`web3-risk-analytics.yaml`](platform/compositions/web3-risk-analytics.yaml) | Python | Blockchain-integrated platform |
 | [`agentic-ui-saas.yaml`](platform/compositions/agentic-ui-saas.yaml) | Node / TS | SaaS web-app shipping an in-product agentic interface (copilot or generative UI) |
+| [`mcp-server-typescript.yaml`](platform/compositions/mcp-server-typescript.yaml) | Node / TS | Projects shipping their own MCP server (producer-side: tools, transports, prompt-injection defense) |
 
 ```bash
 cp platform/compositions/node-web-saas-postgres.yaml harness.manifest.yaml
@@ -307,7 +310,7 @@ A consumer project that adopts the harness once needs the maintenance guide inde
 
 ## Agent Skills
 
-The harness provides five skills in [Agent Skills](https://agentskills.io/specification) format
+The harness provides seven skills in [Agent Skills](https://agentskills.io/specification) format
 — the open standard supported by Claude Code, VS Code Copilot, GitHub Copilot, Cursor,
 Gemini CLI, and others:
 
@@ -318,6 +321,8 @@ Gemini CLI, and others:
 | [`harness-web3`](platform/skills/harness-web3/SKILL.md) | Web3 projects | UNKNOWN propagation, rate limit budgets, evidence requirements, Tier 5 gates |
 | [`harness-onboarding`](platform/skills/harness-onboarding/SKILL.md) | Brownfield onboarding | Repository assessment, gap analysis, lite manifest generation |
 | [`harness-tools`](platform/skills/harness-tools/SKILL.md) | Projects with `agents/openclaw` active | MCP developer tool governance: trust tier map, Linear artifact workflow, Slack notifications, analytics tools |
+| [`harness-agentic-interfaces`](platform/skills/harness-agentic-interfaces/SKILL.md) | Projects with `domains/agentic-interfaces` active | In-product copilot / generative-UI / conversational-primary governance: flavor map, tier discipline for agent-callable actions, prompt-injection and renderer-contract threat model |
+| [`harness-mcp`](platform/skills/harness-mcp/SKILL.md) | Projects with `architectures/mcp-server` active | Producer-side MCP work: three-mode map (consumer / producer / exposed-governance), per-tool consumer-tier mapping, prompt-injection defense surface, capability and transport posture |
 
 Skills are progressively disclosed — agents load only the name and description (~100 tokens)
 at startup. The full body loads on demand when a task matches the skill's domain.
@@ -340,7 +345,7 @@ cp -r platform/skills/harness-governance .claude/skills/
 
 ## Validators
 
-Six validators, each targeting a specific governance layer:
+Seven validators, each targeting a specific governance layer:
 
 | Validator | What It Checks |
 | --------- | -------------- |
@@ -350,6 +355,7 @@ Six validators, each targeting a specific governance layer:
 | `validate-placeholders.sh` | No unfilled `[[PLACEHOLDER]]` tokens in tracked files |
 | `validate-agent-pack.sh` | Agent adapter files exist and are consistent |
 | `validate-companions.sh` | PR diff satisfies all active companion rules |
+| `validate-doc-references.sh` | Markdown links to `platform/...` paths resolve on disk — catches stale path strings as the catalog evolves |
 
 All validators are pure shell + Ruby (no external service calls). Ruby 3.0+ and ripgrep
 are the only runtime requirements.
@@ -434,9 +440,11 @@ After adoption, the [Maintenance & Operations guide](platform/workflow/maintenan
 
 The steps above show the "platform-at-root" / self-dogfood pattern — auto-harness's `platform/` tree lives inside the repo. For consumer projects, the recommended pattern is **auto-harness as a git submodule**:
 
+**Prerequisites.** macOS ships Bash 3.2 by default (GPL-v3 licensing reasons), which `install.sh` refuses to run under because it relies on associative arrays. Install Bash 4+ via Homebrew before bootstrapping: `brew install bash`. The script will exit cleanly with a helpful message if it detects Bash <4, but installing upfront avoids a confusing first run. Linux users typically have Bash 4+ already. Other prerequisites — Ruby 3.0+, ripgrep, Git with `core.symlinks=true` — are documented in [`platform/workflow/submodule-integration.md`](platform/workflow/submodule-integration.md#prerequisites).
+
 ```bash
 cd your-repo
-git submodule add https://github.com/YOUR-ORG/auto-harness .harness
+git submodule add https://github.com/unclenate/auto-harness .harness
 bash .harness/platform/bootstrap/install.sh
 ```
 
@@ -475,7 +483,7 @@ The bootstrap is brownfield-safe — it never overwrites pre-existing files from
 │   │   ├── management/              # discovery-intake, product-lite, project-standard, program-lite, testing-standard, knowledge-capture, opportunity-capture
 │   │   └── domains/                 # supabase, web3, media-pipeline, gitbook
 │   ├── agents/                      # Agent operating packs: base, claude-code, generic-llm, openclaw
-│   ├── skills/                      # Agent Skills: harness-governance, harness-testing, harness-web3, harness-onboarding, harness-tools
+│   ├── skills/                      # Agent Skills: harness-governance, harness-testing, harness-web3, harness-onboarding, harness-tools, harness-agentic-interfaces, harness-mcp
 │   ├── templates/                   # Artifact skeletons for every required file
 │   ├── validators/                  # validate-*.sh scripts, Ruby library, test suite
 │   ├── compositions/                # Starter manifests for common project types

@@ -14,7 +14,7 @@ This document covers the practical mechanics. The harness's own governance disci
 
 ## Licensing & Contributor Agreement
 
-auto-harness is dual-licensed under the [MIT License](LICENSE-MIT) and the [Apache License 2.0](LICENSE-APACHE), at the consumer's option.
+auto-harness is dual-licensed under the [MIT License](https://github.com/unclenate/auto-harness/blob/main/LICENSE-MIT) and the [Apache License 2.0](https://github.com/unclenate/auto-harness/blob/main/LICENSE-APACHE), at the consumer's option.
 
 **By submitting a contribution to this project, you agree that your contribution is dual-licensed under both the MIT License and the Apache License 2.0 on the same terms as the project itself.** This is the standard inbound-equals-outbound convention used by the Rust ecosystem and by many CNCF-adjacent projects.
 

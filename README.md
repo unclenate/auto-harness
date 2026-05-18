@@ -538,10 +538,10 @@ For shared terminology, see the [Glossary](platform/reference/glossary.md).
 
 auto-harness is dual-licensed at your option under:
 
-- The **[MIT License](LICENSE-MIT)**, or
-- The **[Apache License, Version 2.0](LICENSE-APACHE)**
+- The **[MIT License](https://github.com/unclenate/auto-harness/blob/main/LICENSE-MIT)**, or
+- The **[Apache License, Version 2.0](https://github.com/unclenate/auto-harness/blob/main/LICENSE-APACHE)**
 
-Either license is sufficient — consumers select the one that fits their own project's distribution constraints. See [NOTICE](NOTICE) for attribution requirements and [ADR-0005](docs/adr/ADR-0005-open-source-cut.md) for the rationale behind the dual-license choice.
+Either license is sufficient — consumers select the one that fits their own project's distribution constraints. See [NOTICE](https://github.com/unclenate/auto-harness/blob/main/NOTICE) for attribution requirements and [ADR-0005](docs/adr/ADR-0005-open-source-cut.md) for the rationale behind the dual-license choice.
 
 Contributions are accepted under both licenses on the same terms. See [CONTRIBUTING.md](CONTRIBUTING.md#licensing--contributor-agreement) for details.
 
@@ -562,10 +562,10 @@ Contributions are accepted under both licenses on the same terms. See [CONTRIBUT
 | Day-to-day — CI integration | [`platform/workflow/ci-integration.md`](platform/workflow/ci-integration.md) |
 | Maintenance & Operations | [`platform/workflow/maintenance-operations.md`](platform/workflow/maintenance-operations.md) |
 | Validator error solver | [`platform/workflow/troubleshooting.md`](platform/workflow/troubleshooting.md) |
-| All templates | [`platform/templates/`](platform/templates/) |
-| All compositions | [`platform/compositions/`](platform/compositions/) |
-| Sample project | [`platform/examples/sample-projects/node-web-saas-postgres/`](platform/examples/sample-projects/node-web-saas-postgres/) |
+| All templates | [`platform/templates/`](platform/templates/README.md) |
+| All compositions | [`platform/compositions/`](platform/compositions/README.md) |
+| Sample project | [`platform/examples/sample-projects/node-web-saas-postgres/`](platform/examples/sample-projects/node-web-saas-postgres/HARNESS.md) |
 | Self-governance entrypoint | [`HARNESS.md`](HARNESS.md) |
 | Cross-agent operating manual | [`AGENTS.md`](AGENTS.md) |
 | Open-source cut decision | [`docs/adr/ADR-0005-open-source-cut.md`](docs/adr/ADR-0005-open-source-cut.md) |
-| Legacy / archived files | [`legacy/`](legacy/) |
+| Legacy / archived files | `legacy/` (no canonical landing file; browse on GitHub) |

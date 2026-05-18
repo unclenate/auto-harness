@@ -15,7 +15,7 @@ Run locally during development and in CI on every pull request.
 
 - **Ruby 3.0+** — all validators use inline Ruby for YAML parsing and logic
 - **ripgrep (`rg`)** — required by `validate-placeholders.sh` only; other validators work without it
-- **Bash 4+** — standard on Linux; macOS ships Bash 3 but the scripts are compatible
+- **Bash** — the seven `validate-*.sh` scripts delegate to Ruby and work with Bash 3.2 (macOS default) and 4+. The bootstrap scripts (`install.sh`, `link-skills.sh`, `add-license-headers.sh`) require Bash 4+ (use `declare -A` and other 4+ features); macOS users must `brew install bash` for those.
 
 ---
 

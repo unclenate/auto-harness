@@ -222,8 +222,8 @@ Agents working in projects that have this module active:
 - [ADR-0008: MCP Awareness](../../../../docs/adr/ADR-0008-mcp-awareness.md) — why this module exists, alternatives considered, exposed-governance scope
 - [OPP-0003: MCP Producer Posture and Exportable Governance via MCP](../../../../docs/opportunities/OPP-0003-mcp-producer-and-exportable-governance-via-mcp.md) — the opportunity record this module promotes
 - [OPP-0001: Exportable Governance Contract for Runtime Harnesses](../../../../docs/opportunities/OPP-0001-exportable-governance-contract-for-runtime-harnesses.md) — the upstream opportunity OPP-0003 partially answers
-- [`platform/templates/mcp/`](../../../templates/mcp/) — the template family this module references
+- [`platform/templates/mcp/`](../../../templates/mcp/README.md) — the template family this module references
 - [`platform/skills/harness-mcp/SKILL.md`](../../../skills/harness-mcp/SKILL.md) — the on-demand skill for producer-side discipline
 - [`platform/workflow/mcp-server-build.md`](../../../workflow/mcp-server-build.md) — operator workflow
-- [`platform/examples/sample-projects/mcp-server-starter/`](../../../examples/sample-projects/mcp-server-starter/) — reference layout
+- [`platform/examples/sample-projects/mcp-server-starter/`](../../../examples/sample-projects/mcp-server-starter/HARNESS.md) — reference layout
 - [`TOOLS.md`](../../../../TOOLS.md) — consumer-side tool registry (existing, complements this overlay)

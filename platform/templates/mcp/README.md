@@ -39,7 +39,7 @@ Templates cite these URLs at the points where the spec is normative:
 
 ## See Also
 
-- [`platform/profiles/architectures/mcp-server/`](../../profiles/architectures/mcp-server/) — the module these templates support
+- [`platform/profiles/architectures/mcp-server/`](../../profiles/architectures/mcp-server/README.md) — the module these templates support
 - [`platform/skills/harness-mcp/SKILL.md`](../../skills/harness-mcp/SKILL.md) — agent-facing guidance
 - [`platform/workflow/mcp-server-build.md`](../../workflow/mcp-server-build.md) — operator workflow
 - [ADR-0008: MCP Awareness](../../../docs/adr/ADR-0008-mcp-awareness.md)

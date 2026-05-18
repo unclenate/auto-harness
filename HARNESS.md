@@ -14,7 +14,7 @@ module system, validators, and companion rules.
 **Manifest:** `harness.manifest.yaml`
 **Maturity:** Platform (Alpha)
 **Owner:** @unclenate
-**License:** Dual MIT / Apache-2.0 at consumer option — see [LICENSE-MIT](LICENSE-MIT), [LICENSE-APACHE](LICENSE-APACHE), and [ADR-0005](docs/adr/ADR-0005-open-source-cut.md)
+**License:** Dual MIT / Apache-2.0 at consumer option — see [LICENSE-MIT](https://github.com/unclenate/auto-harness/blob/main/LICENSE-MIT), [LICENSE-APACHE](https://github.com/unclenate/auto-harness/blob/main/LICENSE-APACHE), and [ADR-0005](docs/adr/ADR-0005-open-source-cut.md)
 **Contributing:** see [CONTRIBUTING.md](CONTRIBUTING.md) · **Security:** see [SECURITY.md](SECURITY.md) · **Conduct:** see [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
 
 ### Sibling entrypoints at the repo root

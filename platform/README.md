@@ -55,7 +55,7 @@ platform/
 **Intake questionnaire:** [templates/discovery/intake-questionnaire.md](templates/discovery/intake-questionnaire.md)
 — an 8-section instrument usable with clients, stakeholders, or as a self-interview.
 
-**Starter compositions:** [compositions/](compositions/) — copy the closest match to
+**Starter compositions:** [compositions/](compositions/README.md) — copy the closest match to
 `harness.manifest.yaml` and adjust.
 
 ---

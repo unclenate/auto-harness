@@ -188,7 +188,7 @@ See [ADR-0003](../../docs/adr/ADR-0003-submodule-integration.md) for why Ruby is
 
 `install.sh` handles the *mechanical* parts of adoption — creating files, merging AGENTS.md, linking skills, running validators. It is fast, deterministic, and never modifies anything it doesn't own.
 
-The [harness-onboarding skill](../skills/harness-onboarding/) handles the *analytical* parts — reading your codebase, assessing which modules (stacks, architectures, management, domains) apply, and producing an informed `harness.manifest.yaml`. It is slower, AI-driven, and answers judgment questions like "is this codebase prototype or production maturity?"
+The [harness-onboarding skill](../skills/harness-onboarding/SKILL.md) handles the *analytical* parts — reading your codebase, assessing which modules (stacks, architectures, management, domains) apply, and producing an informed `harness.manifest.yaml`. It is slower, AI-driven, and answers judgment questions like "is this codebase prototype or production maturity?"
 
 **The right order is: run `install.sh` first, then the skill.**
 

@@ -3,6 +3,14 @@
 # Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 require "yaml"
 
+# Defend against catastrophic-backtracking regex from user-controlled
+# module.yaml patterns (companionRules.triggerPaths / requiredAny /
+# forbiddenPatterns + .doc-reference-ignore). A pathological pattern like
+# /(a+)+$/ against a long matching input could otherwise wedge a validator.
+# Ruby 3.2+ supports Regexp.timeout; older Ruby (3.0, 3.1) ignores it
+# silently so this is safe to set unconditionally.
+Regexp.timeout = 1.0 if Regexp.respond_to?(:timeout=)
+
 module HarnessRegistry
   CATEGORY_DIRS = {
     "core" => "core",

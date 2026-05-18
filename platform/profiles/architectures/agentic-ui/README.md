@@ -126,7 +126,7 @@ Agents operating under this overlay must treat:
 
 ## See Also
 
-- [`platform/profiles/domains/agentic-interfaces/`](../../domains/agentic-interfaces/) — required pair; covers design doc, risk register, prompt-tool registry, renderer contract
+- [`platform/profiles/domains/agentic-interfaces/`](../../domains/agentic-interfaces/README.md) — required pair; covers design doc, risk register, prompt-tool registry, renderer contract
 - [ADR-0007: Agentic Interface Awareness](../../../../docs/adr/ADR-0007-agentic-interface-awareness.md) — why this overlay exists separately from the domain
 - [`platform/templates/architecture-overview.md`](../../../templates/architecture-overview.md) — base template (add an "Agentic UI topology" section)
 - [`platform/workflow/agentic-interface-integration.md`](../../../workflow/agentic-interface-integration.md) — integration guide

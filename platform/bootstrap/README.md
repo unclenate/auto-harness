@@ -112,7 +112,7 @@ ruby platform/bootstrap/test/test_install.rb
 ruby platform/bootstrap/test/test_link_skills.rb
 ```
 
-Test fixtures live at [`test/fixtures/consumer-repos/`](test/fixtures/consumer-repos/):
+Test fixtures live at `test/fixtures/consumer-repos/` (browse on GitHub — no canonical landing file):
 
 - `coexist-cursor/` — only `.cursorrules` pre-seeded
 - `coexist-copilot/` — only `.github/copilot-instructions.md` pre-seeded

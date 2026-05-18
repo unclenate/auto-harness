@@ -50,4 +50,4 @@ predictable load order at the root of the repo — nothing more.
 
 For the Claude-Code-specific behavior overlay (command permissions, hook
 configuration, settings), the canonical source is the `agents/claude-code`
-module: [`platform/agents/claude-code/`](platform/agents/claude-code/).
+module: [`platform/agents/claude-code/`](platform/agents/claude-code/README.md).

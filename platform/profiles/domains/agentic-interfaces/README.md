@@ -168,9 +168,9 @@ paths, they must:
 
 - [ADR-0007: Agentic Interface Awareness](../../../../docs/adr/ADR-0007-agentic-interface-awareness.md) — why this overlay exists and the domain-vs-architecture decision
 - [OPP-0002: Agentic Interface Awareness](../../../../docs/opportunities/OPP-0002-agentic-interface-awareness.md) — the thesis and evidence
-- [`platform/profiles/architectures/agentic-ui/`](../../architectures/agentic-ui/) — optional architecture overlay for conversational-primary topology
-- [`platform/templates/agentic-interface/`](../../../templates/agentic-interface/) — required and optional artifact templates
-- [`platform/skills/harness-agentic-interfaces/`](../../../skills/harness-agentic-interfaces/) — Agent Skill for agents working in agentic-UI codebases
+- [`platform/profiles/architectures/agentic-ui/`](../../architectures/agentic-ui/README.md) — optional architecture overlay for conversational-primary topology
+- [`platform/templates/agentic-interface/`](../../../templates/agentic-interface/README.md) — required and optional artifact templates
+- [`platform/skills/harness-agentic-interfaces/`](../../../skills/harness-agentic-interfaces/SKILL.md) — Agent Skill for agents working in agentic-UI codebases
 - [`platform/workflow/agentic-interface-integration.md`](../../../workflow/agentic-interface-integration.md) — operator-facing integration guide
 - [`platform/compositions/agentic-ui-saas.yaml`](../../../compositions/agentic-ui-saas.yaml) — starter composition
-- [`platform/examples/sample-projects/agentic-ui-starter/`](../../../examples/sample-projects/agentic-ui-starter/) — reference layout
+- [`platform/examples/sample-projects/agentic-ui-starter/`](../../../examples/sample-projects/agentic-ui-starter/HARNESS.md) — reference layout

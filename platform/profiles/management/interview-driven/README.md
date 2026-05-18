@@ -120,6 +120,6 @@ See `platform/compositions/interview-driven-discovery.yaml` for the starter comp
 ## See Also
 
 - [ADR-0006: Interview-Driven Management](../../../../docs/adr/ADR-0006-interview-driven-management.md) — why this overlay exists and how it relates to `product-lite + project-standard`
-- [`platform/profiles/management/product-lite/`](../product-lite/) — split-file product overlay (upgrade target)
-- [`platform/profiles/management/project-standard/`](../project-standard/) — split-file project overlay (upgrade target)
-- [`platform/profiles/management/discovery-intake/`](../discovery-intake/) — formal discovery overlay (compatible)
+- [`platform/profiles/management/product-lite/`](../product-lite/README.md) — split-file product overlay (upgrade target)
+- [`platform/profiles/management/project-standard/`](../project-standard/README.md) — split-file project overlay (upgrade target)
+- [`platform/profiles/management/discovery-intake/`](../discovery-intake/README.md) — formal discovery overlay (compatible)

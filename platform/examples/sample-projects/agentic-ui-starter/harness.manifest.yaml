@@ -1,0 +1,26 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+schemaVersion: 1
+project:
+  id: agentic-ui-starter
+  name: Agentic UI Starter Sample
+  maturity: prototype
+  criticality: low
+modules:
+  core:
+    - kernel/base
+  stacks:
+    - node-typescript
+  architectures:
+    - web-app
+  domains:
+    - agentic-interfaces
+  delivery:
+    - prototype
+  management:
+    - interview-driven
+  agents:
+    - base
+overrides:
+  requiredArtifacts: []
+  disabledValidations: []

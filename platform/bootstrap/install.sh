@@ -197,6 +197,95 @@ replace_file() {
 }
 
 # ---------------------------------------------------------------------------
+# merge_manifest_identity: preserve the consumer's project identity across a
+# --force re-bootstrap.
+#
+# Reads project.id / project.name / project.maturity / project.criticality from
+# the existing manifest at $1 (an existing on-disk file), then substitutes
+# them into the generated manifest content passed on stdin. Emits the merged
+# manifest on stdout.
+#
+# Identity fields are *descriptive* — they identify the consumer's project,
+# not its governance. --force is meant to replace the governance (modules,
+# overrides) the composition declares, not silently clobber the consumer's
+# project identity with the composition's example placeholders (e.g.,
+# `id: example-interview-driven`).
+#
+# Field-by-field: each identity field is preserved only if the existing
+# manifest declares it AND the generated content also has a slot for it.
+# If the existing manifest is missing a `project:` block (e.g., it's corrupt
+# or stub), no substitution happens and the generated content is returned
+# verbatim — same as a fresh install.
+#
+# Implementation note: uses awk for portability (no Ruby/yq dependency).
+# Assumes the conventional two-space YAML indentation under `project:`. All
+# in-tree composition files use two-space indent (validated by the harness
+# itself). Only the *first* occurrence of each `  <field>:` line under the
+# `project:` block is rewritten — composition manifests have exactly one
+# per file by convention.
+# ---------------------------------------------------------------------------
+merge_manifest_identity() {
+  local existing="$1"
+  local existing_id existing_name existing_maturity existing_criticality
+
+  # Extract identity from existing manifest. We only consider lines inside the
+  # top-level `project:` block (two-space indented `  id:`, etc.). Missing
+  # fields yield an empty string and are skipped during substitution.
+  extract_field() {
+    local field="$1"
+    awk -v f="$field" '
+      /^project:[[:space:]]*$/ { in_project = 1; next }
+      /^[^[:space:]]/         { in_project = 0 }
+      in_project && $0 ~ "^  " f ":" {
+        sub("^  " f ":[[:space:]]*", "")
+        sub("[[:space:]]*#.*$", "")
+        sub("[[:space:]]+$", "")
+        print
+        exit
+      }
+    ' "$existing"
+  }
+
+  existing_id="$(extract_field id)"
+  existing_name="$(extract_field name)"
+  existing_maturity="$(extract_field maturity)"
+  existing_criticality="$(extract_field criticality)"
+
+  # If the existing manifest had no `project:` block at all, every field came
+  # back empty — fall through to composition defaults (just pass stdin).
+  if [[ -z "$existing_id" && -z "$existing_name" \
+        && -z "$existing_maturity" && -z "$existing_criticality" ]]; then
+    cat
+    return
+  fi
+
+  awk \
+    -v new_id="$existing_id" \
+    -v new_name="$existing_name" \
+    -v new_maturity="$existing_maturity" \
+    -v new_criticality="$existing_criticality" '
+    BEGIN { in_project = 0; did_id = 0; did_name = 0; did_maturity = 0; did_criticality = 0 }
+    /^project:[[:space:]]*$/ { in_project = 1; print; next }
+    /^[^[:space:]]/          { in_project = 0 }
+    {
+      if (in_project && new_id != "" && !did_id && $0 ~ /^  id:/) {
+        print "  id: " new_id; did_id = 1; next
+      }
+      if (in_project && new_name != "" && !did_name && $0 ~ /^  name:/) {
+        print "  name: " new_name; did_name = 1; next
+      }
+      if (in_project && new_maturity != "" && !did_maturity && $0 ~ /^  maturity:/) {
+        print "  maturity: " new_maturity; did_maturity = 1; next
+      }
+      if (in_project && new_criticality != "" && !did_criticality && $0 ~ /^  criticality:/) {
+        print "  criticality: " new_criticality; did_criticality = 1; next
+      }
+      print
+    }
+  '
+}
+
+# ---------------------------------------------------------------------------
 # Target 1: harness.manifest.yaml
 # ---------------------------------------------------------------------------
 handle_manifest() {
@@ -211,8 +300,11 @@ handle_manifest() {
   # Signature: valid manifest has `schemaVersion: 1` near the top
   if head -n 5 "$target" | grep -q '^schemaVersion: 1'; then
     if $FORCE; then
+      # Preserve consumer's project identity across the --force regeneration.
+      # Governance (modules, overrides) comes from the composition; identity
+      # (id/name/maturity/criticality) is sourced from the existing manifest.
       local content
-      content="$(cat "$COMPOSITION_FILE")"
+      content="$(merge_manifest_identity "$target" < "$COMPOSITION_FILE")"
       replace_file "$target" "$content"
     else
       SKIPPED+=("harness.manifest.yaml (harness-style, use --force to replace)")
@@ -357,15 +449,30 @@ handle_agents_md() {
       CREATED+=("[DRY-RUN update markers] AGENTS.md")
       return
     fi
-    local tmp
+    local tmp block_tmp
     tmp="$(mktemp)"
-    awk -v start="$AGENTS_MARKER_START" -v end="$AGENTS_MARKER_END" -v block="$managed_block" '
-      BEGIN { in_managed = 0 }
+    block_tmp="$(mktemp)"
+    # BSD awk (macOS default) rejects multi-line strings passed via `-v`
+    # ("newline in string"), so write the managed block to a temp file and
+    # have awk read it on demand inside the BEGIN/replacement block. Same
+    # behavior on gawk; survives portability.
+    printf '%s' "$managed_block" > "$block_tmp"
+    awk -v start="$AGENTS_MARKER_START" -v end="$AGENTS_MARKER_END" -v blockfile="$block_tmp" '
+      BEGIN {
+        in_managed = 0
+        block = ""
+        while ((getline line < blockfile) > 0) {
+          if (block == "") block = line
+          else             block = block "\n" line
+        }
+        close(blockfile)
+      }
       $0 == start { print block; in_managed = 1; next }
       $0 == end   { in_managed = 0; next }
       !in_managed { print }
     ' "$target" > "$tmp"
     mv "$tmp" "$target"
+    rm -f "$block_tmp"
     CREATED+=("AGENTS.md (managed section updated)")
   else
     # Append managed block, preserving all existing content.

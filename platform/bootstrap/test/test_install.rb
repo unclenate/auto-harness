@@ -261,6 +261,98 @@ class TestInstallCliValidation < Minitest::Test
   end
 end
 
+class TestInstallForceIdentityPreservation < Minitest::Test
+  # Acceptance for Item 5a: --force preserves project.id / project.name /
+  # project.maturity / project.criticality from the existing manifest.
+
+  def test_force_preserves_project_identity_across_composition_swap
+    Dir.mktmpdir do |dir|
+      setup_mount(dir)
+      manifest_path = File.join(dir, "harness.manifest.yaml")
+
+      # Seed an existing harness-style manifest with a real consumer identity.
+      File.write(manifest_path, <<~YAML)
+        schemaVersion: 1
+        project:
+          id: my-test-project
+          name: My Test Project
+          maturity: mvp
+          criticality: high
+        modules:
+          core:
+            - kernel/base
+          agents:
+            - base
+        overrides: {}
+      YAML
+
+      # --force with a composition whose example identity is different.
+      out, _err, code = run_install(
+        dir, "--force", "--composition", "interview-driven-discovery"
+      )
+      assert_equal 0, code, "expected clean exit. out: #{out}"
+
+      regen = File.read(manifest_path)
+
+      # Identity preserved
+      assert_match(/^  id: my-test-project$/, regen, "id must be preserved")
+      assert_match(/^  name: My Test Project$/, regen, "name must be preserved")
+      assert_match(/^  maturity: mvp$/, regen, "maturity must be preserved")
+      assert_match(/^  criticality: high$/, regen, "criticality must be preserved")
+
+      # Composition's example identity must NOT have leaked in
+      refute_match(/example-interview-driven/, regen,
+                   "composition's example id must NOT clobber consumer identity")
+      refute_match(/Example Interview-Driven Project/, regen,
+                   "composition's example name must NOT clobber consumer identity")
+
+      # Composition governance (modules) IS present
+      assert_match(/^  management:/, regen,
+                   "composition's modules block (with management) should be applied")
+      assert_match(/^    - interview-driven$/, regen,
+                   "composition's interview-driven module should be applied")
+    end
+  end
+
+  def test_force_against_empty_repo_uses_composition_defaults
+    # Acceptance: --force against a repo with no existing manifest behaves
+    # identically to today (composition defaults written verbatim).
+    Dir.mktmpdir do |dir|
+      setup_mount(dir)
+      _out, _err, code = run_install(
+        dir, "--force", "--composition", "interview-driven-discovery"
+      )
+      assert_equal 0, code
+
+      content = File.read(File.join(dir, "harness.manifest.yaml"))
+      # Composition identity unchanged — nothing to merge from.
+      assert_match(/^  id: example-interview-driven$/, content)
+      assert_match(/^  name: Example Interview-Driven Project$/, content)
+    end
+  end
+
+  def test_force_with_corrupt_existing_manifest_falls_through
+    # Acceptance: if the existing manifest has no `project:` block (corrupt /
+    # stub), composition defaults are used — no half-merged Frankenstein.
+    Dir.mktmpdir do |dir|
+      setup_mount(dir)
+      manifest_path = File.join(dir, "harness.manifest.yaml")
+      # Has the schemaVersion signature (so --force engages) but no project block.
+      File.write(manifest_path, "schemaVersion: 1\nmodules:\n  core: [kernel/base]\n")
+
+      _out, _err, code = run_install(
+        dir, "--force", "--composition", "interview-driven-discovery"
+      )
+      assert_equal 0, code
+
+      regen = File.read(manifest_path)
+      # Fell through to composition defaults
+      assert_match(/^  id: example-interview-driven$/, regen)
+      assert_match(/^  name: Example Interview-Driven Project$/, regen)
+    end
+  end
+end
+
 class TestInstallCiSnippet < Minitest::Test
   def test_ci_snippet_references_submodule_root
     Dir.mktmpdir do |dir|

@@ -176,7 +176,7 @@ declares its governance contract. You compose them to match your project.
 | ------ | ------- | ------- |
 | **Core** | Universal doctrine — always active | `kernel/base` |
 | **Stacks** | Language and framework adaptations | `node-typescript`, `python` |
-| **Architectures** | Deployment and interaction patterns | `web-app`, `api-service`, `event-driven` |
+| **Architectures** | Deployment and interaction patterns | `web-app`, `api-service`, `event-driven`, `mcp-server` |
 | **Data** | Storage overlays | `relational-postgres`, `document-store`, `object-storage` |
 | **Delivery** | Lifecycle posture | `prototype`, `production-saas`, `internal-platform` |
 | **Management** | Product, project, program, knowledge, opportunity, and testing governance | `discovery-intake`, `product-lite`, `project-standard`, `program-lite`, `testing-standard`, `knowledge-capture`, `opportunity-capture` |

@@ -142,6 +142,33 @@ Halt and surface to a human when:
 - An analytics result (Ahrefs, Similarweb) is being used to make a product or scope
   decision — surface the data to the human rather than deciding autonomously
 
+## Producer vs Consumer Roles
+
+This skill governs the **consumer** role — projects that use third-party MCP
+developer tools (the seven curated in `TOOLS.md`: Linear, Slack, Calendar,
+Gmail, Canva, Ahrefs, Similarweb).
+
+When a project **ships its own MCP server** (an npm/pip package, a hosted
+service, an internal MCP endpoint), the producer-side discipline lives in a
+sibling module and skill:
+
+- Architecture overlay: `platform/profiles/architectures/mcp-server/`
+- Template family: `platform/templates/mcp/`
+- Producer-side skill: `platform/skills/harness-mcp/SKILL.md`
+- Operator workflow: `platform/workflow/mcp-server-build.md`
+- Reference layout: `platform/examples/sample-projects/mcp-server-starter/`
+
+The two roles use the same trust-tier vocabulary applied to opposite sides
+of the wire: this skill helps you reason about the tier of a tool *you call*;
+`harness-mcp` helps you reason about the tier consumers should treat tools
+*you expose* as. A project can be in both roles simultaneously — load both
+skills when the same project ships an MCP server AND consumes the developer
+MCP subset.
+
+Decision rationale and the exposed-governance path (auto-harness governance
+itself reachable via MCP) are in `docs/adr/ADR-0008-mcp-awareness.md` and
+`docs/opportunities/OPP-0003-mcp-producer-and-exportable-governance-via-mcp.md`.
+
 ## Installing This Skill
 
 ```bash

@@ -678,3 +678,103 @@ class TestLoadDocReferenceIgnore < Minitest::Test
     end
   end
 end
+
+# ---------------------------------------------------------------------------
+# load_manifest — typed-error shape checking
+#
+# load_manifest must convert every form of bad input into a typed
+# HarnessRegistry::ManifestShapeError so validator heredocs can catch one
+# exception type and exit 2 with a clean stderr message. None of these
+# scenarios may leak a raw NoMethodError or Psych::SyntaxError to callers.
+# ---------------------------------------------------------------------------
+class TestLoadManifestShape < Minitest::Test
+  def test_valid_manifest_returns_hash
+    Dir.mktmpdir do |tmp|
+      path = File.join(tmp, "harness.manifest.yaml")
+      File.write(path, "schemaVersion: 1\nproject:\n  id: x\n")
+      data = HarnessRegistry.load_manifest(path)
+      assert_kind_of Hash, data
+      assert_equal 1, data["schemaVersion"]
+    end
+  end
+
+  def test_missing_path_raises_typed_error
+    err = assert_raises(HarnessRegistry::ManifestShapeError) do
+      HarnessRegistry.load_manifest("/no/such/manifest.yaml")
+    end
+    assert_match(/not found/i, err.message)
+    assert_match(%r{/no/such/manifest\.yaml}, err.message)
+  end
+
+  def test_empty_path_raises_typed_error
+    err = assert_raises(HarnessRegistry::ManifestShapeError) do
+      HarnessRegistry.load_manifest("")
+    end
+    assert_match(/required/i, err.message)
+  end
+
+  def test_nil_path_raises_typed_error
+    err = assert_raises(HarnessRegistry::ManifestShapeError) do
+      HarnessRegistry.load_manifest(nil)
+    end
+    assert_match(/required/i, err.message)
+  end
+
+  def test_empty_yaml_document_raises_typed_error
+    # An empty file parses to nil, which is not a Hash — this is the regression
+    # case from the audit: `echo '' | xargs bash validate-manifest.sh` used to
+    # produce a raw NoMethodError stack trace.
+    Dir.mktmpdir do |tmp|
+      path = File.join(tmp, "empty.yaml")
+      File.write(path, "")
+      err = assert_raises(HarnessRegistry::ManifestShapeError) do
+        HarnessRegistry.load_manifest(path)
+      end
+      assert_match(/mapping at the top level/i, err.message)
+      assert_match(/empty document/i, err.message)
+    end
+  end
+
+  def test_yaml_string_at_top_level_raises_typed_error
+    Dir.mktmpdir do |tmp|
+      path = File.join(tmp, "string.yaml")
+      File.write(path, "just-a-string\n")
+      err = assert_raises(HarnessRegistry::ManifestShapeError) do
+        HarnessRegistry.load_manifest(path)
+      end
+      assert_match(/mapping at the top level/i, err.message)
+      assert_match(/String/, err.message)
+    end
+  end
+
+  def test_yaml_array_at_top_level_raises_typed_error
+    Dir.mktmpdir do |tmp|
+      path = File.join(tmp, "array.yaml")
+      File.write(path, "- one\n- two\n")
+      err = assert_raises(HarnessRegistry::ManifestShapeError) do
+        HarnessRegistry.load_manifest(path)
+      end
+      assert_match(/mapping at the top level/i, err.message)
+      assert_match(/Array/, err.message)
+    end
+  end
+
+  def test_malformed_yaml_raises_typed_error
+    Dir.mktmpdir do |tmp|
+      path = File.join(tmp, "broken.yaml")
+      # Tab indentation inside a mapping value is a Psych::SyntaxError, as is
+      # an unterminated flow mapping. Use the flow form for portability.
+      File.write(path, "schemaVersion: 1\nproject: { id: x\n")
+      err = assert_raises(HarnessRegistry::ManifestShapeError) do
+        HarnessRegistry.load_manifest(path)
+      end
+      assert_match(/not valid YAML/i, err.message)
+    end
+  end
+
+  def test_typed_error_is_a_standard_error
+    # Validators rescue under StandardError (specifically the typed subclass)
+    # without needing a `rescue Exception` — confirm inheritance.
+    assert_operator HarnessRegistry::ManifestShapeError, :<, StandardError
+  end
+end

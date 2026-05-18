@@ -70,9 +70,13 @@ class TestValidateManifest < Minitest::Test
   end
 
   def test_missing_manifest_aborts
+    # Missing manifest is a usage error (the script cannot run at all), not a
+    # validation failure — so exit 2, not 1, per the three-state contract.
     _out, err, code = run_validator("validate-manifest.sh", "/nonexistent/harness.manifest.yaml")
-    assert_equal 1, code
+    assert_equal 2, code, "missing manifest must exit 2 (usage error), not 1"
     assert_match(/not found|No such file/i, err)
+    refute_match(/NoMethodError|Psych::SyntaxError/, err,
+                 "raw Ruby exception names must not leak to stderr")
   end
 end
 
@@ -466,9 +470,12 @@ class TestValidateDocReferences < Minitest::Test
   end
 
   def test_missing_platform_dir_aborts
+    # Missing platform/ directory is a usage error (the script has nothing to
+    # scan and was pointed at the wrong root), not a validation failure — so
+    # exit 2, not 1, per the three-state contract.
     Dir.mktmpdir do |tmpdir|
       _out, err, code = run_validator("validate-doc-references.sh", tmpdir)
-      assert_equal 1, code, "Missing platform/ dir should fail fast"
+      assert_equal 2, code, "missing platform/ dir must exit 2 (usage error), not 1"
       assert_match(/does not exist/i, err)
     end
   end
@@ -716,5 +723,126 @@ class TestSubmoduleMount < Minitest::Test
                  "exit codes must match between top-level and mount invocations"
     assert_equal top_out, mount_out,
                  "stdout must match between top-level and mount invocations"
+  end
+end
+
+# ---------------------------------------------------------------------------
+# Uniform --help / -h flag on every validator
+#
+# Each validator must short-circuit on --help or -h as the first argument:
+#   - exit 0 (success — user got what they asked for)
+#   - stdout starts with a "Usage:" block
+#   - no Ruby invocation (so the help text appears even on a project that has
+#     no manifest, no platform/ dir, no ripgrep, etc.)
+# This guarantee is what makes `validate-X.sh --help` safe as the first thing
+# a new user runs.
+# ---------------------------------------------------------------------------
+VALIDATOR_SCRIPTS = %w[
+  validate-manifest.sh
+  validate-module-graph.sh
+  validate-required-artifacts.sh
+  validate-placeholders.sh
+  validate-agent-pack.sh
+  validate-companions.sh
+  validate-doc-references.sh
+].freeze
+
+class TestValidatorHelpFlag < Minitest::Test
+  VALIDATOR_SCRIPTS.each do |script|
+    define_method("test_#{script.tr('-.', '__')}_long_help_exits_zero") do
+      out, err, code = run_validator(script, "--help")
+      assert_equal 0, code, "#{script} --help must exit 0. stderr: #{err}"
+      assert_match(/Usage:/, out, "#{script} --help must print a Usage: block")
+      assert_match(/Exit codes:/, out, "#{script} --help must document exit codes")
+    end
+
+    define_method("test_#{script.tr('-.', '__')}_short_help_exits_zero") do
+      out, err, code = run_validator(script, "-h")
+      assert_equal 0, code, "#{script} -h must exit 0. stderr: #{err}"
+      assert_match(/Usage:/, out, "#{script} -h must print a Usage: block")
+    end
+
+    define_method("test_#{script.tr('-.', '__')}_help_does_not_invoke_ruby") do
+      # If --help short-circuits before the heredoc, it works even when the
+      # default manifest path doesn't exist (validator is run from /tmp).
+      Dir.mktmpdir do |tmp|
+        cmd = ["bash", File.join(SCRIPT_DIR, script), "--help"]
+        stdout, _stderr, status = Open3.capture3(*cmd, chdir: tmp)
+        assert_equal 0, status.exitstatus,
+                     "#{script} --help must work even with no manifest in cwd"
+        assert_match(/Usage:/, stdout)
+      end
+    end
+  end
+end
+
+# ---------------------------------------------------------------------------
+# Typed-error / usage-error exit-code contract (exit 2, not 1)
+#
+# These tests assert the audit-finding fixes:
+#   1. Malformed-shape inputs produce a typed "✗ <message>" line on stderr
+#      and exit 2 — never a raw Ruby NoMethodError or Psych::SyntaxError.
+#   2. Missing-manifest and missing-dependency conditions also exit 2.
+# ---------------------------------------------------------------------------
+class TestValidatorUsageErrorExitCodes < Minitest::Test
+  def test_empty_manifest_yields_typed_error_and_exit_2
+    # Regression for the audit finding:
+    #   $ echo '' | xargs bash validate-manifest.sh
+    #   -:8:in '<main>': undefined method '[]' for nil (NoMethodError)
+    # After fix: clean "✗ ... mapping at the top level ..." + exit 2.
+    Dir.mktmpdir do |tmp|
+      path = File.join(tmp, "empty.yaml")
+      File.write(path, "")
+      _out, err, code = run_validator("validate-manifest.sh", path)
+      assert_equal 2, code, "empty manifest must exit 2 (usage error)"
+      assert_match(/mapping at the top level/i, err)
+      refute_match(/NoMethodError/, err,
+                   "raw NoMethodError must not leak from validate-manifest.sh")
+    end
+  end
+
+  def test_malformed_yaml_manifest_yields_typed_error_and_exit_2
+    Dir.mktmpdir do |tmp|
+      path = File.join(tmp, "broken.yaml")
+      File.write(path, "schemaVersion: 1\nproject: { id: x\n")
+      _out, err, code = run_validator("validate-manifest.sh", path)
+      assert_equal 2, code, "malformed-YAML manifest must exit 2 (usage error)"
+      assert_match(/not valid YAML/i, err)
+      refute_match(/Psych::SyntaxError/, err,
+                   "raw Psych::SyntaxError must not leak to stderr")
+    end
+  end
+
+  def test_module_graph_empty_manifest_yields_typed_error_and_exit_2
+    # validate-module-graph.sh uses HarnessRegistry.load_manifest too — same
+    # typed-error contract must apply.
+    Dir.mktmpdir do |tmp|
+      path = File.join(tmp, "empty.yaml")
+      File.write(path, "")
+      _out, err, code = run_validator("validate-module-graph.sh", path)
+      assert_equal 2, code, "empty manifest must exit 2 from module-graph too"
+      assert_match(/mapping at the top level/i, err)
+      refute_match(/NoMethodError/, err)
+    end
+  end
+
+  def test_required_artifacts_missing_manifest_exits_2
+    _out, err, code = run_validator(
+      "validate-required-artifacts.sh",
+      "/nonexistent/manifest.yaml",
+      "/tmp"
+    )
+    assert_equal 2, code, "missing manifest must exit 2"
+    assert_match(/not found|No such file/i, err)
+  end
+
+  def test_agent_pack_malformed_manifest_exits_2
+    Dir.mktmpdir do |tmp|
+      path = File.join(tmp, "string.yaml")
+      File.write(path, "not-a-mapping\n")
+      _out, err, code = run_validator("validate-agent-pack.sh", path, tmp)
+      assert_equal 2, code, "non-mapping manifest must exit 2 from agent-pack"
+      assert_match(/mapping at the top level/i, err)
+    end
   end
 end

@@ -1,0 +1,75 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+id: mcp-server
+type: architecture
+version: 1.0.0
+summary: Architecture overlay for projects that ship a Model Context Protocol (MCP) server — governs the declared capability set, the per-tool consumer tier mapping, prompt-injection defense surface, and transport/authorization posture. Designed around the MCP 2025-06-18 spec revision; consumers should note the revision their server targets in server-spec.md.
+dependsOn:
+  - kernel/base
+conflictsWith: []
+requiredArtifacts:
+  - docs/mcp/server-spec.md
+  - docs/mcp/tool-registry.md
+  - docs/mcp/risk-register.md
+optionalArtifacts:
+  - docs/mcp/capability-schema.md
+  - docs/mcp/prompt-injection-test-plan.md
+  - docs/mcp/transport-and-auth.md
+  - docs/architecture/overview.md
+sensitivePaths:
+  - description: MCP server documentation surface — spec, tool registry, capability schema, risk register
+    patterns:
+      - ^docs/mcp/
+  - description: MCP server implementation surface — wire handlers, tool definitions, transport bindings
+    patterns:
+      - ^src/mcp/
+      - ^mcp/
+      - ^server/mcp/
+  - description: Manifest and configuration files that declare the server's MCP surface to hosts
+    patterns:
+      - ^mcp\.json$
+      - ^\.mcp\.json$
+      - ^mcp-manifest\.
+companionRules:
+  - description: Tool registry, capability schema, or server implementation changes require a paired risk-review or decision record — the exposed tool surface is the producer-side contract with every consumer
+    triggerPaths:
+      - ^docs/mcp/tool-registry\.md$
+      - ^docs/mcp/capability-schema\.md$
+      - ^src/mcp/
+      - ^mcp/
+      - ^server/mcp/
+      - ^mcp\.json$
+      - ^\.mcp\.json$
+    requiredAny:
+      - ^docs/mcp/risk-register\.md$
+      - ^docs/adr/ADR-
+      - ^docs/architecture/overview\.md$
+    humanReview: Reviewers verify that the change to the exposed tool surface or capability set is reflected in the risk register, an ADR, or the architecture overview. Adding a tool without an updated consumer tier mapping is a governance failure equivalent to changing an HTTP API route without updating the API contract.
+  - description: Transport or authorization posture changes require a risk-register or ADR update — the OAuth/PKCE/RFC-8707 posture is normative under the MCP spec and changes affect every consumer's token audience
+    triggerPaths:
+      - ^docs/mcp/transport-and-auth\.md$
+    requiredAny:
+      - ^docs/mcp/risk-register\.md$
+      - ^docs/adr/ADR-
+    humanReview: Reviewers verify that token audience binding (RFC 8707), PKCE posture, and scope minimization are preserved; that no token-passthrough pattern was introduced; and that the transport choice (stdio vs Streamable HTTP) still matches the deployment surface.
+validators:
+  - validate-required-artifacts
+  - validate-companions
+reviewGates:
+  - Tool-registry entries must declare an explicit consumer trust tier (0–5) per action with a one-line rationale. Defaulting every tool to Tier 2 is a placeholder, not a tier mapping; reviewers must verify the tier reasoning, not just file presence.
+  - Capability negotiation surface must match the declared capabilities in `server-spec.md`. A server that advertises `tools.listChanged` in capabilities but never emits `notifications/tools/list_changed` is misleading consumers; the inverse (emitting without declaring) is a spec violation.
+  - Prompt-injection defense surface — the project must declare its position on the four canonical attack classes (untrusted string in tool result, nested tool call from result, untrusted resource read, sampling-loop) even if the position is "out of scope for v1 with stated reason."
+  - Token passthrough is forbidden by the MCP spec (the server MUST NOT accept tokens not issued for it, and MUST NOT forward upstream-issued tokens to downstream APIs). Reviewers verify the server obtains its own tokens for upstream calls and rejects tokens whose audience is not the MCP server itself.
+  - Local-server (stdio transport) projects must declare a consent posture for one-click client installation flows. The MCP spec requires clients to display the exact command pre-execution; servers should accommodate the host's consent UI rather than working around it.
+agentAdapters:
+  - platform/agents/base
+compiledFragments:
+  - platform/profiles/architectures/mcp-server/README.md
+recommendedSkills:
+  # --- Agent Skills format (SKILL.md directories) ---
+  # Install to .agents/skills/ or .claude/skills/
+  # Source: platform/skills/; copy to project skill directory
+  - harness-governance   # trust tiers, companion rules, lifecycle controls
+  - harness-mcp          # producer-side discipline: tier mapping for exposed tools, prompt-injection defense, capability/transport posture
+  # When the project ALSO consumes third-party MCP servers (most do), pair with:
+  - harness-tools        # consumer-side discipline: TOOLS.md tier map for dev-tool MCP servers

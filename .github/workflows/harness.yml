@@ -118,3 +118,22 @@ jobs:
 
       - name: Run link-skills.sh integration tests
         run: ruby platform/bootstrap/test/test_link_skills.rb
+
+  shellcheck:
+    name: Shellcheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install shellcheck
+        run: sudo apt-get update && sudo apt-get install -y shellcheck
+
+      # Threshold: warning. Blocks on errors + warnings; info/style findings
+      # surface in logs without blocking. Tighten to --severity=info in a
+      # follow-up PR after the info-level SC2012 (ls in error message) is
+      # either fixed or explicitly suppressed.
+      - name: Run shellcheck (warning threshold)
+        run: |
+          shellcheck --severity=warning \
+            platform/bootstrap/*.sh \
+            platform/validators/*.sh

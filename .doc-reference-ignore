@@ -1,9 +1,18 @@
 # validate-doc-references.sh ignore list — one regex per line.
-# Each pattern is matched against the captured `platform/...` reference string.
+#
+# Each pattern is matched against:
+#   - v1 scope: the captured `platform/...` reference string
+#   - v2 scope: the resolved project-root-relative path of a markdown link
+#               target (anchor stripped). Falls back to the raw target string
+#               when the resolver returns nil.
 #
 # Use sparingly. Prefer fixing the reference in the source file to silencing
 # it here. The validator's value is exactly its noisiness about drift.
-#
+
+# ---------------------------------------------------------------------------
+# v1 — bare `platform/...` reference findings
+# ---------------------------------------------------------------------------
+
 # Known-historical-drift: this reference in platform/templates/knowledge/README.md
 # points at a workflow guide that was never authored. Tracked for a future
 # follow-up (either author the missing guide or remove the reference). Ignored
@@ -13,8 +22,28 @@
 
 # Illustrative example paths used inside platform/workflow/troubleshooting.md
 # to document what a broken-reference error looks like. These appear in inline
-# backticks (not fenced blocks) so the validator sees them; they are pedagogical
-# strings, not real references. Anchored exact-match so a real same-named file
-# would still need to exist on disk if it were ever introduced.
+# backticks (not fenced blocks) so the v1 validator sees them; they are
+# pedagogical strings, not real references. Anchored exact-match so a real
+# same-named file would still need to exist on disk if it were ever introduced.
+#
+# Note: v2 strips inline backtick spans before extracting links, so these
+# v1-era entries no longer apply to v2's link-extraction path. Retained for
+# safety against any v1 code path that still surfaces these strings.
 ^platform/foo/example\.md$
 ^platform/workflow/missing-guide\.md$
+
+# ---------------------------------------------------------------------------
+# v2 — renderer-aware findings to triage
+#
+# These entries were seeded when validate-doc-references.sh v2 first ran
+# against the harness's own tree. Each is a real renderer-fragile link that
+# v1 did not catch. They are exempted here so v2 can be wired into CI without
+# blocking on the long-tail cleanup; the canonical triage list lives in
+# platform/validators/README.md "Known v2 exclusions to triage".
+# ---------------------------------------------------------------------------
+
+# CHANGELOG.md:179 — `[\`docs/adr/\`](docs/adr/)` — trailing-slash directory
+# target. GitBook 404s on `<target>/README.md` lookups for this pattern.
+# Follow-up: link to a representative ADR (e.g. ADR-0010) or author
+# docs/adr/README.md as a canonical landing page for the ADR series.
+^docs/adr$

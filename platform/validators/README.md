@@ -33,7 +33,7 @@ below).
 | `validate-placeholders.sh` | `<project-root>` | No unfilled `[[PLACEHOLDER]]` or `YYYY-MM-DD` tokens in project files; respects `.placeholder-ignore` exclusions (requires ripgrep) |
 | `validate-agent-pack.sh` | `<manifest> <project-root>` | Agent modules declare adapters and compiled fragments; all referenced files must exist |
 | `validate-companions.sh` | `<manifest> <project-root> <base-branch>` | PR diff satisfies all active companion rules — including `forbiddenPatterns` hard fails (requires git context) |
-| `validate-doc-references.sh` | `<project-root>` | Every `platform/...` path reference inside Markdown files under `platform/` resolves on disk; skips fenced code blocks; respects `.doc-reference-ignore` |
+| `validate-doc-references.sh` | `<project-root>` | **v2 (renderer-aware):** every markdown link `[text](target)` with a relative target resolves on disk *and* renders safely (no trailing-slash / bare-extensionless GitBook breakage). Skips fenced blocks *and* inline backtick code spans. Preserves v1's `platform/...` bare-path extractor as a second pass. Respects `.doc-reference-ignore` |
 
 ### `--help` / `-h`
 
@@ -100,10 +100,18 @@ with enforcement off and progressively re-enable it.
 | `patterns_match?(patterns, path)` | Test a file path against an array of regex patterns (used by companion rules) |
 | `changed_files(project_root, base_branch)` | Get the list of changed files via `git diff` against a base branch |
 | `first_forbidden_match(patterns, path)` | Returns `[pattern, path]` for the first forbidden-pattern match, or `nil`. Used by `validate-companions.sh` to enforce hard-fail `forbiddenPatterns` on companion rules |
-| `extract_doc_references(markdown)` | Extracts every `platform/...` path reference from a Markdown string, skipping fenced code blocks. Returns `[{path:, line:}, ...]` |
+| `extract_doc_references(markdown)` | **v1:** Extracts every `platform/...` path reference from a Markdown string, skipping fenced code blocks. Returns `[{path:, line:}, ...]` |
 | `doc_reference_resolves?(path, project_root)` | True iff the referenced path exists on disk under the project root |
 | `doc_reference_ignored?(path, patterns)` | True iff `path` matches any regex pattern in the `.doc-reference-ignore` list |
 | `load_doc_reference_ignore(path)` | Read a `.doc-reference-ignore` file (one regex per line; `#` comments allowed); returns `[]` when missing |
+| `extract_markdown_links(markdown)` | **v2:** Extracts every `[text](target)` link, skipping fenced blocks, inline backtick code spans, and external schemes (`http(s)://`, `mailto:`, `tel:`, `#anchor`, `<autolink>`, `{{template}}`). Returns `[{target:, line:}, ...]` |
+| `strip_inline_code_spans(line)` | **v2:** Replace inline backtick `...` runs with same-length space-padding so column offsets stay monotonic. Prevents false-positive flagging of pedagogical link syntax shown as inline code |
+| `link_target_external?(target)` | **v2:** True if the target is an external scheme, anchor, autolink, template placeholder, or empty — i.e. must never be checked on disk |
+| `strip_link_anchor(target)` | **v2:** Strip `#anchor` and `?query` from a link target; what remains is the on-disk path candidate |
+| `resolve_relative_link(target, md_file_dir, project_root)` | **v2:** Resolve a relative link target against the markdown file's directory; returns the project-root-relative path or `nil` if the target escapes the project root |
+| `link_target_classify(target, resolved_rel_path, project_root)` | **v2:** Classify a link as `:ok`, `:missing` (broken), `:directory_target` (renderer-fragile trailing slash or resolves to directory), or `:extensionless` (renderer-fragile bare basename like `LICENSE-MIT`) |
+| `link_target_renderer_safe?(target, resolved_rel_path, project_root)` | **v2:** Convenience boolean — true iff `link_target_classify` returns `:ok` |
+| `markdown_files_to_scan(project_root, extra_exclude_prefixes=[])` | **v2:** Enumerate every `*.md` under project_root, honoring `DEFAULT_SCAN_EXCLUDE_PREFIXES` (`legacy/`, `.git/`, `.claude/`, `node_modules/`, `.worktrees/`, `platform/validators/test/fixtures/`, `platform/templates/docs/`) plus any caller-supplied extras |
 
 ---
 
@@ -113,7 +121,7 @@ Two test files using Ruby Minitest (stdlib, no gem install required).
 
 ### Unit tests
 
-**`test/test_harness_registry.rb`** — 96 tests covering `HarnessRegistry` methods:
+**`test/test_harness_registry.rb`** — unit tests covering `HarnessRegistry` methods:
 
 - `patterns_match?` — single/multiple patterns, anchors, nil/empty, special characters
 - `disabled_validation?` — present, absent, missing key, multiple entries
@@ -123,9 +131,18 @@ Two test files using Ruby Minitest (stdlib, no gem install required).
 - `first_forbidden_match` — match precedence and edge cases for forbidden patterns
 - Companion rule logic with `forbiddenPatterns` — inline simulation proving
   forbidden-first ordering wins over `requiredAny` satisfaction
-- `extract_doc_references` — fence-aware extraction, multiple extensions, multi-match lines
+- `extract_doc_references` — fence-aware extraction, multiple extensions, multi-match lines (v1)
 - `doc_reference_resolves?`, `doc_reference_ignored?`, `load_doc_reference_ignore` —
   positive and negative paths plus comment / blank-line handling
+- **v2 renderer-aware helpers** — `strip_inline_code_spans` (column-preserving
+  inline-code stripping), `link_target_external?` (every external scheme + anchor +
+  autolink + template placeholder), `strip_link_anchor` (anchor/query stripping),
+  `resolve_relative_link` (same-dir, parent-dir, project-root-escape rejection,
+  anchor stripping), `link_target_classify` / `link_target_renderer_safe?`
+  (`:ok` / `:missing` / `:directory_target` / `:extensionless`),
+  `extract_markdown_links` (multi-link, with-title, fenced + inline-code skip,
+  external-target skip), `markdown_files_to_scan` (default + extra prefix
+  exclusions, dot-prefixed directory skip)
 - `load_manifest` typed-error shape checking — missing/empty/nil path, empty
   document, non-mapping top level (string / array), malformed YAML; every
   failure path raises `HarnessRegistry::ManifestShapeError` with a
@@ -137,7 +154,7 @@ ruby -I platform/validators/lib platform/validators/test/test_harness_registry.r
 
 ### Integration tests
 
-**`test/test_validators_integration.rb`** — 43 hard-coded tests + 21 dynamically
+**`test/test_validators_integration.rb`** — hard-coded tests + 21 dynamically
 generated `--help` / `-h` coverage tests (3 per validator × 7 validators) that
 shell out to the actual validator scripts against fixture projects:
 
@@ -146,9 +163,14 @@ shell out to the actual validator scripts against fixture projects:
 - `validate-required-artifacts.sh` — valid pass, missing artifact fail, disabled override
 - `validate-placeholders.sh` — clean pass, unfilled `[[TOKEN]]` fail, `YYYY-MM-DD` fail (skipped without ripgrep)
 - `validate-agent-pack.sh` — agents pass, missing AGENTS.md fail, no-agent vacuous pass
-- `validate-doc-references.sh` — valid pass, broken-ref fail (file + line in stderr),
+- `validate-doc-references.sh` — valid pass, broken bare-path fail (file + line in stderr),
   fenced-block skip, ignore-file exempt, missing-platform → exit 2, dogfood pass
-  against the harness's own repo
+  against the harness's own repo. **v2 cases:** broken relative-path link
+  (`../bar/does-not-exist.md`) flagged; inline backtick link syntax skipped;
+  bare extensionless target (`LICENSE-MIT`) flagged with GitBook rationale;
+  trailing-slash directory target flagged; external (`https://`, `mailto:`,
+  `tel:`, `#anchor`, `<autolink>`, `{{template}}`) skipped; `.doc-reference-ignore`
+  matching the resolved project-rooted path exempts the link
 - `validate-companions.sh` `forbiddenPatterns` — no-hit pass, hit fail with
   `forbidden path X matched pattern Y` message, hit-plus-satisfied-requiredAny still
   fails (forbidden wins; skipped without git)
@@ -183,9 +205,15 @@ Fixture projects in `test/fixtures/projects/` provide controlled test inputs:
 | `broken-conflict/` | Manifest declaring two conflicting modules |
 | `broken-missing-artifact/` | Valid manifest but missing required artifact files on disk |
 | `valid-doc-references/` | Minimal `platform/` tree with valid markdown link + bare-path + inline-code references all resolving |
-| `broken-doc-references/` | Tree where one Markdown link points at a missing file under `platform/` |
+| `broken-doc-references/` | Tree where one bare `platform/...` reference points at a missing file under `platform/` (v1 scope) |
 | `doc-references-in-fence/` | Tree with a broken reference inside a fenced code block — validator must skip it |
 | `doc-references-ignored/` | Tree with a broken reference exempted by the fixture-local `.doc-reference-ignore` |
+| `v2-broken-relative-link/` | **v2:** sibling-dir `[X](../bar/does-not-exist.md)` — broken relative path that v1 missed entirely |
+| `v2-inline-code-link/` | **v2:** pedagogical `` `[X](broken.md)` `` inside inline backticks — must NOT be flagged |
+| `v2-bare-extensionless/` | **v2:** `[X](../../LICENSE-MIT)` — file exists on disk but GitBook 404s on extensionless basenames |
+| `v2-trailing-slash/` | **v2:** `[X](inner/)` — trailing-slash directory target trips GitBook's `<target>/README.md` lookup |
+| `v2-external-skipped/` | **v2:** every external scheme (`https://`, `mailto:`, `tel:`, `#anchor`, `<autolink>`, `{{template}}`) — all must be skipped |
+| `v2-ignored-by-file/` | **v2:** broken relative link exempted by the fixture-local `.doc-reference-ignore` matching the resolved project-rooted path |
 
 Additional fixtures in `test/fixtures/`:
 
@@ -207,3 +235,23 @@ Actions workflow including validator steps and the test suite job.
 
 See [`workflow/troubleshooting.md`](../workflow/troubleshooting.md) for every validator
 error message, its cause, and the fix.
+
+---
+
+## Known v2 exclusions to triage
+
+The v2 scope expansion of `validate-doc-references.sh` surfaced renderer-fragile
+links that v1 did not catch. Rather than block the v2 wire-in on the long-tail
+cleanup, each finding was seeded into [`/.doc-reference-ignore`](../../.doc-reference-ignore)
+with a one-line comment naming the source file and the recommended follow-up.
+
+The triage queue:
+
+| Source | Class | Recommendation |
+| ------ | ----- | -------------- |
+| `CHANGELOG.md:179` — `[\`docs/adr/\`](docs/adr/)` | `directory_target` (trailing-slash) | Either change the link to point at a representative ADR (e.g., `docs/adr/ADR-0010-cheap-satisfiers-for-routine-governance.md`) or author `docs/adr/README.md` as a canonical landing page for the ADR series, then remove the `^docs/adr$` entry from `.doc-reference-ignore`. |
+
+When a triage entry is resolved, delete the corresponding line from
+`.doc-reference-ignore` and run the full validator chain to confirm CI stays
+green. The validator's value is its noisiness about drift — every ignore-file
+entry is technical debt against that value.

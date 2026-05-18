@@ -40,6 +40,7 @@ companionRules:
       - ^server/mcp/
       - ^mcp\.json$
       - ^\.mcp\.json$
+      - ^mcp-manifest\.
     requiredAny:
       - ^docs/mcp/risk-register\.md$
       - ^docs/adr/ADR-

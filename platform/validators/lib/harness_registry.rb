@@ -15,12 +15,46 @@ module HarnessRegistry
     "agents" => "agents"
   }.freeze
 
+  # Raised by load_manifest / load_yaml when the input file is missing,
+  # unreadable, fails to parse as YAML, or parses to something other than a
+  # top-level mapping (Hash). Validators rescue this to convert raw Ruby
+  # stack traces into clean "✗ <message>" stderr + exit 2 (usage error).
+  class ManifestShapeError < StandardError; end
+
   def self.load_yaml(path)
     YAML.safe_load(File.read(path), permitted_classes: [], aliases: false)
   end
 
+  # Load and shape-check a manifest file. Returns the parsed Hash on success.
+  # Raises ManifestShapeError with a human-readable message when the input is
+  # missing, unreadable, malformed YAML, or not a top-level mapping. Callers
+  # (validator Ruby heredocs) rescue this and exit 2 with the message — never
+  # leak a raw NoMethodError / Psych::SyntaxError stack trace to end users.
   def self.load_manifest(path)
-    load_yaml(path)
+    unless path.is_a?(String) && !path.empty?
+      raise ManifestShapeError, "Manifest path is required (got #{path.inspect})"
+    end
+    unless File.exist?(path)
+      raise ManifestShapeError, "Manifest not found: #{path}"
+    end
+    unless File.readable?(path)
+      raise ManifestShapeError, "Manifest is not readable: #{path}"
+    end
+
+    raw = File.read(path)
+    begin
+      data = YAML.safe_load(raw, permitted_classes: [], aliases: false)
+    rescue Psych::SyntaxError => e
+      raise ManifestShapeError, "Manifest is not valid YAML (#{path}): #{e.message}"
+    end
+
+    unless data.is_a?(Hash)
+      actual = data.nil? ? "empty document" : data.class.to_s
+      raise ManifestShapeError,
+            "Manifest must be a YAML mapping at the top level (got #{actual}): #{path}"
+    end
+
+    data
   end
 
   def self.disabled_validation?(manifest, name)

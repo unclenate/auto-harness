@@ -1,0 +1,2 @@
+# Exempt a known-broken relative link by its resolved project-rooted path.
+^platform/foo/known-missing\.md$

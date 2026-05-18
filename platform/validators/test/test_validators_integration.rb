@@ -488,6 +488,82 @@ class TestValidateDocReferences < Minitest::Test
                  "Harness's own platform/ docs must have no broken references. stderr: #{err}"
     assert_match(/✓/, out)
   end
+
+  # ---------------------------------------------------------------------------
+  # v2 — renderer-aware scope expansion
+  # ---------------------------------------------------------------------------
+
+  def test_v2_broken_relative_link_is_flagged
+    # `[X](../bar/does-not-exist.md)` — no `platform/` prefix, so v1 missed
+    # it entirely. v2 must catch it via the relative-link resolver.
+    _out, err, code = run_validator(
+      "validate-doc-references.sh",
+      fixture_project("v2-broken-relative-link")
+    )
+    assert_equal 1, code, "v2 must catch the broken relative-path link"
+    assert_match(/does-not-exist\.md/, err, "broken target must appear in stderr")
+    assert_match(/broken/i, err, "reason should classify as broken")
+  end
+
+  def test_v2_inline_code_link_is_skipped
+    # `[broken](does-not-exist.md)` inside backtick code-span is pedagogical,
+    # not a real link. v2 strips inline code spans before extracting links.
+    out, err, code = run_validator(
+      "validate-doc-references.sh",
+      fixture_project("v2-inline-code-link")
+    )
+    assert_equal 0, code,
+                 "Inline-code link syntax must NOT be flagged. stderr: #{err}\nstdout: #{out}"
+    assert_match(/✓/, out)
+  end
+
+  def test_v2_bare_extensionless_target_is_flagged
+    # `[license](../../LICENSE-MIT)` — file exists on disk but GitBook 404s
+    # because it treats extensionless basenames as directories.
+    _out, err, code = run_validator(
+      "validate-doc-references.sh",
+      fixture_project("v2-bare-extensionless")
+    )
+    assert_equal 1, code, "renderer-fragile bare-extensionless link must fail"
+    assert_match(/LICENSE-MIT/, err)
+    assert_match(/extensionless|GitBook/i, err)
+  end
+
+  def test_v2_trailing_slash_directory_target_is_flagged
+    # `[inner directory](inner/)` — trailing slash trips GitBook's `<target>/README.md` lookup.
+    _out, err, code = run_validator(
+      "validate-doc-references.sh",
+      fixture_project("v2-trailing-slash")
+    )
+    assert_equal 1, code, "trailing-slash directory link must fail"
+    assert_match(%r{inner/}, err)
+    assert_match(/directory target|GitBook/i, err)
+  end
+
+  def test_v2_external_targets_are_skipped
+    # https://, http://, mailto:, tel:, #anchor, <autolink>, {{template}} are
+    # all external/non-disk and must never be flagged.
+    out, err, code = run_validator(
+      "validate-doc-references.sh",
+      fixture_project("v2-external-skipped")
+    )
+    assert_equal 0, code,
+                 "External / anchor / template targets must be skipped. stderr: #{err}\nstdout: #{out}"
+    assert_match(/✓/, out)
+  end
+
+  def test_v2_ignore_file_exempts_relative_link
+    # `.doc-reference-ignore` matches against the resolved project-rooted path,
+    # not the raw target — this lets a single rule exempt the same broken
+    # target from multiple source files.
+    out, err, code = run_validator(
+      "validate-doc-references.sh",
+      fixture_project("v2-ignored-by-file")
+    )
+    assert_equal 0, code,
+                 "Ignored relative link must not be flagged. stderr: #{err}\nstdout: #{out}"
+    assert_match(/✓/, out)
+  end
 end
 
 # ---------------------------------------------------------------------------

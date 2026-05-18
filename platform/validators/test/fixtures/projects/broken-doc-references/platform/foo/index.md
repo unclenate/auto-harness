@@ -1,5 +1,5 @@
 # Broken Doc References Fixture
 
-Valid: [config](platform/foo/config.yaml).
+Valid same-dir link: [config](config.yaml).
 
-Broken: [missing](platform/foo/does-not-exist.md).
+Broken bare-path reference (caught by v1): see platform/foo/does-not-exist.md for details.

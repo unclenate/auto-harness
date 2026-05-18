@@ -1,6 +1,6 @@
 # Valid Doc References Fixture
 
-Markdown link to a real file: [config](platform/foo/config.yaml).
+Markdown link to a real same-dir file: [config](config.yaml).
 
 Inline path: `platform/foo/script.sh`.
 

@@ -13,7 +13,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 **Owner:** [[AGENT_SURFACE_OWNER]]
 **Last reviewed:** YYYY-MM-DD
-**Flavor:** [[CONTROLLED \| DECLARATIVE \| OPEN_ENDED \| CONVERSATIONAL_PRIMARY]]
+**Flavor:** [[FLAVOR]] (allowed: CONTROLLED, DECLARATIVE, OPEN_ENDED, CONVERSATIONAL_PRIMARY)
 **Renderer version:** [[VERSION]]
 
 ---

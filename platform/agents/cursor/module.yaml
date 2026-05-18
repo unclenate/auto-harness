@@ -16,6 +16,11 @@ requiredArtifacts: []
 optionalArtifacts:
   - .cursor/rules
   - .cursorrules
+  # Harness-convention path for the Auto-Run allowlist. Written as a Cursor rule
+  # (.mdc) so it lives inside the rules system and stays version-controlled and
+  # reviewable. Cursor itself does not require this path; the harness does, so the
+  # allowlist is the same artifact for every reviewer.
+  - .cursor/rules/auto-run-allowlist.mdc
 
 sensitivePaths:
   - description: Cursor rule files and Auto-Run allowlist — changes must stay aligned with AGENTS.md
@@ -45,6 +50,10 @@ reviewGates:
 agentAdapters:
   - AGENTS.md
   - .cursor/rules
+  # Legacy single-file format — still read by Cursor and called out in the README;
+  # included so registry consumers compiling Cursor adapter inventories see the full
+  # surface, including the deprecated path projects may still carry.
+  - .cursorrules
 
 compiledFragments:
   - platform/agents/cursor/README.md

@@ -53,11 +53,18 @@ allowlist. The harness's position:
   Auto-Run with an empty allowlist effectively grants Cursor unsupervised command
   execution against the workspace; whether that triggers prompts at all depends on IDE
   version.
-- **The allowlist contents must be documented.** Commit the allowlist (in the appropriate
-  Cursor settings location) and cross-reference it from `AGENTS.md`. Reviewers verify the
-  list does not include commands that would escalate beyond Tier 2 (workspace mutation)
-  without prompts — examples to avoid: `git push`, `npm publish`, anything that touches
-  remote infrastructure.
+- **The allowlist contents must be committed at `.cursor/rules/auto-run-allowlist.mdc`.**
+  Cursor does not publish a canonical project-local path for the Auto-Run allowlist —
+  it ships as an IDE preference by default. The harness's convention is to write the
+  team-agreed allowlist as a Cursor rule file (`.mdc` so it carries frontmatter and is
+  picked up by Cursor's project-rules system at `.cursor/rules/`, per
+  <https://cursor.com/docs/rules>). This makes the allowlist version-controlled,
+  reviewable, and cross-referenceable from `AGENTS.md`. Reviewers verify the file does
+  not list commands that would escalate beyond Tier 2 (workspace mutation) without
+  prompts — examples to avoid: `git push`, `npm publish`, anything that touches remote
+  infrastructure. Team members still need to mirror the file's contents into their
+  Cursor IDE preferences for the auto-approval to take effect; the committed file is
+  the source of truth and the review surface, not the runtime configuration itself.
 - **Auto-Run does not change tier policy.** A command on the allowlist still operates at
   its declared tier; the allowlist only suppresses the per-call prompt. Tier 3+ commands
   on the allowlist are a configuration error.

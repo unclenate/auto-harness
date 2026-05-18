@@ -74,7 +74,7 @@ The authoritative tool registry is `docs/mcp/tool-registry.md`.
 | Total tools exposed | 3 |
 | Highest-tier exposed tool | Tier 3 — `broadcast_kb_update` |
 | Tools with side effects on third-party systems | 1 (`broadcast_kb_update`) |
-| Tools that are idempotent | 2 (`search_kb_articles`, `save_kb_draft` — last-write-wins on draft) |
+| Tools that are idempotent | 1 (`search_kb_articles`) |
 
 ### Resources
 

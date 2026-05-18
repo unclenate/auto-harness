@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0003 — MCP Producer Posture and Exportable Governance via MCP
 
-**Status:** proposed
+**Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-05-17
-**Last Updated:** 2026-05-17
+**Last Updated:** 2026-05-18
 **Confidence:** medium-high
 
 ---
@@ -165,8 +165,14 @@ positioned.
 
 ## Disposition
 
-<!-- Empty: status is proposed. Promotion to accepted happens via ADR-0008 in the same branch. -->
+Accepted. The producer-side MCP governance gap is now addressed with a first-class
+`architectures/mcp-server` module, MCP template family, workflow guidance, and sample
+project, and the exposed-governance path is explicitly scoped to a read-only/advisory
+v1 posture. ADR-0008 records the architecture-vs-domain decision, the companion-rule
+discipline for MCP producer contracts, and the deferred v2 mutation scope pending
+runtime-harness adoption signal.
 
 ## Promotion
 
-<!-- Empty: not yet accepted. Will point at ADR-0008 once accepted. -->
+- Decision record: `docs/adr/ADR-0008-mcp-awareness.md`
+- Implemented in this branch via the `feat(mcp): producer architecture + exposed-governance path (R&D)` PR changeset.

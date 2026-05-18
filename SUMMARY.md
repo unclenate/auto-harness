@@ -16,12 +16,13 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 ### Entry Points by Audience
 
-These four files share the repository root. Each has a distinct job — pick the one that matches your role first, then read the others as needed.
+These five files share the repository root. Each has a distinct job — pick the one that matches your role first, then read the others as needed.
 
 * [README.md](README.md) — Repo and GitBook front door. Best first read for humans.
 * [HARNESS.md](HARNESS.md) — Project-level governance entrypoint. Best first read when you want to know which modules are active and where the governance contract lives.
 * [AGENTS.md](AGENTS.md) — Cross-agent operating manual. Best first read for any AI tooling (Cursor, Copilot, Codex, OpenClaw, Gemini CLI). First-session workflow lives here.
 * [CLAUDE.md](CLAUDE.md) — Claude Code load order. Thin shim that points Claude Code at the canonical files above in the right sequence.
+* [TOOLS.md](TOOLS.md) — Environment-specific tool registry. Loaded on demand by agents that use MCP developer tools (Linear, Slack, etc.).
 
 ## Adoption Workflows
 

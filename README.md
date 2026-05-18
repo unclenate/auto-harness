@@ -63,7 +63,7 @@ and what companion documentation must accompany every significant change.
 
 ## Entry Points at the Repo Root
 
-Four files share the repo root. Each has a distinct job — read the one that matches your role first, then read the others as needed.
+Five files share the repo root. Each has a distinct job — read the one that matches your role first, then read the others as needed.
 
 | File | Role | Best for |
 | ---- | ---- | -------- |
@@ -71,6 +71,7 @@ Four files share the repo root. Each has a distinct job — read the one that ma
 | [`HARNESS.md`](HARNESS.md) | Project-level governance entrypoint — active modules, governance artifacts, source-of-truth pointers | Anyone auditing what governance is actually active on this repo |
 | [`AGENTS.md`](AGENTS.md) | Cross-agent operating manual — trust tiers, scope, stop conditions, first-session workflow | Any AI tool (Cursor, Copilot, Codex, OpenClaw, Gemini, etc.) |
 | [`CLAUDE.md`](CLAUDE.md) | Claude Code load-order shim | Claude Code specifically; it points at the three files above in order |
+| [`TOOLS.md`](TOOLS.md) | Environment-specific tool registry for MCP developer tools | Agents using Linear, Slack, or other MCP tools; loaded on demand |
 
 ---
 

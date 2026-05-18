@@ -43,7 +43,7 @@ liability that the companion rule will flag on every change. Prefer to put the r
 Path-scoped Copilot instructions. Same rules apply — defer to `AGENTS.md`, add only the
 path-specific layer.
 
-**Optional: `.github/copilot/agents/`**
+**Optional: `.github/agents/`**
 
 Custom Copilot CLI agents (Explore, Task, and any project-defined sub-agents). Each
 custom agent must declare its default tool access and the trust tier it operates at.
@@ -82,15 +82,18 @@ Copilot CLI's session model is per-prompt confirmation with two built-in sub-age
 
 ## Companion Rule
 
-Changes to `.github/copilot-instructions.md`, `.github/instructions/`, or
-`.github/copilot/agents/` trigger a companion rule requiring `AGENTS.md`, an ADR, or a
-PRD to also be updated.
+Changes to `.github/copilot-instructions.md`, `.github/instructions/`,
+`.github/agents/`, `CLAUDE.md`, or `GEMINI.md` trigger a companion rule requiring
+`AGENTS.md`, an ADR, or a PRD to also be updated. `CLAUDE.md` and `GEMINI.md` are
+included because Copilot CLI also reads them at the repo root
+([source](https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/add-custom-instructions)),
+so they are part of the same multi-file conflict surface this pack governs.
 
 Review gates:
 
 - *"Copilot CLI instruction files must not contradict AGENTS.md — when both exist,
   Copilot's resolution is non-deterministic."*
-- *"Custom Copilot CLI agents under `.github/copilot/agents/` must declare their default
+- *"Custom Copilot CLI agents under `.github/agents/` must declare their default
   tool access and tier scope."*
 
 ---

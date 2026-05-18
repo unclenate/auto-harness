@@ -1,0 +1,60 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+id: agentic-ui
+type: architecture
+version: 1.0.0
+summary: Architecture overlay for products where the agentic surface is the dominant topology decision — conversational-primary products (the chat IS the product), MCP-host shells, and Open-ended generative-UI products. Adds an architecture-overview requirement that the agent runtime location, action-surface boundary, and renderer contract are explicitly named at the topology level (not only at the design-doc level). For the common case — copilot bolted onto a SaaS web-app — use architectures/web-app + domains/agentic-interfaces and skip this overlay.
+dependsOn:
+  - kernel/base
+conflictsWith: []
+requiredArtifacts:
+  - docs/architecture/overview.md
+optionalArtifacts:
+  - docs/agentic-interface/design.md
+  - docs/agentic-interface/renderer-contract.md
+sensitivePaths:
+  - description: Agent runtime location — where the agent loop executes (browser, edge, server, dedicated worker)
+    patterns:
+      - ^src/agent-runtime/
+      - ^src/agents/runtime/
+      - ^services/agent/
+      - ^workers/agent/
+  - description: Action surface — the boundary the agent crosses to invoke product actions
+    patterns:
+      - ^src/agent-actions/
+      - ^src/actions/agent/
+      - ^api/agent/
+  - description: Renderer contract surface — the boundary that translates agent output into rendered UI
+    patterns:
+      - ^src/renderer/
+      - ^src/agent-renderer/
+      - ^src/genui-renderer/
+companionRules:
+  - description: Agent runtime, action surface, or renderer contract changes require an architecture overview update or an ADR
+    triggerPaths:
+      - ^src/agent-runtime/
+      - ^src/agents/runtime/
+      - ^services/agent/
+      - ^workers/agent/
+      - ^src/agent-actions/
+      - ^src/actions/agent/
+      - ^api/agent/
+      - ^src/renderer/
+      - ^src/agent-renderer/
+      - ^src/genui-renderer/
+    requiredAny:
+      - ^docs/architecture/overview\.md$
+      - ^docs/adr/ADR-
+      - ^docs/agentic-interface/design\.md$
+    humanReview: Reviewers verify that the agent runtime location is still correctly described (browser/edge/server/worker), that the action-surface boundary still names every authorization check the agent crosses to invoke a product action, and that the renderer-contract boundary still bounds what the agent can render. Topology drift between code and overview is a Tier-4-or-higher governance failure.
+validators:
+  - validate-required-artifacts
+  - validate-companions
+reviewGates:
+  - Human review is required for any change that moves the agent runtime closer to the user (e.g. server → edge, edge → browser). Trust-belongs-on-the-server applies to the agent runtime the same way it applies to validation logic — running agent prompt assembly in the browser exposes the system prompt and any inlined credentials.
+  - Human review is required for any change to the action surface that lets the agent invoke a product action without crossing an existing authorization check. The action surface is the agent's privilege boundary; expanding it is not a refactor.
+  - Human review is required for any change to the renderer contract that broadens what the agent can render (new component, new schema variant, new sandbox surface). This duplicates the renderer-contract gate from domains/agentic-interfaces — both apply when both modules are active, which is the expected configuration for this architecture.
+agentAdapters:
+  - platform/agents/base
+compiledFragments:
+  - platform/profiles/architectures/agentic-ui/README.md

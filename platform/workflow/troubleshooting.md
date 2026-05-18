@@ -63,8 +63,8 @@ The `project:` block is incomplete.
 project:
   id: my-project
   name: My Project
-  maturity: prototype    # prototype | mvp | production
-  criticality: low       # low | medium | high | critical
+  maturity: prototype    # prototype | mvp | production | research | platform (any string accepted)
+  criticality: low       # low | medium | high | critical | platform | research | internal (schema-enforced enum)
 ```
 
 ---

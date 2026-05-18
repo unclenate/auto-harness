@@ -206,6 +206,7 @@ modules. Use it to populate `harness.manifest.yaml`.
 | Python preferred? (§8.1) | `stacks/python` |
 | Using Supabase? (§4.2, §8.1) | `domains/supabase` |
 | Media processing pipeline? (§5.1) | `domains/media-pipeline` |
+| Data or ML research pipeline producing reports / artifacts? (§5.1, §8.3) | `domains/media-pipeline` + `data/object-storage` + `architectures/event-driven` (matches the `research-pipeline-python-object-storage.yaml` starter composition) |
 | Throwaway prototype / validation only? (§7.4) | `delivery/prototype` |
 | MVP or production product? (§7.4) | `delivery/production-saas` |
 | Internal shared tooling? (§7.1, §7.4) | `delivery/internal-platform` |

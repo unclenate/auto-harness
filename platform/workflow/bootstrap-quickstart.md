@@ -54,8 +54,13 @@ schemaVersion: 1
 project:
   id: your-project-id          # kebab-case, unique
   name: Your Project Name
-  maturity: prototype           # prototype | mvp | production
-  criticality: low              # low | medium | high | critical
+  maturity: prototype           # prototype | mvp | production | research | platform
+                                #   (any non-empty string; schema does not enforce
+                                #   an enum on maturity — values above are the
+                                #   conventional set used across in-tree compositions)
+  criticality: low              # low | medium | high | critical | platform | research | internal
+                                #   (schema enforces this enum; see
+                                #   platform/core/registry/manifest.schema.json)
 ```
 
 Leave the `modules:` block as-is for now. Adjust it after the validators pass.

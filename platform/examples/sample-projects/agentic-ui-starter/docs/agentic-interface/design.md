@@ -62,7 +62,7 @@ The set of product actions the copilot can invoke. Canonical list lives in
 | Does the agent invoke actions as the user (same auth) or as a service principal (different auth)? | As the user — every tool call is authorized against the same session that authenticated the user |
 | Are tool calls logged? Where? | Yes — `tool_invocations` table in Postgres, retained 90 days |
 | Is there a deny-by-default policy on new tools? | Yes — the runtime maintains the authoritative tool allowlist; a tool not in the allowlist returns an error to the model regardless of any `useCopilotAction` registration that might exist |
-| Are any tools Tier 3 or higher? | Yes — `send-share-email`, `export-to-third-party-storage`. Both require explicit user confirmation in a structured UI element |
+| Are any tools Tier 3 or higher? | Yes — `send-share-email`, `export-to-third-party-storage`, and `schedule-recurring-report`. All require explicit user confirmation in a structured UI element |
 
 ---
 

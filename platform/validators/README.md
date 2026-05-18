@@ -77,7 +77,7 @@ Two test files using Ruby Minitest (stdlib, no gem install required).
 
 ### Unit tests
 
-**`test/test_harness_registry.rb`** — 29 tests covering `HarnessRegistry` methods:
+**`test/test_harness_registry.rb`** — 48 tests covering `HarnessRegistry` methods:
 
 - `patterns_match?` — single/multiple patterns, anchors, nil/empty, special characters
 - `disabled_validation?` — present, absent, missing key, multiple entries
@@ -91,7 +91,7 @@ ruby -I platform/validators/lib platform/validators/test/test_harness_registry.r
 
 ### Integration tests
 
-**`test/test_validators_integration.rb`** — 20 tests that shell out to the actual
+**`test/test_validators_integration.rb`** — 29 tests that shell out to the actual
 validator scripts against fixture projects:
 
 - `validate-manifest.sh` — valid pass, bad schema fail, missing file abort
@@ -119,6 +119,7 @@ Fixture projects in `test/fixtures/projects/` provide controlled test inputs:
 | ------- | ------- |
 | `valid-prototype/` | Minimal valid project (kernel/base + discovery-intake + product-lite + project-standard + prototype + base agent) with all required artifacts |
 | `valid-testing-standard/` | Valid project with testing-standard module and testing artifacts (test-strategy.md, coverage-thresholds.md) |
+| `valid-submodule-mount/` | Submodule-style consumer layout used to exercise mounted-platform validation paths |
 | `broken-bad-schema/` | Invalid manifest — wrong schema version, missing fields, unknown module groups |
 | `broken-bad-dependency/` | Manifest declaring a module that depends on a missing module |
 | `broken-conflict/` | Manifest declaring two conflicting modules |

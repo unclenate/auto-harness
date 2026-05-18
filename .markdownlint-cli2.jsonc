@@ -25,7 +25,15 @@
     "platform/validators/test/fixtures/**",
     "platform/templates/docs/**",
     "platform/bootstrap/test/fixtures/**",
-    ".remember/**"
+    ".remember/**",
+    // knowledge-capture distillation files are governed by the module's
+    // "distillation edits require team review" companion rule. Markdownlint
+    // mechanical fixes here would force a paired review-log/memory artifact
+    // for what is not a real distillation edit. Excluded so the linter
+    // doesn't surface MD049 emphasis-style on these files; team-level edits
+    // to them follow the knowledge-capture rule's review discipline instead.
+    "docs/knowledge/distilled-learnings.md",
+    "platform/templates/knowledge/distilled-learnings.md"
   ],
 
   // Per-rule configuration. See https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md

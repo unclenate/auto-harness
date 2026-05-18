@@ -34,8 +34,8 @@ described below the table.
 | Claude Code | `CLAUDE.md` (root + subdirs) | `.claude/skills/` or `.agents/skills/` (Agent Skills format) | `.claude/settings.json` allow/deny lists; per-tool approval prompts | Reads `AGENTS.md` when referenced from `CLAUDE.md`; not auto-loaded |
 | Gemini CLI | `GEMINI.md` (hierarchical: `~/.gemini/`, workspace, subdirs); `settings.json` can re-point `context.fileName` to `["AGENTS.md", "GEMINI.md"]` | `.agents/skills/` (Agent Skills format) | `--approval-mode` = `default` / `auto_edit` / `yolo`; sandbox via Docker image; `Ctrl+Y` toggles YOLO mid-session | Supported via configured fallback filename |
 | OpenAI Codex CLI | `AGENTS.md` (native); `AGENTS.override.md` precedence; merged root-down with later files winning | Agent Skills format via `.agents/skills/` (compatible) | `approval_policy` = `untrusted` / `on-request` / `never`; `sandbox_mode` = `read-only` / `workspace-write` / `danger-full-access`; `--full-auto` is a shortcut for `on-request` + `workspace-write` | Native primary convention |
-| GitHub Copilot CLI | `AGENTS.md` (primary); also reads `CLAUDE.md`, `GEMINI.md`, `.github/copilot-instructions.md`, `.github/instructions/*.instructions.md`; honors `COPILOT_CUSTOM_INSTRUCTIONS_DIRS` | Agent Skills format; custom CLI agents in `.github/copilot/agents/` | Per-prompt confirmation; explicit "Explore" / "Task" sub-agents; conflict resolution between multiple instruction files is non-deterministic — avoid overlap | Native primary convention as of 2025-08 |
-| Cursor | `.cursor/rules/<name>/RULE.md` (current); `.cursorrules` (legacy, still read); `AGENTS.md` (root + subdirs, native support) | Cursor "Skills" (Agent Skills format adoption in flight); `.cursor/rules/` is the durable surface | IDE-mediated approval per tool call; Auto-Run mode auto-approves command execution within a workspace allowlist | Natively supported alongside `.cursor/rules` |
+| GitHub Copilot CLI | `AGENTS.md` (primary); also reads `CLAUDE.md`, `GEMINI.md`, `.github/copilot-instructions.md`, `.github/instructions/*.instructions.md`; honors `COPILOT_CUSTOM_INSTRUCTIONS_DIRS` | Agent Skills format; custom CLI agents in `.github/agents/` | Per-prompt confirmation; explicit "Explore" / "Task" sub-agents; conflict resolution between multiple instruction files is non-deterministic — avoid overlap | Native primary convention as of 2025-08 |
+| Cursor | `.cursor/rules/<name>/RULE.md` (current); `.cursorrules` (legacy, still read); `AGENTS.md` (root + subdirs, native support) | Agent Skills format auto-discovered from `.agents/skills/` and `.cursor/skills/` (Cursor 2.4+); `.cursor/rules/` remains the durable *rules* surface (separate concept from skills) | IDE-mediated approval per tool call; Auto-Run mode auto-approves command execution within a workspace allowlist | Natively supported alongside `.cursor/rules` |
 | OpenClaw | `TOOLS.md` (workspace MCP registry); `SOUL.md` / `BOOT.md` (persona/lifecycle) | ClawHub skills in `~/.openclaw/skills/` or `<project>/skills/`; Agent Skills format also accepted in `.agents/skills/` | Permission model declared in workspace files; trust tiers documented in `TOOLS.md` per entry | Reads `AGENTS.md` as the operative governance document |
 | VS Code agent extensions (Copilot, Continue) | `.github/copilot-instructions.md` (Copilot), `.continue/rules/*.md` (Continue); both increasingly honor `AGENTS.md` | Continue rules live next to project; Copilot Agent Skills loaded per-IDE | IDE prompts per action; per-extension settings | Continue: convergence pending (open RFC); Copilot: supported in coding agent and CLI surfaces |
 | Aider | `CONVENTIONS.md` loaded via `--read` flag or `.aider.conf.yml`; community usage of `AGENTS.md` is growing | No formal skill loader; convention-file-driven | Per-command confirmation in `--no-auto-commits` mode; `--yes-always` disables prompts | Listed as an `agents.md` supporter; loading mechanism is operator-driven (use `--read AGENTS.md`) |
@@ -121,13 +121,19 @@ through three existing mechanisms:
 
 Places where tool semantics genuinely conflict with harness tier discipline:
 
-- **YOLO / `--full-auto` / `danger-full-access` without sandboxing.** Gemini CLI's `yolo`
-  mode and Codex CLI's `danger-full-access` sandbox both disable the approval prompts
-  that would otherwise gate Tier 3+ actions. The harness's position: these modes are
-  acceptable only inside a disposable sandbox (CI runner, Docker image, ephemeral VM).
-  Running them against a developer workstation that holds production credentials is a
-  Tier 5 action regardless of what the tool's UI says. Mitigation: declare the
-  prohibition in the project's per-tool shim and in `AGENTS.md`'s stop-condition list.
+- **YOLO / `danger-full-access` / `approval_policy=never` without sandboxing.** Gemini
+  CLI's `yolo` mode and Codex CLI's `danger-full-access` sandbox both disable the
+  approval prompts that would otherwise gate Tier 3+ actions; Codex's
+  `approval_policy=never` (on its own, even with `workspace-write`) does the same for
+  shell-command prompts. The harness's position: these modes are acceptable only inside
+  a disposable sandbox (CI runner, Docker image, ephemeral VM). Running them against a
+  developer workstation that holds production credentials is a Tier 5 action regardless
+  of what the tool's UI says. Note `--full-auto` is **not** in this category — its
+  canonical mapping is `--sandbox workspace-write` with default
+  `approval_policy=on-request` (Tier 2), per the tier table above and the codex-cli
+  pack README; it still prompts before shell commands.
+  Mitigation: declare the prohibition in the project's per-tool shim and in
+  `AGENTS.md`'s stop-condition list.
 - **Cursor Auto-Run with an empty allowlist.** Cursor's Auto-Run mode auto-approves any
   command that matches its allowlist; if the allowlist is empty, the behavior depends on
   IDE version. Mitigation: require an explicit allowlist in the project's `.cursor/`

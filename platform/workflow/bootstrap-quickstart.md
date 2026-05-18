@@ -148,7 +148,7 @@ bash $PLATFORM/validators/validate-placeholders.sh .
 ```
 
 This scans for any remaining `[[PLACEHOLDER_NAME]]` tokens (and bare `YYYY-MM-DD` placeholders)
-in tracked files under the project root. The script takes a single project-root argument; a
+in tracked files under the project root. The script accepts an optional project-root argument (defaults to the current directory); a
 `.placeholder-ignore` file at the project root controls excluded paths. A passing run means all
 templates have been filled in.
 

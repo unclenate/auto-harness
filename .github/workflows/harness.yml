@@ -137,3 +137,19 @@ jobs:
           shellcheck --severity=warning \
             platform/bootstrap/*.sh \
             platform/validators/*.sh
+
+  markdownlint:
+    name: Markdownlint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install markdownlint-cli2
+        run: npm install -g markdownlint-cli2
+
+      # Config lives at .markdownlint-cli2.jsonc at repo root. Rule
+      # rationale (which rules are enabled / disabled and why) is in
+      # ADR-0011. Blocks on errors only; the config tunes which rule
+      # families produce errors vs warnings.
+      - name: Run markdownlint-cli2
+        run: markdownlint-cli2

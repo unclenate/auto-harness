@@ -10,3 +10,11 @@
 # here so the new validator can be wired into CI without first fixing every
 # historical drift in the repository — a separate concern.
 ^platform/workflow/knowledge-capture-pattern\.md$
+
+# Illustrative example paths used inside platform/workflow/troubleshooting.md
+# to document what a broken-reference error looks like. These appear in inline
+# backticks (not fenced blocks) so the validator sees them; they are pedagogical
+# strings, not real references. Anchored exact-match so a real same-named file
+# would still need to exist on disk if it were ever introduced.
+^platform/foo/example\.md$
+^platform/workflow/missing-guide\.md$

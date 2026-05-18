@@ -21,5 +21,5 @@ Source modules:
 - `interview-driven`
 - `base`
 
-See [`platform/profiles/management/interview-driven/README.md`](../../profiles/management/interview-driven/README.md)
+See [`platform/profiles/management/interview-driven/README.md`](../../../profiles/management/interview-driven/README.md)
 for the overlay's philosophy and upgrade path to `product-lite + project-standard`.

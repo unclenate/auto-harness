@@ -15,8 +15,8 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 **Tech Stack:** Markdown + YAML only. Validators are bash. Reference modules: `platform/profiles/management/knowledge-capture/` (structural analog), `docs/knowledge/README.md` (auto-harness's prior adoption analog), `docs/adr/ADR-0002-knowledge-capture-structured-observations.md` (the locking-ADR precedent).
 
 **Companion specs:**
-- [PRD-0003](../requirements/PRD-0003-opportunity-capture-module.md) — module spec, all 15 functional requirements
-- [ADR-0004](../adr/ADR-0004-opportunity-capture-record-structure.md) — locked record-structure choice
+- [PRD-0003](../../requirements/PRD-0003-opportunity-capture-module.md) — module spec, all 15 functional requirements
+- [ADR-0004](../../adr/ADR-0004-opportunity-capture-record-structure.md) — locked record-structure choice
 
 ---
 

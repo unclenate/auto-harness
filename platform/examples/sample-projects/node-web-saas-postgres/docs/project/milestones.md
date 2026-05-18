@@ -16,7 +16,7 @@ completion criteria — a milestone is not "done" unless every criterion is veri
 
 | Milestone | Target Date | Owner | Status | Completion Criteria |
 | --------- | ----------- | ----- | ------ | ------------------- |
-| Core validators green | 2024-01-20 | @platform-team | Complete | All six validators exit 0 against the sample project; unit + integration test suite passes |
+| Core validators green | 2024-01-20 | @platform-team | Complete | All seven validators exit 0 against the sample project; unit + integration test suite passes |
 | Module profile library complete | 2024-02-01 | @platform-team | Complete | All profiles have substantive README, module.yaml with correct requiredArtifacts/companionRules |
 | Template library complete | 2024-02-10 | @platform-team | Complete | All templates have guidance prose, [[PLACEHOLDER]] tokens, and match the quality bar in templates/README.md |
 | Skills published (Agent Skills format) | 2024-02-15 | @platform-team | Complete | harness-governance, harness-testing, harness-web3, harness-onboarding pass frontmatter validation; body covers stated use cases |

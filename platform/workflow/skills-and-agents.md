@@ -96,7 +96,7 @@ skills-ref validate ./my-skill
 
 ## Harness-Native Skills
 
-The harness provides five skills in Agent Skills format, defined at `platform/skills/`.
+The harness provides seven skills in Agent Skills format, defined at `platform/skills/`.
 These encapsulate governance knowledge as first-class skills that any compliant agent can
 discover and activate.
 
@@ -107,6 +107,8 @@ discover and activate.
 | `harness-web3` | `platform/skills/harness-web3/` | UNKNOWN propagation, rate limit budgets, evidence requirements, Tier 5 gates |
 | `harness-onboarding` | `platform/skills/harness-onboarding/` | Brownfield assessment, gap analysis, lite manifest generation |
 | `harness-tools` | `platform/skills/harness-tools/` | MCP developer tool governance: trust tier map, Linear artifact workflow, Slack notifications, analytics tools |
+| `harness-agentic-interfaces` | `platform/skills/harness-agentic-interfaces/` | In-product copilot / generative-UI / conversational-primary governance: flavor map, tier discipline for agent-callable actions, prompt-injection and renderer-contract threat model |
+| `harness-mcp` | `platform/skills/harness-mcp/` | Producer-side MCP work: three-mode map (consumer / producer / exposed-governance), per-tool consumer-tier mapping, prompt-injection defense surface, capability and transport posture |
 
 **Why skills instead of (only) compiled fragments?**
 

@@ -1,0 +1,36 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+# Starter composition for projects that ship a Model Context Protocol (MCP) server
+# implemented in TypeScript. Wires the producer-side architecture overlay
+# (architectures/mcp-server) with a TypeScript stack, a prototype delivery posture,
+# and an interview-driven management overlay sized for small teams or initial
+# MVP work. Compose with delivery/production-saas instead of prototype when the
+# server moves toward hosted multi-tenant deployment.
+#
+# See:
+#   - platform/profiles/architectures/mcp-server/README.md
+#   - platform/workflow/mcp-server-build.md
+#   - platform/examples/sample-projects/mcp-server-starter/
+#   - docs/adr/ADR-0008-mcp-awareness.md
+schemaVersion: 1
+project:
+  id: example-mcp-server-typescript
+  name: Example MCP Server (TypeScript)
+  maturity: prototype
+  criticality: low
+modules:
+  core:
+    - kernel/base
+  stacks:
+    - node-typescript
+  architectures:
+    - mcp-server
+  delivery:
+    - prototype
+  management:
+    - interview-driven
+  agents:
+    - base
+overrides:
+  requiredArtifacts: []
+  disabledValidations: []

@@ -1,0 +1,37 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+# Starter composition for a SaaS web-app that ships an in-product agentic interface
+# (CopilotKit-style copilot or A2UI-style generative UI surface bolted onto a web product).
+# This is the common case — the agent surface is a feature, not the dominant topology.
+# For conversational-primary products, MCP-host shells, or pure agent-native apps,
+# add `architectures/agentic-ui` to the architectures list — see
+# `platform/profiles/architectures/agentic-ui/README.md`.
+# References:
+#   - platform/profiles/domains/agentic-interfaces/README.md
+#   - platform/workflow/agentic-interface-integration.md
+#   - docs/adr/ADR-0007-agentic-interface-awareness.md
+#   - platform/examples/sample-projects/agentic-ui-starter/
+schemaVersion: 1
+project:
+  id: example-agentic-ui-saas
+  name: Example Agentic-UI SaaS
+  maturity: prototype
+  criticality: low
+modules:
+  core:
+    - kernel/base
+  stacks:
+    - node-typescript
+  architectures:
+    - web-app
+  domains:
+    - agentic-interfaces
+  delivery:
+    - prototype
+  management:
+    - interview-driven
+  agents:
+    - base
+overrides:
+  requiredArtifacts: []
+  disabledValidations: []

@@ -1,0 +1,86 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+id: agentic-interfaces
+type: domain
+version: 1.0.0
+summary: Domain overlay for products that ship an in-product agentic interface — copilots (CopilotKit-style), generative UI (A2UI-style), or conversational-primary surfaces (MCP Apps, ChatGPT Apps). Governs prompt-injection defense, action-approval gating, renderer contracts, agent-callable tool registry, and model-update regression risk. Vendor-neutral — the design doc declares the flavor and the renderer contract; templates carry vendor-specific guidance.
+dependsOn:
+  - kernel/base
+conflictsWith: []
+requiredArtifacts:
+  - docs/agentic-interface/design.md
+  - docs/agentic-interface/risk-register.md
+optionalArtifacts:
+  - docs/agentic-interface/prompt-tool-registry.md
+  - docs/agentic-interface/renderer-contract.md
+  - docs/agentic-interface/component-manifest.md
+  - docs/architecture/overview.md
+sensitivePaths:
+  - description: Agentic-interface design and governance docs
+    patterns:
+      - ^docs/agentic-interface/
+  - description: In-product agent runtime, configuration, and prompt registries
+    patterns:
+      - ^src/agents/
+      - ^src/copilot/
+      - ^src/agent-ui/
+      - ^src/genui/
+      - ^prompts/
+      - agent\.config\.
+      - copilotkit\.config\.
+      - a2ui\.config\.
+  - description: Generative-UI renderer and component-catalog surface
+    patterns:
+      - ^src/renderer/
+      - ^src/agent-components/
+      - ^src/agent-actions/
+      - renderer\.manifest\.
+      - component\.catalog\.
+companionRules:
+  - description: Agentic-interface design or surface changes must update the design doc, risk register, prompt-tool registry, or an ADR
+    triggerPaths:
+      - ^docs/agentic-interface/
+      - ^src/agents/
+      - ^src/copilot/
+      - ^src/agent-ui/
+      - ^src/genui/
+      - ^prompts/
+      - agent\.config\.
+      - copilotkit\.config\.
+      - a2ui\.config\.
+    requiredAny:
+      - ^docs/agentic-interface/design\.md$
+      - ^docs/agentic-interface/risk-register\.md$
+      - ^docs/agentic-interface/prompt-tool-registry\.md$
+      - ^docs/adr/ADR-
+    humanReview: Reviewers verify that the prompt-injection surface, action-approval gating, and renderer contract remain accurately described after the change. The most common failure mode is a new agent-callable action being added to code without being added to the prompt-tool registry, which leaves reviewers and downstream agents unaware that the tool is reachable.
+  - description: Generative-UI renderer or component-catalog changes must update the renderer contract or an ADR
+    triggerPaths:
+      - ^src/renderer/
+      - ^src/agent-components/
+      - ^src/agent-actions/
+      - renderer\.manifest\.
+      - component\.catalog\.
+    requiredAny:
+      - ^docs/agentic-interface/renderer-contract\.md$
+      - ^docs/agentic-interface/design\.md$
+      - ^docs/adr/ADR-
+    humanReview: Reviewers verify that the catalog-bounding (Controlled / Declarative) or sandbox isolation (Open-ended) remains intact, that no new component allows arbitrary HTML or script execution outside the declared boundary, and that the agent cannot render UI affordances for actions it is not authorized to invoke.
+validators:
+  - validate-required-artifacts
+  - validate-companions
+reviewGates:
+  - Any new agent-callable action must be reviewed for tier classification, side effects, and approval gating. Adding a tool to the agent's reachable surface without recording it in the prompt-tool registry is a governance gap regardless of how small the tool seems.
+  - Generative UI rendering pathways must be reviewed for catalog-bounding (Controlled / Declarative flavors) or sandbox isolation (Open-ended flavor). The renderer contract is the agent's permission system for the UI layer — weakening it is equivalent to weakening an API authorization check.
+  - Model or runtime upgrades that affect in-product agent behavior must be reviewed for UI-regression risk before merge. Model-update regression is the agentic-UI analog of a silent dependency upgrade — behavior changes without code changes, and the validator chain cannot detect it.
+  - Human-in-the-loop checkpoints declared in the design doc must be present in code. A design doc that says "agent pauses for confirmation before sending email" but a code path that auto-confirms is a Tier 3-or-higher governance failure, not a UX bug.
+agentAdapters:
+  - platform/agents/base
+compiledFragments:
+  - platform/profiles/domains/agentic-interfaces/README.md
+recommendedSkills:
+  # --- Agent Skills format (SKILL.md directories) ---
+  # Install to .agents/skills/ or .claude/skills/
+  # Source: platform/skills/; copy to project skill directory
+  - harness-governance         # trust tiers, companion rules, lifecycle controls
+  - harness-agentic-interfaces # three-flavor map, tool registry discipline, prompt-injection threat model, renderer-contract guidance

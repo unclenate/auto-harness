@@ -232,6 +232,7 @@ Pre-built manifests for common project types. Copy the closest match and adjust:
 | [`python-api-service-postgres.yaml`](platform/compositions/python-api-service-postgres.yaml) | Python | API service with PostgreSQL |
 | [`research-pipeline-python-object-storage.yaml`](platform/compositions/research-pipeline-python-object-storage.yaml) | Python | Data / ML pipeline |
 | [`web3-risk-analytics.yaml`](platform/compositions/web3-risk-analytics.yaml) | Python | Blockchain-integrated platform |
+| [`agentic-ui-saas.yaml`](platform/compositions/agentic-ui-saas.yaml) | Node / TS | SaaS web-app shipping an in-product agentic interface (copilot or generative UI) |
 
 ```bash
 cp platform/compositions/node-web-saas-postgres.yaml harness.manifest.yaml

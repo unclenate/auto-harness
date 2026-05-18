@@ -29,7 +29,7 @@ The agent surface is governed by `domains/agentic-interfaces`. The canonical art
 - `docs/agentic-interface/design.md` — flavor, runtime, action surface, renderer contract, HITL checkpoints
 - `docs/agentic-interface/risk-register.md` — agentic-UI-specific risks
 
-See [`platform/profiles/domains/agentic-interfaces/README.md`](../../profiles/domains/agentic-interfaces/README.md)
+See [`platform/profiles/domains/agentic-interfaces/README.md`](../../../profiles/domains/agentic-interfaces/README.md)
 for the overlay's three-flavor map, companion rules, and review gates.
 
 The product follows the `interview-driven` management overlay — monolithic PRD + plan +

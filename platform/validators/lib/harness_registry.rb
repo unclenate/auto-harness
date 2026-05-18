@@ -144,7 +144,20 @@ module HarnessRegistry
     end
   end
 
+  # Valid git ref-name characters per `git check-ref-format` simplified rules:
+  # letters, digits, dot, slash, dash, underscore. No spaces, no shell
+  # metacharacters. Refs starting with `-` are rejected to avoid being
+  # interpreted as flags. See L3-03 audit finding for the threat model.
+  REF_NAME_REGEX = /\A[A-Za-z0-9._\/-]+\z/.freeze
+  private_constant :REF_NAME_REGEX
+
   def self.changed_files(project_root, base_branch)
+    unless base_branch.is_a?(String) && !base_branch.start_with?("-") && REF_NAME_REGEX.match?(base_branch)
+      raise ArgumentError,
+            "Invalid base_branch %p: must match [A-Za-z0-9._/-]+ and not start with '-' " \
+            "(shell-injection-safe ref names only)" % base_branch
+    end
+
     Dir.chdir(project_root) do
       prefix = `git rev-parse --show-prefix 2>/dev/null`.strip
       output = `git diff --name-only origin/#{base_branch}...HEAD 2>/dev/null`

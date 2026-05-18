@@ -42,6 +42,6 @@ The management overlay's monolithic-doc artifacts live at the project root:
 
 See:
 
-- [`platform/profiles/architectures/mcp-server/README.md`](../../profiles/architectures/mcp-server/README.md) — the architecture module's philosophy and usage
-- [`platform/workflow/mcp-server-build.md`](../../workflow/mcp-server-build.md) — operator workflow
-- [ADR-0008: MCP Awareness](../../../docs/adr/ADR-0008-mcp-awareness.md) — design rationale
+- [`platform/profiles/architectures/mcp-server/README.md`](../../../profiles/architectures/mcp-server/README.md) — the architecture module's philosophy and usage
+- [`platform/workflow/mcp-server-build.md`](../../../workflow/mcp-server-build.md) — operator workflow
+- [ADR-0008: MCP Awareness](../../../../docs/adr/ADR-0008-mcp-awareness.md) — design rationale

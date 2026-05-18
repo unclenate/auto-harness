@@ -484,6 +484,179 @@ class TestValidateDocReferences < Minitest::Test
 end
 
 # ---------------------------------------------------------------------------
+# validate-companions.sh — forbiddenPatterns semantics
+#
+# Each test sets up a throwaway git repo with a single ephemeral module
+# definition that declares a forbidden pattern. The base branch and HEAD
+# differ by exactly the file under test, so changed_files() returns it.
+#
+# These tests skip when `git` is not available in PATH.
+# ---------------------------------------------------------------------------
+GIT_AVAILABLE = system("bash -c 'command -v git >/dev/null 2>&1'")
+
+class TestValidateCompanionsForbidden < Minitest::Test
+  def setup
+    skip "git not available — skipping forbidden-pattern integration tests" unless GIT_AVAILABLE
+  end
+
+  # Build a temporary harness-mount layout:
+  #   <tmp>/.harness/platform/...   (symlink into the real platform/)
+  #   <tmp>/harness.manifest.yaml   (declares core + one ad-hoc agent module)
+  #   <tmp>/platform/agents/test-forbidden/module.yaml  (forbidden rule)
+  #
+  # Then init git, commit the baseline, branch, make a change, and run the
+  # validator through the .harness mount.
+  def with_forbidden_fixture(forbidden_pattern:, change_paths:, baseline_paths: [])
+    Dir.mktmpdir do |tmp|
+      # Mount the real platform tree so the validator can find core modules.
+      FileUtils.mkdir_p(File.join(tmp, ".harness"))
+      File.symlink(File.expand_path("..", PLATFORM_DIR), File.join(tmp, ".harness/auto-harness"))
+      # Build a side platform/ dir under the fixture that holds the ad-hoc
+      # module. Mount the real platform tree under .harness for validator
+      # script resolution, then point the manifest at a custom module path
+      # via composition through a per-fixture module file.
+      ad_hoc_dir = File.join(tmp, "fixture-platform/agents/test-forbidden")
+      FileUtils.mkdir_p(ad_hoc_dir)
+      File.write(File.join(ad_hoc_dir, "module.yaml"), <<~YAML)
+        id: test-forbidden
+        type: agent
+        version: 0.0.1
+        summary: Test-only module exercising forbiddenPatterns.
+        dependsOn: []
+        conflictsWith: []
+        requiredArtifacts: []
+        optionalArtifacts: []
+        sensitivePaths: []
+        companionRules:
+          - description: Test forbidden rule
+            triggerPaths:
+              - "^src/"
+            requiredAny:
+              - "^AGENTS\\\\.md$"
+            forbiddenPatterns:
+              - "#{forbidden_pattern}"
+        validators:
+          - validate-companions
+      YAML
+
+      # We avoid wiring this into the real manifest by invoking the validator
+      # against a tiny manifest that points at a tiny module set in this tmp.
+      # The Ruby loader needs the module YAML resolvable via the standard
+      # category dir layout, so symlink into a synthetic platform.
+      syn_root = File.join(tmp, "syn")
+      syn_platform = File.join(syn_root, "platform")
+      FileUtils.mkdir_p(File.join(syn_platform, "agents/test-forbidden"))
+      FileUtils.mkdir_p(File.join(syn_platform, "core/kernel/base"))
+      FileUtils.mkdir_p(File.join(syn_platform, "validators"))
+      File.write(File.join(syn_platform, "agents/test-forbidden/module.yaml"),
+                 File.read(File.join(ad_hoc_dir, "module.yaml")))
+      # Reuse the real kernel/base module.yaml so dependency resolution works.
+      real_kernel = File.join(PLATFORM_DIR, "core/kernel/base/module.yaml")
+      File.write(File.join(syn_platform, "core/kernel/base/module.yaml"),
+                 File.read(real_kernel))
+      # Symlink the validator scripts and lib into the synthetic platform so
+      # SCRIPT_DIR/../.. resolves a HARNESS_ROOT that contains the syn manifest.
+      %w[validate-companions.sh].each do |s|
+        File.symlink(File.join(PLATFORM_DIR, "validators", s),
+                     File.join(syn_platform, "validators", s))
+      end
+      File.symlink(File.join(PLATFORM_DIR, "validators/lib"),
+                   File.join(syn_platform, "validators/lib"))
+
+      manifest_path = File.join(syn_root, "harness.manifest.yaml")
+      File.write(manifest_path, <<~YAML)
+        schemaVersion: 1
+        project:
+          id: test-forbidden
+          name: Test Forbidden
+          maturity: prototype
+          criticality: low
+        modules:
+          core:
+            - kernel/base
+          agents:
+            - test-forbidden
+        overrides:
+          requiredArtifacts: []
+          disabledValidations: []
+      YAML
+
+      # Build the git working copy at syn_root.
+      Dir.chdir(syn_root) do
+        system("git init -q -b main")
+        system("git config user.email test@example.com")
+        system("git config user.name Test")
+
+        # Baseline: write the manifest and any baseline files, then commit on main.
+        baseline_paths.each do |p|
+          full = File.join(syn_root, p)
+          FileUtils.mkdir_p(File.dirname(full))
+          File.write(full, "baseline\n")
+        end
+        system("git add -A")
+        system("git commit -q -m baseline")
+
+        # Branch off and make the change(s).
+        system("git checkout -q -b feature")
+        change_paths.each do |p|
+          full = File.join(syn_root, p)
+          FileUtils.mkdir_p(File.dirname(full))
+          File.write(full, "change\n")
+        end
+        system("git add -A")
+        system("git commit -q -m change")
+
+        # Run the validator script through the synthetic platform.
+        script = File.join(syn_platform, "validators/validate-companions.sh")
+        cmd = ["bash", script, manifest_path, syn_root, "main"]
+        stdout, stderr, status = Open3.capture3(*cmd)
+        yield stdout.strip, stderr.strip, status.exitstatus
+      end
+    end
+  end
+
+  # A single innocuous change that triggers nothing in the kernel/base rule.
+  # Lets the forbiddenPatterns scenarios be tested without noise from the
+  # governance-entrypoint companion rule on AGENTS.md / HARNESS.md edits.
+  def test_no_offending_file_passes
+    # README.md doesn't match the test rule's triggerPaths (`^src/`), the
+    # forbidden pattern, OR any kernel/base trigger — so the run is clean.
+    with_forbidden_fixture(
+      forbidden_pattern: "(^|/)AGENTS\\\\.override\\\\.md$",
+      change_paths: ["README.md"]
+    ) do |out, err, code|
+      assert_equal 0, code, "no forbidden hit and no other rule triggered. stderr: #{err}\nstdout: #{out}"
+      assert_match(/✓/, out)
+    end
+  end
+
+  def test_offending_file_fails_with_hard_message
+    with_forbidden_fixture(
+      forbidden_pattern: "(^|/)AGENTS\\\\.override\\\\.md$",
+      change_paths: ["src/AGENTS.override.md"]
+    ) do |out, err, code|
+      assert_equal 1, code, "forbidden hit must fail. stdout: #{out}"
+      assert_match(/forbidden path/i, err)
+      assert_match(/AGENTS\.override\.md/, err)
+    end
+  end
+
+  def test_offending_file_with_satisfied_required_any_still_fails
+    # The whole point of forbidden-first: even though AGENTS.md would satisfy
+    # the requiredAny rule for the trigger paths, the forbidden hit must win.
+    # We include docs/operating-principles.md so the kernel/base rule on
+    # AGENTS.md doesn't muddy the result.
+    with_forbidden_fixture(
+      forbidden_pattern: "(^|/)AGENTS\\\\.override\\\\.md$",
+      change_paths: ["src/AGENTS.override.md", "AGENTS.md", "docs/operating-principles.md"]
+    ) do |out, err, code|
+      assert_equal 1, code, "forbidden must win over requiredAny. stdout: #{out}"
+      assert_match(/forbidden path/i, err)
+    end
+  end
+end
+
+# ---------------------------------------------------------------------------
 # Submodule-mount path resolution
 #
 # Proves that validators work correctly when invoked through a submodule-style

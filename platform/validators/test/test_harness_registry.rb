@@ -357,6 +357,89 @@ class TestCompanionRuleLogic < Minitest::Test
 end
 
 # ---------------------------------------------------------------------------
+# Companion rule logic WITH forbiddenPatterns — inline simulation
+#
+# Mirrors the forbidden-first check from validate-companions.sh so the
+# precedence (forbidden wins over requiredAny satisfaction) can be tested
+# without shell or git.
+# ---------------------------------------------------------------------------
+class TestCompanionRuleForbiddenLogic < Minitest::Test
+  RULE = {
+    "triggerPaths"      => ["^\\.codex/", "(^|/)AGENTS\\.override\\.md$"],
+    "requiredAny"       => ["^AGENTS\\.md$", "^docs/adr/ADR-"],
+    "forbiddenPatterns" => ["(^|/)AGENTS\\.override\\.md$"]
+  }.freeze
+
+  # Returns :pass, :forbidden, or :missing_companion — mirroring the validator's
+  # exit-code-determining states.
+  def evaluate(changed_files, rule = RULE)
+    Array(rule["forbiddenPatterns"]).each do |fp|
+      changed_files.each do |path|
+        return :forbidden if HarnessRegistry.first_forbidden_match([fp], path)
+      end
+    end
+
+    triggered = changed_files.any? { |p| HarnessRegistry.patterns_match?(rule["triggerPaths"], p) }
+    return :pass unless triggered
+
+    satisfied = changed_files.any? { |p| HarnessRegistry.patterns_match?(rule["requiredAny"], p) }
+    satisfied ? :pass : :missing_companion
+  end
+
+  def test_no_changes_passes
+    assert_equal :pass, evaluate([])
+  end
+
+  def test_unrelated_change_passes
+    assert_equal :pass, evaluate(["src/app.ts"])
+  end
+
+  def test_forbidden_path_alone_fails
+    assert_equal :forbidden, evaluate(["src/AGENTS.override.md"])
+  end
+
+  def test_forbidden_path_with_satisfying_required_any_still_fails
+    # The whole point — a forbidden path adjacent to an AGENTS.md edit must
+    # NOT pass. Forbidden wins over satisfaction.
+    files = ["src/AGENTS.override.md", "AGENTS.md"]
+    assert_equal :forbidden, evaluate(files)
+  end
+
+  def test_forbidden_root_level_path_fails
+    assert_equal :forbidden, evaluate(["AGENTS.override.md"])
+  end
+
+  def test_forbidden_deeply_nested_path_fails
+    assert_equal :forbidden, evaluate(["a/b/c/d/AGENTS.override.md"])
+  end
+
+  def test_trigger_with_companion_passes_when_no_forbidden_match
+    assert_equal :pass, evaluate([".codex/config.toml", "AGENTS.md"])
+  end
+
+  def test_trigger_without_companion_fails_when_no_forbidden_match
+    assert_equal :missing_companion, evaluate([".codex/config.toml"])
+  end
+
+  def test_rule_without_forbidden_patterns_behaves_as_before
+    rule = {
+      "triggerPaths" => ["^docs/product/requirements\\.md$"],
+      "requiredAny"  => ["^docs/project/change-log\\.md$"]
+    }
+    assert_equal :missing_companion, evaluate(["docs/product/requirements.md"], rule)
+    assert_equal :pass, evaluate(
+      ["docs/product/requirements.md", "docs/project/change-log.md"],
+      rule
+    )
+  end
+
+  def test_empty_forbidden_patterns_array_behaves_as_no_field
+    rule = RULE.merge("forbiddenPatterns" => [])
+    assert_equal :missing_companion, evaluate(["src/AGENTS.override.md"], rule)
+  end
+end
+
+# ---------------------------------------------------------------------------
 # first_forbidden_match — used by validate-companions.sh forbiddenPatterns
 # ---------------------------------------------------------------------------
 class TestFirstForbiddenMatch < Minitest::Test

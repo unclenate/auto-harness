@@ -1,0 +1,38 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+#
+# auto-harness editor convention. See https://editorconfig.org/ for syntax.
+# Closes quality-audit finding L5-06. The conventions below codify the
+# existing repo state (LF, no trailing whitespace, spaces over tabs) so
+# IDE drift cannot silently introduce CRLF or tabs.
+
+root = true
+
+[*]
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+charset = utf-8
+indent_style = space
+indent_size = 2
+
+# Markdown: do NOT trim trailing whitespace. Markdown uses two trailing
+# spaces to mean "line break"; trimming would silently break that syntax.
+[*.md]
+trim_trailing_whitespace = false
+
+# YAML: two-space indent is part of the spec (tabs forbidden).
+[*.{yaml,yml}]
+indent_size = 2
+
+# Ruby + shell scripts: two-space indent matches the existing repo style.
+[*.{rb,sh}]
+indent_size = 2
+
+# Makefiles require tabs (POSIX requirement).
+[Makefile]
+indent_style = tab
+
+# JSON / JSONC: two-space.
+[*.{json,jsonc}]
+indent_size = 2

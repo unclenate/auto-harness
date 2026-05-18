@@ -1,0 +1,96 @@
+// Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+// SPDX-License-Identifier: MIT OR Apache-2.0
+//
+// markdownlint-cli2 configuration for auto-harness.
+//
+// Policy: rules are tuned for governance-doc readability, not for one
+// "correct" markdown style. Decisions captured in ADR-0011.
+//
+// Run locally:   markdownlint-cli2 "**/*.md"
+// CI runs the same; see .github/workflows/harness.yml.
+
+{
+  // Files to scan. Default include is "**/*.md"; we override to exclude
+  // recursive-symlink test fixtures, the auto-generated SUMMARY.md template
+  // (intentionally consumer-side links), legacy/, .git/, .claude/, etc.
+  "globs": [
+    "**/*.md"
+  ],
+  "ignores": [
+    "legacy/**",
+    ".git/**",
+    ".claude/**",
+    ".worktrees/**",
+    "node_modules/**",
+    "platform/validators/test/fixtures/**",
+    "platform/templates/docs/**",
+    "platform/bootstrap/test/fixtures/**",
+    ".remember/**"
+  ],
+
+  // Per-rule configuration. See https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md
+  "config": {
+    "default": true,
+
+    // MD013 line-length: disabled. Hard wrapping ruins markdown tables, code
+    // examples, and most of our long ADR/PRD prose. Long lines render fine in
+    // any modern renderer.
+    "MD013": false,
+
+    // MD024 multiple-headings-with-same-content: allow same content across
+    // siblings (e.g. multiple `### Positive` / `### Negative` / `### Watch`
+    // subsections inside different `## Consequences` blocks across ADRs).
+    "MD024": { "siblings_only": true },
+
+    // MD033 inline-HTML: allow SPDX/copyright comment blocks at file top
+    // and other intentional HTML like <br>, <details>, <summary>, <img>.
+    "MD033": { "allowed_elements": ["!--", "br", "details", "summary", "img", "a"] },
+
+    // MD028 no-blanks-blockquote: disabled. The rule warns about a common
+    // typo (forgetting `>` to continue a blockquote across paragraphs), but
+    // separating blockquote paragraphs with a blank line is the intentional
+    // markdown convention for "multiple distinct quoted thoughts" and the
+    // repo uses it in profile READMEs for grouped notes. The rule produces
+    // false-positives faster than it catches the typo class.
+    "MD028": false,
+
+    // MD036 emphasis-as-heading: disabled. Templates use parenthesized italic
+    // text as guidance ("(One sentence. Ruthlessly scoped.)") and ADRs/PRDs
+    // use bold-text inline labels ("**Status:**"). Both are stylistic, not
+    // heading-replacements; MD036 produces too many false-positives for our
+    // template patterns. Real heading-vs-bold judgment stays with the author.
+    "MD036": false,
+
+    // MD040 fenced-code-language: keep on but allow `text` as a valid lang
+    // for prose/ASCII-art blocks. Default lang for shell snippets: bash.
+    "MD040": true,
+
+    // MD041 first-line-heading: disabled because every file starts with the
+    // SPDX HTML comment block before the H1 (which is correct).
+    "MD041": false,
+
+    // MD046 code-block-style: prefer fenced (``` not 4-space indent).
+    "MD046": { "style": "fenced" },
+
+    // MD048 code-fence-style: prefer backticks (``` not ~~~).
+    "MD048": { "style": "backtick" },
+
+    // MD049 emphasis-style: prefer asterisk (*italic* not _italic_).
+    "MD049": { "style": "asterisk" },
+
+    // MD050 strong-style: prefer asterisk (**bold** not __bold__).
+    "MD050": { "style": "asterisk" },
+
+    // MD055 table-pipe-style: require leading and trailing pipes (this is
+    // the convention used throughout the repo's tables).
+    "MD055": { "style": "leading_and_trailing" },
+
+    // MD056 table-column-count: tables must have matching column counts.
+    "MD056": true,
+
+    // MD060 table-column-style: require leading-and-trailing pipes with one
+    // space padding inside each cell. Matches the repo's existing convention
+    // and renders cleanly in GitHub + GitBook.
+    "MD060": { "style": "leading_and_trailing", "aligned_delimiter": false }
+  }
+}

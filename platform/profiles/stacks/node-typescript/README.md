@@ -88,13 +88,18 @@ checks in a single workflow.
 
 ## Recommended Skills
 
-Install these in your AI tool based on your delivery target:
+The module's `recommendedSkills` field in `module.yaml` lists harness-native and
+OpenClaw / ClawHub skills relevant to a Node/TypeScript project:
 
-- `vercel-plugin:nextjs` — when deploying a Next.js app to Vercel
-- `vercel-plugin:vercel-cli` — for any project deploying to Vercel (env vars, previews, domains)
-- `supabase-postgres-best-practices` — when using Supabase as the data layer
+- **Agent Skills (harness-native):** `harness-governance`
+- **OpenClaw / ClawHub slugs:** `next-best-practices`, `next-cache-components`,
+  `lb-vercel-skill` (Vercel CLI), `react-perf`, `supabase` (when using Supabase
+  as the data layer)
 
-See `platform/workflow/skills-and-agents.md` for installation guidance and the full mapping.
+Install harness-native skills by copying the `platform/skills/<name>` directory
+into `.agents/skills/` or `.claude/skills/`. OpenClaw skills install via
+`clawhub install <slug>`. See `platform/workflow/skills-and-agents.md` for the
+full mapping and installation paths.
 
 ---
 

@@ -164,8 +164,8 @@ because human team members depend on it.
 ## Connecting to the Platform
 
 The harness platform itself uses this same GitBook structure. The platform's SUMMARY.md at
-`platform/SUMMARY.md` and `.gitbook.yaml` at `platform/.gitbook.yaml` are the reference
-implementation of this overlay applied to the platform's own documentation.
+`platform/SUMMARY.md` and the repo-root `.gitbook.yaml` are the reference implementation
+of this overlay applied to the platform's own documentation.
 
 Use the template at `platform/templates/docs/SUMMARY.md` as a starting point for your
 project's table of contents.
@@ -177,6 +177,6 @@ project's table of contents.
 | Resource | Path |
 |----------|------|
 | Platform SUMMARY.md (reference) | `platform/SUMMARY.md` |
-| Platform .gitbook.yaml (reference) | `platform/.gitbook.yaml` |
+| Repo `.gitbook.yaml` (reference) | `.gitbook.yaml` (repository root) |
 | Project SUMMARY.md template | `platform/templates/docs/SUMMARY.md` |
 | GitBook official docs | https://docs.gitbook.com |

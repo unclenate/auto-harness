@@ -128,6 +128,5 @@ Less necessary for:
 ## References
 
 - Templates: `platform/templates/knowledge/`
-- Workflow pattern: `platform/workflow/knowledge-capture-pattern.md`
 - Related: `management/project-standard/README.md` (revision tracker),
   `delivery/production-saas/README.md` (risk register)

@@ -48,8 +48,9 @@ artifact is materially changed. Pattern absorbed from adsclaw's dual-track gover
 (revision tracker + review log).
 
 **`docs/ops/ownership-map.md`**
-Named ownership of system components and review responsibility. Co-required by
-`delivery/production-saas` if that module is active.
+Named ownership of system components and review responsibility. Recommended once
+`delivery/production-saas` is active; the template lives at
+`platform/templates/ownership-map.md`.
 
 ---
 

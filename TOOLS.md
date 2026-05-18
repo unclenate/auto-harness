@@ -95,3 +95,18 @@ Remove tools that are not active in this project.
 ### Aliases and Shortcuts
 
 <!-- Any local aliases or shortcuts not obvious from the project itself -->
+
+---
+
+## MCP — Producer Posture
+
+The entries above govern MCP servers this project *consumes*. When a project
+*ships* its own MCP server (npm/pip package, hosted endpoint, internal
+service), see the producer-side architecture overlay
+`architectures/mcp-server` (`platform/profiles/architectures/mcp-server/`),
+the template family at `platform/templates/mcp/`, the `harness-mcp` skill at
+`platform/skills/harness-mcp/`, and the operator workflow at
+`platform/workflow/mcp-server-build.md`. A reference layout lives at
+`platform/examples/sample-projects/mcp-server-starter/`. Rationale and
+exposed-governance scope: `docs/adr/ADR-0008-mcp-awareness.md` and
+`docs/opportunities/OPP-0003-mcp-producer-and-exportable-governance-via-mcp.md`.

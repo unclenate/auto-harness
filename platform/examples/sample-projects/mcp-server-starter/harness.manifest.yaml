@@ -1,0 +1,24 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+schemaVersion: 1
+project:
+  id: mcp-server-starter
+  name: MCP Server Starter (team-knowledge-base)
+  maturity: prototype
+  criticality: low
+modules:
+  core:
+    - kernel/base
+  stacks:
+    - node-typescript
+  architectures:
+    - mcp-server
+  delivery:
+    - prototype
+  management:
+    - interview-driven
+  agents:
+    - base
+overrides:
+  requiredArtifacts: []
+  disabledValidations: []

@@ -39,12 +39,17 @@ sandbox_mode = "workspace-write"
 ```
 
 This is the Tier 2 default — Codex prompts for shell commands but executes file edits
-inside the workspace sandbox. Other valid combinations:
+inside the workspace sandbox. It is also the canonical `--full-auto` mapping: the
+(now-deprecated) `--full-auto` flag is documented by upstream as a shortcut for
+`--sandbox workspace-write`, which retains the default `approval_policy = "on-request"`
+([source](https://developers.openai.com/codex/agent-approvals-security)). Other valid
+combinations:
 
 - `approval_policy = "untrusted"` + `sandbox_mode = "read-only"` — Tier 0–1 only
-- `approval_policy = "never"` + `sandbox_mode = "workspace-write"` — `--full-auto` equivalent
-- `approval_policy = "never"` + `sandbox_mode = "danger-full-access"` — **prohibited
-  outside disposable environments**; see review gate
+- `approval_policy = "never"` + `sandbox_mode = "workspace-write"` — automation / CI
+  shape; never appropriate on a developer workstation that holds production credentials
+- `sandbox_mode = "danger-full-access"` (any approval policy) — **prohibited outside
+  disposable environments**; see review gate
 
 **Optional: `CODEX.md`**
 
@@ -58,15 +63,23 @@ from the cross-agent contract and cannot live in `AGENTS.md` itself.
 ## `AGENTS.override.md` is prohibited in the repository
 
 Codex CLI reads `AGENTS.override.md` *before* `AGENTS.md` at every level of its file walk
-and lets the override win. If `AGENTS.override.md` is committed, it silently overrides the
-project's governance contract for every Codex user. The harness treats this as a Tier 4+
+(root and every subdirectory) and lets the override win
+([source](https://developers.openai.com/codex/guides/agents-md)). If `AGENTS.override.md`
+is committed at *any* depth, it silently overrides the project's governance contract for
+every Codex user descending into that subtree. The harness treats this as a Tier 4+
 configuration change.
 
 **Mitigations:**
 
-1. Add `AGENTS.override.md` to the project's `.gitignore`
-2. The companion rule fires if `AGENTS.override.md` ever appears in a change set —
-   reviewers must verify it is local-only and remove it from the index before merge
+1. Add `AGENTS.override.md` to the project's `.gitignore` at the repo root (matches every
+   depth)
+2. The companion rule fires for `AGENTS.override.md` at any depth and surfaces the file
+   for reviewer attention — but **the rule does not hard-block the merge**. The current
+   `validate-companions` validator implements `requiredAny` semantics: a PR that adds
+   `AGENTS.override.md` alongside an edit to `AGENTS.md`, an ADR, or a PRD still passes
+   the validator. Reviewers must confirm the file is removed from the index before
+   approving. A hard forbidden-path validator hook would be needed to enforce the ban
+   automatically; that is a separate follow-up — see the codex-cli pack ADR backlog
 
 ---
 
@@ -75,7 +88,7 @@ configuration change.
 | Codex setting | Harness tier scope | Notes |
 | ------------- | ------------------ | ----- |
 | `approval_policy=untrusted` + `sandbox_mode=read-only` | Tier 0–1 | Read-only inspection; safe default for first contact |
-| `approval_policy=on-request` + `sandbox_mode=workspace-write` (`--full-auto`) | Tier 2 | Workspace mutation with shell-command prompts |
+| `approval_policy=on-request` + `sandbox_mode=workspace-write` (canonical `--full-auto`) | Tier 2 | Workspace mutation with shell-command prompts. `--full-auto` is deprecated upstream in favour of `--sandbox workspace-write` |
 | `approval_policy=never` + `sandbox_mode=workspace-write` | Tier 2–3 | Acceptable in CI; risky on a developer workstation with git credentials |
 | `sandbox_mode=danger-full-access` (any approval policy) | Tier 4+ | Prohibited outside disposable environments — Docker, CI runner, ephemeral VM |
 | `approval_policy=never` + `sandbox_mode=danger-full-access` | Tier 5 | Equivalent to handing the agent root shell on the host |
@@ -90,10 +103,11 @@ of `approval_policy` or `sandbox_mode` is in scope for the rule.
 
 Review gates:
 
-- *"approval_policy=never combined with sandbox_mode=danger-full-access is prohibited
+- *"`sandbox_mode=danger-full-access` (under any `approval_policy`) is prohibited
   outside disposable environments."*
-- *"AGENTS.override.md must not be committed — Codex lets it silently win over
-  AGENTS.md."*
+- *"AGENTS.override.md must not be committed at any depth — Codex lets it silently win
+  over AGENTS.md."* (The companion rule surfaces the file for review; reviewers enforce
+  removal.)
 
 ---
 

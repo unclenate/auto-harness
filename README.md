@@ -33,6 +33,8 @@ and what companion documentation must accompany every significant change.
 
 ## Table of Contents
 
+- [Who This Is For](#who-this-is-for)
+- [Entry Points at the Repo Root](#entry-points-at-the-repo-root)
 - [What It Does](#what-it-does)
 - [How It Works](#how-it-works)
 - [Concepts](#concepts) — Trust Tier Model, Module System, Companion Rules
@@ -48,6 +50,27 @@ and what companion documentation must accompany every significant change.
 - [Contributing](#contributing)
 - [License](#license)
 - [Reference](#reference)
+
+---
+
+## Who This Is For
+
+- **Solo founder vibecoding an MVP** — you want guardrails so your AI agents don't merge themselves into a corner. Adopt the smallest composition (`brownfield-lite` or `interview-driven-discovery`), wire one CI job, and grow from there.
+- **Senior dev adding discipline to a growing project** — you want module governance you can opt into incrementally without rewriting your repo. Pick the composition closest to your stack, run the validators, and tune `disabledValidations` until you're ready to enable each one.
+- **AI agent (Claude Code, Cursor, Copilot, OpenClaw, Gemini)** — read [`AGENTS.md`](AGENTS.md) first; it states the trust tier model, what you can and cannot do, when to stop, and the first-session workflow.
+
+---
+
+## Entry Points at the Repo Root
+
+Four files share the repo root. Each has a distinct job — read the one that matches your role first, then read the others as needed.
+
+| File | Role | Best for |
+| ---- | ---- | -------- |
+| [`README.md`](README.md) | Repo and GitBook front door | First-time human reader |
+| [`HARNESS.md`](HARNESS.md) | Project-level governance entrypoint — active modules, governance artifacts, source-of-truth pointers | Anyone auditing what governance is actually active on this repo |
+| [`AGENTS.md`](AGENTS.md) | Cross-agent operating manual — trust tiers, scope, stop conditions, first-session workflow | Any AI tool (Cursor, Copilot, Codex, OpenClaw, Gemini, etc.) |
+| [`CLAUDE.md`](CLAUDE.md) | Claude Code load-order shim | Claude Code specifically; it points at the three files above in order |
 
 ---
 

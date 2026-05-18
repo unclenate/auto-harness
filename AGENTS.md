@@ -14,6 +14,19 @@ shared guidance file instead of creating a duplicate `.github/copilot-instructio
 
 ---
 
+## First-Session Workflow
+
+Run these steps once at the start of any session before touching code or governance files. They take less than a minute and prevent the most common operator errors.
+
+1. **Orient.** Read [`HARNESS.md`](HARNESS.md) for the active module set. Read this file (`AGENTS.md`) for the trust tier model, scope, and stop conditions. If you are Claude Code, also read [`CLAUDE.md`](CLAUDE.md) for the load order.
+2. **Confirm the manifest.** Open `harness.manifest.yaml`. The modules listed there are the *only* governance overlays in force; do not assume any other module's rules apply unless you see it here.
+3. **Verify validators are green on `main` before you start.** Run the chain in the **Build and Test** section below. If any validator fails before you've made changes, surface that to the human first instead of fixing it implicitly.
+4. **Identify which skill matches your task.** See the **Skills** section. Load only the skills whose triggering conditions match the work you're about to do — do not pre-load everything.
+5. **Decide your operating tier.** The default is Tier 2 (workspace mutation). If your task requires Tier 3 or above (commits, env changes, deploys), say so to the human and wait for explicit direction.
+6. **Watch for companion rules.** Any change to `platform/profiles/**/module.yaml`, validators, governance entrypoints (HARNESS.md / AGENTS.md / CLAUDE.md), or active-module catalog requires a paired update — usually a `docs/project/change-log.md` entry or an ADR in the **same commit**. Plan the paired edit before you start the primary edit.
+
+---
+
 ## Repository Shape
 
 This repository is a modular governance framework, not a deployable application service.
@@ -115,7 +128,9 @@ Agents must halt and surface to a human when:
 |----------|-----------|
 | `harness.manifest.yaml` | Active module composition |
 | `HARNESS.md` | Project-level governance entrypoint |
-| `AGENTS.md` | This file — agent operating contract |
+| `AGENTS.md` | This file — cross-agent operating contract |
+| `CLAUDE.md` | Claude Code load-order shim — points at the canonical files above |
+| `TOOLS.md` | Environment-specific tool registry (loaded on demand for MCP developer tools) |
 | `docs/operating-principles.md` | Team operating principles |
 | `docs/product/requirements.md` | Product requirements |
 | `docs/adr/` | Architectural decision records |
@@ -126,10 +141,13 @@ Agents must halt and surface to a human when:
 ## Skills
 
 Check `recommendedSkills` in each active module's `module.yaml` for tool-specific
-skill recommendations. The harness provides 5 native skills:
+skill recommendations. Load skills on demand; do not pre-load. The harness provides
+seven native skills:
 
-- `harness-governance` — trust tiers, companion rules, lifecycle controls
-- `harness-testing` — test strategy, coverage, framework guidance
-- `harness-web3` — chain config, contract governance (web3 projects only)
-- `harness-onboarding` — brownfield and greenfield onboarding workflows
-- `harness-tools` — MCP developer tool governance: tier map, Linear artifact workflow, Slack notifications (agents/openclaw active)
+- `harness-governance` — trust tiers, companion rules, lifecycle controls (all projects)
+- `harness-onboarding` — brownfield and greenfield onboarding workflows (during onboarding)
+- `harness-testing` — test strategy, coverage, framework guidance (`testing-standard` active)
+- `harness-web3` — chain config, contract governance (Web3 projects only)
+- `harness-tools` — MCP developer tool governance: tier map, Linear artifact workflow, Slack notifications (`agents/openclaw` active)
+- `harness-agentic-interfaces` — in-product copilot / generative-UI / conversational-primary surfaces (`domains/agentic-interfaces` active)
+- `harness-mcp` — producer-side MCP work (`architectures/mcp-server` active)

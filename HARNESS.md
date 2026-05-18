@@ -17,6 +17,15 @@ module system, validators, and companion rules.
 **License:** Dual MIT / Apache-2.0 at consumer option — see [LICENSE-MIT](LICENSE-MIT), [LICENSE-APACHE](LICENSE-APACHE), and [ADR-0005](docs/adr/ADR-0005-open-source-cut.md)
 **Contributing:** see [CONTRIBUTING.md](CONTRIBUTING.md) · **Security:** see [SECURITY.md](SECURITY.md) · **Conduct:** see [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
 
+### Sibling entrypoints at the repo root
+
+This file states *what governance is active*. The other root files each have a distinct job:
+
+- [`README.md`](README.md) — repo and GitBook front door for human readers
+- [`AGENTS.md`](AGENTS.md) — cross-agent operating manual (trust tiers, scope, stop conditions, first-session workflow)
+- [`CLAUDE.md`](CLAUDE.md) — Claude Code load-order shim
+- [`TOOLS.md`](TOOLS.md) — environment-specific tool registry for MCP developer tools
+
 ---
 
 ## Active Modules

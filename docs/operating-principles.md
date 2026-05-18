@@ -7,7 +7,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 # Operating Principles — Development Harness Framework
 
 > Owner: @unclenate
-> Last updated: 2026-05-12
+> Last updated: 2026-05-17
 
 These principles govern how the harness platform itself is built and evolved.
 They are derived from the kernel doctrine and adapted to this project's context.
@@ -43,6 +43,7 @@ Documentation is not follow-up work. A change is not complete until its document
 - Template changes require templates/README.md directory map update
 - Workflow changes require SUMMARY.md and cross-reference updates
 - Active-module catalog changes propagate to HARNESS.md, SUMMARY.md, README.md (directory tree), `platform/skills/harness-onboarding/SKILL.md` (module catalog), and `platform/workflow/discovery-to-composition.md` (decision rubric) in the same pass
+- Repo-root governance entrypoints (`README.md`, `HARNESS.md`, `AGENTS.md`, `CLAUDE.md`, `TOOLS.md`) each carry a distinct job statement; when one is edited to change scope, the others' job statements and the SUMMARY.md "Entry Points by Audience" block are reviewed in the same pass
 
 ---
 

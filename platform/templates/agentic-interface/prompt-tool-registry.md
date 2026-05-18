@@ -28,7 +28,15 @@ One row per tool. Tier follows the harness Tier 0–5 model (`platform/core/kern
 
 | Tool ID | Surface | Side effects | Tier | Approval gating | Owner | Status |
 | ------- | ------- | ------------ | ---- | --------------- | ----- | ------ |
-| [[TOOL_ID]] | [[FRONTEND \| BACKEND \| MCP_SERVER \| EXTERNAL_API]] | [[NONE \| READ_ONLY \| WRITES_X \| SENDS_X]] | 0 / 1 / 2 / 3 / 4 / 5 | [[NONE \| INLINE_CONFIRM \| EXPLICIT_USER_AUTH \| HUMAN_REVIEW]] | [[OWNER]] | active / deprecated / draft |
+| [[TOOL_ID]] | [[TOOL_SURFACE]] | [[TOOL_SIDE_EFFECTS]] | [[TOOL_TIER]] | [[APPROVAL_GATING]] | [[TOOL_OWNER]] | [[TOOL_STATUS]] |
+
+Allowed values:
+
+- `[[TOOL_SURFACE]]`: `FRONTEND`, `BACKEND`, `MCP_SERVER`, or `EXTERNAL_API`
+- `[[TOOL_SIDE_EFFECTS]]`: `NONE`, `READ_ONLY`, `WRITES_X`, or `SENDS_X`
+- `[[TOOL_TIER]]`: `0`, `1`, `2`, `3`, `4`, or `5`
+- `[[APPROVAL_GATING]]`: `NONE`, `INLINE_CONFIRM`, `EXPLICIT_USER_AUTH`, or `HUMAN_REVIEW`
+- `[[TOOL_STATUS]]`: `active`, `deprecated`, or `draft`
 
 **Tier discipline reminders:**
 

@@ -14,6 +14,15 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 * [Glossary](platform/reference/glossary.md)
 * [Topic Index](platform/reference/index.md)
 
+### Entry Points by Audience
+
+These four files share the repository root. Each has a distinct job — pick the one that matches your role first, then read the others as needed.
+
+* [README.md](README.md) — Repo and GitBook front door. Best first read for humans.
+* [HARNESS.md](HARNESS.md) — Project-level governance entrypoint. Best first read when you want to know which modules are active and where the governance contract lives.
+* [AGENTS.md](AGENTS.md) — Cross-agent operating manual. Best first read for any AI tooling (Cursor, Copilot, Codex, OpenClaw, Gemini CLI). First-session workflow lives here.
+* [CLAUDE.md](CLAUDE.md) — Claude Code load order. Thin shim that points Claude Code at the canonical files above in the right sequence.
+
 ## Adoption Workflows
 
 How to start using the harness on a project. Walk through one of these once per project.
@@ -31,6 +40,8 @@ How to use the harness during normal development on a project that has already a
 * [Skills and Agents](platform/workflow/skills-and-agents.md)
 * [CI Integration](platform/workflow/ci-integration.md)
 * [Standards Pattern](platform/workflow/standards-pattern.md)
+* [Agentic Interface Integration](platform/workflow/agentic-interface-integration.md) — operator workflow for in-product agent surfaces
+* [MCP Server Build](platform/workflow/mcp-server-build.md) — operator workflow for projects that ship an MCP server
 
 ## Maintenance & Operations
 
@@ -74,6 +85,8 @@ Interaction and deployment patterns.
 * [Web App](platform/profiles/architectures/web-app/README.md)
 * [API Service](platform/profiles/architectures/api-service/README.md)
 * [Event Driven](platform/profiles/architectures/event-driven/README.md)
+* [Agentic UI](platform/profiles/architectures/agentic-ui/README.md) — conversational-primary or MCP-host-shell products where the agent surface is the dominant topology
+* [MCP Server](platform/profiles/architectures/mcp-server/README.md) — projects that ship their own MCP server (npm/pip package, hosted endpoint, internal service)
 
 ### Data
 
@@ -108,6 +121,7 @@ Product, project, and program governance overlays.
 
 Vendor, ecosystem, or specialist overlays.
 
+* [Agentic Interfaces](platform/profiles/domains/agentic-interfaces/README.md) — in-product copilot panels, generative-UI surfaces, conversational-primary products
 * [Supabase](platform/profiles/domains/supabase/README.md)
 * [Media Pipeline](platform/profiles/domains/media-pipeline/README.md)
 * [Web3](platform/profiles/domains/web3/README.md)
@@ -150,6 +164,8 @@ other compliant clients. Install to `.agents/skills/` or `.claude/skills/`.
 * [harness-testing](platform/skills/harness-testing/SKILL.md)
 * [harness-onboarding](platform/skills/harness-onboarding/SKILL.md)
 * [harness-tools](platform/skills/harness-tools/SKILL.md)
+* [harness-agentic-interfaces](platform/skills/harness-agentic-interfaces/SKILL.md)
+* [harness-mcp](platform/skills/harness-mcp/SKILL.md)
 
 ## Compositions and Examples
 
@@ -166,6 +182,8 @@ Pre-built manifests for common project types. Copy the closest match to
 * [Python API Service + Postgres](platform/compositions/python-api-service-postgres.yaml)
 * [Research Pipeline (Python + Object Storage)](platform/compositions/research-pipeline-python-object-storage.yaml)
 * [Web3 Risk Analytics](platform/compositions/web3-risk-analytics.yaml)
+* [Agentic UI SaaS](platform/compositions/agentic-ui-saas.yaml) — Node/TS SaaS shipping an in-product copilot or generative UI
+* [MCP Server (TypeScript)](platform/compositions/mcp-server-typescript.yaml) — projects that produce their own MCP server
 
 ### Examples
 
@@ -192,6 +210,38 @@ decision-complete plan, and an AI-facing interview/spec prompt.
 * [Full Plan (decision-complete)](platform/examples/sample-projects/interview-driven-hackathon/docs/full-plan.md)
 * [Interview / Spec Prompt](platform/examples/sample-projects/interview-driven-hackathon/docs/prd-interview-spec-prompt.md)
 * [Operating Principles](platform/examples/sample-projects/interview-driven-hackathon/docs/operating-principles.md)
+
+#### Agentic UI Starter — Sample Project
+
+A SaaS web-app that ships an in-product agentic interface (copilot sidebar + small generative-UI surface). Demonstrates the `domains/agentic-interfaces` overlay.
+
+* [HARNESS.md](platform/examples/sample-projects/agentic-ui-starter/HARNESS.md)
+* [AGENTS.md](platform/examples/sample-projects/agentic-ui-starter/AGENTS.md)
+* [CLAUDE.md](platform/examples/sample-projects/agentic-ui-starter/CLAUDE.md)
+* [PRD](platform/examples/sample-projects/agentic-ui-starter/docs/PRD.md)
+* [Full Plan](platform/examples/sample-projects/agentic-ui-starter/docs/full-plan.md)
+* [Interview / Spec Prompt](platform/examples/sample-projects/agentic-ui-starter/docs/prd-interview-spec-prompt.md)
+* [Agentic Interface — Design](platform/examples/sample-projects/agentic-ui-starter/docs/agentic-interface/design.md)
+* [Agentic Interface — Risk Register](platform/examples/sample-projects/agentic-ui-starter/docs/agentic-interface/risk-register.md)
+* [Architecture Overview](platform/examples/sample-projects/agentic-ui-starter/docs/architecture/overview.md)
+* [Operating Principles](platform/examples/sample-projects/agentic-ui-starter/docs/operating-principles.md)
+
+#### MCP Server Starter — Sample Project
+
+A reference MCP-server-producing project (TypeScript) demonstrating the `architectures/mcp-server` overlay with a small tool surface that spans Tier 0, 2, and 3.
+
+* [HARNESS.md](platform/examples/sample-projects/mcp-server-starter/HARNESS.md)
+* [AGENTS.md](platform/examples/sample-projects/mcp-server-starter/AGENTS.md)
+* [CLAUDE.md](platform/examples/sample-projects/mcp-server-starter/CLAUDE.md)
+* [PRD](platform/examples/sample-projects/mcp-server-starter/docs/PRD.md)
+* [Full Plan](platform/examples/sample-projects/mcp-server-starter/docs/full-plan.md)
+* [MCP — Server Spec](platform/examples/sample-projects/mcp-server-starter/docs/mcp/server-spec.md)
+* [MCP — Tool Registry](platform/examples/sample-projects/mcp-server-starter/docs/mcp/tool-registry.md)
+* [MCP — Risk Register](platform/examples/sample-projects/mcp-server-starter/docs/mcp/risk-register.md)
+* [MCP — Transport and Auth](platform/examples/sample-projects/mcp-server-starter/docs/mcp/transport-and-auth.md)
+* [MCP — Capability Schema](platform/examples/sample-projects/mcp-server-starter/docs/mcp/capability-schema.md)
+* [MCP — Prompt-Injection Test Plan](platform/examples/sample-projects/mcp-server-starter/docs/mcp/prompt-injection-test-plan.md)
+* [Operating Principles](platform/examples/sample-projects/mcp-server-starter/docs/operating-principles.md)
 
 #### Node Web SaaS Postgres — Sample Project
 
@@ -302,6 +352,24 @@ A complete sample project with all governance artifacts filled in.
 * [ADR — Web3 Variant](platform/templates/web3/adr-web3.md)
 * [Web3 Intake Supplement](platform/templates/web3/web3-intake-supplement.md)
 
+### Agentic Interface
+
+* [Agentic Interface README](platform/templates/agentic-interface/README.md)
+* [Design](platform/templates/agentic-interface/design.md)
+* [Risk Register](platform/templates/agentic-interface/risk-register.md)
+* [Prompt / Tool Registry](platform/templates/agentic-interface/prompt-tool-registry.md)
+* [Renderer Contract](platform/templates/agentic-interface/renderer-contract.md)
+
+### MCP
+
+* [MCP README](platform/templates/mcp/README.md)
+* [Server Spec](platform/templates/mcp/server-spec.md)
+* [Tool Registry](platform/templates/mcp/tool-registry.md)
+* [Risk Register](platform/templates/mcp/risk-register.md)
+* [Capability Schema](platform/templates/mcp/capability-schema.md)
+* [Prompt-Injection Test Plan](platform/templates/mcp/prompt-injection-test-plan.md)
+* [Transport and Auth](platform/templates/mcp/transport-and-auth.md)
+
 ### Documentation
 
 * [Project GitBook Stub (SUMMARY.md)](platform/templates/docs/SUMMARY.md)
@@ -320,6 +388,8 @@ Open-source-cut metadata: license, contribution flow, community standards, and t
 * [Authors and Maintainers](AUTHORS)
 * [Self-Governance Entrypoint (HARNESS.md)](HARNESS.md)
 * [Cross-Agent Operating Manual (AGENTS.md)](AGENTS.md)
+* [Claude Code Load Order (CLAUDE.md)](CLAUDE.md)
+* [Tools Registry (TOOLS.md)](TOOLS.md)
 
 ### Architecture Decision Records (this project)
 
@@ -329,3 +399,14 @@ Open-source-cut metadata: license, contribution flow, community standards, and t
 * [ADR-0004: Opportunity Capture — Record Structure](docs/adr/ADR-0004-opportunity-capture-record-structure.md)
 * [ADR-0005: Open-Source Cut](docs/adr/ADR-0005-open-source-cut.md)
 * [ADR-0006: Interview-Driven Management](docs/adr/ADR-0006-interview-driven-management.md)
+* [ADR-0007: Agentic Interface Awareness](docs/adr/ADR-0007-agentic-interface-awareness.md)
+* [ADR-0008: MCP Awareness](docs/adr/ADR-0008-mcp-awareness.md)
+
+### Opportunity Records (this project)
+
+Forward-looking pre-PRD candidates managed by the `opportunity-capture` module.
+
+* [Opportunity Records — Policy README](docs/opportunities/README.md)
+* [OPP-0001: Exportable Governance Contract for Runtime Harnesses](docs/opportunities/OPP-0001-exportable-governance-contract-for-runtime-harnesses.md)
+* [OPP-0002: Agentic Interface Awareness](docs/opportunities/OPP-0002-agentic-interface-awareness.md)
+* [OPP-0003: MCP Producer and Exportable Governance via MCP](docs/opportunities/OPP-0003-mcp-producer-and-exportable-governance-via-mcp.md)

@@ -11,7 +11,11 @@ on:
 jobs:
   validators:
     name: Validators
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -21,8 +25,13 @@ jobs:
         with:
           ruby-version: "3.3"
 
-      - name: Install ripgrep
+      - name: Install ripgrep (Linux)
+        if: matrix.os == 'ubuntu-latest'
         run: sudo apt-get install -y ripgrep
+
+      - name: Install ripgrep (macOS)
+        if: matrix.os == 'macos-latest'
+        run: brew install ripgrep
 
       - name: Validate manifest structure
         run: bash platform/validators/validate-manifest.sh harness.manifest.yaml
@@ -52,7 +61,11 @@ jobs:
 
   tests:
     name: Self-Tests
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
     steps:
       - uses: actions/checkout@v4
 
@@ -60,8 +73,13 @@ jobs:
         with:
           ruby-version: "3.3"
 
-      - name: Install ripgrep
+      - name: Install ripgrep (Linux)
+        if: matrix.os == 'ubuntu-latest'
         run: sudo apt-get install -y ripgrep
+
+      - name: Install ripgrep (macOS)
+        if: matrix.os == 'macos-latest'
+        run: brew install ripgrep
 
       - name: Unit tests (registry logic)
         run: |
@@ -72,3 +90,31 @@ jobs:
         run: |
           ruby -I platform/validators/lib \
                platform/validators/test/test_validators_integration.rb
+
+  bootstrap-tests:
+    name: Bootstrap Tests
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+
+      # install.sh requires Bash 4+ (uses `declare -A`). macOS runners ship
+      # Bash 3.2 as /bin/bash; install a modern bash via Homebrew so the
+      # subsequent `bash install.sh` invocation in the tests resolves to it
+      # via PATH (Homebrew bin dir precedes /bin on the runner image).
+      - name: Install Bash 4+ (macOS)
+        if: matrix.os == 'macos-latest'
+        run: brew install bash
+
+      - name: Run install.sh integration tests
+        run: ruby platform/bootstrap/test/test_install.rb
+
+      - name: Run link-skills.sh integration tests
+        run: ruby platform/bootstrap/test/test_link_skills.rb

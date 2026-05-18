@@ -12,27 +12,37 @@ dependsOn:
 conflictsWith: []
 
 requiredArtifacts:
-  - GEMINI.md
+  # Gemini CLI integration requires EITHER the GEMINI.md shim OR a .gemini/settings.json
+  # that points context.fileName at AGENTS.md (or another harness-controlled file). The
+  # oneOf form lets a project choose the shim-free path without losing required-artifact
+  # coverage. See README "What This Pack Requires" for the trade-offs.
+  - oneOf:
+      - GEMINI.md
+      - .gemini/settings.json
 
 optionalArtifacts:
   - .gemini/settings.json
+  - GEMINI.md
 
 sensitivePaths:
-  - description: Gemini CLI shim and settings — changes must remain aligned with AGENTS.md
+  - description: Gemini CLI shim (at any depth — Gemini walks hierarchically) and settings — changes must remain aligned with AGENTS.md
     patterns:
-      - ^GEMINI\.md$
+      # GEMINI.md at any depth — Gemini CLI loads GEMINI.md hierarchically from the
+      # workspace root down through subdirectories, so a nested shim can shift context
+      # without touching the root file.
+      - (^|/)GEMINI\.md$
       - ^\.gemini/
 
 companionRules:
   - description: Gemini CLI shim or settings changes require AGENTS.md cross-reference or an ADR
     triggerPaths:
-      - ^GEMINI\.md$
+      - (^|/)GEMINI\.md$
       - ^\.gemini/
     requiredAny:
       - ^AGENTS\.md$
       - ^docs/adr/ADR-
       - ^docs/requirements/PRD-
-    humanReview: Reviewers verify approval-mode policy and sandbox posture still honor kernel trust tiers.
+    humanReview: Reviewers verify approval-mode policy and sandbox posture still honor kernel trust tiers, and that any nested GEMINI.md does not reintroduce policy a parent file had removed.
 
 validators:
   - validate-agent-pack

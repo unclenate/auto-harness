@@ -23,7 +23,13 @@ promoting to 1.0.
 
 ## What This Pack Requires
 
-**`GEMINI.md`** at the project root.
+This pack requires **either** a `GEMINI.md` shim **or** a `.gemini/settings.json` that
+points `context.fileName` at `AGENTS.md`. Either path satisfies the module's required
+artifact — pick one and stay with it; do not maintain both surfaces in parallel.
+
+The two integration paths:
+
+### Path A — `GEMINI.md` shim at the project root
 
 `GEMINI.md` is Gemini CLI's default hierarchical context file. The CLI concatenates
 context from `~/.gemini/GEMINI.md` (user-global), all `GEMINI.md` files between the
@@ -42,22 +48,40 @@ It must:
 Keep the shim short. A long `GEMINI.md` competes with `AGENTS.md` for authority and
 creates a drift surface that companion rules then have to police.
 
-**Optional: `.gemini/settings.json`**
+Because Gemini walks subdirectories looking for nested `GEMINI.md` files, the sensitive
+path / companion rule in this pack matches `GEMINI.md` at **any depth**, not only the
+root. A nested `GEMINI.md` that re-introduces policy a parent file had removed is in
+scope for review.
 
-When the project requires Gemini CLI to load `AGENTS.md` directly (instead of pointing
-at it from `GEMINI.md`), use the `context.fileName` setting:
+### Path B — `.gemini/settings.json` with `context.fileName: ["AGENTS.md"]` (shim-free)
+
+When the project prefers a single source of truth and does not want a `GEMINI.md` shim,
+commit a `.gemini/settings.json` that points Gemini CLI directly at `AGENTS.md`:
 
 ```json
 {
   "context": {
-    "fileName": ["AGENTS.md", "GEMINI.md"]
+    "fileName": ["AGENTS.md"]
   }
 }
 ```
 
-This is the lightest-touch integration when `GEMINI.md` would otherwise be a near-empty
-forwarder. The harness does not prefer one approach over the other — pick the one that
-matches how your team mentally models project context.
+Per Gemini CLI's configuration reference
+(<https://geminicli.com/docs/reference/configuration/>), `context.fileName` accepts an
+array of file names that override the default `GEMINI.md` lookup. With this setting in
+place, no `GEMINI.md` is needed — `AGENTS.md` plays both roles. This is the cleanest
+integration when the project already runs an `AGENTS.md`-first governance model and the
+shim would otherwise be a near-empty forwarder.
+
+If the team wants Gemini to load *both* files (for example to keep tool-specific notes in
+`GEMINI.md` while letting `AGENTS.md` carry the governance contract), use
+`["AGENTS.md", "GEMINI.md"]`. In that case keep the `GEMINI.md` shim as well — Path A
+governs it.
+
+The module declares its required artifact as `oneOf: [GEMINI.md, .gemini/settings.json]`,
+so either path satisfies validation. The harness does not prefer one approach — pick the
+one that matches how your team mentally models project context, and document the choice
+in `AGENTS.md`.
 
 ---
 

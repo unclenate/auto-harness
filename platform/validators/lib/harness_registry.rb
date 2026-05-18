@@ -125,4 +125,73 @@ module HarnessRegistry
   def self.patterns_match?(patterns, path)
     Array(patterns).any? { |pattern| Regexp.new(pattern).match?(path) }
   end
+
+  # Returns the first [pattern, matched_path] tuple where `path` matches a
+  # forbidden pattern, or nil when no match. Used by validate-companions.sh to
+  # produce a clear "forbidden path X matched pattern Y" error message.
+  def self.first_forbidden_match(patterns, path)
+    Array(patterns).each do |pattern|
+      return [pattern, path] if Regexp.new(pattern).match?(path)
+    end
+    nil
+  end
+
+  # ---------------------------------------------------------------------------
+  # Doc-reference extraction (validate-doc-references.sh)
+  #
+  # Extracts every `platform/...` path string from a Markdown document so the
+  # validator can assert each referenced path resolves on disk. The extractor
+  # skips fenced code blocks (``` ... ```) so illustrative paths used in code
+  # examples don't trigger false positives.
+  #
+  # The recognized regex matches paths shaped like:
+  #   platform/<word-chars-with-./->/...<ext>
+  # where <ext> ∈ { md, yaml, yml, sh, rb, json, txt }.
+  #
+  # Returns an array of hashes: [{path: String, line: Integer}, ...].
+  # ---------------------------------------------------------------------------
+  DOC_REFERENCE_REGEX = %r{platform/[A-Za-z0-9_./\-]+\.(?:md|yaml|yml|sh|rb|json|txt)}.freeze
+  FENCE_REGEX = /\A\s*```/.freeze
+
+  def self.extract_doc_references(markdown)
+    return [] unless markdown.is_a?(String)
+
+    in_fence = false
+    references = []
+
+    markdown.each_line.with_index(1) do |line, lineno|
+      if line.match?(FENCE_REGEX)
+        in_fence = !in_fence
+        next
+      end
+      next if in_fence
+
+      line.scan(DOC_REFERENCE_REGEX) do |_|
+        match_data = Regexp.last_match
+        references << { path: match_data[0], line: lineno }
+      end
+    end
+
+    references
+  end
+
+  def self.load_doc_reference_ignore(path)
+    return [] unless File.exist?(path)
+
+    File.readlines(path).map(&:strip).reject do |line|
+      line.empty? || line.start_with?("#")
+    end
+  end
+
+  def self.doc_reference_ignored?(path, patterns)
+    Array(patterns).any? { |pattern| Regexp.new(pattern).match?(path) }
+  end
+
+  # Resolve a `platform/...`-style reference against the project root. Returns
+  # true if the file (or, for trailing-slash refs, directory) exists on disk.
+  def self.doc_reference_resolves?(path, project_root)
+    return false unless path.is_a?(String) && !path.empty?
+
+    File.exist?(File.join(project_root, path))
+  end
 end

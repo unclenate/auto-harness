@@ -1,0 +1,2 @@
+# Ignore the known-missing reference; the validator must still flag others.
+^platform/foo/known-missing\.md$

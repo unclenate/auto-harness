@@ -419,6 +419,71 @@ class TestValidateAgentPack < Minitest::Test
 end
 
 # ---------------------------------------------------------------------------
+# validate-doc-references.sh
+#
+# Asserts every `platform/...` reference inside Markdown files under
+# <project-root>/platform/ resolves on disk. Fenced code blocks are skipped;
+# `.doc-reference-ignore` patterns are honored.
+# ---------------------------------------------------------------------------
+class TestValidateDocReferences < Minitest::Test
+  def test_valid_fixture_passes
+    out, err, code = run_validator(
+      "validate-doc-references.sh",
+      fixture_project("valid-doc-references")
+    )
+    assert_equal 0, code, "Expected exit 0. stderr: #{err}\nstdout: #{out}"
+    assert_match(/✓/, out)
+  end
+
+  def test_broken_fixture_fails_and_reports_path
+    _out, err, code = run_validator(
+      "validate-doc-references.sh",
+      fixture_project("broken-doc-references")
+    )
+    assert_equal 1, code, "Expected exit 1 for broken reference"
+    assert_match(/does-not-exist\.md/, err, "broken path must appear in stderr")
+    assert_match(/index\.md/, err, "source file must appear in stderr")
+  end
+
+  def test_broken_reference_inside_fence_passes
+    out, err, code = run_validator(
+      "validate-doc-references.sh",
+      fixture_project("doc-references-in-fence")
+    )
+    assert_equal 0, code,
+                 "Broken reference inside fenced block should be skipped. stderr: #{err}\nstdout: #{out}"
+    assert_match(/✓/, out)
+  end
+
+  def test_ignore_file_exempts_known_misses
+    out, err, code = run_validator(
+      "validate-doc-references.sh",
+      fixture_project("doc-references-ignored")
+    )
+    assert_equal 0, code,
+                 "Ignore file must exempt known misses. stderr: #{err}\nstdout: #{out}"
+    assert_match(/✓/, out)
+  end
+
+  def test_missing_platform_dir_aborts
+    Dir.mktmpdir do |tmpdir|
+      _out, err, code = run_validator("validate-doc-references.sh", tmpdir)
+      assert_equal 1, code, "Missing platform/ dir should fail fast"
+      assert_match(/does not exist/i, err)
+    end
+  end
+
+  def test_runs_clean_against_harness_repo
+    # The harness's own repo MUST validate green — this is the dogfood guarantee.
+    harness_root = File.expand_path("..", PLATFORM_DIR)
+    out, err, code = run_validator("validate-doc-references.sh", harness_root)
+    assert_equal 0, code,
+                 "Harness's own platform/ docs must have no broken references. stderr: #{err}"
+    assert_match(/✓/, out)
+  end
+end
+
+# ---------------------------------------------------------------------------
 # Submodule-mount path resolution
 #
 # Proves that validators work correctly when invoked through a submodule-style

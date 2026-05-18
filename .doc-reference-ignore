@@ -1,0 +1,12 @@
+# validate-doc-references.sh ignore list — one regex per line.
+# Each pattern is matched against the captured `platform/...` reference string.
+#
+# Use sparingly. Prefer fixing the reference in the source file to silencing
+# it here. The validator's value is exactly its noisiness about drift.
+#
+# Known-historical-drift: this reference in platform/templates/knowledge/README.md
+# points at a workflow guide that was never authored. Tracked for a future
+# follow-up (either author the missing guide or remove the reference). Ignored
+# here so the new validator can be wired into CI without first fixing every
+# historical drift in the repository — a separate concern.
+^platform/workflow/knowledge-capture-pattern\.md$

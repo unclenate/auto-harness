@@ -355,3 +355,243 @@ class TestCompanionRuleLogic < Minitest::Test
     assert rule_passes?([])
   end
 end
+
+# ---------------------------------------------------------------------------
+# first_forbidden_match — used by validate-companions.sh forbiddenPatterns
+# ---------------------------------------------------------------------------
+class TestFirstForbiddenMatch < Minitest::Test
+  def test_returns_nil_when_no_pattern_matches
+    assert_nil HarnessRegistry.first_forbidden_match(["^src/secrets/"], "src/app.ts")
+  end
+
+  def test_returns_nil_for_empty_pattern_list
+    assert_nil HarnessRegistry.first_forbidden_match([], "src/AGENTS.override.md")
+  end
+
+  def test_returns_nil_for_nil_pattern_list
+    assert_nil HarnessRegistry.first_forbidden_match(nil, "src/AGENTS.override.md")
+  end
+
+  def test_returns_pattern_and_path_when_matched
+    pattern, matched = HarnessRegistry.first_forbidden_match(
+      ["(^|/)AGENTS\\.override\\.md$"],
+      "src/AGENTS.override.md"
+    )
+    assert_equal "(^|/)AGENTS\\.override\\.md$", pattern
+    assert_equal "src/AGENTS.override.md", matched
+  end
+
+  def test_first_match_wins_when_multiple_patterns_could_match
+    patterns = ["^src/", "^src/AGENTS\\.override\\.md$"]
+    pattern, _ = HarnessRegistry.first_forbidden_match(patterns, "src/AGENTS.override.md")
+    assert_equal "^src/", pattern, "first pattern in list should be returned"
+  end
+
+  def test_matches_root_level_file_via_anchor_alternation
+    _, path = HarnessRegistry.first_forbidden_match(
+      ["(^|/)AGENTS\\.override\\.md$"],
+      "AGENTS.override.md"
+    )
+    assert_equal "AGENTS.override.md", path
+  end
+
+  def test_matches_nested_file_via_slash_alternation
+    _, path = HarnessRegistry.first_forbidden_match(
+      ["(^|/)AGENTS\\.override\\.md$"],
+      "deep/nested/AGENTS.override.md"
+    )
+    assert_equal "deep/nested/AGENTS.override.md", path
+  end
+end
+
+# ---------------------------------------------------------------------------
+# extract_doc_references — used by validate-doc-references.sh
+# ---------------------------------------------------------------------------
+class TestExtractDocReferences < Minitest::Test
+  def test_returns_empty_for_blank_input
+    assert_equal [], HarnessRegistry.extract_doc_references("")
+  end
+
+  def test_returns_empty_for_nil_input
+    assert_equal [], HarnessRegistry.extract_doc_references(nil)
+  end
+
+  def test_returns_empty_when_no_platform_paths
+    md = "# Title\n\nNo references here at all.\n"
+    assert_equal [], HarnessRegistry.extract_doc_references(md)
+  end
+
+  def test_extracts_markdown_link_reference
+    md = "See [config](platform/foo/bar.yaml) for details.\n"
+    refs = HarnessRegistry.extract_doc_references(md)
+    assert_equal 1, refs.length
+    assert_equal "platform/foo/bar.yaml", refs.first[:path]
+    assert_equal 1, refs.first[:line]
+  end
+
+  def test_extracts_bare_path_reference
+    md = "Line one.\nSee platform/workflow/foo.md\n"
+    refs = HarnessRegistry.extract_doc_references(md)
+    assert_equal 1, refs.length
+    assert_equal "platform/workflow/foo.md", refs.first[:path]
+    assert_equal 2, refs.first[:line]
+  end
+
+  def test_extracts_inline_code_reference
+    md = "Module at `platform/profiles/foo/module.yaml`.\n"
+    refs = HarnessRegistry.extract_doc_references(md)
+    assert_equal 1, refs.length
+    assert_equal "platform/profiles/foo/module.yaml", refs.first[:path]
+  end
+
+  def test_skips_references_inside_fenced_code_blocks
+    md = <<~MD
+      # Title
+
+      Real: platform/real.md
+
+      ```bash
+      cat platform/illustrative/example.md
+      ```
+
+      After fence: platform/after.md
+    MD
+    refs = HarnessRegistry.extract_doc_references(md)
+    paths = refs.map { |r| r[:path] }
+    assert_includes paths, "platform/real.md"
+    assert_includes paths, "platform/after.md"
+    refute_includes paths, "platform/illustrative/example.md"
+  end
+
+  def test_multiple_extensions_recognized
+    md = <<~MD
+      - platform/a.md
+      - platform/b.yaml
+      - platform/c.yml
+      - platform/d.sh
+      - platform/e.rb
+      - platform/f.json
+      - platform/g.txt
+    MD
+    paths = HarnessRegistry.extract_doc_references(md).map { |r| r[:path] }
+    %w[platform/a.md platform/b.yaml platform/c.yml platform/d.sh
+       platform/e.rb platform/f.json platform/g.txt].each do |p|
+      assert_includes paths, p
+    end
+  end
+
+  def test_unsupported_extension_not_matched
+    md = "See platform/foo/image.png for the diagram.\n"
+    assert_equal [], HarnessRegistry.extract_doc_references(md)
+  end
+
+  def test_multiple_references_on_same_line
+    md = "[a](platform/a.md) and [b](platform/b.md)\n"
+    refs = HarnessRegistry.extract_doc_references(md)
+    assert_equal 2, refs.length
+    assert_equal [1, 1], refs.map { |r| r[:line] }
+  end
+
+  def test_fence_toggling_handles_multiple_blocks
+    md = <<~MD
+      Pre: platform/pre.md
+      ```
+      In1: platform/in1.md
+      ```
+      Mid: platform/mid.md
+      ```
+      In2: platform/in2.md
+      ```
+      Post: platform/post.md
+    MD
+    paths = HarnessRegistry.extract_doc_references(md).map { |r| r[:path] }
+    assert_includes paths, "platform/pre.md"
+    assert_includes paths, "platform/mid.md"
+    assert_includes paths, "platform/post.md"
+    refute_includes paths, "platform/in1.md"
+    refute_includes paths, "platform/in2.md"
+  end
+end
+
+# ---------------------------------------------------------------------------
+# doc_reference_ignored? and doc_reference_resolves?
+# ---------------------------------------------------------------------------
+class TestDocReferenceHelpers < Minitest::Test
+  def test_ignored_when_pattern_matches
+    assert HarnessRegistry.doc_reference_ignored?(
+      "platform/workflow/missing.md",
+      ["^platform/workflow/missing\\.md$"]
+    )
+  end
+
+  def test_not_ignored_when_no_pattern_matches
+    refute HarnessRegistry.doc_reference_ignored?(
+      "platform/workflow/present.md",
+      ["^platform/workflow/missing\\.md$"]
+    )
+  end
+
+  def test_not_ignored_with_empty_patterns
+    refute HarnessRegistry.doc_reference_ignored?("platform/anything.md", [])
+  end
+
+  def test_not_ignored_with_nil_patterns
+    refute HarnessRegistry.doc_reference_ignored?("platform/anything.md", nil)
+  end
+
+  def test_resolves_when_file_exists
+    Dir.mktmpdir do |tmp|
+      FileUtils.mkdir_p(File.join(tmp, "platform/foo"))
+      File.write(File.join(tmp, "platform/foo/bar.md"), "x")
+      assert HarnessRegistry.doc_reference_resolves?("platform/foo/bar.md", tmp)
+    end
+  end
+
+  def test_does_not_resolve_when_file_absent
+    Dir.mktmpdir do |tmp|
+      refute HarnessRegistry.doc_reference_resolves?("platform/foo/missing.md", tmp)
+    end
+  end
+
+  def test_does_not_resolve_for_blank_or_nil
+    Dir.mktmpdir do |tmp|
+      refute HarnessRegistry.doc_reference_resolves?("", tmp)
+      refute HarnessRegistry.doc_reference_resolves?(nil, tmp)
+    end
+  end
+end
+
+# ---------------------------------------------------------------------------
+# load_doc_reference_ignore — file format and edge cases
+# ---------------------------------------------------------------------------
+class TestLoadDocReferenceIgnore < Minitest::Test
+  def test_returns_empty_when_file_missing
+    Dir.mktmpdir do |tmp|
+      assert_equal [], HarnessRegistry.load_doc_reference_ignore(File.join(tmp, "nope"))
+    end
+  end
+
+  def test_reads_one_pattern_per_line
+    Dir.mktmpdir do |tmp|
+      path = File.join(tmp, ".doc-reference-ignore")
+      File.write(path, "^a$\n^b$\n")
+      assert_equal ["^a$", "^b$"], HarnessRegistry.load_doc_reference_ignore(path)
+    end
+  end
+
+  def test_skips_comments_and_blank_lines
+    Dir.mktmpdir do |tmp|
+      path = File.join(tmp, ".doc-reference-ignore")
+      File.write(path, "# header\n\n^a$\n# tail\n^b$\n")
+      assert_equal ["^a$", "^b$"], HarnessRegistry.load_doc_reference_ignore(path)
+    end
+  end
+
+  def test_trims_trailing_whitespace
+    Dir.mktmpdir do |tmp|
+      path = File.join(tmp, ".doc-reference-ignore")
+      File.write(path, "^a$   \n")
+      assert_equal ["^a$"], HarnessRegistry.load_doc_reference_ignore(path)
+    end
+  end
+end

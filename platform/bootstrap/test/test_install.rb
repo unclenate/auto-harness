@@ -107,31 +107,90 @@ class TestInstallIdempotency < Minitest::Test
 end
 
 class TestInstallBrownfield < Minitest::Test
-  def test_foreign_claude_md_is_preserved
+  def test_foreign_claude_md_is_preserved_and_exits_zero
+    # CLAUDE.md being consumer-authored is an INFORMATIONAL conflict — the
+    # harness intentionally leaves the file alone and emits a suggestion.
+    # Exit 0 because there is nothing for the user to act on; the install
+    # produced a coherent, working harness setup.
     Dir.mktmpdir do |dir|
       setup_mount(dir)
       File.write(File.join(dir, "CLAUDE.md"),
                  "# my custom claude.md\n\nno harness references here.\n")
       out, _err, code = run_install(dir)
-      assert_equal 1, code, "expected non-zero exit for brownfield conflict"
+      assert_equal 0, code, "informational conflict (consumer CLAUDE.md) must exit 0. out: #{out}"
       assert_match(/CONFLICTS:/, out)
       assert_match(/CLAUDE\.md exists and appears consumer-authored/, out)
+      # New informational-completion message
+      assert_match(/item\(s\) in CONFLICTS are informational.*no action required/i, out)
+      refute_match(/Resolve them and re-run/, out)
       assert_equal "# my custom claude.md\n\nno harness references here.\n",
                    File.read(File.join(dir, "CLAUDE.md"))
     end
   end
 
-  def test_foreign_manifest_reported_as_conflict
+  def test_foreign_manifest_reported_as_blocking_conflict
+    # Unparseable manifest is BLOCKING — the harness can't function without a
+    # valid manifest, so the user must resolve before re-running.
     Dir.mktmpdir do |dir|
       setup_mount(dir)
       # manifest without the schemaVersion: 1 signature
       File.write(File.join(dir, "harness.manifest.yaml"), "not: a harness manifest\n")
       out, _err, code = run_install(dir)
-      assert_equal 1, code
+      assert_equal 1, code, "unparseable manifest must be blocking. out: #{out}"
       assert_match(/CONFLICTS:/, out)
       assert_match(/harness\.manifest\.yaml.*lacks harness signature/, out)
+      assert_match(/blocking conflict.*Resolve them and re-run/, out)
       assert_equal "not: a harness manifest\n",
                    File.read(File.join(dir, "harness.manifest.yaml"))
+    end
+  end
+end
+
+class TestInstallExitCodes < Minitest::Test
+  # Acceptance for Item 5b: three-state exit codes.
+
+  def test_clean_install_exits_zero
+    Dir.mktmpdir do |dir|
+      setup_mount(dir)
+      out, _err, code = run_install(dir)
+      assert_equal 0, code, "clean install must exit 0. out: #{out}"
+      assert_match(/Completed successfully\./, out)
+    end
+  end
+
+  def test_informational_only_conflict_exits_zero_with_new_message
+    # Consumer CLAUDE.md is the canonical informational case.
+    Dir.mktmpdir do |dir|
+      setup_mount(dir)
+      File.write(File.join(dir, "CLAUDE.md"), "# consumer file\n")
+      out, _err, code = run_install(dir)
+      assert_equal 0, code, "informational-only conflicts must exit 0. out: #{out}"
+      assert_match(/item\(s\) in CONFLICTS are informational.*no action required/i, out)
+      # The legacy "Resolve them" wording must NOT appear in the informational path.
+      refute_match(/Resolve them and re-run/, out)
+    end
+  end
+
+  def test_blocking_conflict_exits_one_with_legacy_message
+    # Unparseable manifest is blocking.
+    Dir.mktmpdir do |dir|
+      setup_mount(dir)
+      File.write(File.join(dir, "harness.manifest.yaml"), "garbage\n")
+      out, _err, code = run_install(dir)
+      assert_equal 1, code, "blocking conflict must exit 1. out: #{out}"
+      assert_match(/blocking conflict\(s\)\. Resolve them and re-run\./, out)
+    end
+  end
+
+  def test_blocking_plus_informational_exits_one
+    # If at least one conflict is blocking, exit code is 1 regardless of
+    # informational entries piled up beside it.
+    Dir.mktmpdir do |dir|
+      setup_mount(dir)
+      File.write(File.join(dir, "harness.manifest.yaml"), "garbage\n")
+      File.write(File.join(dir, "CLAUDE.md"), "# consumer file\n")
+      _out, _err, code = run_install(dir)
+      assert_equal 1, code, "any blocking conflict must trump informational ones"
     end
   end
 end

@@ -28,9 +28,21 @@
 #   --help, -h              Show this help and exit.
 #
 # Exit codes:
-#   0 = bootstrap completed with no conflicts
-#   1 = completed with one or more conflicts (see summary)
+#   0 = bootstrap completed cleanly OR all reported conflicts are
+#       informational (e.g., consumer-authored file left untouched).
+#       Nothing for the user to act on.
+#   1 = completed with one or more *blocking* conflicts that require
+#       the user to take action before re-running.
 #   2 = usage error (bad flag, missing composition, invalid paths)
+#
+# Conflict classification:
+#   - Informational: the script intentionally left a foreign / consumer-
+#     authored file alone (CLAUDE.md without harness markers, etc.). A
+#     follow-up suggestion is emitted under MANUAL FOLLOW-UP. No action
+#     is required to use the harness.
+#   - Blocking: the script could not produce a coherent state (manifest
+#     present but unparseable, link-skills target collision, permission
+#     denied, etc.). The user MUST act before re-running.
 #
 # See: platform/workflow/submodule-integration.md for the full narrative.
 # See: docs/adr/ADR-0003-submodule-integration.md for design rationale.
@@ -167,11 +179,18 @@ done
 
 # ---------------------------------------------------------------------------
 # Summary accumulators
+#
+# CONFLICTS holds every reported conflict line (informational + blocking)
+# because users still want to see informational entries — they explain why
+# the harness skipped a file. BLOCKING_CONFLICTS is the exit-code signal:
+# only call sites where the user MUST act before re-running increment it.
+# See the "Exit codes" header for the classification rule.
 # ---------------------------------------------------------------------------
 CREATED=()
 SKIPPED=()
 CONFLICTS=()
 FOLLOWUPS=()
+BLOCKING_CONFLICTS=0
 
 dry_prefix() { $DRY_RUN && echo "[DRY-RUN] " || echo ""; }
 
@@ -310,7 +329,11 @@ handle_manifest() {
       SKIPPED+=("harness.manifest.yaml (harness-style, use --force to replace)")
     fi
   else
+    # Blocking: a file at harness.manifest.yaml that we can't recognize means
+    # validators will fail and the harness will not function. The user must
+    # decide (delete + re-run, or merge manually) before re-running.
     CONFLICTS+=("harness.manifest.yaml exists but lacks harness signature (schemaVersion: 1); leaving untouched")
+    BLOCKING_CONFLICTS=$((BLOCKING_CONFLICTS + 1))
     FOLLOWUPS+=("Review harness.manifest.yaml; run 'cp ${COMPOSITION_FILE} harness.manifest.yaml.new' and merge manually")
   fi
 }
@@ -348,7 +371,11 @@ handle_harness_md() {
       SKIPPED+=("HARNESS.md (harness-style, use --force to replace)")
     fi
   else
+    # Blocking: HARNESS.md is the load-order anchor for every harness-aware
+    # agent. If a file exists at that path that doesn't reference
+    # harness.manifest.yaml, agents can't follow the contract. User must act.
     CONFLICTS+=("HARNESS.md exists but lacks harness signature; leaving untouched")
+    BLOCKING_CONFLICTS=$((BLOCKING_CONFLICTS + 1))
     FOLLOWUPS+=("Review HARNESS.md; harness content lives in ${MOUNT_PATH}/platform/workflow/")
   fi
 }
@@ -382,6 +409,10 @@ handle_claude_md() {
       SKIPPED+=("CLAUDE.md (harness-style, use --force to replace)")
     fi
   else
+    # Informational (not blocking). CLAUDE.md is consumer-authored content;
+    # the harness only suggests an additive 'reads HARNESS.md, AGENTS.md'
+    # block. Nothing is broken if the user ignores the suggestion. Reported
+    # in CONFLICTS for visibility but does NOT increment BLOCKING_CONFLICTS.
     CONFLICTS+=("CLAUDE.md exists and appears consumer-authored; leaving untouched")
     FOLLOWUPS+=("Consider adding a 'reads HARNESS.md, AGENTS.md' block to your CLAUDE.md")
   fi
@@ -510,13 +541,18 @@ link_skills() {
   link_code=$?
   set -e
 
-  # Parse link-skills output and fold into our summary.
+  # Parse link-skills output and fold into our summary. link-skills CONFLICTs
+  # (e.g., a directory present where the symlink would go) are blocking —
+  # the skill won't be available until the user resolves the collision.
   while IFS= read -r line; do
     case "$line" in
       "[OK] "*)       SKIPPED+=("${line#[OK] }") ;;
       "[CREATED] "*)  CREATED+=("${line#[CREATED] }") ;;
       "[REPLACED] "*) CREATED+=("${line#[REPLACED] }") ;;
-      "[CONFLICT] "*) CONFLICTS+=("${line#[CONFLICT] }") ;;
+      "[CONFLICT] "*)
+        CONFLICTS+=("${line#[CONFLICT] }")
+        BLOCKING_CONFLICTS=$((BLOCKING_CONFLICTS + 1))
+        ;;
       Summary:*|"")   ;; # drop
       *)              FOLLOWUPS+=("link-skills: $line") ;;
     esac
@@ -654,9 +690,18 @@ print_block "MANUAL FOLLOW-UP" "${FOLLOWUPS[@]+"${FOLLOWUPS[@]}"}"
 
 note "------------------------------------------------------------------"
 
-if [[ ${#CONFLICTS[@]} -gt 0 ]]; then
-  note "Completed with ${#CONFLICTS[@]} conflict(s). Resolve them and re-run."
+# Three-state exit. See header "Exit codes" section.
+#   - blocking > 0 → exit 1 (user must act)
+#   - blocking == 0 with informational entries → exit 0 with explanatory note
+#   - blocking == 0 with no entries → exit 0 with clean note
+if [[ $BLOCKING_CONFLICTS -gt 0 ]]; then
+  note "Completed with ${BLOCKING_CONFLICTS} blocking conflict(s). Resolve them and re-run."
   exit 1
+fi
+
+if [[ ${#CONFLICTS[@]} -gt 0 ]]; then
+  note "Completed. ${#CONFLICTS[@]} item(s) in CONFLICTS are informational — no action required. See MANUAL FOLLOW-UP for suggestions."
+  exit 0
 fi
 
 note "Completed successfully."

@@ -236,4 +236,197 @@ module HarnessRegistry
 
     File.exist?(File.join(project_root, path))
   end
+
+  # ---------------------------------------------------------------------------
+  # v2: renderer-aware markdown link extraction
+  #
+  # The v1 extractor (above) only catches `platform/...`-shaped strings — it
+  # misses the bug class that costs reviewers the most:
+  #   1. Relative-path link targets (`../foo.md`, `../adr/ADR-0001.md`) — the
+  #      idiomatic way to cross-link sibling-dir docs.
+  #   2. Bare extensionless targets (`LICENSE-MIT`, `NOTICE`) — render on
+  #      GitHub.com but GitBook treats them as directories and 404s on
+  #      `<target>/README.md`.
+  #   3. Directory-shaped targets (`path/to/dir/`) — same renderer issue.
+  #   4. False-positives when `[text](path)` syntax appears inside inline
+  #      backtick code spans (which v1 already skips for fenced blocks but not
+  #      for inline `...`).
+  #
+  # The helpers below give validate-doc-references.sh v2 a renderer-aware
+  # surface: every `[text](target)` link (skipping fenced + inline code) is
+  # resolved relative to the markdown file's directory, checked for on-disk
+  # existence, and classified as renderer-safe or renderer-fragile.
+  # ---------------------------------------------------------------------------
+
+  # Markdown link `[text](target)`. Captures `target` only — `text` is ignored.
+  # The body forbids whitespace and `)` so we don't greedily eat across the
+  # closing paren of a sibling link on the same line.
+  MARKDOWN_LINK_REGEX = /\[(?:[^\]\n]*)\]\(([^)\s]+)(?:\s+"[^"]*")?\)/.freeze
+
+  # Schemes that should never be checked on disk.
+  EXTERNAL_LINK_PREFIXES = %w[http:// https:// mailto: tel: ftp:// ftps:// ssh:// data: javascript:].freeze
+
+  # Inline backtick code-span: `...` (no nesting, single-line). Stripping these
+  # before scanning for link syntax prevents false positives when a doc shows
+  # an example link as inline code, e.g.: `[X](broken.md)`.
+  INLINE_CODE_REGEX = /`[^`\n]*`/.freeze
+
+  # Markdown files we never scan even when nominally under project root.
+  # - legacy/ — archived material; broken-link discipline doesn't apply
+  # - .git/, .claude/, node_modules/ — tooling/dependency artifacts
+  # - .worktrees/ — agent worktrees; transient
+  # - platform/validators/test/fixtures/ — intentionally-broken fixtures
+  # - platform/templates/docs/ — template SUMMARY.md etc. ship to consumers;
+  #                              its `[]()` links are consumer-side, not ours
+  DEFAULT_SCAN_EXCLUDE_PREFIXES = [
+    "legacy/",
+    ".git/",
+    ".claude/",
+    "node_modules/",
+    ".worktrees/",
+    "platform/validators/test/fixtures/",
+    "platform/templates/docs/"
+  ].freeze
+
+  # Remove inline backtick code-spans from a single line. Returns a string
+  # of the same length-or-shorter with all `...` runs replaced by spaces so
+  # any column offsets a caller might compute remain monotonic.
+  def self.strip_inline_code_spans(line)
+    return "" unless line.is_a?(String)
+
+    line.gsub(INLINE_CODE_REGEX) { |m| " " * m.length }
+  end
+
+  # True if the target is an external scheme, a pure anchor, an HTML tag
+  # autolink (`<https://...>`), an empty string, or a template placeholder.
+  # These targets are NEVER checked on disk.
+  def self.link_target_external?(target)
+    return true unless target.is_a?(String)
+    return true if target.empty?
+    return true if target.start_with?("#")
+    return true if target.start_with?("<")
+    return true if target.start_with?("{{")  # mustache / liquid templates
+    return true if EXTERNAL_LINK_PREFIXES.any? { |p| target.start_with?(p) }
+
+    false
+  end
+
+  # Strip `#anchor` (and any `?query`) from a link target. The path portion is
+  # what gets checked on disk; anchors and queries are renderer concerns.
+  def self.strip_link_anchor(target)
+    return target unless target.is_a?(String)
+
+    target.sub(/[#?].*\z/, "")
+  end
+
+  # Resolve a relative-link target against the markdown file's directory.
+  # Returns the project-root-relative path string with the anchor stripped, or
+  # nil if the target escapes the project root (which we treat as not on disk).
+  #
+  # Examples (project_root = /repo):
+  #   resolve_relative_link("foo.md", "/repo/docs/adr", "/repo")
+  #     => "docs/adr/foo.md"
+  #   resolve_relative_link("../shared.md", "/repo/docs/adr", "/repo")
+  #     => "docs/shared.md"
+  #   resolve_relative_link("../../platform/x.md", "/repo/docs/adr", "/repo")
+  #     => "platform/x.md"
+  #   resolve_relative_link("README.md#section", "/repo", "/repo")
+  #     => "README.md"
+  def self.resolve_relative_link(target, md_file_dir, project_root)
+    return nil if link_target_external?(target)
+
+    cleaned = strip_link_anchor(target)
+    return nil if cleaned.nil? || cleaned.empty?
+
+    project_root_abs = File.expand_path(project_root)
+    md_dir_abs       = File.expand_path(md_file_dir)
+    joined           = File.expand_path(cleaned, md_dir_abs)
+
+    # Must remain under project root.
+    return nil unless joined == project_root_abs || joined.start_with?(project_root_abs + "/")
+
+    rel = joined.sub(/\A#{Regexp.escape(project_root_abs)}\/?/, "")
+    rel = "." if rel.empty?
+    rel
+  end
+
+  # Renderer-safety classification. Returns one of:
+  #   :ok                 — target resolves to a file with a known extension
+  #   :missing            — target does not resolve on disk (broken link)
+  #   :directory_target   — target ends with `/` (or resolves to a directory) —
+  #                         GitBook 404s on `<target>/README.md`
+  #   :extensionless      — target has no extension AND resolves to a file
+  #                         (e.g. `LICENSE-MIT` — renders on GitHub.com, breaks
+  #                         on GitBook which treats it as a directory)
+  #
+  # `target`  is the raw link target (used to detect trailing slash).
+  # `resolved_rel_path` is the project-root-relative resolved path (anchor
+  # stripped). nil means resolve_relative_link returned nil (escapes project
+  # root → treat as missing).
+  def self.link_target_classify(target, resolved_rel_path, project_root)
+    return :missing if resolved_rel_path.nil?
+
+    cleaned = strip_link_anchor(target.to_s)
+    full    = File.join(project_root, resolved_rel_path)
+
+    return :directory_target if cleaned.end_with?("/")
+    return :missing unless File.exist?(full)
+    return :directory_target if File.directory?(full)
+
+    basename = File.basename(resolved_rel_path)
+    return :extensionless unless basename.include?(".")
+
+    :ok
+  end
+
+  # True if the markdown link is safe to leave as-is for both GitHub.com and
+  # GitBook-style renderers. Convenience wrapper around link_target_classify.
+  def self.link_target_renderer_safe?(target, resolved_rel_path, project_root)
+    link_target_classify(target, resolved_rel_path, project_root) == :ok
+  end
+
+  # Extract every `[text](target)` link from a markdown document, skipping
+  # targets that appear inside fenced code blocks or inline backtick code
+  # spans, and skipping external/anchor/template targets. Returns an array of
+  # hashes: [{target: String, line: Integer}, ...].
+  def self.extract_markdown_links(markdown)
+    return [] unless markdown.is_a?(String)
+
+    in_fence = false
+    links    = []
+
+    markdown.each_line.with_index(1) do |line, lineno|
+      if line.match?(FENCE_REGEX)
+        in_fence = !in_fence
+        next
+      end
+      next if in_fence
+
+      stripped = strip_inline_code_spans(line)
+      stripped.scan(MARKDOWN_LINK_REGEX) do |match|
+        target = match[0]
+        next if link_target_external?(target)
+
+        links << { target: target, line: lineno }
+      end
+    end
+
+    links
+  end
+
+  # Enumerate every markdown file under project_root we should scan, applying
+  # DEFAULT_SCAN_EXCLUDE_PREFIXES against the project-root-relative path.
+  # Extra prefixes (project-specific) may be passed in `extra_exclude_prefixes`.
+  # Returns sorted array of absolute paths.
+  def self.markdown_files_to_scan(project_root, extra_exclude_prefixes = [])
+    project_root_abs = File.expand_path(project_root)
+    exclude          = DEFAULT_SCAN_EXCLUDE_PREFIXES + Array(extra_exclude_prefixes)
+
+    # No FNM_DOTMATCH — Dir.glob does not descend into dot-prefixed directories
+    # by default, which is the desired behavior for .git/, .claude/, etc.
+    Dir.glob(File.join(project_root_abs, "**", "*.md")).reject do |path|
+      rel = path.sub(/\A#{Regexp.escape(project_root_abs)}\/?/, "")
+      exclude.any? { |prefix| rel.start_with?(prefix) }
+    end.sort
+  end
 end

@@ -680,6 +680,416 @@ class TestLoadDocReferenceIgnore < Minitest::Test
 end
 
 # ---------------------------------------------------------------------------
+# strip_inline_code_spans — v2 renderer-aware helper
+#
+# `[text](target)` inside an inline backtick code span is markdown code, not a
+# real link. Stripping the span before scanning prevents validate-doc-references
+# from false-positive flagging pedagogical / example link syntax.
+# ---------------------------------------------------------------------------
+class TestStripInlineCodeSpans < Minitest::Test
+  def test_blank_input_returns_empty_string
+    assert_equal "", HarnessRegistry.strip_inline_code_spans("")
+  end
+
+  def test_nil_input_returns_empty_string
+    assert_equal "", HarnessRegistry.strip_inline_code_spans(nil)
+  end
+
+  def test_line_without_backticks_unchanged
+    line = "See [config](foo.md) for details.\n"
+    assert_equal line, HarnessRegistry.strip_inline_code_spans(line)
+  end
+
+  def test_inline_code_span_is_replaced_with_spaces
+    line = "Example link: `[X](broken.md)` here.\n"
+    out  = HarnessRegistry.strip_inline_code_spans(line)
+    refute_includes out, "[X](broken.md)"
+    assert_equal line.length, out.length, "length must be preserved for column-offset stability"
+  end
+
+  def test_multiple_code_spans_on_one_line_all_stripped
+    line = "First `[A](a.md)` then `[B](b.md)`.\n"
+    out  = HarnessRegistry.strip_inline_code_spans(line)
+    refute_includes out, "[A](a.md)"
+    refute_includes out, "[B](b.md)"
+  end
+
+  def test_real_link_outside_code_span_preserved
+    line = "Real [keep](keep.md) and code `[drop](drop.md)`.\n"
+    out  = HarnessRegistry.strip_inline_code_spans(line)
+    assert_includes out, "[keep](keep.md)"
+    refute_includes out, "[drop](drop.md)"
+  end
+end
+
+# ---------------------------------------------------------------------------
+# link_target_external? — v2 renderer-aware helper
+# ---------------------------------------------------------------------------
+class TestLinkTargetExternal < Minitest::Test
+  def test_https_url_is_external
+    assert HarnessRegistry.link_target_external?("https://github.com/x/y")
+  end
+
+  def test_http_url_is_external
+    assert HarnessRegistry.link_target_external?("http://example.com")
+  end
+
+  def test_mailto_is_external
+    assert HarnessRegistry.link_target_external?("mailto:user@example.com")
+  end
+
+  def test_tel_is_external
+    assert HarnessRegistry.link_target_external?("tel:+15555550100")
+  end
+
+  def test_anchor_only_is_external
+    assert HarnessRegistry.link_target_external?("#section-name")
+  end
+
+  def test_autolink_tag_form_is_external
+    assert HarnessRegistry.link_target_external?("<https://example.com>")
+  end
+
+  def test_template_placeholder_is_external
+    assert HarnessRegistry.link_target_external?("{{baseUrl}}/x.md")
+  end
+
+  def test_empty_target_is_external
+    assert HarnessRegistry.link_target_external?("")
+  end
+
+  def test_nil_target_is_external
+    assert HarnessRegistry.link_target_external?(nil)
+  end
+
+  def test_relative_path_is_not_external
+    refute HarnessRegistry.link_target_external?("../foo.md")
+    refute HarnessRegistry.link_target_external?("foo.md")
+    refute HarnessRegistry.link_target_external?("docs/adr/ADR-0001.md")
+  end
+end
+
+# ---------------------------------------------------------------------------
+# strip_link_anchor — v2 renderer-aware helper
+# ---------------------------------------------------------------------------
+class TestStripLinkAnchor < Minitest::Test
+  def test_no_anchor_unchanged
+    assert_equal "foo.md", HarnessRegistry.strip_link_anchor("foo.md")
+  end
+
+  def test_anchor_stripped
+    assert_equal "foo.md", HarnessRegistry.strip_link_anchor("foo.md#section")
+  end
+
+  def test_query_stripped
+    assert_equal "foo.md", HarnessRegistry.strip_link_anchor("foo.md?ref=x")
+  end
+
+  def test_anchor_at_start_strips_to_empty
+    assert_equal "", HarnessRegistry.strip_link_anchor("#section")
+  end
+end
+
+# ---------------------------------------------------------------------------
+# resolve_relative_link — v2 renderer-aware helper
+# ---------------------------------------------------------------------------
+class TestResolveRelativeLink < Minitest::Test
+  def with_project
+    Dir.mktmpdir { |tmp| yield File.realpath(tmp) }
+  end
+
+  def test_same_dir_link
+    with_project do |root|
+      result = HarnessRegistry.resolve_relative_link("foo.md", File.join(root, "docs"), root)
+      assert_equal "docs/foo.md", result
+    end
+  end
+
+  def test_parent_dir_link
+    with_project do |root|
+      result = HarnessRegistry.resolve_relative_link("../shared.md", File.join(root, "docs/adr"), root)
+      assert_equal "docs/shared.md", result
+    end
+  end
+
+  def test_root_relative_via_double_parent
+    with_project do |root|
+      result = HarnessRegistry.resolve_relative_link("../../platform/x.md", File.join(root, "docs/adr"), root)
+      assert_equal "platform/x.md", result
+    end
+  end
+
+  def test_anchor_stripped_from_resolved_path
+    with_project do |root|
+      result = HarnessRegistry.resolve_relative_link("README.md#section", root, root)
+      assert_equal "README.md", result
+    end
+  end
+
+  def test_target_at_project_root
+    with_project do |root|
+      result = HarnessRegistry.resolve_relative_link("README.md", root, root)
+      assert_equal "README.md", result
+    end
+  end
+
+  def test_external_target_returns_nil
+    with_project do |root|
+      assert_nil HarnessRegistry.resolve_relative_link("https://example.com", root, root)
+      assert_nil HarnessRegistry.resolve_relative_link("mailto:x@y", root, root)
+      assert_nil HarnessRegistry.resolve_relative_link("#section", root, root)
+    end
+  end
+
+  def test_target_escaping_project_root_returns_nil
+    with_project do |root|
+      # ../../../etc/passwd would escape the project root entirely.
+      result = HarnessRegistry.resolve_relative_link("../../../../etc/passwd", File.join(root, "docs"), root)
+      assert_nil result
+    end
+  end
+end
+
+# ---------------------------------------------------------------------------
+# link_target_classify / link_target_renderer_safe? — v2 renderer-aware helper
+# ---------------------------------------------------------------------------
+class TestLinkTargetClassify < Minitest::Test
+  def with_files(files)
+    Dir.mktmpdir do |tmp|
+      root = File.realpath(tmp)
+      Array(files).each do |rel|
+        full = File.join(root, rel)
+        FileUtils.mkdir_p(File.dirname(full))
+        File.write(full, "")
+      end
+      yield root
+    end
+  end
+
+  def test_resolves_to_existing_file_with_extension_is_ok
+    with_files("docs/foo.md") do |root|
+      assert_equal :ok, HarnessRegistry.link_target_classify("docs/foo.md", "docs/foo.md", root)
+      assert HarnessRegistry.link_target_renderer_safe?("docs/foo.md", "docs/foo.md", root)
+    end
+  end
+
+  def test_missing_target_is_missing
+    with_files([]) do |root|
+      assert_equal :missing, HarnessRegistry.link_target_classify("docs/foo.md", "docs/foo.md", root)
+      refute HarnessRegistry.link_target_renderer_safe?("docs/foo.md", "docs/foo.md", root)
+    end
+  end
+
+  def test_trailing_slash_is_directory_target
+    with_files("docs/foo/README.md") do |root|
+      assert_equal :directory_target,
+                   HarnessRegistry.link_target_classify("docs/foo/", "docs/foo", root)
+      refute HarnessRegistry.link_target_renderer_safe?("docs/foo/", "docs/foo", root)
+    end
+  end
+
+  def test_target_resolving_to_directory_is_directory_target
+    # No trailing slash but the resolved path is a directory — still fragile
+    # because renderers like GitBook will still try `<target>/README.md`.
+    with_files("docs/foo/README.md") do |root|
+      assert_equal :directory_target,
+                   HarnessRegistry.link_target_classify("docs/foo", "docs/foo", root)
+    end
+  end
+
+  def test_bare_extensionless_existing_file_is_extensionless
+    with_files("LICENSE-MIT") do |root|
+      assert_equal :extensionless,
+                   HarnessRegistry.link_target_classify("LICENSE-MIT", "LICENSE-MIT", root)
+      refute HarnessRegistry.link_target_renderer_safe?("LICENSE-MIT", "LICENSE-MIT", root)
+    end
+  end
+
+  def test_nil_resolved_path_is_missing
+    with_files([]) do |root|
+      assert_equal :missing, HarnessRegistry.link_target_classify("foo.md", nil, root)
+    end
+  end
+
+  def test_anchor_in_target_ignored_for_classification
+    with_files("docs/foo.md") do |root|
+      assert_equal :ok,
+                   HarnessRegistry.link_target_classify("docs/foo.md#section", "docs/foo.md", root)
+    end
+  end
+end
+
+# ---------------------------------------------------------------------------
+# extract_markdown_links — v2 renderer-aware helper
+# ---------------------------------------------------------------------------
+class TestExtractMarkdownLinks < Minitest::Test
+  def test_blank_input_returns_empty
+    assert_equal [], HarnessRegistry.extract_markdown_links("")
+  end
+
+  def test_nil_input_returns_empty
+    assert_equal [], HarnessRegistry.extract_markdown_links(nil)
+  end
+
+  def test_extracts_single_link
+    md   = "See [config](foo/bar.yaml) for details.\n"
+    refs = HarnessRegistry.extract_markdown_links(md)
+    assert_equal 1, refs.length
+    assert_equal "foo/bar.yaml", refs.first[:target]
+    assert_equal 1, refs.first[:line]
+  end
+
+  def test_extracts_relative_parent_link
+    md   = "See [adr](../adr/ADR-0001.md).\n"
+    refs = HarnessRegistry.extract_markdown_links(md)
+    assert_equal "../adr/ADR-0001.md", refs.first[:target]
+  end
+
+  def test_skips_external_links
+    md = <<~MD
+      [a](https://example.com) [b](http://example.com) [c](mailto:x@y) [d](#anchor)
+    MD
+    assert_equal [], HarnessRegistry.extract_markdown_links(md)
+  end
+
+  def test_skips_links_inside_fenced_block
+    md = <<~MD
+      Real: [keep](keep.md)
+
+      ```
+      Bogus: [drop](drop.md)
+      ```
+
+      After: [keep2](keep2.md)
+    MD
+    targets = HarnessRegistry.extract_markdown_links(md).map { |r| r[:target] }
+    assert_includes targets, "keep.md"
+    assert_includes targets, "keep2.md"
+    refute_includes targets, "drop.md"
+  end
+
+  def test_skips_links_inside_inline_code_span
+    md   = "Real [keep](keep.md) and pedagogical `[drop](drop.md)`.\n"
+    refs = HarnessRegistry.extract_markdown_links(md)
+    targets = refs.map { |r| r[:target] }
+    assert_includes targets, "keep.md"
+    refute_includes targets, "drop.md"
+  end
+
+  def test_extracts_link_with_title
+    # [text](path "title") form
+    md = "See [x](foo.md \"my title\").\n"
+    refs = HarnessRegistry.extract_markdown_links(md)
+    assert_equal "foo.md", refs.first[:target]
+  end
+
+  def test_extracts_bare_extensionless_target
+    md = "See [license](LICENSE-MIT) for terms.\n"
+    refs = HarnessRegistry.extract_markdown_links(md)
+    assert_equal "LICENSE-MIT", refs.first[:target]
+  end
+
+  def test_extracts_trailing_slash_target
+    md = "See [dir](path/to/dir/) for the bundle.\n"
+    refs = HarnessRegistry.extract_markdown_links(md)
+    assert_equal "path/to/dir/", refs.first[:target]
+  end
+
+  def test_extracts_multiple_links_on_same_line
+    md   = "[a](a.md) and [b](b.md) and [c](c.md)\n"
+    refs = HarnessRegistry.extract_markdown_links(md)
+    assert_equal 3, refs.length
+    assert_equal %w[a.md b.md c.md], refs.map { |r| r[:target] }
+  end
+
+  def test_extracts_link_with_anchor_preserved_in_target
+    # The target still contains the anchor — the caller (validator) strips it
+    # via strip_link_anchor / resolve_relative_link.
+    md   = "See [x](foo.md#section).\n"
+    refs = HarnessRegistry.extract_markdown_links(md)
+    assert_equal "foo.md#section", refs.first[:target]
+  end
+
+  def test_line_numbers_correct_across_blank_lines
+    md = "First line.\n\n[link](foo.md)\n"
+    refs = HarnessRegistry.extract_markdown_links(md)
+    assert_equal 3, refs.first[:line]
+  end
+end
+
+# ---------------------------------------------------------------------------
+# markdown_files_to_scan — v2 enumeration helper
+# ---------------------------------------------------------------------------
+class TestMarkdownFilesToScan < Minitest::Test
+  def test_finds_top_level_markdown
+    Dir.mktmpdir do |tmp|
+      root = File.realpath(tmp)
+      File.write(File.join(root, "README.md"), "")
+      files = HarnessRegistry.markdown_files_to_scan(root)
+      assert_includes files, File.join(root, "README.md")
+    end
+  end
+
+  def test_finds_nested_markdown
+    Dir.mktmpdir do |tmp|
+      root = File.realpath(tmp)
+      FileUtils.mkdir_p(File.join(root, "docs/adr"))
+      File.write(File.join(root, "docs/adr/ADR-0001.md"), "")
+      files = HarnessRegistry.markdown_files_to_scan(root)
+      assert_includes files, File.join(root, "docs/adr/ADR-0001.md")
+    end
+  end
+
+  def test_excludes_legacy
+    Dir.mktmpdir do |tmp|
+      root = File.realpath(tmp)
+      FileUtils.mkdir_p(File.join(root, "legacy/old"))
+      File.write(File.join(root, "legacy/old/x.md"), "")
+      File.write(File.join(root, "good.md"), "")
+      files = HarnessRegistry.markdown_files_to_scan(root)
+      refute_includes files, File.join(root, "legacy/old/x.md")
+      assert_includes files, File.join(root, "good.md")
+    end
+  end
+
+  def test_excludes_node_modules_and_git
+    Dir.mktmpdir do |tmp|
+      root = File.realpath(tmp)
+      FileUtils.mkdir_p(File.join(root, "node_modules/pkg"))
+      FileUtils.mkdir_p(File.join(root, ".git"))
+      File.write(File.join(root, "node_modules/pkg/readme.md"), "")
+      File.write(File.join(root, ".git/HEAD.md"), "")
+      files = HarnessRegistry.markdown_files_to_scan(root)
+      refute(files.any? { |f| f.include?("/node_modules/") })
+      refute(files.any? { |f| f.include?("/.git/") })
+    end
+  end
+
+  def test_excludes_template_docs_and_fixtures
+    Dir.mktmpdir do |tmp|
+      root = File.realpath(tmp)
+      FileUtils.mkdir_p(File.join(root, "platform/templates/docs"))
+      FileUtils.mkdir_p(File.join(root, "platform/validators/test/fixtures/projects/x"))
+      File.write(File.join(root, "platform/templates/docs/SUMMARY.md"), "")
+      File.write(File.join(root, "platform/validators/test/fixtures/projects/x/foo.md"), "")
+      files = HarnessRegistry.markdown_files_to_scan(root)
+      refute_includes files, File.join(root, "platform/templates/docs/SUMMARY.md")
+      refute_includes files, File.join(root, "platform/validators/test/fixtures/projects/x/foo.md")
+    end
+  end
+
+  def test_extra_exclude_prefix_honored
+    Dir.mktmpdir do |tmp|
+      root = File.realpath(tmp)
+      FileUtils.mkdir_p(File.join(root, "build"))
+      File.write(File.join(root, "build/out.md"), "")
+      files = HarnessRegistry.markdown_files_to_scan(root, ["build/"])
+      refute_includes files, File.join(root, "build/out.md")
+    end
+  end
+end
+
+# ---------------------------------------------------------------------------
 # load_manifest — typed-error shape checking
 #
 # load_manifest must convert every form of bad input into a typed

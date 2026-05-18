@@ -12,7 +12,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 **Owner:** [[AGENT_SURFACE_OWNER]]
 **Last reviewed:** YYYY-MM-DD
-**Status:** [[draft | active | deprecated]]
+**Status:** [[STATUS]] (allowed values: `draft`, `active`, `deprecated`)
 
 This document is the canonical description of the in-product agentic interface — what the
 agent is, what it can do, what it can render, and what guardrails bound it. Reviewers and

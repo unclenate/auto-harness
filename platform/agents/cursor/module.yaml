@@ -1,0 +1,62 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+id: cursor
+type: agent
+version: 0.1.0
+summary: Cursor IDE operating pack. Governs .cursor/rules, legacy .cursorrules, and Auto-Run allowlist policy so Cursor sessions stay aligned with AGENTS.md.
+
+dependsOn:
+  - kernel/base
+  - base
+
+conflictsWith: []
+
+requiredArtifacts: []
+
+optionalArtifacts:
+  - .cursor/rules
+  - .cursorrules
+  # Harness-convention path for the Auto-Run allowlist. Written as a Cursor rule
+  # (.mdc) so it lives inside the rules system and stays version-controlled and
+  # reviewable. Cursor itself does not require this path; the harness does, so the
+  # allowlist is the same artifact for every reviewer.
+  - .cursor/rules/auto-run-allowlist.mdc
+
+sensitivePaths:
+  - description: Cursor rule files and Auto-Run allowlist — changes must stay aligned with AGENTS.md
+    patterns:
+      - ^\.cursor/
+      - ^\.cursorrules$
+
+companionRules:
+  - description: Cursor rule changes require AGENTS.md cross-reference or an ADR
+    triggerPaths:
+      - ^\.cursor/
+      - ^\.cursorrules$
+    requiredAny:
+      - ^AGENTS\.md$
+      - ^docs/adr/ADR-
+      - ^docs/requirements/PRD-
+    humanReview: Reviewers verify Auto-Run allowlist contents and that rule changes do not relax kernel trust tiers.
+
+validators:
+  - validate-agent-pack
+  - validate-companions
+
+reviewGates:
+  - Cursor Auto-Run mode requires an explicit, documented allowlist — empty allowlist is prohibited for shared repositories.
+  - .cursor/rules entries must defer to AGENTS.md for trust-tier rules and stop conditions.
+
+agentAdapters:
+  - AGENTS.md
+  - .cursor/rules
+  # Legacy single-file format — still read by Cursor and called out in the README;
+  # included so registry consumers compiling Cursor adapter inventories see the full
+  # surface, including the deprecated path projects may still carry.
+  - .cursorrules
+
+compiledFragments:
+  - platform/agents/cursor/README.md
+
+recommendedSkills:
+  - harness-governance

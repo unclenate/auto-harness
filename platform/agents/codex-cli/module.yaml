@@ -1,0 +1,60 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+id: codex-cli
+type: agent
+version: 0.1.0
+summary: OpenAI Codex CLI operating pack. Maps approval_policy and sandbox_mode settings to harness trust tiers and forbids AGENTS.override.md from entering the repository.
+
+dependsOn:
+  - kernel/base
+  - base
+
+conflictsWith: []
+
+requiredArtifacts: []
+
+optionalArtifacts:
+  - .codex/config.toml
+  - CODEX.md
+
+sensitivePaths:
+  - description: Codex CLI configuration and optional shim — changes must align with AGENTS.md
+    patterns:
+      - ^\.codex/
+      - ^CODEX\.md$
+      # AGENTS.override.md at any depth — Codex walks every directory and lets the
+      # override win over AGENTS.md at that level.
+      - (^|/)AGENTS\.override\.md$
+
+companionRules:
+  - description: Codex CLI configuration or shim changes require AGENTS.md cross-reference or an ADR
+    triggerPaths:
+      - ^\.codex/
+      - ^CODEX\.md$
+      - (^|/)AGENTS\.override\.md$
+    requiredAny:
+      - ^AGENTS\.md$
+      - ^docs/adr/ADR-
+      - ^docs/requirements/PRD-
+    humanReview: Reviewers verify approval_policy and sandbox_mode still honor kernel trust tiers and that AGENTS.override.md (at any depth) is not committed. Note this rule surfaces the file for review; it does not hard-block — a forbidden-path validator hook is required for automatic enforcement (follow-up).
+
+validators:
+  - validate-agent-pack
+  - validate-companions
+
+reviewGates:
+  - sandbox_mode=danger-full-access (under any approval_policy) is prohibited outside disposable environments.
+  - AGENTS.override.md must not be committed at any depth — Codex lets it silently win over AGENTS.md. Companion rule surfaces the file for review; reviewers enforce removal until a forbidden-path validator hook lands.
+
+agentAdapters:
+  - AGENTS.md
+  - .codex/config.toml
+  # Optional Codex shim — included so registry consumers compiling adapter inventories
+  # see the full Codex surface even when the project has not adopted it.
+  - CODEX.md
+
+compiledFragments:
+  - platform/agents/codex-cli/README.md
+
+recommendedSkills:
+  - harness-governance

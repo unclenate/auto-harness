@@ -242,6 +242,50 @@ Step 7 — wire up CI
 
 ---
 
+## Multi-Tool Context — How the Three-Layer Model Composes Across Tools
+
+The three-layer model is tool-agnostic by design, but multiple tools driving the same
+repository need a shared discipline on *where* each layer lives.
+
+- **Layer 1 (kernel doctrine + compiled fragments)** is identical across every tool. The
+  compiled fragments are files on disk; any tool that can read the repository reads them
+  the same way. No per-tool variation.
+- **Layer 2 (skills)** uses the Agent Skills format — an open standard supported in
+  some form by Claude Code, Gemini CLI, Codex, Copilot CLI, Cursor, and others, though
+  the *discovery path* varies per tool and is the place where cross-tool portability
+  is currently uneven. The harness's working position:
+  - `.agents/skills/` is the harness-native install path and works today for tools that
+    auto-discover the Agent Skills format from that directory — currently Gemini CLI,
+    Codex (via Agent Skills compatibility), Copilot CLI, and Cursor (Cursor 2.4+
+    auto-loads from `.agents/skills/` and `.cursor/skills/`, per
+    <https://cursor.com/docs/skills>).
+  - Tool-native paths are still the durable fallback when a tool either does not yet
+    discover from `.agents/skills/` (e.g. Claude Code, which loads from `.claude/skills/`)
+    or when the project wants a tool-specific skill variant. Mirror to
+    `.claude/skills/`, `.cursor/skills/`, or ClawHub locations as needed; the canonical
+    copy stays under `.agents/skills/`.
+  - For Cursor specifically, the durable governance surface for rules remains
+    `.cursor/rules/` (a separate concept from skills) — see the per-tool table in
+    `platform/workflow/multi-agent-tool-coordination.md` for the full picture.
+- **Layer 3 (project contract)** is where tool divergence is real. `AGENTS.md` is the
+  shared cross-agent contract — every major tool now reads it natively or can be configured
+  to. Per-tool *shims* (`CLAUDE.md`, `GEMINI.md`, `CODEX.md`, `TOOLS.md`) exist only when
+  a tool's session or approval model needs translation into the harness's trust-tier
+  vocabulary. A shim that just restates `AGENTS.md` is overhead and a drift risk.
+
+For the full per-tool table (file conventions, skill loading paths, approval/session
+models, trust-tier mappings, and known stop conditions), see
+`platform/workflow/multi-agent-tool-coordination.md`. That document is the operator
+reference when a project will be worked by more than one AI tool.
+
+The harness's existing `agents/base`, `agents/claude-code`, `agents/generic-llm`, and
+`agents/openclaw` modules already implement this layered convention. New per-tool adapter
+modules (Gemini CLI, Codex CLI, Copilot CLI, Cursor, etc.) follow the same module-yaml
+shape — see the multi-agent coordination guide for the criteria that distinguish "needs
+its own adapter module" from "covered by `agents/generic-llm`."
+
+---
+
 ## Reference
 
 | Resource | Path |
@@ -250,5 +294,7 @@ Step 7 — wire up CI
 | Harness-native skills | `platform/skills/` |
 | Module field reference | `platform/core/registry/module-types.md` |
 | Bootstrap quickstart | `platform/workflow/bootstrap-quickstart.md` |
+| Multi-tool coordination | `platform/workflow/multi-agent-tool-coordination.md` |
+| AGENTS.md specification | `https://agents.md/` |
 | Curated OpenClaw skills | `https://github.com/VoltAgent/awesome-openclaw-skills` |
 | Trust tier model | `platform/core/kernel/base/trust-model.md` |

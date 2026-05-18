@@ -1,0 +1,63 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+id: gemini-cli
+type: agent
+version: 0.1.0
+summary: Gemini CLI operating pack. Translates GEMINI.md hierarchical context loading and approval-mode semantics into harness trust tiers.
+
+dependsOn:
+  - kernel/base
+  - base
+
+conflictsWith: []
+
+requiredArtifacts:
+  # Gemini CLI integration requires EITHER the GEMINI.md shim OR a .gemini/settings.json
+  # that points context.fileName at AGENTS.md (or another harness-controlled file). The
+  # oneOf form lets a project choose the shim-free path without losing required-artifact
+  # coverage. See README "What This Pack Requires" for the trade-offs.
+  - oneOf:
+      - GEMINI.md
+      - .gemini/settings.json
+
+optionalArtifacts:
+  - .gemini/settings.json
+  - GEMINI.md
+
+sensitivePaths:
+  - description: Gemini CLI shim (at any depth — Gemini walks hierarchically) and settings — changes must remain aligned with AGENTS.md
+    patterns:
+      # GEMINI.md at any depth — Gemini CLI loads GEMINI.md hierarchically from the
+      # workspace root down through subdirectories, so a nested shim can shift context
+      # without touching the root file.
+      - (^|/)GEMINI\.md$
+      - ^\.gemini/
+
+companionRules:
+  - description: Gemini CLI shim or settings changes require AGENTS.md cross-reference or an ADR
+    triggerPaths:
+      - (^|/)GEMINI\.md$
+      - ^\.gemini/
+    requiredAny:
+      - ^AGENTS\.md$
+      - ^docs/adr/ADR-
+      - ^docs/requirements/PRD-
+    humanReview: Reviewers verify approval-mode policy and sandbox posture still honor kernel trust tiers, and that any nested GEMINI.md does not reintroduce policy a parent file had removed.
+
+validators:
+  - validate-agent-pack
+  - validate-companions
+
+reviewGates:
+  - GEMINI.md must defer to AGENTS.md for trust-tier rules and stop conditions.
+  - --yolo / approval-mode=yolo is prohibited outside the official Gemini CLI sandbox image.
+
+agentAdapters:
+  - GEMINI.md
+  - .gemini/settings.json
+
+compiledFragments:
+  - platform/agents/gemini-cli/README.md
+
+recommendedSkills:
+  - harness-governance

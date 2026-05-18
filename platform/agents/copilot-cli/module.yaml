@@ -1,0 +1,68 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+id: copilot-cli
+type: agent
+version: 0.1.0
+summary: GitHub Copilot CLI operating pack. Manages multi-instruction-file precedence (AGENTS.md, .github/copilot-instructions.md, .github/instructions/) to prevent non-deterministic conflict resolution.
+
+dependsOn:
+  - kernel/base
+  - base
+
+conflictsWith: []
+
+requiredArtifacts: []
+
+optionalArtifacts:
+  - .github/copilot-instructions.md
+  # Path-scoped Copilot instructions — globbed so registry consumers see the surface
+  # even when no instructions file is present.
+  - .github/instructions/*.instructions.md
+  # Project-level custom CLI agents. Per upstream docs the path is .github/agents/,
+  # not .github/copilot/agents/.
+  - .github/agents/
+
+sensitivePaths:
+  - description: Copilot CLI instruction surfaces — overlap with AGENTS.md is non-deterministic and must be managed
+    patterns:
+      - ^\.github/copilot-instructions\.md$
+      - ^\.github/instructions/
+      - ^\.github/agents/
+      # Cross-tool shims that Copilot CLI also reads at the repo root — changes here
+      # are the main cross-file conflict surface this pack governs.
+      - ^CLAUDE\.md$
+      - ^GEMINI\.md$
+
+companionRules:
+  - description: Copilot CLI instruction changes require AGENTS.md cross-reference or an ADR
+    triggerPaths:
+      - ^\.github/copilot-instructions\.md$
+      - ^\.github/instructions/
+      - ^\.github/agents/
+      - ^CLAUDE\.md$
+      - ^GEMINI\.md$
+    requiredAny:
+      - ^AGENTS\.md$
+      - ^docs/adr/ADR-
+      - ^docs/requirements/PRD-
+    humanReview: Reviewers verify that Copilot-specific instructions (and any CLAUDE.md / GEMINI.md shim Copilot also reads) do not silently override AGENTS.md and that conflict surfaces are minimized.
+
+validators:
+  - validate-agent-pack
+  - validate-companions
+
+reviewGates:
+  - Copilot CLI instruction files must not contradict AGENTS.md — when both exist, Copilot's resolution is non-deterministic.
+  - Custom Copilot CLI agents under .github/agents/ must declare their default tool access and tier scope.
+
+agentAdapters:
+  - AGENTS.md
+  - .github/copilot-instructions.md
+  - .github/instructions/
+  - .github/agents/
+
+compiledFragments:
+  - platform/agents/copilot-cli/README.md
+
+recommendedSkills:
+  - harness-governance

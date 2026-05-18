@@ -73,13 +73,12 @@ configuration change.
 
 1. Add `AGENTS.override.md` to the project's `.gitignore` at the repo root (matches every
    depth)
-2. The companion rule fires for `AGENTS.override.md` at any depth and surfaces the file
-   for reviewer attention — but **the rule does not hard-block the merge**. The current
-   `validate-companions` validator implements `requiredAny` semantics: a PR that adds
-   `AGENTS.override.md` alongside an edit to `AGENTS.md`, an ADR, or a PRD still passes
-   the validator. Reviewers must confirm the file is removed from the index before
-   approving. A hard forbidden-path validator hook would be needed to enforce the ban
-   automatically; that is a separate follow-up — see the codex-cli pack ADR backlog
+2. **Hard-enforced by `validate-companions.sh`.** The codex-cli module declares a
+   `forbiddenPatterns` rule on `(^|/)AGENTS\.override\.md$`. Any PR that adds a file
+   matching that pattern fails the validator with an `ERROR: forbidden path X matched
+   pattern Y` message — regardless of any other `requiredAny` satisfactions in the diff.
+   The forbidden-paths check runs *before* the requiredAny check, so a documentary
+   `AGENTS.md` edit alongside the offending file cannot mask it.
 
 ---
 
@@ -106,8 +105,8 @@ Review gates:
 - *"`sandbox_mode=danger-full-access` (under any `approval_policy`) is prohibited
   outside disposable environments."*
 - *"AGENTS.override.md must not be committed at any depth — Codex lets it silently win
-  over AGENTS.md."* (The companion rule surfaces the file for review; reviewers enforce
-  removal.)
+  over AGENTS.md."* (Hard-enforced via the module's `forbiddenPatterns` rule; the
+  validator blocks the merge automatically.)
 
 ---
 

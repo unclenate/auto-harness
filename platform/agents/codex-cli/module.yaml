@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT OR Apache-2.0
 id: codex-cli
 type: agent
-version: 0.1.0
+version: 0.2.0
 summary: OpenAI Codex CLI operating pack. Maps approval_policy and sandbox_mode settings to harness trust tiers and forbids AGENTS.override.md from entering the repository.
 
 dependsOn:
@@ -31,12 +31,17 @@ companionRules:
     triggerPaths:
       - ^\.codex/
       - ^CODEX\.md$
-      - (^|/)AGENTS\.override\.md$
     requiredAny:
       - ^AGENTS\.md$
       - ^docs/adr/ADR-
       - ^docs/requirements/PRD-
-    humanReview: Reviewers verify approval_policy and sandbox_mode still honor kernel trust tiers and that AGENTS.override.md (at any depth) is not committed. Note this rule surfaces the file for review; it does not hard-block — a forbidden-path validator hook is required for automatic enforcement (follow-up).
+    humanReview: Reviewers verify approval_policy and sandbox_mode still honor kernel trust tiers.
+  - description: AGENTS.override.md is prohibited at any depth — Codex lets it silently win over AGENTS.md.
+    triggerPaths: []
+    requiredAny: []
+    forbiddenPatterns:
+      - (^|/)AGENTS\.override\.md$
+    humanReview: Hard-enforced by validate-companions.sh — any AGENTS.override.md addition fails the validator regardless of other satisfying companions.
 
 validators:
   - validate-agent-pack
@@ -44,7 +49,7 @@ validators:
 
 reviewGates:
   - sandbox_mode=danger-full-access (under any approval_policy) is prohibited outside disposable environments.
-  - AGENTS.override.md must not be committed at any depth — Codex lets it silently win over AGENTS.md. Companion rule surfaces the file for review; reviewers enforce removal until a forbidden-path validator hook lands.
+  - AGENTS.override.md must not be committed at any depth — Codex lets it silently win over AGENTS.md. Hard-enforced by the forbiddenPatterns rule on this module; the validator blocks the merge automatically.
 
 agentAdapters:
   - AGENTS.md

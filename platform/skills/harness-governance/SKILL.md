@@ -28,6 +28,7 @@ human authorization, never self-elevation.
 | 5 | Remote / production | Deploy, production migrations, secrets rotation, infra changes | Human authorization + second sign-off |
 
 **Gotchas:**
+
 - Dependency installation (`npm install`, `pip install`, `uv sync`) is Tier 4 — even locally.
 - `supabase db push` against any non-local environment is Tier 4.
 - Any deploy command is Tier 5 regardless of how it is invoked.
@@ -55,6 +56,7 @@ Active companion rules for the current project are declared in each module's `mo
 Do not declare a stage complete unless all conditions are met.
 
 **Bootstrap Complete** — all of the following:
+
 - `validate-manifest.sh` exits 0
 - `validate-module-graph.sh` exits 0
 - `validate-required-artifacts.sh` exits 0 (or intentionally disabled)
@@ -62,6 +64,7 @@ Do not declare a stage complete unless all conditions are met.
 - CI workflow is green on the first PR
 
 **Harness Ready** — Bootstrap Complete plus:
+
 - Ownership and review gates are active
 - Validators are wired into CI
 - Operational readiness artifacts (risk register, release checklist) exist if required by active delivery modules

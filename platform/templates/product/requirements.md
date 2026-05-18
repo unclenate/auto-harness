@@ -14,6 +14,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 **Last updated:** YYYY-MM-DD
 
 Priority tiers:
+
 - **Must** — required for this version to deliver value; in MVP scope
 - **Should** — high value but can ship without; target v1+
 - **Later** — acknowledged and deferred; explicitly out of scope for now

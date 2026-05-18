@@ -64,6 +64,7 @@ constraints. The product artifacts must stay current — not because of bureaucr
 stale requirements lead to agents and engineers building the wrong thing.
 
 **When requirements change:**
+
 - Update `docs/product/requirements.md`
 - Log the change in `docs/project/change-log.md` (what changed, why, who decided)
 - Create an ADR if the change is architectural
@@ -80,18 +81,21 @@ The review gate for this overlay requires human judgment on quality, not just pr
 Validators check that the file exists and has content. Reviewers check that the content is real.
 
 **Requirements that are good:**
+
 - Specific enough to write acceptance tests against
 - Include a concrete acceptance criterion, not a vague description
 - Have an explicit priority tier
 - Include out-of-scope items with reasons
 
 **Requirements that are not good enough:**
+
 - "The system should be fast" (not testable)
 - "Users should be able to manage their account" (too vague)
 - A list of in-scope features with no out-of-scope section
 - Success metrics that say "users like it" or "it feels ready"
 
 **Success metrics that are good:**
+
 - "Users complete the sign-up flow without support contact"
 - "Error rate below 1% on the primary user action"
 - "90% of beta users rate the core flow as intuitive in a 5-question survey"

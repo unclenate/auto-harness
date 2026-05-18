@@ -123,6 +123,7 @@ Tests run in the `stack` job of `.github/workflows/ci.yml`. See
 ## Flaky Test Policy
 
 A flaky test (fails intermittently without code changes) must be:
+
 1. Triaged within [[FLAKY_TRIAGE_SLA]] of detection
 2. Either fixed or marked `skip` with a linked issue
 3. Not allowed to accumulate — an untracked flaky test is a blocked release

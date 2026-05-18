@@ -28,6 +28,7 @@ The source of truth for on-chain data is the chain itself, accessed through expl
 data. You cannot guarantee its availability.
 
 **Required behavior:**
+
 - Missing data is not the same as data that doesn't exist. A rate limit error and a genuinely
   absent record are different failure modes and must be represented differently.
 - `UNKNOWN` is a first-class output state, not an error. A signal that cannot be computed
@@ -43,6 +44,7 @@ deployment, that is a permanent fact about that contract. Code review and auditi
 before deployment — not after.
 
 **Required behavior:**
+
 - Any change to contract source code, ABI, or deployment parameters requires human review
   before the change is applied. The companion rule enforces this.
 - "Verified contract" means the deployer published source code to an explorer. It does not
@@ -57,6 +59,7 @@ actor may control multiple wallets across multiple projects. Attribution is prob
 on behavioral patterns — it is never certain.
 
 **Required behavior:**
+
 - "Deployer history" means contract deployment behavior linked to an address, not a person.
 - Connections between addresses must be reported as what the chain shows, not what is inferred.
   Do not fabricate connections the data does not support.
@@ -70,6 +73,7 @@ Blockchain explorer APIs impose hard rate limits (e.g., BaseScan free tier: 5 re
 cases — they are load-bearing constraints that shape the entire async architecture.
 
 **Required behavior:**
+
 - Every API call must be counted against the declared rate limit budget in `docs/web3/chain-config.md`.
   Adding calls without updating the budget is an architecture gap, not a detail.
 - Rate limiting must be implemented with an async semaphore or equivalent mechanism. Never
@@ -108,6 +112,7 @@ directly determines whether a community commits resources, promotes the product,
 early rough edges.
 
 **Required behavior:**
+
 - Every scored output must include a disclaimer that it is not financial advice.
 - Evidence must be visible and linked to the specific on-chain data that produced it.
   Black-box scores erode trust. Explainable scores build it.
@@ -120,6 +125,7 @@ Financial advice regulations, token issuance law, and liability for shared repor
 and evolving across jurisdictions. Design for the ambiguity — don't assume clarity is coming.
 
 **Required behavior:**
+
 - Every output includes a disclaimer: "Not financial advice."
 - The system reports signals — it does not issue verdicts. "HIGH risk" is not "this is a scam."
 - `UNKNOWN` is never suppressed to produce cleaner output. Honest uncertainty is a legal
@@ -131,6 +137,7 @@ and evolving across jurisdictions. Design for the ambiguity — don't assume cla
 ## Required Artifact: `docs/web3/chain-config.md`
 
 Documents every chain the system integrates with:
+
 - Chain ID, name, and explorer API endpoint
 - Rate limit budget per tier (free, pro, enterprise)
 - Estimated API calls per analysis operation

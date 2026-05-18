@@ -110,5 +110,5 @@ expose the spec's `logging` capability for client-driven log-level control.
 |----------|-----|
 | Server spec | `docs/mcp/server-spec.md` |
 | Tool registry | `docs/mcp/tool-registry.md` |
-| MCP architecture (spec) | https://modelcontextprotocol.io/docs/learn/architecture |
-| MCP Inspector | https://github.com/modelcontextprotocol/inspector |
+| MCP architecture (spec) | <https://modelcontextprotocol.io/docs/learn/architecture> |
+| MCP Inspector | <https://github.com/modelcontextprotocol/inspector> |

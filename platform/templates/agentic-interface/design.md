@@ -81,6 +81,7 @@ Bounded by the chosen flavor. The canonical detail goes in
 [[NO_AND_HOW_PREVENTED \| YES_AND_WHY]]
 
 **What is the rendering threat model?**
+
 - Controlled: catalog drift, hallucinated affordances → [[MITIGATION]]
 - Declarative: schema injection, version skew → [[MITIGATION]]
 - Open-ended: generative-UI XSS, sandbox escape, agent-controlled navigation → [[MITIGATION]]

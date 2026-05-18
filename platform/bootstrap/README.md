@@ -65,7 +65,7 @@ Supports the same `--project-root`, `--mount-path`, `--force` flags as `install.
 
 Every run ends with:
 
-```
+```text
 CREATED:
   - (files newly written and symlinks newly created)
 SKIPPED (existing):

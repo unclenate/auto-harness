@@ -343,7 +343,7 @@ Run a governance audit on a calendar cadence — quarterly is a reasonable defau
 
 | Check | How |
 | ----- | --- |
-| Are any validators in `disabledValidations` no longer needed? | `cat harness.manifest.yaml | yq '.overrides.disabledValidations'` and review each |
+| Are any validators in `disabledValidations` no longer needed? | `cat harness.manifest.yaml \| yq '.overrides.disabledValidations'` and review each |
 | Are all skills current? | `git submodule status .harness` (submodule mode) or diff against upstream (copy mode) |
 | Is the trust tier in `HARNESS.md` still appropriate? | Review against actual practice — are agents operating at the declared tier? |
 | Are companion rules being honored? | Spot-check recent PRs: changes to sensitive paths should have paired artifact updates |

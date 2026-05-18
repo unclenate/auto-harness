@@ -41,6 +41,7 @@ the backlog.
 ## Resolution Format
 
 When a finding is resolved, the Resolution column should:
+
 - Describe what was done (e.g., "ADR-0008 accepted; credentials now via env vars")
 - Reference the ADR, PR, or commit that resolved it
 - Note the resolution date

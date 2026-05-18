@@ -55,6 +55,7 @@ system has both web-facing and API-facing surfaces — add both `web-app` and `a
 ## Architecture Overview Expectations
 
 The required `docs/architecture/overview.md` should answer:
+
 - What is the entry point for browser requests? (CDN edge, load balancer, server)
 - What runs at the edge vs. origin?
 - How is authentication handled before requests reach application code?

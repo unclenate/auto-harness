@@ -5,6 +5,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 -->
 
 # Brownfield Onboarding
+
 ## Bringing an Existing Codebase into the Development Harness
 
 This guide covers the path for projects that already exist — codebases built before the harness
@@ -42,7 +43,7 @@ See [ADR-0006](../../docs/adr/ADR-0006-interview-driven-management.md) for the r
 
 ## Workflow at a Glance
 
-```
+```text
 Existing repo
     │
     ▼

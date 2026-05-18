@@ -41,11 +41,13 @@ Review gate: *"Shared platform changes require explicit owner visibility even wh
 ## When to Use This Instead of `prototype`
 
 Use `internal-platform` when:
+
 - Other teams or systems depend on this codebase
 - A breaking change here breaks something elsewhere
 - There is a named owner accountable for the platform's behavior
 
 Use `prototype` when:
+
 - No other team depends on the output yet
 - The system is purely experimental with no downstream consumers
 

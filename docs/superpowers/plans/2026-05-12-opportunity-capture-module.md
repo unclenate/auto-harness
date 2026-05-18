@@ -15,6 +15,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 **Tech Stack:** Markdown + YAML only. Validators are bash. Reference modules: `platform/profiles/management/knowledge-capture/` (structural analog), `docs/knowledge/README.md` (auto-harness's prior adoption analog), `docs/adr/ADR-0002-knowledge-capture-structured-observations.md` (the locking-ADR precedent).
 
 **Companion specs:**
+
 - [PRD-0003](../../requirements/PRD-0003-opportunity-capture-module.md) — module spec, all 15 functional requirements
 - [ADR-0004](../../adr/ADR-0004-opportunity-capture-record-structure.md) — locked record-structure choice
 
@@ -23,6 +24,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 ## File Structure (created/modified across the plan)
 
 **Created:**
+
 - `platform/profiles/management/opportunity-capture/module.yaml` — module manifest
 - `platform/profiles/management/opportunity-capture/README.md` — module documentation (compiled fragment)
 - `platform/templates/opportunity/README.md` — project-level policy template
@@ -30,6 +32,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 - `docs/opportunities/README.md` — auto-harness's adopted policy file
 
 **Modified:**
+
 - `harness.manifest.yaml` — adds `opportunity-capture` to `modules.management`
 - `platform/templates/README.md` — documents new placeholder tokens
 - `docs/project/change-log.md` — records the change
@@ -39,6 +42,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 ## Task 1: Create the module manifest
 
 **Files:**
+
 - Create: `platform/profiles/management/opportunity-capture/module.yaml`
 
 - [ ] **Step 1: Create `platform/profiles/management/opportunity-capture/module.yaml` with the following content**
@@ -101,6 +105,7 @@ Expected: Exit 0. The module file exists but isn't activated, so the manifest's 
 ## Task 2: Create the module README (compiled fragment)
 
 **Files:**
+
 - Create: `platform/profiles/management/opportunity-capture/README.md`
 
 - [ ] **Step 1: Create `platform/profiles/management/opportunity-capture/README.md` with the following content**
@@ -243,6 +248,7 @@ Expected: Output reports a non-trivial line count (>100 lines).
 ## Task 3: Create the per-candidate template
 
 **Files:**
+
 - Create: `platform/templates/opportunity/opp-template.md`
 
 - [ ] **Step 1: Create `platform/templates/opportunity/opp-template.md` with the following content**
@@ -312,6 +318,7 @@ Expected: Output lists `[[OPP_CONFIDENCE]]`, `[[OPP_ORIGIN_EVIDENCE]]`, `[[OPP_O
 ## Task 4: Create the project-level policy template
 
 **Files:**
+
 - Create: `platform/templates/opportunity/README.md`
 
 - [ ] **Step 1: Create `platform/templates/opportunity/README.md` with the following content**
@@ -422,6 +429,7 @@ Expected: Output lists `[[LOCKING_ADR]]`, `[[OWNER]]`, `[[PROJECT_NAME]]`, `[[WR
 ## Task 5: Document new placeholders in templates reference
 
 **Files:**
+
 - Modify: `platform/templates/README.md`
 
 - [ ] **Step 1: Identify which placeholders are new (not already in `platform/templates/README.md`)**
@@ -457,11 +465,13 @@ Note: `[[LOCKING_ADR]]`, `[[WRITE_POLICY]]`, and `[[WRITE_POLICY_RATIONALE]]` ma
 - [ ] **Step 3: Confirm no `[[...]]` tokens introduced in templates are missing from the reference**
 
 Run:
+
 ```bash
 rg -o '\[\[[A-Z0-9_]+\]\]' platform/templates/opportunity/ | sort -u | while read tok; do
   grep -q "$tok" platform/templates/README.md || echo "MISSING: $tok"
 done
 ```
+
 Expected: No "MISSING:" output.
 
 ---
@@ -469,11 +479,13 @@ Expected: No "MISSING:" output.
 ## Task 6: Activate the module (red state) and observe required-artifacts failure
 
 **Files:**
+
 - Modify: `harness.manifest.yaml`
 
 - [ ] **Step 1: Add `opportunity-capture` to `modules.management` in `harness.manifest.yaml`**
 
 Current state (read first to confirm):
+
 ```yaml
 modules:
   core:
@@ -491,6 +503,7 @@ modules:
 ```
 
 Add `opportunity-capture` to the `management` list. Result:
+
 ```yaml
 modules:
   core:
@@ -530,6 +543,7 @@ If the validator does NOT fail on a missing `docs/opportunities/README.md`, stop
 ## Task 7: Populate the adopted policy file (green state)
 
 **Files:**
+
 - Create: `docs/opportunities/README.md`
 
 - [ ] **Step 1: Create `docs/opportunities/README.md` with auto-harness's specifics**
@@ -651,6 +665,7 @@ If validate-placeholders fails: search for any `[[...]]` tokens still in `docs/o
 ## Task 8: Record the change in the project change-log
 
 **Files:**
+
 - Modify: `docs/project/change-log.md`
 
 - [ ] **Step 1: Add a new row to the `## Log` table in `docs/project/change-log.md`**
@@ -682,6 +697,7 @@ bash $PLATFORM/validators/validate-required-artifacts.sh harness.manifest.yaml .
 bash $PLATFORM/validators/validate-companions.sh harness.manifest.yaml .
 bash $PLATFORM/validators/validate-placeholders.sh harness.manifest.yaml .
 ```
+
 Expected: All five exit 0.
 
 - [ ] **Step 2: If validate-companions fails, diagnose**
@@ -698,7 +714,8 @@ The companion-rule trigger for this commit is the creation of `docs/opportunitie
 
 Run: `git status --short`
 Expected output (order may vary):
-```
+
+```text
  M docs/project/change-log.md
  M harness.manifest.yaml
  M platform/templates/README.md
@@ -782,6 +799,7 @@ Run the same five validators from Task 9 Step 1. All should still exit 0.
 **Prerequisite:** This task should be a separate commit AFTER Task 10 lands, not bundled with it. Reason: the module commit demonstrates the surface exists; OPP-0001 demonstrates the surface is *used*. Two distinct concerns.
 
 **Files:**
+
 - Create: `docs/knowledge/shared-observations.md` (append a new observation, do not overwrite existing)
 - Create: `docs/opportunities/OPP-0001-exportable-governance-contract-for-runtime-harnesses.md`
 
@@ -855,6 +873,7 @@ bash $PLATFORM/validators/validate-required-artifacts.sh harness.manifest.yaml .
 bash $PLATFORM/validators/validate-companions.sh harness.manifest.yaml .
 bash $PLATFORM/validators/validate-placeholders.sh harness.manifest.yaml .
 ```
+
 Expected: All five exit 0. The companion rule for OPP edits requires an audit-trail entry; the change is exercising the companion-rule layer for the first time and may surface that we also need to add a `memory/2026-05-12.md` daily-memory entry. If `validate-companions` fails for that reason, create a stub `memory/2026-05-12.md` referencing OPP-0001 and the shared-observation entry, then re-run.
 
 - [ ] **Step 4: Commit OPP-0001 separately from the module commit**

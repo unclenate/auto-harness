@@ -58,9 +58,9 @@ the topic but not which page covers it.
 ## Agent Integration
 
 - Skills standard — [Skills and Agents](../workflow/skills-and-agents.md)
-- Agent packs (base, claude-code, generic-llm) — [Agents](#) in the Module Library
+- Agent packs (base, claude-code, generic-llm) — [Agents](../../SUMMARY.md#agents) in the Module Library
 - Compiled fragments vs skills — [Glossary](glossary.md#compiled-fragment)
-- Harness-native skills — [Skills](#) in the table of contents
+- Harness-native skills — [Skills](../../SUMMARY.md#harness-native-skills) in the table of contents
 
 ## Workflows
 

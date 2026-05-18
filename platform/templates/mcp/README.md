@@ -32,10 +32,10 @@ revision**; pin the revision your server targets in `server-spec.md`.
 
 Templates cite these URLs at the points where the spec is normative:
 
-- Architecture — https://modelcontextprotocol.io/docs/learn/architecture
-- Server concepts (tools, resources, prompts) — https://modelcontextprotocol.io/docs/learn/server-concepts
-- Authorization — https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization
-- Security best practices — https://modelcontextprotocol.io/specification/2025-06-18/basic/security_best_practices
+- Architecture — <https://modelcontextprotocol.io/docs/learn/architecture>
+- Server concepts (tools, resources, prompts) — <https://modelcontextprotocol.io/docs/learn/server-concepts>
+- Authorization — <https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization>
+- Security best practices — <https://modelcontextprotocol.io/specification/2025-06-18/basic/security_best_practices>
 
 ## See Also
 

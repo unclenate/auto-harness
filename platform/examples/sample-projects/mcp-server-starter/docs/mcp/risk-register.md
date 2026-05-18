@@ -197,5 +197,5 @@ anything under `src/mcp/`.
 | Tool registry | `docs/mcp/tool-registry.md` |
 | Transport and auth | `docs/mcp/transport-and-auth.md` |
 | Prompt-injection test plan | `docs/mcp/prompt-injection-test-plan.md` |
-| MCP Security Best Practices (spec) | https://modelcontextprotocol.io/specification/2025-06-18/basic/security_best_practices |
-| MCP Authorization (spec) | https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization |
+| MCP Security Best Practices (spec) | <https://modelcontextprotocol.io/specification/2025-06-18/basic/security_best_practices> |
+| MCP Authorization (spec) | <https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization> |

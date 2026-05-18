@@ -26,6 +26,7 @@ cat docs/testing/test-strategy.md
 ```
 
 **You must not:**
+
 - Mark an implementation task complete without writing or verifying tests
 - Reduce declared coverage thresholds without human approval and a companion change-log entry
 - Remove or skip tests without flagging the gap in the PR description
@@ -33,12 +34,14 @@ cat docs/testing/test-strategy.md
 - Declare a milestone complete if coverage is below the threshold in `coverage-thresholds.md`
 
 **You must:**
+
 - Write tests when adding a new function, class, or endpoint
 - Run the test suite before requesting review: `[[TEST_RUN_COMMAND]]`
 - Check coverage after running tests and compare against thresholds
 - Flag skipped or pending tests explicitly
 
 **Tier guidance:**
+
 - Tier 3 — commit test files alongside implementation
 - Tier 4 — modifying CI test configuration (coverage settings, environment variables) requires explicit human direction
 
@@ -60,6 +63,7 @@ cat docs/testing/test-strategy.md
 ### Unit tests
 
 A function belongs at the unit layer if:
+
 - Its logic can be tested without I/O
 - The behavior is determined by its inputs and internal state alone
 
@@ -72,6 +76,7 @@ called. That tests the mock, not the code.
 ### Integration tests
 
 An interaction belongs at the integration layer if:
+
 - It crosses a system boundary (database, filesystem, external service, message queue)
 - The behavior depends on the state of the external system
 
@@ -84,6 +89,7 @@ truncate between tests. Never share state with the development database.
 ### E2E tests
 
 A flow belongs at the E2E layer if:
+
 - It represents a complete user journey from the outside
 - Breaking it means the product is demonstrably unusable
 
@@ -100,6 +106,7 @@ stability, not completeness.
 ### Jest / Vitest (Node/TypeScript)
 
 **Coverage run:**
+
 ```bash
 npx jest --coverage
 # or
@@ -107,12 +114,14 @@ npx vitest run --coverage
 ```
 
 **Check thresholds are configured:**
+
 ```javascript
 // jest.config.js
 coverageThreshold: { global: { lines: 80, branches: 75 } }
 ```
 
 **Test file conventions:**
+
 - Unit: `src/**/__tests__/*.test.ts` or `src/**/*.test.ts`
 - Integration: `tests/integration/**/*.test.ts`
 - E2E: `tests/e2e/**/*.spec.ts` (Playwright) or `cypress/e2e/**/*.cy.ts`
@@ -124,11 +133,13 @@ that didn't change behavior, the snapshot is testing the wrong thing.
 ### Pytest (Python)
 
 **Coverage run:**
+
 ```bash
 pytest --cov=src --cov-report=term-missing
 ```
 
 **Threshold enforcement:**
+
 ```toml
 # pyproject.toml
 [tool.pytest.ini_options]
@@ -136,11 +147,13 @@ addopts = "--cov=src --cov-fail-under=80"
 ```
 
 **Test file conventions:**
+
 - Unit: `tests/unit/test_*.py`
 - Integration: `tests/integration/test_*.py`
 - Fixtures: `tests/conftest.py` — shared fixtures, DB setup/teardown
 
 **Async tests (FastAPI):**
+
 ```python
 import pytest
 from httpx import AsyncClient
@@ -170,6 +183,7 @@ pytest --cov=src --cov-report=term-missing
 ```
 
 **Prioritize coverage of:**
+
 1. Error paths — `if err != nil`, exception handlers, validation failures
 2. Branch conditions — `if/else`, `switch`, ternary with non-obvious paths
 3. Public API surface — every exported function/class

@@ -225,9 +225,9 @@ Failures bind back to specific risk-register entries.
 |----------|-----|
 | Server spec | `docs/mcp/server-spec.md` |
 | Risk register | `docs/mcp/risk-register.md` |
-| MCP Authorization (spec) | https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization |
-| MCP Security Best Practices (spec) | https://modelcontextprotocol.io/specification/2025-06-18/basic/security_best_practices |
-| OAuth 2.1 draft | https://datatracker.ietf.org/doc/html/draft-ietf-oauth-v2-1-13 |
-| RFC 8707 — Resource Indicators | https://www.rfc-editor.org/rfc/rfc8707.html |
-| RFC 9728 — Protected Resource Metadata | https://datatracker.ietf.org/doc/html/rfc9728 |
-| RFC 7591 — Dynamic Client Registration | https://datatracker.ietf.org/doc/html/rfc7591 |
+| MCP Authorization (spec) | <https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization> |
+| MCP Security Best Practices (spec) | <https://modelcontextprotocol.io/specification/2025-06-18/basic/security_best_practices> |
+| OAuth 2.1 draft | <https://datatracker.ietf.org/doc/html/draft-ietf-oauth-v2-1-13> |
+| RFC 8707 — Resource Indicators | <https://www.rfc-editor.org/rfc/rfc8707.html> |
+| RFC 9728 — Protected Resource Metadata | <https://datatracker.ietf.org/doc/html/rfc9728> |
+| RFC 7591 — Dynamic Client Registration | <https://datatracker.ietf.org/doc/html/rfc7591> |

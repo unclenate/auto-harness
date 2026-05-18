@@ -24,11 +24,13 @@ evaluating it for a new project.
 a project. Alex has never used this platform before.
 
 **Goals:**
+
 - Understand what a valid composition looks like without reading every module.yaml
 - Get to a green validator run quickly
 - Know what artifacts to create and in what order
 
 **Frustrations:**
+
 - Abstract documentation without a concrete example
 - Running validators and getting cryptic errors with no path forward
 - Not knowing if the manifest is correct until something breaks in CI
@@ -50,11 +52,13 @@ updating validators, evolving the schema.
 the sample, something is wrong.
 
 **Goals:**
+
 - Sample project stays green as the platform evolves
 - Sample demonstrates every significant module type and rule
 - Sample serves as documentation for platform behavior
 
 **Frustrations:**
+
 - Sample goes stale silently after platform changes
 - Sample is too minimal to catch real-world module interaction issues
 

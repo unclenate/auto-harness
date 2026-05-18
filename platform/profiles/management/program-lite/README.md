@@ -15,12 +15,14 @@ requires genuine cross-team dependencies to justify it.
 ## When to Activate This Overlay
 
 Activate `program-lite` when:
+
 - Two or more teams contribute to the same delivery milestone
 - Cross-team dependencies could block or delay delivery
 - A stakeholder outside engineering needs a consolidated status view
 - There is a program-level risk that transcends any single team's scope
 
 Do not activate it when:
+
 - One team owns the entire delivery
 - "Multi-team" means two people on the same team
 - The coordination need is handled adequately by `project-standard`
@@ -58,6 +60,7 @@ aggregates across workstreams — it does not replace per-workstream delivery pl
 
 Human review must confirm cross-team dependencies and stakeholder expectations are current.
 Validators check file presence. Reviewers check that:
+
 - The workstream map reflects actual team ownership, not an aspirational org chart
 - Cross-workstream dependencies are named and have owners on both sides
 - The stakeholder report is current (not a copy of last quarter's)

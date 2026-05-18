@@ -165,7 +165,7 @@ modules:
 
 Surface conventions (the harness sensitive paths point here):
 
-```
+```text
 src/copilot/
   ├── actions/            # useCopilotAction definitions — each is a tool entry in the registry
   ├── readable/           # useCopilotReadable definitions — what the agent sees
@@ -196,7 +196,7 @@ modules:
 
 Surface conventions:
 
-```
+```text
 src/agent-runtime/        # the agent loop; emits A2UI messages
 src/genui-renderer/       # A2UI client renderer (Lit on web, Flutter on mobile)
 src/agent-components/     # native widget implementations the renderer maps schema to
@@ -222,7 +222,7 @@ modules:
 
 Surface conventions:
 
-```
+```text
 src/mcp-server/           # MCP server implementation
 src/renderer/             # HTML/Markdown payload generation
 src/agent-actions/        # MCP tools the host exposes to the user
@@ -248,7 +248,7 @@ modules:
 
 Surface conventions:
 
-```
+```text
 src/agent-runtime/
 src/chat-ui/              # the chat is the product
 src/agent-actions/

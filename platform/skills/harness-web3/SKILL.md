@@ -20,11 +20,13 @@ The most important rule for on-chain analytics systems.
 A signal that cannot be computed because data is unavailable **must return `UNKNOWN`**.
 
 **Non-negotiable rules:**
+
 - `UNKNOWN` must never be converted to `0`, `null`, a neutral score, or any synthetic default.
 - `UNKNOWN` must be visible in output — it cannot be hidden to make results look cleaner.
 - Suppressing `UNKNOWN` is a **correctness bug**, not a UX shortcut.
 
 **Propagation rules by failure mode:**
+
 - API call fails → `UNKNOWN` for that signal (or retry N times, then `UNKNOWN`)
 - Rate limit exhausted → `UNKNOWN` propagates
 - Contract unverified → `UNKNOWN` for all signals dependent on contract source
@@ -42,6 +44,7 @@ human sign-off — not an implementation shortcut.
 Every external API call must be counted against the declared budget in `docs/web3/chain-config.md`.
 
 Before adding any new API call:
+
 1. Check the current budget in `chain-config.md` (calls per analysis, daily limit).
 2. Calculate: daily limit ÷ calls per operation = max operations/day.
 3. Add the call to the budget table in `chain-config.md`.
@@ -58,6 +61,7 @@ When a rate limit tier changes (free → pro, etc.), update `chain-config.md` an
 Every risk flag or scored signal must reference the specific on-chain data that produced it.
 
 For each new signal or scoring rule:
+
 - Document the BaseScan / RPC endpoint that provides the evidence.
 - Note whether the data is always available, conditional, or rate-limited.
 - Record in the ADR for the scoring rule (use `platform/templates/web3/adr-web3.md`).
@@ -69,6 +73,7 @@ Unexplained scores are not acceptable. "Trust score: 42" with no evidence is not
 Writing to a blockchain is irreversible. Smart contract code cannot be patched after deployment.
 
 **Tier 5 actions for Web3 systems:**
+
 - Smart contract deployment (any network, including testnets used as staging)
 - Transaction signing and submission to mainnet
 - Key rotation or wallet configuration changes

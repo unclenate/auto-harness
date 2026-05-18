@@ -118,6 +118,7 @@ omit = ["migrations/*", "src/generated/*"]
 ## Coverage Threshold Change Policy
 
 Thresholds may only be lowered with:
+
 1. A documented rationale in `docs/project/change-log.md` or a new ADR
 2. Explicit human approval (not agent-initiated)
 3. A plan to restore the threshold within [[RESTORATION_DEADLINE]]

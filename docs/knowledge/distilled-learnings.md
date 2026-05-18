@@ -15,8 +15,8 @@ once believed.
 
 ## Principles
 
-_Durable truths about how this project works. Each entry cites the
-observations that led to it._
+*Durable truths about how this project works. Each entry cites the
+observations that led to it.*
 
 (No distilled learnings yet. This file populates as observations
 accumulate and the team reviews them.)
@@ -25,23 +25,23 @@ accumulate and the team reviews them.)
 
 ## Patterns
 
-_Repeatable patterns we've seen work (or fail). These guide future
-choices._
+*Repeatable patterns we've seen work (or fail). These guide future
+choices.*
 
 ---
 
 ## Anti-patterns
 
-_Things we've tried that didn't work, and why. Preserving these
-prevents repeat failures._
+*Things we've tried that didn't work, and why. Preserving these
+prevents repeat failures.*
 
 ---
 
 ## Decisions in Force
 
-_Strategic or operational decisions that remain active. When a
+*Strategic or operational decisions that remain active. When a
 decision is superseded, it moves to the Supersession Log below rather
-than being deleted._
+than being deleted.*
 
 - **Observation Structure is locked to Structured Template.**
   Codified in ADR-0002. Changes require a new ADR and human review.
@@ -50,9 +50,9 @@ than being deleted._
 
 ## Supersession Log
 
-_Prior distilled learnings that were revised, reversed, or retired.
+*Prior distilled learnings that were revised, reversed, or retired.
 Keep the original text and the reason for the change. This is the
-longitudinal record of how the team's thinking evolved._
+longitudinal record of how the team's thinking evolved.*
 
 ---
 

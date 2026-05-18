@@ -74,6 +74,7 @@ depends only on `kernel/base` and has no conflicts.
 
 Human review must confirm owners and milestone realism. Validators check file presence.
 Reviewers check that:
+
 - Scope is specific enough to use as a delivery contract
 - Milestones have observable success criteria, not just dates
 - The dependency log names real dependencies, not aspirational ones

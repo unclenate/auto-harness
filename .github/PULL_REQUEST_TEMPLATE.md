@@ -38,13 +38,13 @@ why a rule was not triggered. -->
 <!-- Paste output or summary. If any validator was intentionally skipped or
 disabled, name it and say why. -->
 
-```
-$ bash platform/validators/validate-manifest.sh harness.manifest.yaml
-$ bash platform/validators/validate-module-graph.sh harness.manifest.yaml
-$ bash platform/validators/validate-required-artifacts.sh harness.manifest.yaml .
-$ bash platform/validators/validate-placeholders.sh .
-$ bash platform/validators/validate-agent-pack.sh harness.manifest.yaml .
-$ bash platform/validators/validate-companions.sh harness.manifest.yaml . main
+```bash
+bash platform/validators/validate-manifest.sh harness.manifest.yaml
+bash platform/validators/validate-module-graph.sh harness.manifest.yaml
+bash platform/validators/validate-required-artifacts.sh harness.manifest.yaml .
+bash platform/validators/validate-placeholders.sh .
+bash platform/validators/validate-agent-pack.sh harness.manifest.yaml .
+bash platform/validators/validate-companions.sh harness.manifest.yaml . main
 ```
 
 - [ ] All validators exit 0 locally

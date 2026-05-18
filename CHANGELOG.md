@@ -47,7 +47,7 @@ they update their submodule pin. For the *internal* per-decision audit trail
 ### Added
 
 - **CI hardening (PR #14, ADR-0009):** macOS-latest added to the validators
-  + tests matrix (catches BSD-vs-GNU portability bugs that previously slipped
+  - tests matrix (catches BSD-vs-GNU portability bugs that previously slipped
   through). New `bootstrap-tests` job runs `test_install.rb` + `test_link_skills.rb`
   against both OSes. `.github/CODEOWNERS` + `.github/dependabot.yml` added.
 - **Quality audit (PR #13):** `docs/QUALITY-AUDIT-2026-05-18.md` — 56 findings
@@ -126,7 +126,7 @@ they update their submodule pin. For the *internal* per-decision audit trail
 - **State-alignment audit (PR #8):** Drift fixes across module READMEs,
   workflow guides, validator + template inventories. Notable: two literally-
   broken validator invocations in bootstrap quickstart docs (`validate-companions`
-  + `validate-placeholders` missing args).
+  - `validate-placeholders` missing args).
 
 ## 2026-05-14 — Governance validators + forbidden-paths
 

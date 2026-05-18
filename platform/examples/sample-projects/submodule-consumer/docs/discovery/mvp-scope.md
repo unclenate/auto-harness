@@ -50,8 +50,8 @@ a filled-in discovery record showing how the intake-to-manifest workflow was app
 
 ## Success Criteria
 
-| Criterion | Measurement |
-|-----------|------------|
+| Criterion | What it means | How to verify |
+|-----------|---------------|---------------|
 | Validators green | All four validator scripts exit 0 against this sample | Running `bash validators/validate-manifest.sh examples/sample-projects/node-web-saas-postgres/harness.manifest.yaml` |
 | No stub content | No `[[PLACEHOLDER_NAME]]` tokens in any artifact | `validate-placeholders.sh` passes |
 | Discovery chain complete | intake-questionnaire → mvp-scope → requirements are internally consistent (cross-references resolve) | Manual review |

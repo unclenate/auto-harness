@@ -42,7 +42,7 @@ API endpoint, or rate limit budget changes.
 
 **Remaining daily budget at [[N]] analyses/day:**
 
-```
+```text
 100,000 calls/day ÷ N calls/analysis = X analyses/day before exhaustion
 ```
 

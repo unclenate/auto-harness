@@ -15,7 +15,7 @@ artifact — nothing here is intended to be cloned and run as-is.
 In the submodule topology, auto-harness lives inside the consumer repo at a
 fixed mount point:
 
-```
+```text
 .harness/                              # git submodule → auto-harness
   platform/
     core/kernel/base/
@@ -52,7 +52,7 @@ The `harness.manifest.yaml` in this sample is **byte-identical** to the one in
 *which modules* are active; it never declares *where the harness is mounted*.
 You can verify:
 
-```
+```bash
 diff ../node-web-saas-postgres/harness.manifest.yaml ./harness.manifest.yaml
 # (no output — files are identical)
 ```

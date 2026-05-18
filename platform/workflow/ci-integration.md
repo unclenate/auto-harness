@@ -5,6 +5,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 -->
 
 # CI Integration Guide
+
 ## Wiring Harness Validators to GitHub Actions
 
 This guide shows how to run the platform validators in CI so that manifest and governance checks

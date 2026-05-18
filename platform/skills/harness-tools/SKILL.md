@@ -75,6 +75,7 @@ sensitive path changes and a companion artifact must also change.
    for approval before sending (Tier 3)
 
 **Never:**
+
 - Auto-send Slack notifications without human approval
 - Post diffs or code snippets to channels without explicit instruction
 - Send to channels you haven't confirmed are appropriate for this project
@@ -85,6 +86,7 @@ Both are Tier 0 read-only tools. They inform product and requirements documents 
 not directly modify any harness artifact.
 
 **Ahrefs:**
+
 - Monetary values (traffic value, cost metrics) are returned in USD cents — divide by 100
   before displaying
 - Use site explorer metrics to inform competitive landscape sections in
@@ -93,6 +95,7 @@ not directly modify any harness artifact.
 - Run the `doc` tool before using an Ahrefs endpoint for the first time in a session
 
 **Similarweb:**
+
 - Requires an authentication flow before first use in a session
 - Traffic and audience data belongs in persona documents (`docs/product/personas.md` or
   equivalent) and competitive analysis sections of requirements
@@ -102,11 +105,13 @@ not directly modify any harness artifact.
 Google Calendar and Gmail are Tier 3 tools — externally visible.
 
 **Google Calendar use cases:**
+
 - Schedule review gate windows as calendar blocks
 - Invite stakeholders to milestone reviews
 - Find free time for unblocking conversations
 
 **Gmail use cases:**
+
 - External stakeholder notifications about milestone changes or review gate outcomes
 - Follow-up on decisions made outside the project's communication channels
 
@@ -119,11 +124,13 @@ wants a calendar event created — ask first.
 Canva is Tier 2 for workspace creation and Tier 3 for publishing or sharing.
 
 **Use cases:**
+
 - Architecture diagrams to accompany an architecture overview artifact (e.g., `docs/architecture/overview.md` if the project has one)
 - Slide decks for milestone reviews and stakeholder reports
 - Visual assets for product documents
 
 **Design governance:**
+
 - Designs created in Canva are not harness artifacts — they are supporting material
 - The harness artifact (the `.md` file) is canonical; the Canva design is a visual rendering
 - When exporting or sharing a Canva design externally, treat it as Tier 3 — get explicit

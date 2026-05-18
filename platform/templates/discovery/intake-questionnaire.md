@@ -10,6 +10,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 delivery complexity — regardless of how much (or how little) definition exists at the start.
 
 **Used by:**
+
 - Developers gathering requirements from a client or stakeholder
 - AI agents (Claude) conducting a discovery session interactively
 - Solo builders clarifying their own thinking before starting
@@ -24,6 +25,7 @@ If working with a client or stakeholder, run sections 1–5 as a conversation, n
 The follow-up questions embedded in each section are for probing incomplete answers.
 
 After completing this questionnaire, produce:
+
 - `docs/product/problem-statement.md`
 - `docs/product/personas.md`
 - `docs/product/requirements.md`
@@ -36,28 +38,28 @@ Then complete the **Composition Signals Summary** at the end to select harness m
 ## Section 1 — Project Identity
 
 **1.1 Working title**
-_(What do you call this thing right now? It doesn't need to be final.)_
+*(What do you call this thing right now? It doesn't need to be final.)*
 
 Answer:
 
 ---
 
 **1.2 One-sentence description**
-_(Complete: "This is a [thing] that helps [who] [do what].")_
+*(Complete: "This is a [thing] that helps [who] [do what].")*
 
 Answer:
 
 ---
 
 **1.3 Primary goal for this phase**
-_(What does success look like in 90 days? In 6 months? These can be different.)_
+*(What does success look like in 90 days? In 6 months? These can be different.)*
 
 90-day goal:
 6-month goal:
 
 ---
 
-**1.4 Production URL or target domain** _(or "TBD")_
+**1.4 Production URL or target domain** *(or "TBD")*
 
 Answer:
 
@@ -66,7 +68,7 @@ Answer:
 ## Section 2 — Problem and Opportunity
 
 **2.1 What problem are you solving?**
-_(Describe it from the user's perspective, not the product's perspective.)_
+*(Describe it from the user's perspective, not the product's perspective.)*
 
 Answer:
 
@@ -78,21 +80,21 @@ What's broken about it:
 ---
 
 **2.2 Why is this worth building now?**
-_(What changed that makes this the right moment — market, technology, regulatory, personal?)_
+*(What changed that makes this the right moment — market, technology, regulatory, personal?)*
 
 Answer:
 
 ---
 
 **2.3 What happens if this doesn't get built?**
-_(Is this a must-have or a nice-to-have? What is the cost of not doing it?)_
+*(Is this a must-have or a nice-to-have? What is the cost of not doing it?)*
 
 Answer:
 
 ---
 
 **2.4 Have you seen this attempted before?**
-_(Existing products, competitors, failed attempts — what can you learn from them?)_
+*(Existing products, competitors, failed attempts — what can you learn from them?)*
 
 Answer:
 
@@ -101,7 +103,7 @@ Answer:
 ## Section 3 — Users and Stakeholders
 
 **3.1 Who are the primary users?**
-_(The people who directly use the product to accomplish a goal. Be specific — "small business owners" is too broad; "restaurant owners managing staff scheduling manually in spreadsheets" is useful.)_
+*(The people who directly use the product to accomplish a goal. Be specific — "small business owners" is too broad; "restaurant owners managing staff scheduling manually in spreadsheets" is useful.)*
 
 Primary user description:
 What they need to accomplish:
@@ -110,7 +112,7 @@ What frustrates them about how they do it today:
 ---
 
 **3.2 Are there secondary users or operators?**
-_(Admins, managers, reviewers, integrating systems — people who interact with the product but aren't the primary beneficiary.)_
+*(Admins, managers, reviewers, integrating systems — people who interact with the product but aren't the primary beneficiary.)*
 
 Secondary user / operator:
 Their role in the product:
@@ -118,7 +120,7 @@ Their role in the product:
 ---
 
 **3.3 Who are the key stakeholders?**
-_(Decision-makers, funders, approvers — people who don't use the product but have a stake in its success.)_
+*(Decision-makers, funders, approvers — people who don't use the product but have a stake in its success.)*
 
 Stakeholder name / role:
 What matters most to them:
@@ -126,7 +128,7 @@ What matters most to them:
 ---
 
 **3.4 Who is explicitly NOT the audience?**
-_(Saying who this is not for is as important as saying who it is for. It prevents scope creep.)_
+*(Saying who this is not for is as important as saying who it is for. It prevents scope creep.)*
 
 Answer:
 
@@ -156,12 +158,12 @@ What is NOT covered by the existing artifacts that needs to be defined?
 
 What questions does the visual/spec material raise that aren't answered?
 
-_(These gaps become open questions in `docs/discovery/starting-assets.md`)_
+*(These gaps become open questions in `docs/discovery/starting-assets.md`)*
 
 ---
 
 **4.2 Existing systems or integrations:**
-_(APIs, databases, auth providers, payment processors, third-party services that must connect.)_
+*(APIs, databases, auth providers, payment processors, third-party services that must connect.)*
 
 | System | Integration type | Required or optional |
 |--------|-----------------|---------------------|
@@ -172,7 +174,7 @@ _(APIs, databases, auth providers, payment processors, third-party services that
 ## Section 5 — Requirements Calibration
 
 **5.1 What must exist for this to be useful?**
-_(The shortest possible list of things without which the product doesn't deliver value. This becomes the MVP.)_
+*(The shortest possible list of things without which the product doesn't deliver value. This becomes the MVP.)*
 
 1.
 2.
@@ -183,7 +185,7 @@ _(The shortest possible list of things without which the product doesn't deliver
 ---
 
 **5.2 What would make it great but isn't essential for the first version?**
-_(Things you want but can defer. v1 backlog.)_
+*(Things you want but can defer. v1 backlog.)*
 
 1.
 2.
@@ -192,7 +194,7 @@ _(Things you want but can defer. v1 backlog.)_
 ---
 
 **5.3 What is explicitly out of scope for now?**
-_(Name things you have already decided not to build in this phase. Naming them prevents them from sneaking back in.)_
+*(Name things you have already decided not to build in this phase. Naming them prevents them from sneaking back in.)*
 
 1.
 2.
@@ -201,7 +203,7 @@ _(Name things you have already decided not to build in this phase. Naming them p
 ---
 
 **5.4 Non-negotiable constraints**
-_(Things that cannot be changed — regulatory requirements, existing contracts, accessibility mandates, platform restrictions.)_
+*(Things that cannot be changed — regulatory requirements, existing contracts, accessibility mandates, platform restrictions.)*
 
 | Constraint | Source / reason |
 |------------|----------------|
@@ -210,7 +212,7 @@ _(Things that cannot be changed — regulatory requirements, existing contracts,
 ---
 
 **5.5 How will you know when the MVP is done?**
-_(Concrete signal, not a feeling. "Users can complete a purchase" is concrete. "It feels ready" is not.)_
+*(Concrete signal, not a feeling. "Users can complete a purchase" is concrete. "It feels ready" is not.)*
 
 Answer:
 
@@ -219,19 +221,19 @@ Answer:
 ## Section 6 — Scale and Growth Expectations
 
 **6.1 Users at launch**
-_(Realistic number, not aspirational.)_
+*(Realistic number, not aspirational.)*
 
 Answer:
 
 **6.2 Users at scale**
-_(The number that would feel like success in 2–3 years.)_
+*(The number that would feel like success in 2–3 years.)*
 
 Answer:
 
 ---
 
 **6.3 Performance sensitivity**
-_(Does response time matter to the user experience? Are there SLAs?)_
+*(Does response time matter to the user experience? Are there SLAs?)*
 
 - [ ] High — sub-second responses expected (real-time UI, live data)
 - [ ] Medium — seconds are acceptable, minutes are not
@@ -242,7 +244,7 @@ Notes:
 ---
 
 **6.4 Data sensitivity**
-_(Check all that apply.)_
+*(Check all that apply.)*
 
 - [ ] PII (personally identifiable information)
 - [ ] Financial data (payment processing, account balances)
@@ -254,7 +256,7 @@ _(Check all that apply.)_
 ---
 
 **6.5 Geographic or regulatory requirements**
-_(GDPR, CCPA, HIPAA, SOC2, specific country restrictions, data residency.)_
+*(GDPR, CCPA, HIPAA, SOC2, specific country restrictions, data residency.)*
 
 Answer:
 
@@ -263,12 +265,12 @@ Answer:
 ## Section 7 — Team and Delivery Context
 
 **7.1 Team composition**
-_(Number of developers, designers, product owners — humans who will commit to this repo.)_
+*(Number of developers, designers, product owners — humans who will commit to this repo.)*
 
 Answer:
 
 **7.2 AI-assisted development**
-_(Which tools, if any. Claude Code, Cursor, Copilot, other.)_
+*(Which tools, if any. Claude Code, Cursor, Copilot, other.)*
 
 Answer:
 
@@ -283,7 +285,7 @@ Hard deadline (if any) and reason:
 ---
 
 **7.4 Budget / delivery tier**
-_(Honest assessment of where this project is.)_
+*(Honest assessment of where this project is.)*
 
 - [ ] **Throwaway prototype** — validates an idea, may be discarded
 - [ ] **MVP / early access** — real users, rough edges acceptable
@@ -293,7 +295,7 @@ _(Honest assessment of where this project is.)_
 ---
 
 **7.5 Deployment target preference**
-_(Where should this run? Vercel, AWS, GCP, Fly.io, Railway, self-hosted, unknown.)_
+*(Where should this run? Vercel, AWS, GCP, Fly.io, Railway, self-hosted, unknown.)*
 
 Answer:
 
@@ -302,19 +304,19 @@ Answer:
 ## Section 8 — Technical Context
 
 **8.1 Technology preferences or constraints**
-_(Languages, frameworks, platforms the team knows well or is required to use.)_
+*(Languages, frameworks, platforms the team knows well or is required to use.)*
 
 Answer:
 
 **8.2 Technology aversions**
-_(Things the team wants to avoid and why.)_
+*(Things the team wants to avoid and why.)*
 
 Answer:
 
 ---
 
 **8.3 Target platforms**
-_(Check all that apply.)_
+*(Check all that apply.)*
 
 - [ ] Web browser (desktop)
 - [ ] Web browser (mobile)
@@ -327,7 +329,7 @@ _(Check all that apply.)_
 ---
 
 **8.4 Existing infrastructure**
-_(Hosting accounts, databases, auth providers already in use that this project should fit into.)_
+*(Hosting accounts, databases, auth providers already in use that this project should fit into.)*
 
 Answer:
 

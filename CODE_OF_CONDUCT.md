@@ -24,7 +24,7 @@ This Code of Conduct applies in all project spaces — including issues, pull re
 
 If you experience or witness conduct that does not align with the standards described in the Contributor Covenant v2.1, please report it privately:
 
-**Contact:** Nate DiNiro — UncleNate@gmail.com
+**Contact:** Nate DiNiro — <UncleNate@gmail.com>
 
 When sending a report, please include:
 

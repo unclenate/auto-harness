@@ -31,6 +31,7 @@ The permission adapter. Defines which tool categories Claude Code is allowed to 
 prompting (allow list) and which are blocked unconditionally (deny list).
 
 The deny list is the security boundary. At minimum, deny:
+
 - Destructive commands (`rm -rf`, `git reset --hard`, `DROP TABLE`)
 - Credential and secrets operations
 - Any command that alters remote or production state without explicit instruction

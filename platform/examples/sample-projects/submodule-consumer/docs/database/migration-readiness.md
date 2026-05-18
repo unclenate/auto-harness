@@ -48,5 +48,5 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 ## Notes
 
-_Document any non-idempotency justification, unusual locking behavior, or migration-specific
-risks here. This section is required if any checklist item above is marked N/A._
+*Document any non-idempotency justification, unusual locking behavior, or migration-specific
+risks here. This section is required if any checklist item above is marked N/A.*

@@ -120,5 +120,5 @@ does not depend on the client declaring `sampling` capability.
 |----------|------------|
 | Tool registry | `docs/mcp/tool-registry.md` |
 | Risk register | `docs/mcp/risk-register.md` (R-MCP-001) |
-| MCP Security Best Practices (spec) | https://modelcontextprotocol.io/specification/2025-06-18/basic/security_best_practices |
-| MCP Inspector | https://github.com/modelcontextprotocol/inspector |
+| MCP Security Best Practices (spec) | <https://modelcontextprotocol.io/specification/2025-06-18/basic/security_best_practices> |
+| MCP Inspector | <https://github.com/modelcontextprotocol/inspector> |

@@ -75,22 +75,26 @@ No mockups, wireframes, or prototypes. This is a documentation and governance ar
 ## Section 5 — Requirements Calibration
 
 **Must exist for MVP:**
+
 - Valid `harness.manifest.yaml` for Node/TS/Postgres stack
 - All required artifacts present and populated (non-stub)
 - All validators pass cleanly
 - Demonstrated companion rule scenario in the ops artifacts
 
 **Would make it great (v1+):**
+
 - Filled-in discovery artifacts (questionnaire, MVP scope, personas)
 - Filled-in product artifacts (enriched requirements, problem statement)
 - A second sample project for a different stack (e.g. Python)
 
 **Explicitly not in scope:**
+
 - Working application code (this is a docs and governance sample only)
 - Database migrations or schema
 - CI pipeline for the sample project itself (the platform CI covers validators)
 
 **Non-negotiables:**
+
 - Validators must pass with no errors on this sample
 - Required artifact paths must match exactly what module.yaml declarations specify
 

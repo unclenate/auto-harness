@@ -5,6 +5,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 -->
 
 # Discovery to Composition
+
 ## From Idea to Running Project — Development Harness Platform
 
 This is the front-door document. Start here if you do not yet know your stack, do not yet
@@ -14,7 +15,7 @@ have a manifest, or are helping a client or stakeholder turn an idea into a buil
 
 ## The Workflow at a Glance
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────────┐
 │  Entry point                                                         │
 │  idea / informal notes / mockup / wireframes / prototype / spec     │
@@ -113,6 +114,7 @@ log each asset before producing written requirements. This gives provenance for 
 that follow: "these requirements were derived from these assets."
 
 For each asset, capture:
+
 - What screens or flows it covers
 - Requirements extracted from visual review
 - Open questions the asset raises but doesn't answer
@@ -129,12 +131,14 @@ The open questions become follow-up topics in the intake questionnaire.
 From intake questionnaire sections 2 and 3, produce:
 
 **`docs/product/problem-statement.md`**
+
 - The problem from the user's perspective (not the product's perspective)
 - The value proposition if the problem is solved well
 - The opportunity hypothesis: "If we build X for Y, then Z" — falsifiable
 - Known constraints
 
 **`docs/product/personas.md`**
+
 - Primary persona: who is this built for, what do they need, what frustrates them
 - Secondary persona if applicable
 - Out-of-scope personas: explicitly who this is NOT for
@@ -339,6 +343,7 @@ composition. Do not under-govern when the project reaches production.
 | Scale | Add `program-lite` if multi-team | Cross-team coordination needed |
 
 **When to upgrade delivery from `prototype` to `production-saas`:**
+
 - Real users with real data
 - Data that would be painful to lose
 - Any external stakeholder dependency on uptime
@@ -367,6 +372,7 @@ The `discovery-intake` module enforces this with a companion rule: a PR that cha
 will fail CI.
 
 **When architecture changes:**
+
 1. Update `docs/architecture/overview.md`
 2. Create a new ADR documenting the decision, why it changed, and what was considered
 3. If the change affects the manifest composition, update `harness.manifest.yaml`

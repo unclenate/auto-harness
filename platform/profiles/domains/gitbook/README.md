@@ -79,6 +79,7 @@ GitBook's SUMMARY.md uses a simple nested list format:
 ```
 
 **Key rules:**
+
 - The `#` header is the book title — appears in the GitBook sidebar header
 - `##` headers are section groups — appear as collapsible sections in the sidebar
 - `*` items are pages — the link text becomes the page title in navigation
@@ -123,6 +124,7 @@ is worse than useless — the path is the title and the hierarchy communicates n
 ## Keeping SUMMARY.md Current
 
 SUMMARY.md drifts when:
+
 - A new doc page is created but not added to SUMMARY.md
 - A doc page is renamed but SUMMARY.md still points to the old path
 - A section is restructured but SUMMARY.md retains the old hierarchy
@@ -145,12 +147,14 @@ This overlay supports the same docs being consumed by both humans (via GitBook n
 and AI agents (via compiled fragments and flat file reads). The two modes do not conflict.
 
 **Humans navigate via:**
+
 - GitBook sidebar (SUMMARY.md-driven)
 - Search (GitBook-indexed)
 - Chapter groupings
 - Cross-page links
 
 **Agents navigate via:**
+
 - `compiledFragments` declared in module.yaml
 - Direct file path reads from `AGENTS.md` reading list
 - Flat doc structure — no sidebar needed
@@ -179,4 +183,4 @@ project's table of contents.
 | Platform SUMMARY.md (reference) | `platform/SUMMARY.md` |
 | Repo `.gitbook.yaml` (reference) | `.gitbook.yaml` (repository root) |
 | Project SUMMARY.md template | `platform/templates/docs/SUMMARY.md` |
-| GitBook official docs | https://docs.gitbook.com |
+| GitBook official docs | <https://docs.gitbook.com> |

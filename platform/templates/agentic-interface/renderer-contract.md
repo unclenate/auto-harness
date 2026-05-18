@@ -74,7 +74,7 @@ Fill this section if the flavor is Open-ended. Otherwise skip.
 **Sandbox technology:** [[IFRAME \| WEBVIEW \| MCP_APP_CONTAINER \| WASM \| OTHER]]
 **Sandbox configuration:**
 
-```
+```text
 [[CONCRETE_SANDBOX_CONFIG — iframe sandbox attrs, CSP header, container scope, WASM imports]]
 ```
 

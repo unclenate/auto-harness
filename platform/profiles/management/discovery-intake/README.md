@@ -55,6 +55,7 @@ with requirements extracted from each and open questions surfaced.
 Projects arrive in different states. The workflow meets them where they are.
 
 **Starting from a raw idea:**
+
 1. Run the full intake questionnaire — all 8 sections
 2. Produce `problem-statement.md` and `personas.md` from sections 2–3
 3. Produce `requirements.md` from section 5
@@ -62,6 +63,7 @@ Projects arrive in different states. The workflow meets them where they are.
 5. Select modules, initialize `harness.manifest.yaml`
 
 **Starting from a mockup or Vercel prototype:**
+
 1. Log the asset in `starting-assets.md` — note what flows are covered and what isn't
 2. Run intake questionnaire sections 2–6 to fill gaps the visual doesn't answer
 3. Extract requirements from the mockup: what does each screen imply about the data model, user actions, and business rules?
@@ -69,12 +71,14 @@ Projects arrive in different states. The workflow meets them where they are.
 5. Define `mvp-scope.md` — the mockup may show more than the MVP; be explicit about what ships first
 
 **Starting from wireframes or design system:**
+
 1. Log assets in `starting-assets.md`
 2. Extract structural requirements from the wireframes (navigation, data entry points, content hierarchy)
 3. Run sections 2–5 of the intake to validate and fill gaps
 4. Produce `requirements.md` and `mvp-scope.md`
 
 **Starting from an existing written spec:**
+
 1. Run the questionnaire against the spec — not to re-ask what the spec answers, but to find what it doesn't answer
 2. Gaps in the spec become open questions in the intake questionnaire
 3. Produce or validate `problem-statement.md`, `personas.md`, `requirements.md`, `mvp-scope.md`
@@ -87,12 +91,14 @@ Projects arrive in different states. The workflow meets them where they are.
 The intake questionnaire is designed to be run as a conversation, not filled out as a form.
 
 **Recommended approach:**
+
 - Work through sections 1–5 in a single 60–90 minute session
 - Use the embedded probe questions when answers are vague or incomplete
 - Take notes directly in the questionnaire file
 - Follow up on sections 6–8 asynchronously if needed
 
 **What to watch for:**
+
 - Vague MVP scope ("everything that's in the mockup") — push back until the shortest viable version is named
 - Missing out-of-scope items — if only in-scope items are named, scope will grow during development
 - Conflicting answers between problem description and requirements — surface this explicitly

@@ -70,7 +70,7 @@ bash .harness/platform/bootstrap/install.sh --skills harness-governance
 
 You will see a five-block summary at the end:
 
-```
+```text
 CREATED:
   - harness.manifest.yaml
   - HARNESS.md

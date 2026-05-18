@@ -23,7 +23,7 @@ Source modules:
 Validators live inside the mounted harness submodule. Invoke them through
 `.harness/platform/...` paths, for example:
 
-```
+```bash
 ruby -I .harness/platform/validators/lib .harness/platform/validators/test/test_harness_registry.rb
 ruby -I .harness/platform/validators/lib .harness/platform/validators/test/test_validators_integration.rb
 ```

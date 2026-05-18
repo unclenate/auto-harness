@@ -140,4 +140,4 @@ templates or agent graphs that referenced the tool by name.
 | Consumer-side tool registry pattern | `TOOLS.md` (repo root) |
 | `harness-tools` skill | `platform/skills/harness-tools/SKILL.md` |
 | `harness-mcp` skill | `platform/skills/harness-mcp/SKILL.md` |
-| MCP server concepts (spec) | https://modelcontextprotocol.io/docs/learn/server-concepts |
+| MCP server concepts (spec) | <https://modelcontextprotocol.io/docs/learn/server-concepts> |

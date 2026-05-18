@@ -155,6 +155,6 @@ one-click install will display this command verbatim in the consent dialog.
 | Capability schema | `docs/mcp/capability-schema.md` |
 | Transport and auth | `docs/mcp/transport-and-auth.md` |
 | Prompt-injection test plan | `docs/mcp/prompt-injection-test-plan.md` |
-| MCP architecture overview (spec) | https://modelcontextprotocol.io/docs/learn/architecture |
-| MCP server concepts (spec) | https://modelcontextprotocol.io/docs/learn/server-concepts |
+| MCP architecture overview (spec) | <https://modelcontextprotocol.io/docs/learn/architecture> |
+| MCP server concepts (spec) | <https://modelcontextprotocol.io/docs/learn/server-concepts> |
 | Module README | `platform/profiles/architectures/mcp-server/README.md` |

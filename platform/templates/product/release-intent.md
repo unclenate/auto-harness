@@ -61,11 +61,13 @@ observable within days or weeks of shipping — not lagging metrics that take mo
 | | | |
 
 **Good success signals:**
+
 - "Users complete the onboarding flow without support contact"
 - "Error rate on the primary action below 1% in the first week"
 - "90% of beta users complete the core flow in their first session"
 
 **Not good enough:**
+
 - "Users like it" (not measurable)
 - "It feels ready" (not observable)
 - "No major bugs" (defines success by absence, not presence)

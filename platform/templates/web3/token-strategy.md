@@ -70,7 +70,7 @@ schedule and governance here.)*
 | Milestone | Token allocation | Trigger condition |
 |-----------|-----------------|-------------------|
 | [[Phase 1 delivery]] | [[X tokens]] | [[PR merged and validators green]] |
-| [[Community beta launch]] | [[X tokens]] | [[N users onboarded]] | |
+| [[Community beta launch]] | [[X tokens]] | [[N users onboarded]] |
 
 ---
 
@@ -80,6 +80,7 @@ schedule and governance here.)*
 treasury allocation, or other decisions.)*
 
 **Governance scope:**
+
 - What can token holders vote on?
 - What is explicitly outside governance scope? (e.g., security decisions, legal compliance)
 - What quorum is required for a vote to be valid?
@@ -112,6 +113,7 @@ treasury allocation, or other decisions.)*
 | "Not financial advice" disclaimer in all outputs | [[Yes / No — must be Yes]] | |
 
 **Required before public token launch:**
+
 - [ ] Legal review completed and documented
 - [ ] Disclaimer present in all scored outputs
 - [ ] Token strategy reviewed by all named contributors

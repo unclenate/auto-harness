@@ -5,6 +5,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 -->
 
 # HARNESS.md
+
 ## Compatibility Shim For The Modular Harness
 
 This file represents the repo-facing compatibility entrypoint that older harness consumers expect.

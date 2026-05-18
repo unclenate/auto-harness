@@ -119,7 +119,7 @@ enforces this for `docs/mcp/tool-registry.md` and `capability-schema.md`.
 
 | Decision | Producer obligation |
 | -------- | ------------------- |
-| **stdio transport** | Document the auditable launch command in `server-spec.md`; the MCP spec requires hosts to display the command pre-execution. Design the command to be readable — no chained `curl | sh`, no obfuscated `eval`. |
+| **stdio transport** | Document the auditable launch command in `server-spec.md`; the MCP spec requires hosts to display the command pre-execution. Design the command to be readable — no chained `curl \| sh`, no obfuscated `eval`. |
 | **Streamable HTTP transport** | OAuth 2.1 + PKCE + RFC 8707 resource indicators are required by spec. Audience-validate every inbound token. Never forward inbound tokens to upstream APIs. See `docs/mcp/transport-and-auth.md`. |
 | **Hybrid (both)** | Document the security posture per transport. The OAuth posture applies only to HTTP; stdio uses environment credentials and the host's secret management. |
 
@@ -192,10 +192,10 @@ Halt and surface to the human when:
 | ADR-0008 | `docs/adr/ADR-0008-mcp-awareness.md` |
 | OPP-0003 | `docs/opportunities/OPP-0003-mcp-producer-and-exportable-governance-via-mcp.md` |
 | OPP-0001 (related, upstream) | `docs/opportunities/OPP-0001-exportable-governance-contract-for-runtime-harnesses.md` |
-| MCP architecture (spec) | https://modelcontextprotocol.io/docs/learn/architecture |
-| MCP server concepts (spec) | https://modelcontextprotocol.io/docs/learn/server-concepts |
-| MCP Authorization (spec) | https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization |
-| MCP Security Best Practices (spec) | https://modelcontextprotocol.io/specification/2025-06-18/basic/security_best_practices |
+| MCP architecture (spec) | <https://modelcontextprotocol.io/docs/learn/architecture> |
+| MCP server concepts (spec) | <https://modelcontextprotocol.io/docs/learn/server-concepts> |
+| MCP Authorization (spec) | <https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization> |
+| MCP Security Best Practices (spec) | <https://modelcontextprotocol.io/specification/2025-06-18/basic/security_best_practices> |
 
 ## Installing This Skill
 

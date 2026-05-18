@@ -34,7 +34,7 @@ Don't adopt it when you are only *using* third-party MCP servers. Fill out
 
 ## Bootstrap Sequence
 
-```
+```text
 1. Add to harness.manifest.yaml: modules.architectures: [mcp-server]
 2. Add a stack module (node-typescript / python)
 3. Add a delivery posture (prototype / production-saas)
@@ -253,8 +253,8 @@ governed by `architectures/mcp-server` and use this workflow.
 | ADR-0008 | `docs/adr/ADR-0008-mcp-awareness.md` |
 | OPP-0003 | `docs/opportunities/OPP-0003-mcp-producer-and-exportable-governance-via-mcp.md` |
 | Bootstrap quickstart | `platform/workflow/bootstrap-quickstart.md` |
-| MCP architecture (spec) | https://modelcontextprotocol.io/docs/learn/architecture |
-| MCP server concepts (spec) | https://modelcontextprotocol.io/docs/learn/server-concepts |
-| MCP Authorization (spec) | https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization |
-| MCP Security Best Practices (spec) | https://modelcontextprotocol.io/specification/2025-06-18/basic/security_best_practices |
-| MCP Inspector | https://github.com/modelcontextprotocol/inspector |
+| MCP architecture (spec) | <https://modelcontextprotocol.io/docs/learn/architecture> |
+| MCP server concepts (spec) | <https://modelcontextprotocol.io/docs/learn/server-concepts> |
+| MCP Authorization (spec) | <https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization> |
+| MCP Security Best Practices (spec) | <https://modelcontextprotocol.io/specification/2025-06-18/basic/security_best_practices> |
+| MCP Inspector | <https://github.com/modelcontextprotocol/inspector> |

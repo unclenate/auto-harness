@@ -202,7 +202,7 @@ record — closed risks provide context for future decisions.
 | Transport and auth | `docs/mcp/transport-and-auth.md` |
 | Prompt-injection test plan | `docs/mcp/prompt-injection-test-plan.md` |
 | Project general risk register | `docs/security/risk-register.md` (if present) |
-| MCP Security Best Practices (spec) | https://modelcontextprotocol.io/specification/2025-06-18/basic/security_best_practices |
-| MCP Authorization (spec) | https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization |
-| OAuth 2.0 Security Best Practices (RFC 9700) | https://datatracker.ietf.org/doc/html/rfc9700 |
-| OAuth 2.0 Resource Indicators (RFC 8707) | https://www.rfc-editor.org/rfc/rfc8707.html |
+| MCP Security Best Practices (spec) | <https://modelcontextprotocol.io/specification/2025-06-18/basic/security_best_practices> |
+| MCP Authorization (spec) | <https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization> |
+| OAuth 2.0 Security Best Practices (RFC 9700) | <https://datatracker.ietf.org/doc/html/rfc9700> |
+| OAuth 2.0 Resource Indicators (RFC 8707) | <https://www.rfc-editor.org/rfc/rfc8707.html> |

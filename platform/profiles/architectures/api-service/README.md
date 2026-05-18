@@ -51,6 +51,7 @@ Review gate: *"Human review is required for externally visible API contract chan
 ## Architecture Overview Expectations
 
 The required `docs/architecture/overview.md` should answer:
+
 - What does this service expose? (endpoints, event streams, RPC)
 - Who are the consumers? (internal services, mobile clients, third parties)
 - How is authentication enforced at the boundary?

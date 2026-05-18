@@ -12,6 +12,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 **Last updated:** 2026-04-07
 
 Priority tiers:
+
 - **Must** — required for this version to deliver value
 - **Should** — high value but can ship without
 - **Later** — acknowledged and deferred

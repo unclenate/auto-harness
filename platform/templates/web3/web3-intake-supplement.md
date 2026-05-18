@@ -100,6 +100,7 @@ an implementation shortcut.
 ### 9.5 — Smart Contracts
 
 **Does this project deploy smart contracts?**
+
 - [ ] Yes — this project deploys contracts
 - [ ] No — this project only analyzes contracts deployed by others
 - [ ] Planned for later phase — not in MVP scope
@@ -118,6 +119,7 @@ an implementation shortcut.
 ### 9.6 — Token Component
 
 **Is a token planned?**
+
 - [ ] Yes — token is part of MVP
 - [ ] Yes — token is planned for a later phase
 - [ ] No — no token planned
@@ -155,6 +157,7 @@ the product's evidence and transparency requirements.)*
 - [ ] Other: *(describe)*
 
 **"Not financial advice" disclaimer required?**
+
 - [ ] Yes — in every scored or analytical output
 - [ ] Not applicable — no financial signals in output
 

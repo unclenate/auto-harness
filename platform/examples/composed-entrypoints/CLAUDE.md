@@ -5,6 +5,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 -->
 
 # CLAUDE.md
+
 ## Compatibility Shim For Claude Code
 
 Claude-specific behavior should be assembled from:

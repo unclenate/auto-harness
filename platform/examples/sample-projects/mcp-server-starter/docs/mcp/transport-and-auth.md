@@ -112,5 +112,5 @@ n/a — no metadata endpoints in stdio transport.
 |----------|-----|
 | Server spec | `docs/mcp/server-spec.md` |
 | Risk register | `docs/mcp/risk-register.md` (R-MCP-005, R-MCP-009, R-MCP-PROJ-001) |
-| MCP Authorization (spec) | https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization |
-| MCP Security Best Practices (spec) | https://modelcontextprotocol.io/specification/2025-06-18/basic/security_best_practices |
+| MCP Authorization (spec) | <https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization> |
+| MCP Security Best Practices (spec) | <https://modelcontextprotocol.io/specification/2025-06-18/basic/security_best_practices> |

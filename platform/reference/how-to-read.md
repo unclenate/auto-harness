@@ -46,7 +46,7 @@ Already have a codebase? Start with
 ### "I want to choose the right modules"
 
 1. [Module Types](../core/registry/module-types.md) — the eight families and their purpose
-2. Browse by family in the [Module Library](#) section of the table of contents
+2. Browse by family in the [Module Library](../../SUMMARY.md#module-library) section of the table of contents
 3. Each module's `README.md` explains when to activate it and what it requires
 4. [Discovery to Composition](../workflow/discovery-to-composition.md) — a guided process
    for going from an idea to a composed manifest
@@ -56,7 +56,7 @@ Already have a codebase? Start with
 1. [Skills and Agents](../workflow/skills-and-agents.md) — the integration model
 2. [Agent Base](../agents/base/README.md) — the foundational agent pack
 3. [Claude Code](../agents/claude-code/README.md) — Claude Code-specific adapter
-4. [Harness-Native Skills](#) — governance, testing, web3, onboarding skills
+4. [Harness-Native Skills](../../SUMMARY.md#harness-native-skills) — governance, testing, web3, onboarding skills
 5. [Glossary: Compiled Fragment vs Skill](glossary.md#compiled-fragment) — understand the
    difference between always-on context and on-demand guidance
 

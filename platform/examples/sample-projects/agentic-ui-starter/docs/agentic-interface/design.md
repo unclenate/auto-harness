@@ -147,7 +147,7 @@ between this section and code is a Tier-3-or-higher governance failure.
 ## 9. Vendor Appendix (informational only)
 
 **CopilotKit version:** 1.57.x (pinned in package.json)
-**Documentation reference:** https://docs.copilotkit.ai/
+**Documentation reference:** <https://docs.copilotkit.ai/>
 **Notable vendor-specific risks or quirks:**
 
 - CopilotKit ships frequently; treat every major bump as a Tier-4 deployment

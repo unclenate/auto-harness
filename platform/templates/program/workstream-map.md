@@ -37,6 +37,7 @@ status. Update it at every governance cadence touchpoint.
 Describe cross-workstream dependencies in plain language. Update when dependencies change.
 
 > Example:
+>
 > - Workstream 2 cannot start until Workstream 1 completes the data schema migration.
 > - Workstream 3 requires the API surface from Workstream 1 to be stable before integration.
 

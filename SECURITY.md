@@ -20,7 +20,7 @@ auto-harness is currently at **alpha** maturity. Only the `main` branch is activ
 
 **Please do not file public GitHub issues for vulnerabilities.** Public reports give adversaries the same head start as defenders. Instead, contact the project privately.
 
-- **Email:** UncleNate@gmail.com
+- **Email:** <UncleNate@gmail.com>
 - **Subject prefix:** `[auto-harness security]`
 
 Please include in your report:

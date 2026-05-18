@@ -20,8 +20,8 @@ matures. Git history is the durable record of what was once believed.
 
 ## Principles
 
-_Durable truths about how this project works. Each entry cites the
-observations that led to it._
+*Durable truths about how this project works. Each entry cites the
+observations that led to it.*
 
 <!-- Example:
 ### Automation must tolerate human unavailability
@@ -38,29 +38,29 @@ Agents running commits must halt and surface when governance controls
 
 ## Patterns
 
-_Repeatable patterns we've seen work (or fail). These guide future choices._
+*Repeatable patterns we've seen work (or fail). These guide future choices.*
 
 ---
 
 ## Anti-patterns
 
-_Things we've tried that didn't work, and why. Preserving these prevents
-repeat failures._
+*Things we've tried that didn't work, and why. Preserving these prevents
+repeat failures.*
 
 ---
 
 ## Decisions in Force
 
-_Strategic or operational decisions that remain active. When a decision is
-superseded, it moves to the Supersession Log below rather than being deleted._
+*Strategic or operational decisions that remain active. When a decision is
+superseded, it moves to the Supersession Log below rather than being deleted.*
 
 ---
 
 ## Supersession Log
 
-_Prior distilled learnings that were revised, reversed, or retired. Keep
+*Prior distilled learnings that were revised, reversed, or retired. Keep
 the original text and the reason for the change. This is the longitudinal
-record of how the team's thinking evolved._
+record of how the team's thinking evolved.*
 
 ---
 

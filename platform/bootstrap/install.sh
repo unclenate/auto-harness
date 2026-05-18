@@ -28,9 +28,21 @@
 #   --help, -h              Show this help and exit.
 #
 # Exit codes:
-#   0 = bootstrap completed with no conflicts
-#   1 = completed with one or more conflicts (see summary)
+#   0 = bootstrap completed cleanly OR all reported conflicts are
+#       informational (e.g., consumer-authored file left untouched).
+#       Nothing for the user to act on.
+#   1 = completed with one or more *blocking* conflicts that require
+#       the user to take action before re-running.
 #   2 = usage error (bad flag, missing composition, invalid paths)
+#
+# Conflict classification:
+#   - Informational: the script intentionally left a foreign / consumer-
+#     authored file alone (CLAUDE.md without harness markers, etc.). A
+#     follow-up suggestion is emitted under MANUAL FOLLOW-UP. No action
+#     is required to use the harness.
+#   - Blocking: the script could not produce a coherent state (manifest
+#     present but unparseable, link-skills target collision, permission
+#     denied, etc.). The user MUST act before re-running.
 #
 # See: platform/workflow/submodule-integration.md for the full narrative.
 # See: docs/adr/ADR-0003-submodule-integration.md for design rationale.
@@ -167,11 +179,18 @@ done
 
 # ---------------------------------------------------------------------------
 # Summary accumulators
+#
+# CONFLICTS holds every reported conflict line (informational + blocking)
+# because users still want to see informational entries — they explain why
+# the harness skipped a file. BLOCKING_CONFLICTS is the exit-code signal:
+# only call sites where the user MUST act before re-running increment it.
+# See the "Exit codes" header for the classification rule.
 # ---------------------------------------------------------------------------
 CREATED=()
 SKIPPED=()
 CONFLICTS=()
 FOLLOWUPS=()
+BLOCKING_CONFLICTS=0
 
 dry_prefix() { $DRY_RUN && echo "[DRY-RUN] " || echo ""; }
 
@@ -197,6 +216,95 @@ replace_file() {
 }
 
 # ---------------------------------------------------------------------------
+# merge_manifest_identity: preserve the consumer's project identity across a
+# --force re-bootstrap.
+#
+# Reads project.id / project.name / project.maturity / project.criticality from
+# the existing manifest at $1 (an existing on-disk file), then substitutes
+# them into the generated manifest content passed on stdin. Emits the merged
+# manifest on stdout.
+#
+# Identity fields are *descriptive* — they identify the consumer's project,
+# not its governance. --force is meant to replace the governance (modules,
+# overrides) the composition declares, not silently clobber the consumer's
+# project identity with the composition's example placeholders (e.g.,
+# `id: example-interview-driven`).
+#
+# Field-by-field: each identity field is preserved only if the existing
+# manifest declares it AND the generated content also has a slot for it.
+# If the existing manifest is missing a `project:` block (e.g., it's corrupt
+# or stub), no substitution happens and the generated content is returned
+# verbatim — same as a fresh install.
+#
+# Implementation note: uses awk for portability (no Ruby/yq dependency).
+# Assumes the conventional two-space YAML indentation under `project:`. All
+# in-tree composition files use two-space indent (validated by the harness
+# itself). Only the *first* occurrence of each `  <field>:` line under the
+# `project:` block is rewritten — composition manifests have exactly one
+# per file by convention.
+# ---------------------------------------------------------------------------
+merge_manifest_identity() {
+  local existing="$1"
+  local existing_id existing_name existing_maturity existing_criticality
+
+  # Extract identity from existing manifest. We only consider lines inside the
+  # top-level `project:` block (two-space indented `  id:`, etc.). Missing
+  # fields yield an empty string and are skipped during substitution.
+  extract_field() {
+    local field="$1"
+    awk -v f="$field" '
+      /^project:[[:space:]]*$/ { in_project = 1; next }
+      /^[^[:space:]]/         { in_project = 0 }
+      in_project && $0 ~ "^  " f ":" {
+        sub("^  " f ":[[:space:]]*", "")
+        sub("[[:space:]]*#.*$", "")
+        sub("[[:space:]]+$", "")
+        print
+        exit
+      }
+    ' "$existing"
+  }
+
+  existing_id="$(extract_field id)"
+  existing_name="$(extract_field name)"
+  existing_maturity="$(extract_field maturity)"
+  existing_criticality="$(extract_field criticality)"
+
+  # If the existing manifest had no `project:` block at all, every field came
+  # back empty — fall through to composition defaults (just pass stdin).
+  if [[ -z "$existing_id" && -z "$existing_name" \
+        && -z "$existing_maturity" && -z "$existing_criticality" ]]; then
+    cat
+    return
+  fi
+
+  awk \
+    -v new_id="$existing_id" \
+    -v new_name="$existing_name" \
+    -v new_maturity="$existing_maturity" \
+    -v new_criticality="$existing_criticality" '
+    BEGIN { in_project = 0; did_id = 0; did_name = 0; did_maturity = 0; did_criticality = 0 }
+    /^project:[[:space:]]*$/ { in_project = 1; print; next }
+    /^[^[:space:]]/          { in_project = 0 }
+    {
+      if (in_project && new_id != "" && !did_id && $0 ~ /^  id:/) {
+        print "  id: " new_id; did_id = 1; next
+      }
+      if (in_project && new_name != "" && !did_name && $0 ~ /^  name:/) {
+        print "  name: " new_name; did_name = 1; next
+      }
+      if (in_project && new_maturity != "" && !did_maturity && $0 ~ /^  maturity:/) {
+        print "  maturity: " new_maturity; did_maturity = 1; next
+      }
+      if (in_project && new_criticality != "" && !did_criticality && $0 ~ /^  criticality:/) {
+        print "  criticality: " new_criticality; did_criticality = 1; next
+      }
+      print
+    }
+  '
+}
+
+# ---------------------------------------------------------------------------
 # Target 1: harness.manifest.yaml
 # ---------------------------------------------------------------------------
 handle_manifest() {
@@ -211,14 +319,21 @@ handle_manifest() {
   # Signature: valid manifest has `schemaVersion: 1` near the top
   if head -n 5 "$target" | grep -q '^schemaVersion: 1'; then
     if $FORCE; then
+      # Preserve consumer's project identity across the --force regeneration.
+      # Governance (modules, overrides) comes from the composition; identity
+      # (id/name/maturity/criticality) is sourced from the existing manifest.
       local content
-      content="$(cat "$COMPOSITION_FILE")"
+      content="$(merge_manifest_identity "$target" < "$COMPOSITION_FILE")"
       replace_file "$target" "$content"
     else
       SKIPPED+=("harness.manifest.yaml (harness-style, use --force to replace)")
     fi
   else
+    # Blocking: a file at harness.manifest.yaml that we can't recognize means
+    # validators will fail and the harness will not function. The user must
+    # decide (delete + re-run, or merge manually) before re-running.
     CONFLICTS+=("harness.manifest.yaml exists but lacks harness signature (schemaVersion: 1); leaving untouched")
+    BLOCKING_CONFLICTS=$((BLOCKING_CONFLICTS + 1))
     FOLLOWUPS+=("Review harness.manifest.yaml; run 'cp ${COMPOSITION_FILE} harness.manifest.yaml.new' and merge manually")
   fi
 }
@@ -256,7 +371,11 @@ handle_harness_md() {
       SKIPPED+=("HARNESS.md (harness-style, use --force to replace)")
     fi
   else
+    # Blocking: HARNESS.md is the load-order anchor for every harness-aware
+    # agent. If a file exists at that path that doesn't reference
+    # harness.manifest.yaml, agents can't follow the contract. User must act.
     CONFLICTS+=("HARNESS.md exists but lacks harness signature; leaving untouched")
+    BLOCKING_CONFLICTS=$((BLOCKING_CONFLICTS + 1))
     FOLLOWUPS+=("Review HARNESS.md; harness content lives in ${MOUNT_PATH}/platform/workflow/")
   fi
 }
@@ -290,6 +409,10 @@ handle_claude_md() {
       SKIPPED+=("CLAUDE.md (harness-style, use --force to replace)")
     fi
   else
+    # Informational (not blocking). CLAUDE.md is consumer-authored content;
+    # the harness only suggests an additive 'reads HARNESS.md, AGENTS.md'
+    # block. Nothing is broken if the user ignores the suggestion. Reported
+    # in CONFLICTS for visibility but does NOT increment BLOCKING_CONFLICTS.
     CONFLICTS+=("CLAUDE.md exists and appears consumer-authored; leaving untouched")
     FOLLOWUPS+=("Consider adding a 'reads HARNESS.md, AGENTS.md' block to your CLAUDE.md")
   fi
@@ -357,15 +480,30 @@ handle_agents_md() {
       CREATED+=("[DRY-RUN update markers] AGENTS.md")
       return
     fi
-    local tmp
+    local tmp block_tmp
     tmp="$(mktemp)"
-    awk -v start="$AGENTS_MARKER_START" -v end="$AGENTS_MARKER_END" -v block="$managed_block" '
-      BEGIN { in_managed = 0 }
+    block_tmp="$(mktemp)"
+    # BSD awk (macOS default) rejects multi-line strings passed via `-v`
+    # ("newline in string"), so write the managed block to a temp file and
+    # have awk read it on demand inside the BEGIN/replacement block. Same
+    # behavior on gawk; survives portability.
+    printf '%s' "$managed_block" > "$block_tmp"
+    awk -v start="$AGENTS_MARKER_START" -v end="$AGENTS_MARKER_END" -v blockfile="$block_tmp" '
+      BEGIN {
+        in_managed = 0
+        block = ""
+        while ((getline line < blockfile) > 0) {
+          if (block == "") block = line
+          else             block = block "\n" line
+        }
+        close(blockfile)
+      }
       $0 == start { print block; in_managed = 1; next }
       $0 == end   { in_managed = 0; next }
       !in_managed { print }
     ' "$target" > "$tmp"
     mv "$tmp" "$target"
+    rm -f "$block_tmp"
     CREATED+=("AGENTS.md (managed section updated)")
   else
     # Append managed block, preserving all existing content.
@@ -403,13 +541,18 @@ link_skills() {
   link_code=$?
   set -e
 
-  # Parse link-skills output and fold into our summary.
+  # Parse link-skills output and fold into our summary. link-skills CONFLICTs
+  # (e.g., a directory present where the symlink would go) are blocking —
+  # the skill won't be available until the user resolves the collision.
   while IFS= read -r line; do
     case "$line" in
       "[OK] "*)       SKIPPED+=("${line#[OK] }") ;;
       "[CREATED] "*)  CREATED+=("${line#[CREATED] }") ;;
       "[REPLACED] "*) CREATED+=("${line#[REPLACED] }") ;;
-      "[CONFLICT] "*) CONFLICTS+=("${line#[CONFLICT] }") ;;
+      "[CONFLICT] "*)
+        CONFLICTS+=("${line#[CONFLICT] }")
+        BLOCKING_CONFLICTS=$((BLOCKING_CONFLICTS + 1))
+        ;;
       Summary:*|"")   ;; # drop
       *)              FOLLOWUPS+=("link-skills: $line") ;;
     esac
@@ -547,9 +690,18 @@ print_block "MANUAL FOLLOW-UP" "${FOLLOWUPS[@]+"${FOLLOWUPS[@]}"}"
 
 note "------------------------------------------------------------------"
 
-if [[ ${#CONFLICTS[@]} -gt 0 ]]; then
-  note "Completed with ${#CONFLICTS[@]} conflict(s). Resolve them and re-run."
+# Three-state exit. See header "Exit codes" section.
+#   - blocking > 0 → exit 1 (user must act)
+#   - blocking == 0 with informational entries → exit 0 with explanatory note
+#   - blocking == 0 with no entries → exit 0 with clean note
+if [[ $BLOCKING_CONFLICTS -gt 0 ]]; then
+  note "Completed with ${BLOCKING_CONFLICTS} blocking conflict(s). Resolve them and re-run."
   exit 1
+fi
+
+if [[ ${#CONFLICTS[@]} -gt 0 ]]; then
+  note "Completed. ${#CONFLICTS[@]} item(s) in CONFLICTS are informational — no action required. See MANUAL FOLLOW-UP for suggestions."
+  exit 0
 fi
 
 note "Completed successfully."

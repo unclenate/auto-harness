@@ -25,6 +25,8 @@ happen automatically on every pull request.
 
 All validators require Ruby 3.0+. `validate-placeholders.sh` additionally requires `ripgrep` (`rg`).
 
+> **install.sh exit codes (three-state).** `platform/bootstrap/install.sh` exits `0` for clean installs *and* for installs whose only conflicts are informational (e.g., a consumer-authored `CLAUDE.md` intentionally left untouched). It exits `1` only when a blocking conflict requires user action before re-running (e.g., unparseable manifest, symlink target collision). It exits `2` for usage errors. CI pipelines that gate on `install.sh` can rely on `0` meaning "harness is coherent — proceed" without filtering informational notices.
+
 ---
 
 ## Minimal Working Workflow

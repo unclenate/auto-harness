@@ -107,31 +107,90 @@ class TestInstallIdempotency < Minitest::Test
 end
 
 class TestInstallBrownfield < Minitest::Test
-  def test_foreign_claude_md_is_preserved
+  def test_foreign_claude_md_is_preserved_and_exits_zero
+    # CLAUDE.md being consumer-authored is an INFORMATIONAL conflict — the
+    # harness intentionally leaves the file alone and emits a suggestion.
+    # Exit 0 because there is nothing for the user to act on; the install
+    # produced a coherent, working harness setup.
     Dir.mktmpdir do |dir|
       setup_mount(dir)
       File.write(File.join(dir, "CLAUDE.md"),
                  "# my custom claude.md\n\nno harness references here.\n")
       out, _err, code = run_install(dir)
-      assert_equal 1, code, "expected non-zero exit for brownfield conflict"
+      assert_equal 0, code, "informational conflict (consumer CLAUDE.md) must exit 0. out: #{out}"
       assert_match(/CONFLICTS:/, out)
       assert_match(/CLAUDE\.md exists and appears consumer-authored/, out)
+      # New informational-completion message
+      assert_match(/item\(s\) in CONFLICTS are informational.*no action required/i, out)
+      refute_match(/Resolve them and re-run/, out)
       assert_equal "# my custom claude.md\n\nno harness references here.\n",
                    File.read(File.join(dir, "CLAUDE.md"))
     end
   end
 
-  def test_foreign_manifest_reported_as_conflict
+  def test_foreign_manifest_reported_as_blocking_conflict
+    # Unparseable manifest is BLOCKING — the harness can't function without a
+    # valid manifest, so the user must resolve before re-running.
     Dir.mktmpdir do |dir|
       setup_mount(dir)
       # manifest without the schemaVersion: 1 signature
       File.write(File.join(dir, "harness.manifest.yaml"), "not: a harness manifest\n")
       out, _err, code = run_install(dir)
-      assert_equal 1, code
+      assert_equal 1, code, "unparseable manifest must be blocking. out: #{out}"
       assert_match(/CONFLICTS:/, out)
       assert_match(/harness\.manifest\.yaml.*lacks harness signature/, out)
+      assert_match(/blocking conflict.*Resolve them and re-run/, out)
       assert_equal "not: a harness manifest\n",
                    File.read(File.join(dir, "harness.manifest.yaml"))
+    end
+  end
+end
+
+class TestInstallExitCodes < Minitest::Test
+  # Acceptance for Item 5b: three-state exit codes.
+
+  def test_clean_install_exits_zero
+    Dir.mktmpdir do |dir|
+      setup_mount(dir)
+      out, _err, code = run_install(dir)
+      assert_equal 0, code, "clean install must exit 0. out: #{out}"
+      assert_match(/Completed successfully\./, out)
+    end
+  end
+
+  def test_informational_only_conflict_exits_zero_with_new_message
+    # Consumer CLAUDE.md is the canonical informational case.
+    Dir.mktmpdir do |dir|
+      setup_mount(dir)
+      File.write(File.join(dir, "CLAUDE.md"), "# consumer file\n")
+      out, _err, code = run_install(dir)
+      assert_equal 0, code, "informational-only conflicts must exit 0. out: #{out}"
+      assert_match(/item\(s\) in CONFLICTS are informational.*no action required/i, out)
+      # The legacy "Resolve them" wording must NOT appear in the informational path.
+      refute_match(/Resolve them and re-run/, out)
+    end
+  end
+
+  def test_blocking_conflict_exits_one_with_legacy_message
+    # Unparseable manifest is blocking.
+    Dir.mktmpdir do |dir|
+      setup_mount(dir)
+      File.write(File.join(dir, "harness.manifest.yaml"), "garbage\n")
+      out, _err, code = run_install(dir)
+      assert_equal 1, code, "blocking conflict must exit 1. out: #{out}"
+      assert_match(/blocking conflict\(s\)\. Resolve them and re-run\./, out)
+    end
+  end
+
+  def test_blocking_plus_informational_exits_one
+    # If at least one conflict is blocking, exit code is 1 regardless of
+    # informational entries piled up beside it.
+    Dir.mktmpdir do |dir|
+      setup_mount(dir)
+      File.write(File.join(dir, "harness.manifest.yaml"), "garbage\n")
+      File.write(File.join(dir, "CLAUDE.md"), "# consumer file\n")
+      _out, _err, code = run_install(dir)
+      assert_equal 1, code, "any blocking conflict must trump informational ones"
     end
   end
 end
@@ -257,6 +316,98 @@ class TestInstallCliValidation < Minitest::Test
       _out, err, code = run_install(dir, "--composition", "no-such-composition")
       assert_equal 2, code
       assert_match(/composition not found/, err)
+    end
+  end
+end
+
+class TestInstallForceIdentityPreservation < Minitest::Test
+  # Acceptance for Item 5a: --force preserves project.id / project.name /
+  # project.maturity / project.criticality from the existing manifest.
+
+  def test_force_preserves_project_identity_across_composition_swap
+    Dir.mktmpdir do |dir|
+      setup_mount(dir)
+      manifest_path = File.join(dir, "harness.manifest.yaml")
+
+      # Seed an existing harness-style manifest with a real consumer identity.
+      File.write(manifest_path, <<~YAML)
+        schemaVersion: 1
+        project:
+          id: my-test-project
+          name: My Test Project
+          maturity: mvp
+          criticality: high
+        modules:
+          core:
+            - kernel/base
+          agents:
+            - base
+        overrides: {}
+      YAML
+
+      # --force with a composition whose example identity is different.
+      out, _err, code = run_install(
+        dir, "--force", "--composition", "interview-driven-discovery"
+      )
+      assert_equal 0, code, "expected clean exit. out: #{out}"
+
+      regen = File.read(manifest_path)
+
+      # Identity preserved
+      assert_match(/^  id: my-test-project$/, regen, "id must be preserved")
+      assert_match(/^  name: My Test Project$/, regen, "name must be preserved")
+      assert_match(/^  maturity: mvp$/, regen, "maturity must be preserved")
+      assert_match(/^  criticality: high$/, regen, "criticality must be preserved")
+
+      # Composition's example identity must NOT have leaked in
+      refute_match(/example-interview-driven/, regen,
+                   "composition's example id must NOT clobber consumer identity")
+      refute_match(/Example Interview-Driven Project/, regen,
+                   "composition's example name must NOT clobber consumer identity")
+
+      # Composition governance (modules) IS present
+      assert_match(/^  management:/, regen,
+                   "composition's modules block (with management) should be applied")
+      assert_match(/^    - interview-driven$/, regen,
+                   "composition's interview-driven module should be applied")
+    end
+  end
+
+  def test_force_against_empty_repo_uses_composition_defaults
+    # Acceptance: --force against a repo with no existing manifest behaves
+    # identically to today (composition defaults written verbatim).
+    Dir.mktmpdir do |dir|
+      setup_mount(dir)
+      _out, _err, code = run_install(
+        dir, "--force", "--composition", "interview-driven-discovery"
+      )
+      assert_equal 0, code
+
+      content = File.read(File.join(dir, "harness.manifest.yaml"))
+      # Composition identity unchanged — nothing to merge from.
+      assert_match(/^  id: example-interview-driven$/, content)
+      assert_match(/^  name: Example Interview-Driven Project$/, content)
+    end
+  end
+
+  def test_force_with_corrupt_existing_manifest_falls_through
+    # Acceptance: if the existing manifest has no `project:` block (corrupt /
+    # stub), composition defaults are used — no half-merged Frankenstein.
+    Dir.mktmpdir do |dir|
+      setup_mount(dir)
+      manifest_path = File.join(dir, "harness.manifest.yaml")
+      # Has the schemaVersion signature (so --force engages) but no project block.
+      File.write(manifest_path, "schemaVersion: 1\nmodules:\n  core: [kernel/base]\n")
+
+      _out, _err, code = run_install(
+        dir, "--force", "--composition", "interview-driven-discovery"
+      )
+      assert_equal 0, code
+
+      regen = File.read(manifest_path)
+      # Fell through to composition defaults
+      assert_match(/^  id: example-interview-driven$/, regen)
+      assert_match(/^  name: Example Interview-Driven Project$/, regen)
     end
   end
 end

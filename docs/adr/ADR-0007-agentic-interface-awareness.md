@@ -6,8 +6,8 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # ADR-0007: Agentic Interface Awareness (Domain Primary, Architecture Optional)
 
-**Status:** Proposed
-**Date:** 2026-05-17
+**Status:** Accepted
+**Date:** 2026-05-18
 **Author:** @unclenate
 **Reviewers:** @unclenate
 **Context source:** OPP-0002 (Agentic Interface Awareness) and an R&D pass against CopilotKit (`https://docs.copilotkit.ai/`, `https://github.com/CopilotKit/CopilotKit`), A2UI v0.8 Public Preview (`https://a2ui.org/`, `https://github.com/google/A2UI`), and the Generative UI Global Hackathon starter kit (`https://github.com/jerelvelarde/Generative-UI-Global-Hackathon-Starter-Kit`). If accepted, promotes OPP-0002 from proposed to accepted.

@@ -165,14 +165,24 @@ positioned.
 
 ## Disposition
 
-Accepted. The producer-side MCP governance gap is now addressed with a first-class
-`architectures/mcp-server` module, MCP template family, workflow guidance, and sample
-project, and the exposed-governance path is explicitly scoped to a read-only/advisory
-v1 posture. ADR-0008 records the architecture-vs-domain decision, the companion-rule
-discipline for MCP producer contracts, and the deferred v2 mutation scope pending
-runtime-harness adoption signal.
+Accepted via ADR-0008. Producer-side MCP governance gap is now addressed with
+a first-class `architectures/mcp-server` module, MCP template family, workflow
+guidance, and sample project. Shipped in PR #6 (commit `163bd22`). The
+exposed-governance path is explicitly scoped to a read-only/advisory v1
+posture per OPP-0003 § Risks "Exposed-governance scope creep"; mutation tools
+("approve this action", "raise tier") are deferred to v2.
 
 ## Promotion
 
-- Decision record: `docs/adr/ADR-0008-mcp-awareness.md`
-- Implemented in this branch via the `feat(mcp): producer architecture + exposed-governance path (R&D)` PR changeset.
+- Decision record: `docs/adr/ADR-0008-mcp-awareness.md` (Accepted same date).
+- Implementation surface: `platform/profiles/architectures/mcp-server/`,
+  `platform/profiles/domains/mcp-integration/` (consumer-side overlay),
+  `platform/templates/mcp/`, `platform/skills/harness-mcp/`,
+  `platform/workflow/mcp-server-build.md`,
+  `platform/compositions/mcp-server-typescript.yaml`,
+  `platform/examples/sample-projects/mcp-server-starter/`.
+- Deferred per OPP-0003 § Risks: v2 reference MCP server exposing the harness
+  governance contract is deferred pending adoption signal — an external
+  runtime harness must commit to honoring `tools/call` results as gating
+  decisions before the harness ships mutation tools. Track via a follow-up
+  OPP if/when that signal arrives.

@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0002 — Agentic Interface Awareness
 
-**Status:** proposed
+**Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-05-17
-**Last Updated:** 2026-05-17
+**Last Updated:** 2026-05-18
 **Confidence:** medium-high
 
 ---
@@ -52,8 +52,25 @@ The "agentic interface" pattern is consolidating across the React/Next.js ecosys
 
 ## Disposition
 
-<!-- Empty: status is proposed. Promotion to accepted happens via ADR-0007 in the same branch. -->
+Accepted via ADR-0007. Module shipped in PR #5 (commit 8aef150), covered by
+PR #7's documentation pass, validated through Copilot code review. The
+domain/architecture split landed as proposed — `domains/agentic-interfaces`
+as the primary container for cross-cutting concerns, with
+`architectures/agentic-ui` as the optional overlay for conversational-primary
+or MCP-host-shell topologies.
 
 ## Promotion
 
-<!-- Empty: not yet accepted. Will point at ADR-0007 once accepted. -->
+- Decision record: ADR-0007 (Accepted same date).
+- Implementation surface: `platform/profiles/domains/agentic-interfaces/`,
+  `platform/profiles/architectures/agentic-ui/`,
+  `platform/templates/agentic-interface/`,
+  `platform/skills/harness-agentic-interfaces/`,
+  `platform/workflow/agentic-interface-integration.md`,
+  `platform/compositions/agentic-ui-saas.yaml`,
+  `platform/examples/sample-projects/agentic-ui-starter/`.
+- Future PRDs: PRD-NNNN for any consumer-driven enhancements as they emerge
+  (e.g., a Controlled-flavor component-manifest template if a Controlled
+  consumer reports the template family is missing a renderer-side contract,
+  or a dedicated MCP-host sub-module if a conversational-primary consumer
+  needs MCP-Apps-specific governance).

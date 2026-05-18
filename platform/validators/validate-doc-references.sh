@@ -17,14 +17,43 @@
 # Exit codes:
 #   0 — no broken references
 #   1 — at least one reference does not resolve on disk
+#   2 — usage error (no platform/ dir to scan, etc.)
 set -euo pipefail
+
+case "${1:-}" in
+  -h|--help)
+    cat <<'USAGE'
+validate-doc-references.sh — Assert every `platform/...` doc reference resolves on disk.
+
+Usage:
+  validate-doc-references.sh [<project-root>]
+
+Arguments:
+  project-root  Path to the consumer project root (optional; default: current working directory)
+
+Behavior:
+  Scans every *.md under <project-root>/platform/ for `platform/...` references,
+  skipping fenced code blocks. Honors regex patterns in
+  <project-root>/.doc-reference-ignore (one per line; # for comments).
+
+Example:
+  bash platform/validators/validate-doc-references.sh .
+
+Exit codes:
+  0  validation passed (every reference resolves)
+  1  validation failed (one or more references do not resolve on disk)
+  2  usage error (<project-root>/platform/ does not exist)
+USAGE
+    exit 0
+    ;;
+esac
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="${1:-$(pwd)}"
 
 if [[ ! -d "${PROJECT_ROOT}/platform" ]]; then
   echo "✗ ${PROJECT_ROOT}/platform does not exist — nothing to scan." >&2
-  exit 1
+  exit 2
 fi
 
 ruby -I"${SCRIPT_DIR}/lib" - "${PROJECT_ROOT}" <<'RUBY'

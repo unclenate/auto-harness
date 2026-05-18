@@ -21,8 +21,9 @@ Run locally during development and in CI on every pull request.
 
 ## Validator Scripts
 
-Run from the repository root. Each script exits 0 on pass, 1 on failure with a specific
-error message.
+Run from the repository root. Every script honors a uniform `--help` / `-h` flag
+and a uniform three-state exit-code contract (see [Exit-code contract](#exit-code-contract)
+below).
 
 | Script | Arguments | What It Checks |
 | ------ | --------- | -------------- |
@@ -33,6 +34,34 @@ error message.
 | `validate-agent-pack.sh` | `<manifest> <project-root>` | Agent modules declare adapters and compiled fragments; all referenced files must exist |
 | `validate-companions.sh` | `<manifest> <project-root> <base-branch>` | PR diff satisfies all active companion rules — including `forbiddenPatterns` hard fails (requires git context) |
 | `validate-doc-references.sh` | `<project-root>` | Every `platform/...` path reference inside Markdown files under `platform/` resolves on disk; skips fenced code blocks; respects `.doc-reference-ignore` |
+
+### `--help` / `-h`
+
+Every validator accepts `--help` or `-h` as the first argument and prints a usage
+block (purpose, arguments, an example, the exit-code contract) before exiting 0
+without invoking Ruby. The same convention is followed by
+[`platform/bootstrap/install.sh`](../bootstrap/install.sh),
+[`platform/bootstrap/link-skills.sh`](../bootstrap/link-skills.sh), and
+[`platform/bootstrap/add-license-headers.sh`](../bootstrap/add-license-headers.sh).
+
+```bash
+bash platform/validators/validate-manifest.sh --help
+bash platform/validators/validate-companions.sh -h
+```
+
+### Exit-code contract
+
+Every validator follows the same three-state contract — the same convention the
+bootstrap scripts adopted in PR #12:
+
+| Code | Meaning | When it applies |
+| ---- | ------- | --------------- |
+| `0` | **Pass** | Validation passed, or the validator was disabled via `overrides.disabledValidations`, or `--help` was requested. |
+| `1` | **Violation** | The script ran fully and found a real governance issue (missing artifact, broken module graph, forbidden-path hit, etc.). |
+| `2` | **Usage error** | The script could not run at all: missing/unreadable/malformed manifest, missing module definition on disk, missing dependency (e.g., `rg` not installed), missing `platform/` directory. |
+
+Malformed manifests produce a typed `✗ <message>` line on stderr followed by
+exit 2 — never a raw Ruby `NoMethodError` or `Psych::SyntaxError` stack trace.
 
 ### Recommended run order
 
@@ -62,7 +91,7 @@ with enforcement off and progressively re-enable it.
 
 | Method | Purpose |
 | ------ | ------- |
-| `load_manifest(path)` | Parse a YAML manifest |
+| `load_manifest(path)` | Parse + shape-check a YAML manifest. Returns the parsed Hash, or raises `HarnessRegistry::ManifestShapeError` on missing/unreadable/malformed input or a non-mapping top level. Validators rescue this and exit 2. |
 | `active_refs(manifest)` | Return `[category, ref]` pairs for all declared modules |
 | `active_modules(platform_root, manifest)` | Load and return `module.yaml` data for every active module |
 | `required_artifacts(modules, manifest)` | Aggregate and deduplicate required artifacts across modules + overrides |
@@ -84,7 +113,7 @@ Two test files using Ruby Minitest (stdlib, no gem install required).
 
 ### Unit tests
 
-**`test/test_harness_registry.rb`** — 87 tests covering `HarnessRegistry` methods:
+**`test/test_harness_registry.rb`** — 96 tests covering `HarnessRegistry` methods:
 
 - `patterns_match?` — single/multiple patterns, anchors, nil/empty, special characters
 - `disabled_validation?` — present, absent, missing key, multiple entries
@@ -97,6 +126,10 @@ Two test files using Ruby Minitest (stdlib, no gem install required).
 - `extract_doc_references` — fence-aware extraction, multiple extensions, multi-match lines
 - `doc_reference_resolves?`, `doc_reference_ignored?`, `load_doc_reference_ignore` —
   positive and negative paths plus comment / blank-line handling
+- `load_manifest` typed-error shape checking — missing/empty/nil path, empty
+  document, non-mapping top level (string / array), malformed YAML; every
+  failure path raises `HarnessRegistry::ManifestShapeError` with a
+  human-readable message (no raw `NoMethodError` / `Psych::SyntaxError` leaks)
 
 ```bash
 ruby -I platform/validators/lib platform/validators/test/test_harness_registry.rb
@@ -104,20 +137,26 @@ ruby -I platform/validators/lib platform/validators/test/test_harness_registry.r
 
 ### Integration tests
 
-**`test/test_validators_integration.rb`** — 38 tests that shell out to the actual
-validator scripts against fixture projects:
+**`test/test_validators_integration.rb`** — 43 hard-coded tests + 21 dynamically
+generated `--help` / `-h` coverage tests (3 per validator × 7 validators) that
+shell out to the actual validator scripts against fixture projects:
 
-- `validate-manifest.sh` — valid pass, bad schema fail, missing file abort
+- `validate-manifest.sh` — valid pass, bad schema fail, missing file → exit 2
 - `validate-module-graph.sh` — valid pass, bad dependency fail, conflict fail
 - `validate-required-artifacts.sh` — valid pass, missing artifact fail, disabled override
 - `validate-placeholders.sh` — clean pass, unfilled `[[TOKEN]]` fail, `YYYY-MM-DD` fail (skipped without ripgrep)
 - `validate-agent-pack.sh` — agents pass, missing AGENTS.md fail, no-agent vacuous pass
 - `validate-doc-references.sh` — valid pass, broken-ref fail (file + line in stderr),
-  fenced-block skip, ignore-file exempt, missing-platform abort, dogfood pass against
-  the harness's own repo
+  fenced-block skip, ignore-file exempt, missing-platform → exit 2, dogfood pass
+  against the harness's own repo
 - `validate-companions.sh` `forbiddenPatterns` — no-hit pass, hit fail with
   `forbidden path X matched pattern Y` message, hit-plus-satisfied-requiredAny still
   fails (forbidden wins; skipped without git)
+- Uniform `--help` / `-h` — every validator exits 0 with a "Usage:" + "Exit codes:"
+  block on `--help` and `-h`, and works from any cwd without invoking Ruby
+- Typed usage-error exit codes — empty manifest, malformed YAML, missing manifest
+  file, and non-mapping top-level YAML all exit 2 with a clean `✗ <message>`
+  line on stderr and zero raw Ruby `NoMethodError` / `Psych::SyntaxError` leakage
 
 ```bash
 ruby -I platform/validators/lib platform/validators/test/test_validators_integration.rb

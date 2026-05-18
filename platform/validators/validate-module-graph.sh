@@ -4,6 +4,29 @@
 # Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 set -euo pipefail
 
+case "${1:-}" in
+  -h|--help)
+    cat <<'USAGE'
+validate-module-graph.sh — Validate active-module dependencies, conflicts, and type assignments.
+
+Usage:
+  validate-module-graph.sh [<manifest-path>]
+
+Arguments:
+  manifest-path  Path to harness.manifest.yaml (optional; default: <repo-root>/harness.manifest.yaml)
+
+Example:
+  bash platform/validators/validate-module-graph.sh harness.manifest.yaml
+
+Exit codes:
+  0  validation passed
+  1  validation failed (missing dependency, active conflict, or category/type mismatch)
+  2  usage error (missing/unreadable/malformed manifest, missing module definition on disk)
+USAGE
+    exit 0
+    ;;
+esac
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 HARNESS_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 PLATFORM_ROOT="${HARNESS_ROOT}/platform"
@@ -14,8 +37,21 @@ require "harness_registry"
 
 platform_root = ARGV[0]
 manifest_path = ARGV[1]
-manifest = HarnessRegistry.load_manifest(manifest_path)
-modules = HarnessRegistry.active_modules(platform_root, manifest)
+
+begin
+  manifest = HarnessRegistry.load_manifest(manifest_path)
+  modules = HarnessRegistry.active_modules(platform_root, manifest)
+rescue HarnessRegistry::ManifestShapeError => e
+  warn "✗ #{e.message}"
+  exit 2
+rescue RuntimeError => e
+  # active_modules raises a bare RuntimeError when a referenced module.yaml
+  # is missing on disk — that's a usage / environment problem, not a
+  # governance violation, so route it through exit 2.
+  warn "✗ #{e.message}"
+  exit 2
+end
+
 id_map = HarnessRegistry.module_id_set(modules)
 errors = []
 

@@ -30,6 +30,36 @@
 
 set -euo pipefail
 
+case "${1:-}" in
+  -h|--help)
+    cat <<'USAGE'
+add-license-headers.sh — Insert SPDX/copyright headers into tracked auto-harness source files.
+
+Usage:
+  add-license-headers.sh            # dry-run (default; reports what would change)
+  add-license-headers.sh --apply    # actually write headers
+  add-license-headers.sh --help     # show this help
+
+Behavior:
+  Idempotent: files that already carry an `SPDX-License-Identifier:` line in
+  their first 10 lines are skipped. Markdown files starting with YAML
+  frontmatter (`---`) are skipped. Curated team records and fixture data
+  under `platform/validators/test/fixtures/` are excluded.
+
+Per-extension header formats:
+  *.sh         3 lines, # comment, inserted after shebang
+  *.rb         3 lines, # comment, top of file
+  *.yml/.yaml  2 lines, # comment, top of file
+  *.md         4-line HTML comment block, top of file
+
+Exit codes:
+  0  success (no changes needed in dry-run; changes applied in --apply; help shown)
+  1  unexpected error
+USAGE
+    exit 0
+    ;;
+esac
+
 YEAR=2026
 AUTHOR='Nate DiNiro <nate@bdits.io>'
 SPDX='MIT OR Apache-2.0'

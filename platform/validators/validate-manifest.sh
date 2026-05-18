@@ -4,17 +4,46 @@
 # Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 set -euo pipefail
 
+case "${1:-}" in
+  -h|--help)
+    cat <<'USAGE'
+validate-manifest.sh — Validate the structure of a harness.manifest.yaml file.
+
+Usage:
+  validate-manifest.sh [<manifest-path>]
+
+Arguments:
+  manifest-path  Path to harness.manifest.yaml (optional; default: <repo-root>/harness.manifest.yaml)
+
+Example:
+  bash platform/validators/validate-manifest.sh harness.manifest.yaml
+
+Exit codes:
+  0  validation passed
+  1  validation failed (governance violations found in the manifest)
+  2  usage error (missing argument, missing dependency, unreadable manifest, malformed YAML)
+USAGE
+    exit 0
+    ;;
+esac
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 HARNESS_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 PLATFORM_ROOT="${HARNESS_ROOT}/platform"
 MANIFEST_PATH="${1:-${HARNESS_ROOT}/harness.manifest.yaml}"
 
-ruby - "${MANIFEST_PATH}" "${PLATFORM_ROOT}" <<'RUBY'
-require "yaml"
-manifest_path = ARGV[0]
-abort "Manifest not found: #{manifest_path}" unless File.exist?(manifest_path)
+ruby -I"${SCRIPT_DIR}/lib" - "${MANIFEST_PATH}" "${PLATFORM_ROOT}" <<'RUBY'
+require "harness_registry"
 
-manifest = YAML.safe_load(File.read(manifest_path), permitted_classes: [], aliases: false)
+manifest_path = ARGV[0]
+
+begin
+  manifest = HarnessRegistry.load_manifest(manifest_path)
+rescue HarnessRegistry::ManifestShapeError => e
+  warn "✗ #{e.message}"
+  exit 2
+end
+
 errors = []
 
 errors << "schemaVersion must be 1" unless manifest["schemaVersion"] == 1

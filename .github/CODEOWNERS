@@ -1,0 +1,21 @@
+# auto-harness CODEOWNERS
+# https://docs.github.com/en/repositories/managing-your-repositories-settings-and-security/customizing-your-repository/about-code-owners
+#
+# NOTE: GitHub parses this file with a strict comment syntax (`#` only).
+# Do not add SPDX headers, HTML comments, or YAML — they would break parsing.
+
+# Default owner for everything in the repo
+*       @unclenate
+
+# Validator + core kernel changes are governance-sensitive — flag explicitly
+/platform/validators/   @unclenate
+/platform/core/         @unclenate
+
+# Entry-point governance files
+/HARNESS.md             @unclenate
+/AGENTS.md              @unclenate
+/CLAUDE.md              @unclenate
+/TOOLS.md               @unclenate
+
+# CI + GitHub configuration
+/.github/               @unclenate

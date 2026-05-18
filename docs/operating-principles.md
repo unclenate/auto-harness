@@ -7,7 +7,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 # Operating Principles — Development Harness Framework
 
 > Owner: @unclenate
-> Last updated: 2026-05-17
+> Last updated: 2026-05-18
 
 These principles govern how the harness platform itself is built and evolved.
 They are derived from the kernel doctrine and adapted to this project's context.
@@ -32,6 +32,14 @@ Review is a knowledge-distribution mechanism, not a rubber stamp.
   validator logic) require deliberate review
 - AI agent output is reviewed to the same standard as human output
 - Gap analyses from multiple AI tools are cross-verified before acting
+- **Companion-rule satisfiers scale with change weight.** Substantive decisions
+  (new authentication model, new CI surface, new ownership boundary) require an
+  ADR / PRD / operating-principles update. Routine maintenance (Dependabot
+  version bumps, CODEOWNERS line additions, minor workflow ergonomics) may
+  satisfy the kernel rule via a `docs/project/change-log.md` or
+  `docs/project/dependency-log.md` entry that names the change and the
+  reviewer. See [ADR-0010](adr/ADR-0010-cheap-satisfiers-for-routine-governance.md)
+  for the rationale and the kernel rule definition.
 
 ---
 

@@ -39,6 +39,9 @@ jobs:
       - name: Validate agent pack
         run: bash platform/validators/validate-agent-pack.sh harness.manifest.yaml .
 
+      - name: Validate doc references
+        run: bash platform/validators/validate-doc-references.sh .
+
       - name: Validate companion rules
         if: github.event_name == 'pull_request'
         env:

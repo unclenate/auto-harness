@@ -294,6 +294,120 @@ are enforced. Add the required companion file or document the rationale in a new
 
 ---
 
+## validate-doc-references.sh
+
+### How Doc-Reference Validation Works
+
+The validator scans every `*.md` file under `<project-root>/platform/` and extracts every
+string matching `platform/[A-Za-z0-9_./\-]+\.(md|yaml|yml|sh|rb|json|txt)`. For each
+extracted reference, the file must exist on disk relative to the project root. Matches
+inside fenced code blocks (```` ``` ... ``` ````) are skipped — they're assumed to be
+illustrative.
+
+The validator catches the most common documentation-drift class: a `README.md` (or
+template, or workflow doc) points at a file that has since been renamed, moved, or
+deleted. The pre-validator workflow caught these only at PR-review time; the validator
+catches them in CI.
+
+---
+
+### `✗ Broken doc references found:`
+
+**`platform/foo/example.md:42: platform/workflow/missing-guide.md`**
+
+The file `platform/foo/example.md`, on line 42, references `platform/workflow/missing-guide.md`,
+which does not exist on disk.
+
+**Fix:** open the source file and either correct the reference (it was probably renamed)
+or remove the stale reference if the target no longer exists.
+
+```bash
+# Find what the file used to be called
+git log --diff-filter=D --name-only --pretty=format: -- '*missing-guide*'
+
+# Or just look at what's currently in that directory
+ls platform/workflow/
+```
+
+If the reference is intentionally pointing at a file that does not yet exist (rare —
+prefer to leave the reference out until the file lands), add a regex to
+`.doc-reference-ignore` at the project root:
+
+```text
+# .doc-reference-ignore — one regex per line, # for comments
+^platform/workflow/intentional-future-doc\.md$
+```
+
+Use sparingly. The validator's value is exactly its noisiness about drift.
+
+---
+
+### `✗ <project-root>/platform does not exist — nothing to scan.`
+
+The validator was pointed at a directory that has no `platform/` subdirectory. This is
+either a misconfiguration (wrong working directory) or you're running it against a
+consumer project that has not yet adopted the harness via submodule.
+
+```bash
+# Fix: run from the repo root
+bash platform/validators/validate-doc-references.sh .
+```
+
+If the consumer project mounts the platform via submodule (`.harness/platform/...`),
+make the validator point at the project root (the directory above `.harness`); the
+validator scans `<project-root>/platform/` directly — submodule consumers without a
+top-level `platform/` directory should skip this validator or symlink as appropriate.
+
+---
+
+### Reference inside a fenced code block is flagged anyway
+
+The validator is fence-aware (it tracks ``` toggling line-by-line). If a reference inside
+a code block is being flagged, the most likely cause is a fence that the validator can't
+recognize:
+
+- Indented code blocks (4-space-indented) are NOT recognized as fences. Convert to
+  fenced (```` ``` ````) to get the skip behavior.
+- A fence on the same line as text (rare) won't toggle. Put the ` ``` ` on its own line.
+
+---
+
+## validate-companions.sh — forbiddenPatterns hard fails
+
+### `✗ Companion validation failed (forbidden paths):`
+
+**`ERROR: forbidden path src/AGENTS.override.md matched pattern (^|/)AGENTS\.override\.md$ (rule: <description>)`**
+
+The PR diff contains a file whose path matches a `forbiddenPatterns` regex on one of the
+active modules' companion rules. Forbidden patterns are hard fails — they cannot be
+satisfied by adding a companion file the way `requiredAny` rules can. The check runs
+*before* the `requiredAny` check, so an offending file flanked by a documentary
+`AGENTS.md` / ADR / PRD edit still fails.
+
+**Fix:** remove the offending file from the PR.
+
+```bash
+# Identify the file the validator is complaining about, then drop it
+git rm src/AGENTS.override.md
+# Or, if it's only staged:
+git restore --staged src/AGENTS.override.md
+rm src/AGENTS.override.md
+```
+
+If you believe the forbidden pattern is wrong for your project (e.g., your team has a
+defensible reason to commit `AGENTS.override.md` and accepts the risks Codex's loader
+behavior implies), do not edit the rule on the platform module — instead, file an issue
+to discuss with the platform maintainers. The rule is shared governance, not per-project
+configuration.
+
+**Why this is hard-enforced:** Codex CLI reads `AGENTS.override.md` before `AGENTS.md` at
+every level of its file walk and lets the override win silently. Committing the file at
+any depth lets the override silently rewrite the project's governance contract for every
+Codex user descending into that subtree — a Tier 4+ configuration change that should
+never enter the repo accidentally.
+
+---
+
 ## validate-placeholders.sh
 
 ### `✗ Placeholder validation failed`

@@ -31,7 +31,8 @@ error message.
 | `validate-required-artifacts.sh` | `<manifest> <project-root>` | Every `requiredArtifact` declared by active modules exists on disk |
 | `validate-placeholders.sh` | `<project-root>` | No unfilled `[[PLACEHOLDER]]` or `YYYY-MM-DD` tokens in project files; respects `.placeholder-ignore` exclusions (requires ripgrep) |
 | `validate-agent-pack.sh` | `<manifest> <project-root>` | Agent modules declare adapters and compiled fragments; all referenced files must exist |
-| `validate-companions.sh` | `<manifest> <project-root> <base-branch>` | PR diff satisfies all active companion rules (requires git context) |
+| `validate-companions.sh` | `<manifest> <project-root> <base-branch>` | PR diff satisfies all active companion rules — including `forbiddenPatterns` hard fails (requires git context) |
+| `validate-doc-references.sh` | `<project-root>` | Every `platform/...` path reference inside Markdown files under `platform/` resolves on disk; skips fenced code blocks; respects `.doc-reference-ignore` |
 
 ### Recommended run order
 
@@ -41,6 +42,7 @@ bash platform/validators/validate-module-graph.sh harness.manifest.yaml
 bash platform/validators/validate-required-artifacts.sh harness.manifest.yaml .
 bash platform/validators/validate-placeholders.sh .
 bash platform/validators/validate-agent-pack.sh harness.manifest.yaml .
+bash platform/validators/validate-doc-references.sh .
 # Companion rules — only meaningful when comparing branches:
 bash platform/validators/validate-companions.sh harness.manifest.yaml . main
 ```
@@ -68,6 +70,11 @@ with enforcement off and progressively re-enable it.
 | `disabled_validation?(manifest, name)` | Check if a validation is in the disabled list |
 | `patterns_match?(patterns, path)` | Test a file path against an array of regex patterns (used by companion rules) |
 | `changed_files(project_root, base_branch)` | Get the list of changed files via `git diff` against a base branch |
+| `first_forbidden_match(patterns, path)` | Returns `[pattern, path]` for the first forbidden-pattern match, or `nil`. Used by `validate-companions.sh` to enforce hard-fail `forbiddenPatterns` on companion rules |
+| `extract_doc_references(markdown)` | Extracts every `platform/...` path reference from a Markdown string, skipping fenced code blocks. Returns `[{path:, line:}, ...]` |
+| `doc_reference_resolves?(path, project_root)` | True iff the referenced path exists on disk under the project root |
+| `doc_reference_ignored?(path, patterns)` | True iff `path` matches any regex pattern in the `.doc-reference-ignore` list |
+| `load_doc_reference_ignore(path)` | Read a `.doc-reference-ignore` file (one regex per line; `#` comments allowed); returns `[]` when missing |
 
 ---
 
@@ -77,13 +84,19 @@ Two test files using Ruby Minitest (stdlib, no gem install required).
 
 ### Unit tests
 
-**`test/test_harness_registry.rb`** — 48 tests covering `HarnessRegistry` methods:
+**`test/test_harness_registry.rb`** — 87 tests covering `HarnessRegistry` methods:
 
 - `patterns_match?` — single/multiple patterns, anchors, nil/empty, special characters
 - `disabled_validation?` — present, absent, missing key, multiple entries
 - `required_artifacts` — aggregation, deduplication, manifest overrides, nil handling
 - Companion rule logic — inline simulation of the trigger/required-any loop from
   `validate-companions.sh` with controlled `changed_files` arrays
+- `first_forbidden_match` — match precedence and edge cases for forbidden patterns
+- Companion rule logic with `forbiddenPatterns` — inline simulation proving
+  forbidden-first ordering wins over `requiredAny` satisfaction
+- `extract_doc_references` — fence-aware extraction, multiple extensions, multi-match lines
+- `doc_reference_resolves?`, `doc_reference_ignored?`, `load_doc_reference_ignore` —
+  positive and negative paths plus comment / blank-line handling
 
 ```bash
 ruby -I platform/validators/lib platform/validators/test/test_harness_registry.rb
@@ -91,7 +104,7 @@ ruby -I platform/validators/lib platform/validators/test/test_harness_registry.r
 
 ### Integration tests
 
-**`test/test_validators_integration.rb`** — 29 tests that shell out to the actual
+**`test/test_validators_integration.rb`** — 38 tests that shell out to the actual
 validator scripts against fixture projects:
 
 - `validate-manifest.sh` — valid pass, bad schema fail, missing file abort
@@ -99,6 +112,12 @@ validator scripts against fixture projects:
 - `validate-required-artifacts.sh` — valid pass, missing artifact fail, disabled override
 - `validate-placeholders.sh` — clean pass, unfilled `[[TOKEN]]` fail, `YYYY-MM-DD` fail (skipped without ripgrep)
 - `validate-agent-pack.sh` — agents pass, missing AGENTS.md fail, no-agent vacuous pass
+- `validate-doc-references.sh` — valid pass, broken-ref fail (file + line in stderr),
+  fenced-block skip, ignore-file exempt, missing-platform abort, dogfood pass against
+  the harness's own repo
+- `validate-companions.sh` `forbiddenPatterns` — no-hit pass, hit fail with
+  `forbidden path X matched pattern Y` message, hit-plus-satisfied-requiredAny still
+  fails (forbidden wins; skipped without git)
 
 ```bash
 ruby -I platform/validators/lib platform/validators/test/test_validators_integration.rb
@@ -124,6 +143,10 @@ Fixture projects in `test/fixtures/projects/` provide controlled test inputs:
 | `broken-bad-dependency/` | Manifest declaring a module that depends on a missing module |
 | `broken-conflict/` | Manifest declaring two conflicting modules |
 | `broken-missing-artifact/` | Valid manifest but missing required artifact files on disk |
+| `valid-doc-references/` | Minimal `platform/` tree with valid markdown link + bare-path + inline-code references all resolving |
+| `broken-doc-references/` | Tree where one Markdown link points at a missing file under `platform/` |
+| `doc-references-in-fence/` | Tree with a broken reference inside a fenced code block — validator must skip it |
+| `doc-references-ignored/` | Tree with a broken reference exempted by the fixture-local `.doc-reference-ignore` |
 
 Additional fixtures in `test/fixtures/`:
 

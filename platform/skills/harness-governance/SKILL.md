@@ -77,14 +77,41 @@ any companion rule trigger path.
 
 ```bash
 PLATFORM=path/to/platform
-bash $PLATFORM/validators/validate-manifest.sh harness.manifest.yaml
-bash $PLATFORM/validators/validate-module-graph.sh harness.manifest.yaml
+bash $PLATFORM/validators/validate-manifest.sh           harness.manifest.yaml
+bash $PLATFORM/validators/validate-module-graph.sh       harness.manifest.yaml
 bash $PLATFORM/validators/validate-required-artifacts.sh harness.manifest.yaml .
-bash $PLATFORM/validators/validate-companions.sh harness.manifest.yaml .
-bash $PLATFORM/validators/validate-placeholders.sh harness.manifest.yaml .
+bash $PLATFORM/validators/validate-placeholders.sh       .
+bash $PLATFORM/validators/validate-agent-pack.sh         harness.manifest.yaml .
+bash $PLATFORM/validators/validate-doc-references.sh     .
+bash $PLATFORM/validators/validate-companions.sh         harness.manifest.yaml . main
 ```
 
-All must exit 0 before the commit is complete.
+All must exit 0 before the commit is complete. Each validator supports
+`--help` / `-h` and uses a 3-state exit contract: `0` = pass, `1` =
+governance violations found, `2` = usage error (missing argument,
+missing dependency like `ripgrep`, unreadable manifest, malformed
+YAML). Per-script signatures vary; run any validator with `--help` to
+see its arguments.
+
+A few signature notes worth highlighting:
+
+- **`validate-placeholders.sh`** takes only `[<project-root>]` (default:
+  cwd). Passing a manifest path as the first arg causes the script to
+  attempt to `cd` into it and exit 2 with a `Not a directory` error.
+- **`validate-doc-references.sh`** also takes only `[<project-root>]`.
+  Pass 1 asserts every `platform/...` string inside `platform/*.md`
+  resolves on disk (the harness's own dogfood check). Pass 2 scans
+  every `*.md` under the project root for relative link targets and
+  classifies each as `:ok`, `:missing`, `:directory_target` (GitBook
+  404-fragile), or `:extensionless` (also GitBook-fragile). Consumers
+  whose project doesn't have a `platform/` directory of its own can
+  point at their `.harness/` submodule mount instead; the validator
+  scans whichever root it's given.
+- **`validate-companions.sh`** is PR-diff-based and takes a third
+  positional arg `<base-branch>` (default `main`). It is intended for
+  CI; running it locally on a clean branch with no diff against base
+  prints `No changed files detected ... Skipping companion validation.`
+  and exits 0 without checking anything.
 
 ## Required Artifacts
 

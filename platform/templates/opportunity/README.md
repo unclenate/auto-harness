@@ -11,14 +11,24 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 This directory is the project's durable, reviewable surface for forward-looking
 candidate records — pre-PRD opportunities filed by participants (human and agent).
 
-One policy file plus one record per candidate:
+One policy file plus one record per candidate, with an optional organizational
+index alongside:
 
 - `README.md` — policies and structure for this project's opportunity capture (this file)
 - `OPP-NNNN-slug.md` — one structured record per candidate
+- `candidates.md` — *optional* organizational index of candidates (cluster
+  headings, grouped lists). Lives outside this file so the index can evolve
+  freely without invoking the ADR-required policy-change rule. Add it when
+  the candidate set is large enough to benefit from grouping.
 
 Agents read this README on each heartbeat to know how to behave when filing
 candidates. Humans update this README to tune the Write Policy as the project
 evolves.
+
+> **What does *not* belong in this file.** The candidate index (cluster
+> headings, `OPP-NNNN` lists, organizational annotations) belongs in
+> `candidates.md`, not here. Edits to `README.md` trigger the policy-change
+> companion rule and require an ADR; the index does not.
 
 ---
 
@@ -90,6 +100,8 @@ that `declined`/`superseded` aren't drive-by status flips.
 - Module definition: `platform/profiles/management/opportunity-capture/module.yaml`
 - Foundational choice: [[LOCKING_ADR]]
 - Per-candidate template: `platform/templates/opportunity/opp-template.md`
+- Optional candidate index: `candidates.md` (this directory) — see
+  `platform/templates/opportunity/candidates.md` for the template
 - Related modules: `management/knowledge-capture` (observations the Origin /
   Evidence field links to), `management/product-lite` (the PRD module that
   accepted candidates spawn)

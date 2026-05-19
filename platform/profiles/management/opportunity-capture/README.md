@@ -17,13 +17,20 @@ requires spawning a real PRD in the same commit.
 
 ## What This Overlay Requires
 
-One file in `docs/opportunities/`:
+One required file plus one optional file in `docs/opportunities/`:
 
-**`docs/opportunities/README.md`** — The project's opportunity-capture policies.
-Declares the foundational Record Structure choice (locked by ADR), the adjustable
-Write Policy, the status definitions and what each transition requires, and a
-reference to the companion rules that enforce the audit-trail floor and the
-PRD-spawning contract.
+**Required — `docs/opportunities/README.md`** — The project's opportunity-capture
+policies. Declares the foundational Record Structure choice (locked by ADR),
+the adjustable Write Policy, the status definitions and what each transition
+requires, and a reference to the companion rules that enforce the audit-trail
+floor and the PRD-spawning contract.
+
+**Optional — `docs/opportunities/candidates.md`** — Organizational index of
+candidates, with cluster headings and a grouped list of `OPP-NNNN` line items.
+Lives outside `README.md` by design so the index can evolve freely without
+invoking the ADR-required policy-change rule. Add this file when the candidate
+set grows past a flat list. See `platform/templates/opportunity/candidates.md`
+for the template.
 
 Per-candidate records (`OPP-NNNN-slug.md`) accumulate in the same directory as
 contributors capture and explore opportunities.
@@ -57,7 +64,10 @@ substantive checks the regex layer cannot enforce:
 2. **Changes to `docs/opportunities/README.md`** (the project's policy file)
    require an ADR. This is the foundational governance floor — changing the
    record structure silently would invalidate every past candidate's
-   interpretation.
+   interpretation. The optional sibling `candidates.md` (organizational
+   index of candidates) is deliberately *not* covered by this rule: cluster
+   headings and `OPP-NNNN` line-item edits are free-evolution. See ADR-0012
+   for the rationale behind the split.
 
 ---
 
@@ -126,6 +136,7 @@ Less necessary for:
 - Module definition: `platform/profiles/management/opportunity-capture/module.yaml`
 - Templates: `platform/templates/opportunity/`
 - Locking ADR (auto-harness adoption): `docs/adr/ADR-0004-opportunity-capture-record-structure.md`
+- Index-split ADR: `docs/adr/ADR-0012-opportunity-capture-index-split.md`
 - Spec: `docs/requirements/PRD-0003-opportunity-capture-module.md`
 - Related modules: `management/knowledge-capture/README.md` (the observation surface),
   `management/product-lite/README.md` (the PRD surface that accepted candidates spawn)

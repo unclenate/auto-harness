@@ -2,17 +2,18 @@
 # SPDX-License-Identifier: MIT OR Apache-2.0
 id: opportunity-capture
 type: management
-version: 1.0.0
-summary: "Forward-looking opportunity capture module. Provides docs/opportunities/ as a per-project surface for pre-PRD candidate records — one structured file per candidate (OPP-NNNN-slug.md) with explicit status, evidence-linkage to shared-observations.md, and a binding promotion contract (status=accepted requires a PRD in the same commit)."
+version: 1.1.0
+summary: "Forward-looking opportunity capture module. Provides docs/opportunities/ as a per-project surface for pre-PRD candidate records — one structured file per candidate (OPP-NNNN-slug.md) with explicit status, evidence-linkage to shared-observations.md, and a binding promotion contract (status=accepted requires a PRD in the same commit). The structural policy lives in README.md (ADR-gated); the optional organizational candidate index lives in a sibling candidates.md (no ADR required)."
 dependsOn:
   - kernel/base
   - project-standard
 conflictsWith: []
 requiredArtifacts:
   - docs/opportunities/README.md
-optionalArtifacts: []
+optionalArtifacts:
+  - docs/opportunities/candidates.md
 sensitivePaths:
-  - description: "Opportunity capture policies — the foundational record-structure choice (locked by ADR), Write Policy, status definitions, and companion-rule references"
+  - description: "Opportunity capture *policy* — the foundational record-structure choice (locked by ADR), Write Policy, status definitions, and companion-rule references. The organizational candidate index in docs/opportunities/candidates.md is deliberately NOT sensitive — it's a free-evolution surface so contributors can re-cluster candidates without governance ceremony."
     patterns:
       - "^docs/opportunities/README\\.md$"
 companionRules:
@@ -23,12 +24,12 @@ companionRules:
       - "^memory/\\d{4}-\\d{2}-\\d{2}\\.md$"
       - "^docs/project/change-log\\.md$"
     humanReview: "Reviewers verify (a) appropriate Disposition rationale when status changed from proposed, (b) `accepted` status accompanied by a PRD created/referenced in the same commit, (c) `declined`/`superseded` status accompanied by substantive rationale rather than just a status-line edit."
-  - description: "Changes to the project-level opportunity-capture policy (docs/opportunities/README.md) require an ADR. This is the governance floor for any structural change to how candidates are captured."
+  - description: "Changes to the project-level opportunity-capture policy file (docs/opportunities/README.md) require an ADR. This is the governance floor for any structural change to how candidates are captured. The companion candidates.md index file is deliberately excluded — index/cluster/organizational changes are free-evolution. Consumers who previously kept a candidate index inside README.md should migrate it to candidates.md (see ADR-0012)."
     triggerPaths:
       - "^docs/opportunities/README\\.md$"
     requiredAny:
       - "^docs/adr/ADR-"
-    humanReview: "Reviewers verify the ADR explicitly addresses the structural change (not merely a tangential README update)."
+    humanReview: "Reviewers verify the README.md diff is a *structural* change (record structure, write policy, status semantics, companion-rule references) and that the ADR explicitly addresses it. If the diff is purely organizational (cluster headings, OPP-NNNN line items, prose reorganization), the change belongs in candidates.md and should be moved before merge."
 validators:
   - validate-required-artifacts
   - validate-companions

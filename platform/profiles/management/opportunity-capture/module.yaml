@@ -24,12 +24,12 @@ companionRules:
       - "^memory/\\d{4}-\\d{2}-\\d{2}\\.md$"
       - "^docs/project/change-log\\.md$"
     humanReview: "Reviewers verify (a) appropriate Disposition rationale when status changed from proposed, (b) `accepted` status accompanied by a PRD created/referenced in the same commit, (c) `declined`/`superseded` status accompanied by substantive rationale rather than just a status-line edit."
-  - description: "Changes to the project-level opportunity-capture policy file (docs/opportunities/README.md) require an ADR. This is the governance floor for any structural change to how candidates are captured. The companion candidates.md index file is deliberately excluded — index/cluster/organizational changes are free-evolution. Consumers who previously kept a candidate index inside README.md should migrate it to candidates.md (see ADR-0012)."
+  - description: "Changes to the project-level opportunity-capture policy file (docs/opportunities/README.md) require an ADR. This is the governance floor for any structural change to how candidates are captured. The companion docs/opportunities/candidates.md index file is deliberately excluded — index/cluster/organizational changes are free-evolution. Consumers who previously kept a candidate index inside docs/opportunities/README.md should migrate it to docs/opportunities/candidates.md (see ADR-0012)."
     triggerPaths:
       - "^docs/opportunities/README\\.md$"
     requiredAny:
       - "^docs/adr/ADR-"
-    humanReview: "Reviewers verify the README.md diff is a *structural* change (record structure, write policy, status semantics, companion-rule references) and that the ADR explicitly addresses it. If the diff is purely organizational (cluster headings, OPP-NNNN line items, prose reorganization), the change belongs in candidates.md and should be moved before merge."
+    humanReview: "Reviewers verify the docs/opportunities/README.md diff is a *structural* change (record structure, write policy, status semantics, companion-rule references) and that the ADR explicitly addresses it. If the diff is purely organizational (cluster headings, OPP-NNNN line items, prose reorganization), the change belongs in docs/opportunities/candidates.md and should be moved before merge."
 validators:
   - validate-required-artifacts
   - validate-companions

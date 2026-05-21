@@ -2,7 +2,7 @@
 
 **Structure:** Structured Template (see README.md § Observation Structure; locked by ADR-0002)
 **Write Policy:** heartbeat-only (see README.md § Write Policy; adjustable)
-**Last Updated:** 2026-04-16
+**Last Updated:** 2026-05-20
 
 Append-only structured observations from project participants (agents
 and humans). Read this file on each heartbeat. Observations accumulate
@@ -40,3 +40,68 @@ here until distillation.
 - **Confidence:** medium — the genre distinction is high-confidence; the "exportable contract" opportunity is medium-confidence and warrants validation by reading Hive's actual state-machine and self-modification entry points before committing.
 - **Severity:** architectural
 - **Contributed by:** @unclenate via Claude Code, 2026-05-12
+
+### Companion-rule precision is best enforced by file boundaries, not regex sophistication
+
+- **Context:** Issue #28 surfaced a class of companion-rule false-positive: the
+  `management/opportunity-capture` README rule fired on any
+  `docs/opportunities/README.md` edit, even pure organizational
+  (cluster-heading / `OPP-NNNN` line-item) changes. Three upstream
+  resolutions were considered: (a) section-aware triggers (heading-scoped
+  regex inside the file), (b) `acceptedAlternative` field for project-local
+  ratifying ADRs, (c) file split — move the candidate index to a sibling
+  `docs/opportunities/candidates.md` and scope the rule to README only.
+- **Observation:** Option (c) won by aligning the file boundary with the
+  change-class boundary the rule wanted. The other options either added
+  regex complexity that generalizes nowhere (a) or codified perpetual
+  exemption as a first-class governance primitive (b). After the split, no
+  validator-engine change was needed — the regex layer continued to work
+  as designed because the artifact it gated now only contains the change
+  class it cares about.
+- **Implication:** When a companion rule needs more precision, prefer
+  reshaping artifacts so file boundaries match change-class boundaries
+  over teaching the validator about substructure. The companion-rule
+  machinery's value is the simplicity of regex-over-paths; preserving that
+  simplicity scales better than per-rule renderer-aware diff parsing. If a
+  regex can't separate two change classes within one file, that's a signal
+  the artifact is doing too much, not that the validator needs more brains.
+- **Confidence:** medium — one decision, but the rejected alternatives
+  were both seriously considered and the file-split rationale generalizes
+  to similar precision problems
+- **Severity:** architectural
+- **Contributed by:** @unclenate via Claude Code, 2026-05-20
+
+### Consumer-driven feedback has displaced the scheduled-review cadence as the active quality mechanism
+
+- **Context:** Two consumer-filed issues in three days followed an identical
+  shape: #24 (stale validator CLI signatures in `harness-governance` skill,
+  surfaced in `bdits/municipal-brain` after PRs #15/#22 changed validator
+  surface) and #28 (companion-rule false-positive on README index edits,
+  also surfaced in `bdits/municipal-brain`). Both issues were filed with
+  precise reproduction steps, a local workaround already in place, and 2–3
+  proposed upstream resolutions with explicit tradeoffs. Both were
+  merged within hours. Meanwhile, the scheduled-review cadence declared
+  in `docs/knowledge/distilled-learnings.md` (set 2026-04-16, target
+  2026-04-30) never fired — five weeks past, no team review held; the
+  honest staleness sits in the file as governance debt.
+- **Observation:** The dogfooding loop — consumer hits friction → files
+  issue with proposed fix → upstream tightens module + docs within hours —
+  is producing higher-signal learning than the scheduled-review pattern
+  the knowledge-capture module assumes. Consumer-discovered issues are
+  about *live friction* with real user models; scheduled-review distillation
+  is about *latent drift*. For a solo-maintained framework with active
+  consumers, the consumer loop appears to be the dominant quality engine.
+- **Implication:** Two possible directions worth weighing: (a) retire the
+  scheduled-review cadence in favor of an event-driven distillation
+  pattern (e.g., distill after every consumer-issue closure once a
+  threshold of N is reached); (b) keep the cadence but hold the review
+  even when the docket feels thin — the discipline of distilling is more
+  valuable than the size of any particular batch. Either is a deliberate
+  choice; the current state (declared cadence quietly going untriggered)
+  is the worst option because it makes the docs lie about how this
+  project actually learns.
+- **Confidence:** medium — two consumer-issue data points fit the
+  pattern, but generalization to N>1 consumers is untested. The cadence-
+  vs-event-driven choice is genuinely open.
+- **Severity:** process
+- **Contributed by:** @unclenate via Claude Code, 2026-05-20

@@ -7,7 +7,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 # Operating Principles — Development Harness Framework
 
 > Owner: @unclenate
-> Last updated: 2026-05-18
+> Last updated: 2026-05-20
 
 These principles govern how the harness platform itself is built and evolved.
 They are derived from the kernel doctrine and adapted to this project's context.
@@ -52,6 +52,7 @@ Documentation is not follow-up work. A change is not complete until its document
 - Workflow changes require SUMMARY.md and cross-reference updates
 - Active-module catalog changes propagate to HARNESS.md, SUMMARY.md, README.md (directory tree), `platform/skills/harness-onboarding/SKILL.md` (module catalog), and `platform/workflow/discovery-to-composition.md` (decision rubric) in the same pass
 - Repo-root governance entrypoints (`README.md`, `HARNESS.md`, `AGENTS.md`, `CLAUDE.md`, `TOOLS.md`) each carry a distinct job statement; when one is edited to change scope, the others' job statements and the SUMMARY.md "Entry Points by Audience" block are reviewed in the same pass
+- **Module-text reads in stripped contexts.** `module.yaml` `description`, `humanReview`, and similar prose fields appear in validator output, CI logs, and onboarding docs without their surrounding file context. Use fully-qualified repo-relative paths (`docs/opportunities/README.md`) in rule text, not bare basenames (`README.md`) — the YAML reads unambiguous to the author but the CI log line does not. Catch in review; this is not validator-enforceable.
 
 ---
 
@@ -84,3 +85,27 @@ AI acceleration increases the need for controls, not the license to skip them.
 - Cross-tool findings are verified against disk before acting
 - Agents operate within the trust tier model defined in AGENTS.md
 - Every significant product decision gets a PRD; every architectural decision gets an ADR
+
+---
+
+## 7. Align File Boundaries with Change-Class Boundaries
+
+When a companion rule needs to distinguish two classes of edit (structural vs.
+organizational; binding vs. routine; policy vs. derived view), reshape the
+artifact so each class lives in its own file rather than teaching the regex
+layer about substructure.
+
+- The companion-rule machinery's value is the simplicity of regex-over-paths.
+  File shape determines the regex's precision; if a regex can't separate two
+  change classes within one file, the artifact is doing too much.
+- Prefer file splits over section-aware triggers, per-rule renderer parsers,
+  or perpetual-exemption mechanisms — those add complexity that generalizes
+  nowhere or codifies governance escape hatches as first-class primitives.
+- First applied in [ADR-0012](adr/ADR-0012-opportunity-capture-index-split.md):
+  the `management/opportunity-capture` README rule was firing on pure
+  organizational edits; the fix was splitting the candidate index into a
+  sibling `candidates.md` so the ADR-gated file holds only policy. No
+  validator-engine change was needed.
+- When evaluating a new companion rule, ask: *does the file this rule
+  guards contain exactly one change class?* If not, split it before
+  writing the rule.

@@ -6,7 +6,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # auto-harness — Opportunity Candidates Index
 
-**Owner:** @unclenate | **Last Updated:** 2026-05-19
+**Owner:** @unclenate | **Last Updated:** 2026-05-21
 
 Organizational index of opportunity candidates filed in this directory. The
 canonical record for each candidate is its own `OPP-NNNN-slug.md` file —
@@ -41,6 +41,17 @@ this index exists only to group, cluster, or annotate them for human readers.
   UI, conversational-primary products) as a governable shape, so consumer
   projects ship modern AI surfaces without inventing their own
   prompt-injection / action-approval / agent-attribution governance.
+
+### Knowledge distillation & self-improvement loop
+
+- [OPP-0004](OPP-0004-distillation-triggers.md) — Close the cycle-end
+  distillation gap: the harness provides destinations (observations,
+  learnings, operating-principles) but no triggers to reliably cause
+  distillation to happen during or after work cycles. Define and ship the
+  trigger layer (passive validators + active agent-tool hooks + workflow
+  rituals) so that distillation becomes a property of the harness rather
+  than a discipline the maintainer has to remember. Flagged by maintainer
+  as core-function gap requiring near-term resolution.
 
 ---
 

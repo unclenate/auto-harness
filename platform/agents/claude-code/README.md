@@ -45,6 +45,42 @@ working reference.
 A shell hook that logs every command Claude Code executes. Useful for audit trails and
 debugging agent behavior. Not required but recommended for production-posture projects.
 
+**Optional: `.claude/hooks/distillation-prompt.sh`**
+
+A `Stop`-event hook that prompts the agent when the current branch carries
+distillation-worthy work (new/modified ADR, OPP, module manifest, or
+active-module catalog change relative to base) and no knowledge destination
+has been touched in the same branch yet. Silent otherwise — it does **not**
+fire on every Stop turn, only at end-of-session-on-a-feature-branch-with-
+work. The in-session counterpart to the PR-boundary companion rule on
+`management/knowledge-capture` (see PRD-0004 + `platform/workflow/cycle-end-distillation.md`).
+
+Reference implementation lives at
+`platform/examples/sample-projects/node-web-saas-postgres/.claude/hooks/distillation-prompt.sh`.
+Recommended for projects running both `agents/claude-code` and
+`management/knowledge-capture` modules; projects running only one of the
+two get partial value (the hook still works without `knowledge-capture`,
+but the rule it complements is not active).
+
+To install, copy the script to your project's `.claude/hooks/` directory
+(`chmod +x` it) and register it in `.claude/settings.json`:
+
+```json
+{
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "*",
+        "hooks": [{ "type": "command", "command": ".claude/hooks/distillation-prompt.sh" }]
+      }
+    ]
+  }
+}
+```
+
+Override the base branch via `HARNESS_BASE_BRANCH` env var if your project
+uses something other than `main` (e.g., `master`, `trunk`).
+
 ---
 
 ## Companion Rule

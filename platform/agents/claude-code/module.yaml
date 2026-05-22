@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: MIT OR Apache-2.0
 id: claude-code
 type: agent
-version: 1.0.0
-summary: Claude Code operating pack for startup sequence, scope control, permission adapters, and compatibility entrypoints.
+version: 1.1.0
+summary: "Claude Code operating pack for startup sequence, scope control, permission adapters, and compatibility entrypoints. v1.1.0 adds the cycle-end distillation Stop hook adapter (PRD-0004 FR-006/FR-007) — optional artifact at `.claude/hooks/distillation-prompt.sh` that prompts the agent at end-of-session-on-a-feature-branch-with-distillation-worthy-work."
 dependsOn:
   - kernel/base
   - base
@@ -13,6 +13,7 @@ requiredArtifacts:
   - .claude/settings.json
 optionalArtifacts:
   - .claude/hooks/log-command.sh
+  - .claude/hooks/distillation-prompt.sh
 sensitivePaths:
   - description: Claude adapter and permissions
     patterns:

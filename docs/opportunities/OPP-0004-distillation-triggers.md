@@ -9,7 +9,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 **Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-05-21
-**Last Updated:** 2026-05-22
+**Last Updated:** 2026-05-22 *(hook adapter landed; full v1 shipped)*
 **Confidence:** high
 
 ---
@@ -203,6 +203,17 @@ OPP-0004 Promotion to accepted" all met.
 `Stop`/`SessionEnd` hook adapter (PRD-0004 FR-006/007 — should-have,
 PRD-marked as may-follow-in-second-PR). Active hook is the in-session
 ergonomic; the PR-boundary companion rule is the floor and is now live.
+
+**2026-05-22 (follow-up landed):** Claude Code `Stop` hook adapter
+shipped — reference implementation at
+`platform/examples/sample-projects/node-web-saas-postgres/.claude/hooks/distillation-prompt.sh`,
+optional artifact registered in `platform/agents/claude-code/module.yaml`
+(v1.0.0 → v1.1.0), install snippet in module README. Smart silent-exit
+behavior: only emits when current branch carries committed
+distillation-worthy work AND no satisfier has been touched yet — so the
+hook does not fire on every Stop turn, only at end-of-session-on-a-
+feature-branch-with-work. All v1 functional requirements from PRD-0004
+are now shipped.
 
 ## Promotion
 

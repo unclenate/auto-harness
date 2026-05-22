@@ -35,7 +35,7 @@ v1 trigger set names four file-diff signals:
 |--------|---------------------|---------------------|
 | New or modified ADR | `^docs/adr/ADR-` | Architectural decisions encode learning that future readers must understand to interpret the codebase |
 | New or modified OPP | `^docs/opportunities/OPP-` | Opportunity records (especially status flips from `proposed`) carry investigation-phase learning that the spawned PRD won't fully capture |
-| New or modified module manifest | `^platform/profiles/.+/module\.yaml$` | A new or changed module is a reusable pattern; the learning that motivated it is what makes it adoptable elsewhere |
+| New or modified module manifest | `^platform/.+/module\.yaml$` | A new or changed module is a reusable pattern; the learning that motivated it is what makes it adoptable elsewhere. Pattern covers modules anywhere under `platform/` — `profiles/`, `agents/`, and `core/kernel/`. |
 | Active-module catalog change | `^harness\.manifest\.yaml$` | Adopting / removing a module is a project-shape decision; the rationale lives in the manifest only by reference |
 
 Other plausible signals — issue closure, audit findings, version bumps —
@@ -144,10 +144,13 @@ Agents working in projects with `management/knowledge-capture` active:
 1. **Before opening a PR**, check whether the diff contains any trigger
    signals from the table above. If yes, plan the satisfier in the same
    PR — the rule will fire in CI otherwise.
-2. **At session end** (if running Claude Code with the `agents/claude-code`
-   distillation-hook adapter), respond to the hook prompt by surfacing
-   any insights worth capturing. The prompt names the session's commit
-   pattern; use that as the prompt for "what learning emerged?"
+2. **At session end** (if running Claude Code with the
+   `.claude/hooks/distillation-prompt.sh` Stop-hook adapter installed),
+   respond to the hook prompt by surfacing any insights worth capturing.
+   The prompt names the branch's commit shortlog and the specific
+   trigger signals detected; use that as the input for "what learning
+   emerged?" The hook is the in-session reminder; the companion rule is
+   the PR-boundary floor.
 3. **When writing the observation/principle**, cite the trigger artifact
    explicitly in the Context field. The connection between work and
    distillation must be legible months later.
@@ -183,5 +186,6 @@ Maintainers reviewing PRs:
 - Spec: [`docs/requirements/PRD-0004-distillation-triggers.md`](../../docs/requirements/PRD-0004-distillation-triggers.md)
 - Originating OPP: [`docs/opportunities/OPP-0004-distillation-triggers.md`](../../docs/opportunities/OPP-0004-distillation-triggers.md)
 - Companion rule (rule #4): [`platform/profiles/management/knowledge-capture/module.yaml`](../profiles/management/knowledge-capture/module.yaml)
+- Optional in-session hook (Claude Code): reference implementation at [`platform/examples/sample-projects/node-web-saas-postgres/.claude/hooks/distillation-prompt.sh`](../examples/sample-projects/node-web-saas-postgres/.claude/hooks/distillation-prompt.sh); install snippet in [`platform/agents/claude-code/README.md`](../agents/claude-code/README.md)
 - Related operating principles: [`docs/operating-principles.md`](../../docs/operating-principles.md) § 3 (Documentation as Part of the Change) and § 7 (Align File Boundaries with Change-Class Boundaries)
 - Cheap-satisfier discipline: [`docs/adr/ADR-0010-cheap-satisfiers-for-routine-governance.md`](../../docs/adr/ADR-0010-cheap-satisfiers-for-routine-governance.md) — same gradient applies; the trigger set is heavy precisely so the rule does not fire on routine work

@@ -2,7 +2,7 @@
 
 **Structure:** Structured Template (see README.md § Observation Structure; locked by ADR-0002)
 **Write Policy:** heartbeat-only (see README.md § Write Policy; adjustable)
-**Last Updated:** 2026-05-22 *(implementation pass)*
+**Last Updated:** 2026-05-22 *(hook adapter pass)*
 
 Append-only structured observations from project participants (agents
 and humans). Read this file on each heartbeat. Observations accumulate
@@ -210,3 +210,44 @@ here until distillation.
   default assumption.
 - **Severity:** architectural
 - **Contributed by:** @unclenate via Claude Code, 2026-05-22 (implementation pass)
+
+### Paired-mechanism implementation is a free correctness check on the governance side of the pair
+
+- **Context:** Implementing PRD-0004 FR-006/FR-007 — the Claude
+  Code Stop-hook adapter (`distillation-prompt.sh`) intended to remind
+  agents in-session of cycle-end distillation. The hook's trigger-detection
+  logic was written to mirror the companion rule's `triggerPaths` regex,
+  so the in-session reminder and the PR-boundary floor would fire on the
+  same change classes. To do this faithfully, the hook script ran the
+  rule's exact pattern against `git diff --name-only main...HEAD` and
+  inspected the matched paths.
+- **Observation:** Writing the second mirror of the pattern immediately
+  surfaced a scope bug in the first. The companion rule shipped in PR
+  #33 with `^platform/profiles/.+/module\.yaml$` — which covered only
+  modules under `platform/profiles/` and silently missed the 8
+  agent-pack modules under `platform/agents/*` and the kernel module at
+  `platform/core/kernel/base/module.yaml`. The bug was invisible while
+  the rule existed alone; it became obvious the moment a *second* piece
+  of machinery was written to exercise the same pattern and the author
+  had to enumerate which modules the hook should fire on. Fix was a
+  one-character broadening to `^platform/.+/module\.yaml$`, applied in
+  four places (rule, hook regex + comment, workflow doc table, skill
+  table).
+- **Implication:** Paired mechanisms (validator + hook, lint + fixer,
+  schema + migration) are not just convenience or DRY artifacts — the
+  act of writing the second mirror is a structural correctness check on
+  the first. When designing governance machinery, consider building the
+  in-session adapter early *even if* the validator could ship alone,
+  precisely because the adapter forces a different code path through
+  the same predicate. The bug class this catches — silently-narrow
+  triggers — is exactly the failure mode regex-over-paths is most prone
+  to (passes its own tests because they were written against the same
+  narrow assumption). A sibling pattern to property-based testing,
+  applied to governance regex.
+- **Confidence:** medium — one strong data point in this session, but
+  the discovery dynamic (forced enumeration during adapter
+  implementation surfaces narrow patterns) is structurally sound and
+  generalizes to any pair where the second member must independently
+  re-derive what the first matches.
+- **Severity:** architectural
+- **Contributed by:** @unclenate via Claude Code, 2026-05-22 (hook adapter pass)

@@ -48,7 +48,7 @@ Common companion rules in harness projects:
 | `package.json`, lock files, `.nvmrc` | ADR OR `docs/architecture/overview.md` |
 | `pyproject.toml`, `requirements.txt`, lock files | ADR OR `docs/architecture/overview.md` |
 | `supabase/`, `src/auth/`, session/jwt/token paths | `docs/security/risk-register.md`, ADR, or architecture overview |
-| New/modified ADR (`docs/adr/ADR-*`), OPP (`docs/opportunities/OPP-*`), module manifest (`platform/profiles/*/module.yaml`), or active-module catalog (`harness.manifest.yaml`) — *cycle-end distillation trigger when `management/knowledge-capture` is active* | Any of: `docs/knowledge/shared-observations.md`, `docs/operating-principles.md`, `docs/knowledge/distilled-learnings.md`. See [`platform/workflow/cycle-end-distillation.md`](../../workflow/cycle-end-distillation.md) for the satisfier decision tree. |
+| New/modified ADR (`docs/adr/ADR-*`), OPP (`docs/opportunities/OPP-*`), module manifest (`platform/*/module.yaml` — anywhere under `platform/`), or active-module catalog (`harness.manifest.yaml`) — *cycle-end distillation trigger when `management/knowledge-capture` is active* | Any of: `docs/knowledge/shared-observations.md`, `docs/operating-principles.md`, `docs/knowledge/distilled-learnings.md`. See [`platform/workflow/cycle-end-distillation.md`](../../workflow/cycle-end-distillation.md) for the satisfier decision tree. |
 
 Active companion rules for the current project are declared in each module's `module.yaml`.
 

@@ -4,3 +4,9 @@ legacy/Docs.pdf
 # Claude Code runtime state (session lock files, scheduled task state)
 .claude/
 .remember/
+
+# Sample-project example .claude/ directories are reference implementations
+# that ship checked-in (not consumer runtime state). Negate the .claude/ ignore
+# above for paths under platform/examples/sample-projects/*/.claude/.
+!platform/examples/sample-projects/*/.claude/
+!platform/examples/sample-projects/*/.claude/**

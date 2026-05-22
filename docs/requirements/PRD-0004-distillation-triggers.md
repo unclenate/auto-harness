@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # PRD-0004: Distillation Triggers — Cycle-End Trigger Machinery for Institutional Knowledge
 
-**Version:** 1.0 | **Owner:** @unclenate | **Last Updated:** 2026-05-22 | **Review Cycle:** On-change
+**Version:** 1.1 | **Owner:** @unclenate | **Last Updated:** 2026-05-22 *(hook adapter landed)* | **Review Cycle:** On-change
 
-**Status:** Accepted
-**Date:** 2026-05-21 (filed) | 2026-05-22 (accepted)
+**Status:** Accepted *(all v1 functional requirements shipped)*
+**Date:** 2026-05-21 (filed) | 2026-05-22 (accepted) | 2026-05-22 (FR-006/007 shipped)
 **Author:** @unclenate
 **Reviewers:** @unclenate
 

@@ -2,7 +2,7 @@
 
 **Structure:** Structured Template (see README.md § Observation Structure; locked by ADR-0002)
 **Write Policy:** heartbeat-only (see README.md § Write Policy; adjustable)
-**Last Updated:** 2026-05-22
+**Last Updated:** 2026-05-22 *(implementation pass)*
 
 Append-only structured observations from project participants (agents
 and humans). Read this file on each heartbeat. Observations accumulate
@@ -173,3 +173,40 @@ here until distillation.
   load-bearing assumptions.
 - **Severity:** process
 - **Contributed by:** @unclenate via Claude Code, 2026-05-22
+
+### Distillation triggers can land without bootstrap exception when the introducing PR carries genuine learning
+
+- **Context:** PRD-0004 § Risks anticipated that the implementation PR
+  landing the new cycle-end distillation companion rule on
+  `management/knowledge-capture` would need the
+  `overrides.disabledValidations` escape hatch for one merge — since the
+  new rule's trigger set includes `^platform/profiles/.+/module\.yaml$`,
+  and the PR landing the rule itself modifies a module.yaml. The plan
+  was: disable for one merge, enforce thereafter.
+- **Observation:** The escape hatch was not needed. The PR landing the
+  rule naturally included multiple genuine distillations — the
+  pre-merge manual-distillation pass on PR #32 carried two architectural
+  /process observations, the workflow doc itself surfaced
+  heartbeat-prose-formalization as a captured decision, and the
+  implementation produced this entry as its own meta-observation about
+  self-stabilization. The PR satisfied its own new rule by construction
+  rather than by exception. The pattern: when a new companion rule is
+  itself substantial enough to warrant distillation, the
+  trigger-rule-firing-on-itself problem resolves without exception
+  machinery.
+- **Implication:** Bootstrap-exception machinery (`overrides.
+  disabledValidations`) is a safety net for *routine* rule introductions
+  (e.g., adding a triggerPath to an existing rule, tightening a regex)
+  — not the default mode. Valuable governance machinery is structurally
+  harder to bootstrap *because* it's valuable: the rule's own
+  introduction is itself the kind of work the rule wants distilled, so
+  the satisfier is naturally available. Treat the override as the rare
+  case; expect new rules with genuine architectural weight to satisfy
+  themselves.
+- **Confidence:** medium — one instance; pattern needs more
+  rule-introduction cycles to confirm. But the logic chain (valuable
+  rule → real architectural learning → naturally available distillation
+  in the same diff) is structurally sound and worth treating as a
+  default assumption.
+- **Severity:** architectural
+- **Contributed by:** @unclenate via Claude Code, 2026-05-22 (implementation pass)

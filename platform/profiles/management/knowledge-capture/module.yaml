@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: MIT OR Apache-2.0
 id: knowledge-capture
 type: management
-version: 1.0.0
-summary: "Shared knowledge capture module. Provides docs/knowledge/ as a durable, reviewable, project-level surface where agent and human observations accumulate and are distilled into longitudinal institutional knowledge."
+version: 1.1.0
+summary: "Shared knowledge capture module. Provides docs/knowledge/ as a durable, reviewable, project-level surface where agent and human observations accumulate and are distilled into longitudinal institutional knowledge. v1.1.0 adds the cycle-end distillation-trigger companion rule (PRD-0004): distillation-worthy work (new ADR, new OPP, OPP proposed flip, new module manifest, harness manifest change) requires a paired entry in at least one knowledge destination."
 dependsOn:
   - kernel/base
   - project-standard
@@ -41,6 +41,17 @@ companionRules:
       - "^memory/\\d{4}-\\d{2}-\\d{2}\\.md$"
       - "^docs/project/review-log\\.md$"
     humanReview: "Reviewers verify the distillation edit reflects a genuine team review and captures supersession history rather than silently overwriting."
+  - description: "Cycle-end distillation trigger (PRD-0004). When a PR introduces *distillation-worthy work* — a new or modified ADR (docs/adr/ADR-*), a new or modified OPP (docs/opportunities/OPP-*), a new or modified module manifest (platform/profiles/.+/module.yaml), or a change to the active-module catalog (harness.manifest.yaml) — the same PR must include an entry in at least one knowledge destination: docs/knowledge/shared-observations.md, docs/operating-principles.md, or docs/knowledge/distilled-learnings.md. Inverse of the existing audit-trail rules: those fire on destination *touches* and require an audit trail of the touch; this rule fires on distillation-worthy *work* and requires the destination to be touched. Both can fire on the same PR; each satisfies its own concern. The trigger set is deliberately heavy so the rule does not fire on routine work (Dependabot bumps, typo fixes, etc.); the change-class boundaries match the substantive-decision boundaries operating-principles § 2 already enforces. See platform/workflow/cycle-end-distillation.md for the decision tree on which destination to use."
+    triggerPaths:
+      - "^docs/adr/ADR-"
+      - "^docs/opportunities/OPP-"
+      - "^platform/profiles/.+/module\\.yaml$"
+      - "^harness\\.manifest\\.yaml$"
+    requiredAny:
+      - "^docs/knowledge/shared-observations\\.md$"
+      - "^docs/operating-principles\\.md$"
+      - "^docs/knowledge/distilled-learnings\\.md$"
+    humanReview: "Reviewers verify the distillation entry captures the learning *from* the trigger work (the ADR's rejected alternatives or generalizable principle, the OPP's evidence pattern or discovery technique, the module's reusable insight, the catalog change's architectural rationale) rather than an unrelated observation appended to satisfy the rule. Cargo-cult observations degrade signal worse than missed observations; reviewers push back on entries that don't substantively connect to the trigger work. See platform/workflow/cycle-end-distillation.md for the satisfier decision tree."
 validators:
   - validate-required-artifacts
   - validate-companions

@@ -98,6 +98,11 @@ Agents in knowledge-capture-enabled projects:
 4. Autonomously draft proposed distilled learnings on the Draft Cadence.
    Drafts are staged; humans and agents curate them together on the
    Review Cadence.
+5. **At cycle end** (PR boundary, ADR landed, OPP status flip, new module
+   published, manifest catalog change), perform the cycle-end distillation
+   pass per [`platform/workflow/cycle-end-distillation.md`](../../../workflow/cycle-end-distillation.md).
+   The companion-rule layer enforces this at PR boundary; the workflow doc
+   defines the satisfier decision tree.
 
 The `harness-onboarding` skill identifies whether a project should adopt
 knowledge-capture during onboarding. It's an optional module — projects

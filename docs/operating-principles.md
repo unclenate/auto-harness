@@ -7,7 +7,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 # Operating Principles — Development Harness Framework
 
 > Owner: @unclenate
-> Last updated: 2026-05-20
+> Last updated: 2026-05-22
 
 These principles govern how the harness platform itself is built and evolved.
 They are derived from the kernel doctrine and adapted to this project's context.
@@ -53,6 +53,7 @@ Documentation is not follow-up work. A change is not complete until its document
 - Active-module catalog changes propagate to HARNESS.md, SUMMARY.md, README.md (directory tree), `platform/skills/harness-onboarding/SKILL.md` (module catalog), and `platform/workflow/discovery-to-composition.md` (decision rubric) in the same pass
 - Repo-root governance entrypoints (`README.md`, `HARNESS.md`, `AGENTS.md`, `CLAUDE.md`, `TOOLS.md`) each carry a distinct job statement; when one is edited to change scope, the others' job statements and the SUMMARY.md "Entry Points by Audience" block are reviewed in the same pass
 - **Module-text reads in stripped contexts.** `module.yaml` `description`, `humanReview`, and similar prose fields appear in validator output, CI logs, and onboarding docs without their surrounding file context. Use fully-qualified repo-relative paths (`docs/opportunities/README.md`) in rule text, not bare basenames (`README.md`) — the YAML reads unambiguous to the author but the CI log line does not. Catch in review; this is not validator-enforceable.
+- **Cycle-end distillation is the trigger-side counterpart to destination-side audit trails.** Existing companion rules require an audit trail when a *destination* (`shared-observations.md`, `distilled-learnings.md`, etc.) is touched. The cycle-end distillation rule (PRD-0004; landed in `management/knowledge-capture` v1.1.0) is the inverse: when *distillation-worthy work* is in a PR diff (new ADR, new OPP, OPP `proposed` flip, new module manifest, catalog change), at least one knowledge destination must be touched in the same diff. Two rules, two satisfiers, one coherent PR. See [`platform/workflow/cycle-end-distillation.md`](../platform/workflow/cycle-end-distillation.md) for the satisfier decision tree.
 
 ---
 

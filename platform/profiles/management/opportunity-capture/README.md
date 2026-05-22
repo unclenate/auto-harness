@@ -102,6 +102,14 @@ Agents in opportunity-capture-enabled projects:
 4. Do not autonomously flip status to `accepted` — this is a human decision
    that binds a PRD commitment. Agents may draft Disposition rationale and
    stage a PRD for human review, but the status transition is human.
+5. **When filing a new OPP or flipping an OPP's status from `proposed`**,
+   the cycle-end distillation rule on `management/knowledge-capture` fires
+   at PR boundary. Pair the OPP change with an observation, operating-
+   principle edit, or distilled-learning entry per
+   [`platform/workflow/cycle-end-distillation.md`](../../../workflow/cycle-end-distillation.md).
+   This requires `management/knowledge-capture` to be active in the
+   project; projects running opportunity-capture without knowledge-capture
+   miss this trigger but should consider adopting both modules together.
 
 The `harness-onboarding` skill identifies whether a project should adopt
 opportunity-capture during onboarding. It's an optional module — projects

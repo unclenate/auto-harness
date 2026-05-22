@@ -2,7 +2,7 @@
 
 **Structure:** Structured Template (see README.md § Observation Structure; locked by ADR-0002)
 **Write Policy:** heartbeat-only (see README.md § Write Policy; adjustable)
-**Last Updated:** 2026-05-20
+**Last Updated:** 2026-05-22
 
 Append-only structured observations from project participants (agents
 and humans). Read this file on each heartbeat. Observations accumulate
@@ -105,3 +105,71 @@ here until distillation.
   vs-event-driven choice is genuinely open.
 - **Severity:** process
 - **Contributed by:** @unclenate via Claude Code, 2026-05-20
+
+### Companion-rule machinery was already most of the gap-closer for distillation
+
+- **Context:** Designing PRD-0004's v1 mechanism for cycle-end
+  distillation triggers. OPP-0004 enumerated three candidate shapes
+  (passive validator, active agent-tool hook, hybrid). When sketching
+  the passive piece, mapped its pseudocode against the existing
+  `validate-companions.sh` machinery to see what new validator code
+  would be needed.
+- **Observation:** No new validator code was needed. The companion-rule
+  machinery — framed in module docs as enforcing "audit trail on
+  destination edits" — cleanly handles "distillation trail on source
+  triggers" by reversing trigger/satisfier semantics inside the existing
+  regex-over-paths model. The harness's existing primitives were more
+  powerful than the docs claimed they were. Three of OPP-0004's three
+  design shapes turned out to be expressible in current primitives;
+  what was missing was a *missing artifact* (a rule entry, a workflow
+  doc, a hook config), not *missing machinery*.
+- **Implication:** When designing a new harness capability, audit the
+  existing primitives first by writing the new contract in pseudocode
+  and trying to map it to existing fields. The harness's primitives
+  (modules, validators, companion rules, hooks, skills, workflows) are
+  highly composable but their reach is undersold in current docs.
+  Building new machinery should be the last resort, not the first move.
+  This argues for periodic "what can the existing primitives already do
+  that we haven't tried?" passes alongside the gap-discovery work.
+- **Confidence:** high — verified during the PRD-0004 draft by writing
+  the rule in pseudocode and seeing it map directly to existing
+  `companionRules` fields with no engine change
+- **Severity:** architectural
+- **Contributed by:** @unclenate via Claude Code, 2026-05-22
+
+### Maintainer "I thought that was already happening" is the highest-signal gap-discovery pattern
+
+- **Context:** Conversation immediately post-PR-#30 merge (the docs pass
+  capturing two observations + operating-principles § 7). The maintainer
+  flagged distillation triggers as a gap with: *"I was assuming that my
+  harness projects were doing this already and it's a core function."*
+  That single statement promoted what would have been a low-priority
+  backlog item to OPP-filed-and-PRD-drafted-the-same-day priority.
+- **Observation:** *Assumed-features-as-gaps* are qualitatively
+  different from the other gap classes this project has produced (audit-
+  discovered drift, missing-tests, refactoring opportunities,
+  consumer-issue-filed friction). They represent the gap between (a)
+  the project's mental model of itself and (b) what the project actually
+  does. They are nearly invisible until pointed at because both reader
+  and writer assume the feature exists. When discovered, they are
+  usually load-bearing precisely because the assumption that they exist
+  has been actively relied on — by the maintainer in design decisions,
+  and downstream by any consumer reading the same docs.
+- **Implication:** Treat *"I thought X was already working"* as P0
+  signal in this project. The assumption itself is the evidence: if a
+  load-bearing function is assumed-to-exist by its own maintainer,
+  downstream consumers will silently rely on it too. Gap-mining
+  technique: periodically scan recent conversation logs and module
+  README prose for phrasings like *"the harness ensures..."*, *"agents
+  read X on each heartbeat..."*, *"distillation happens at..."*, and
+  audit whether the named mechanism actually exists as machinery vs.
+  documentation-as-aspiration. (The "heartbeat with Knowledge
+  Contribution step" prose was a textbook case before PRD-0004
+  formalized it.)
+- **Confidence:** medium — one strong data point in this session;
+  pattern needs more instances to confirm generalization, but the
+  signal-quality argument is structural and the cost of treating
+  false-positives as P0 is small relative to the cost of missing real
+  load-bearing assumptions.
+- **Severity:** process
+- **Contributed by:** @unclenate via Claude Code, 2026-05-22

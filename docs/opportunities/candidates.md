@@ -6,7 +6,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # auto-harness — Opportunity Candidates Index
 
-**Owner:** @unclenate | **Last Updated:** 2026-05-21
+**Owner:** @unclenate | **Last Updated:** 2026-05-22
 
 Organizational index of opportunity candidates filed in this directory. The
 canonical record for each candidate is its own `OPP-NNNN-slug.md` file —
@@ -44,15 +44,15 @@ this index exists only to group, cluster, or annotate them for human readers.
 
 ### Knowledge distillation & self-improvement loop
 
-- [OPP-0004](OPP-0004-distillation-triggers.md) *(exploring; PRD-0004 in
-  flight)* — Close the cycle-end distillation gap: the harness provides
-  destinations (observations, learnings, operating-principles) but no
-  triggers to reliably cause distillation to happen during or after work
-  cycles. Define and ship the trigger layer (passive validators + active
-  agent-tool hooks + workflow rituals) so that distillation becomes a
-  property of the harness rather than a discipline the maintainer has to
-  remember. Flagged by maintainer as core-function gap requiring near-term
-  resolution.
+- [OPP-0004](OPP-0004-distillation-triggers.md) *(accepted 2026-05-22;
+  PRD-0004 v1 shipped — passive companion rule + workflow doc; active
+  hook adapter deferred to follow-up)* — Close the cycle-end distillation
+  gap: the harness provides destinations (observations, learnings,
+  operating-principles) but no triggers to reliably cause distillation
+  to happen during or after work cycles. v1 ships the passive
+  companion-rule layer + canonical workflow doc; active agent-tool hook
+  is should-have follow-up. Same-day proposed → exploring → accepted
+  trajectory driven by maintainer priority signal.
 
 ---
 

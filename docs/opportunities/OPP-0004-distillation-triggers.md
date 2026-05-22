@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0004 — Distillation Triggers (Closing the Cycle-End Gap)
 
-**Status:** exploring
+**Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-05-21
-**Last Updated:** 2026-05-21
+**Last Updated:** 2026-05-22
 **Confidence:** high
 
 ---
@@ -177,35 +177,37 @@ applies.
 
 ## Disposition
 
-Promoted from `proposed` to `exploring` on 2026-05-21 by @unclenate, same
-day as filing. Maintainer-stated priority drove the immediate flip: the
-gap was assumed-to-be-filled and its discovery during a meta-documentation
-pass crystallized the urgency.
+**2026-05-21 (proposed → exploring):** Maintainer-stated priority drove
+the immediate flip same day as filing. Hybrid trigger layer scoped as
+additions to existing modules (`management/knowledge-capture`,
+`agents/claude-code`) rather than a new top-level
+`management/distillation-cadence` module. Heartbeat prose to be
+formalized into actionable workflow, not retired — the pattern was
+right, the machinery was the gap.
 
-**Current investigation direction:** Hybrid trigger layer (passive
-validators at PR boundary + active agent-tool hooks during session),
-scoped initially as additions to existing modules
-(`management/knowledge-capture`, `agents/claude-code`) rather than a new
-top-level `management/distillation-cadence` module. Heartbeat prose to be
-formalized into actionable workflow, not retired — the pattern was right,
-the machinery was the gap.
+**2026-05-22 (exploring → accepted):** PRD-0004 finalized and accepted;
+the v1 companion rule landed in `platform/profiles/management/knowledge-capture/module.yaml`
+(v1.0.0 → v1.1.0); the canonical workflow document at
+`platform/workflow/cycle-end-distillation.md` shipped; heartbeat prose
+in `knowledge-capture` and `opportunity-capture` module READMEs
+cross-links to the new workflow; `harness-governance` skill and
+`docs/operating-principles.md` updated to reference the new rule and
+workflow. The implementation PR satisfied its own new rule by
+construction (no `overrides.disabledValidations` bootstrap needed) —
+this dynamic itself produced a fresh observation captured in
+`docs/knowledge/shared-observations.md` (2026-05-22 implementation
+pass). Acceptance criteria 1-4 from PRD-0004 § "Acceptance Criteria for
+OPP-0004 Promotion to accepted" all met.
 
-**PRD draft:** PRD-0004 (in flight, paired with this status flip — see
-`docs/requirements/PRD-0004-distillation-triggers.md`). Acceptance into
-the harness (status → `accepted`) blocked on PRD review + first
-trigger-mechanism implementation landing as proof.
-
-**Open from `proposed`:** All five open questions from the original filing
-carry forward into the PRD. The PRD takes positions where it can and
-leaves explicit `Open Questions` for what the v1 implementation needs to
-validate against real signal.
+**Deferred to follow-up (not blocking acceptance):** Claude Code
+`Stop`/`SessionEnd` hook adapter (PRD-0004 FR-006/007 — should-have,
+PRD-marked as may-follow-in-second-PR). Active hook is the in-session
+ergonomic; the PR-boundary companion rule is the floor and is now live.
 
 ## Promotion
 
-<!--
-Empty until accepted. The PRD-0004 draft is paired with this status flip
-but does not constitute promotion — `accepted` requires the PRD to be
-finalized + reviewed AND at least one trigger mechanism shipped as proof
-of contract. Anticipated: status → `accepted` in the work cycle following
-PRD review.
--->
+PRD-0004 (`docs/requirements/PRD-0004-distillation-triggers.md`) —
+finalized and Accepted 2026-05-22. The v1 trigger machinery
+(passive companion rule + canonical workflow doc) shipped in the same
+PR that promoted this candidate. The active-hook adapter remains as
+should-have follow-up work tracked under the same PRD.

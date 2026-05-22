@@ -6,7 +6,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0004 — Distillation Triggers (Closing the Cycle-End Gap)
 
-**Status:** proposed
+**Status:** exploring
 **Owner:** @unclenate
 **Created:** 2026-05-21
 **Last Updated:** 2026-05-21
@@ -177,16 +177,35 @@ applies.
 
 ## Disposition
 
-<!--
-Empty while Status: proposed. Will populate when status flips. Expected
-near-term: maintainer has flagged this for immediate addressment, so
-promotion to `exploring` or `accepted` is anticipated within the next
-work cycle once a PRD draft is initiated.
--->
+Promoted from `proposed` to `exploring` on 2026-05-21 by @unclenate, same
+day as filing. Maintainer-stated priority drove the immediate flip: the
+gap was assumed-to-be-filled and its discovery during a meta-documentation
+pass crystallized the urgency.
+
+**Current investigation direction:** Hybrid trigger layer (passive
+validators at PR boundary + active agent-tool hooks during session),
+scoped initially as additions to existing modules
+(`management/knowledge-capture`, `agents/claude-code`) rather than a new
+top-level `management/distillation-cadence` module. Heartbeat prose to be
+formalized into actionable workflow, not retired — the pattern was right,
+the machinery was the gap.
+
+**PRD draft:** PRD-0004 (in flight, paired with this status flip — see
+`docs/requirements/PRD-0004-distillation-triggers.md`). Acceptance into
+the harness (status → `accepted`) blocked on PRD review + first
+trigger-mechanism implementation landing as proof.
+
+**Open from `proposed`:** All five open questions from the original filing
+carry forward into the PRD. The PRD takes positions where it can and
+leaves explicit `Open Questions` for what the v1 implementation needs to
+validate against real signal.
 
 ## Promotion
 
 <!--
-Empty until accepted. Then a link to PRD-NNNN-distillation-triggers.md
-(or similar) defining the v1 trigger machinery.
+Empty until accepted. The PRD-0004 draft is paired with this status flip
+but does not constitute promotion — `accepted` requires the PRD to be
+finalized + reviewed AND at least one trigger mechanism shipped as proof
+of contract. Anticipated: status → `accepted` in the work cycle following
+PRD review.
 -->

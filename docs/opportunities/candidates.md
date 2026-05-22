@@ -44,14 +44,15 @@ this index exists only to group, cluster, or annotate them for human readers.
 
 ### Knowledge distillation & self-improvement loop
 
-- [OPP-0004](OPP-0004-distillation-triggers.md) — Close the cycle-end
-  distillation gap: the harness provides destinations (observations,
-  learnings, operating-principles) but no triggers to reliably cause
-  distillation to happen during or after work cycles. Define and ship the
-  trigger layer (passive validators + active agent-tool hooks + workflow
-  rituals) so that distillation becomes a property of the harness rather
-  than a discipline the maintainer has to remember. Flagged by maintainer
-  as core-function gap requiring near-term resolution.
+- [OPP-0004](OPP-0004-distillation-triggers.md) *(exploring; PRD-0004 in
+  flight)* — Close the cycle-end distillation gap: the harness provides
+  destinations (observations, learnings, operating-principles) but no
+  triggers to reliably cause distillation to happen during or after work
+  cycles. Define and ship the trigger layer (passive validators + active
+  agent-tool hooks + workflow rituals) so that distillation becomes a
+  property of the harness rather than a discipline the maintainer has to
+  remember. Flagged by maintainer as core-function gap requiring near-term
+  resolution.
 
 ---
 

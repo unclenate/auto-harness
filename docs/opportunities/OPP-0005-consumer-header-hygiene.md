@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0005 — Consumer Header Hygiene (Stop Template Headers from Propagating to Consumer Files)
 
-**Status:** exploring
+**Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-05-22
-**Last Updated:** 2026-05-22 *(promoted to exploring; PRD-0005 drafted same day)*
+**Last Updated:** 2026-05-22 *(v1 implementation shipped; OPP accepted)*
 **Confidence:** high
 
 ---
@@ -189,6 +189,20 @@ templates lose too much by stripping. Fix the
 `add-license-headers.sh` `nate@bdits.io` drift in the same PR.
 
 ## Disposition
+
+**2026-05-22 (exploring → accepted):** v1 implementation shipped per
+PRD-0005: 61 template headers tokenized (FR-001); new
+`platform/bootstrap/set-consumer-headers.sh` interactive + flag-driven
+helper (FR-002); 78 sample-project files gained re-attribution markers
+(FR-003); `platform/bootstrap/add-license-headers.sh` attribution drift
+fixed at lines 2 + 64 (FR-004 — two occurrences, one more than the OPP
+flagged); `platform/bootstrap/README.md` + `platform/templates/README.md`
+updated with the new flow (FR-005). Acceptance criteria 1-4 from PRD-0005
+§ "Acceptance Criteria for OPP-0005 Promotion to `accepted`" all met —
+PRD Accepted, FRs landed, auto-harness self-dogfoods (its own templates
+now tokenized; existing `.placeholder-ignore` `platform/**` exemption
+covers them); end-to-end smoke test verified (template → copy →
+substitute → filled output with chosen owner/email/year/license).
 
 **2026-05-22 (proposed → exploring):** Same-day flip driven by maintainer
 priority signal (the legal-correctness shape — consumer attribution

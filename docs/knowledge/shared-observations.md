@@ -331,3 +331,42 @@ here until distillation.
   Two consistent data points in two cycles.
 - **Severity:** process
 - **Contributed by:** @unclenate via Claude Code, 2026-05-22 (PRD-0005 draft pass)
+
+### Header-token classes split cleanly along project-wide vs. per-record axis
+
+- **Context:** Shipping PRD-0005 v1 (consumer header hygiene). The
+  initial scope assumed all `[[…]]` tokens in templates were
+  symmetric — fill once and you're done. The bootstrap helper design
+  forced a question: should `set-consumer-headers.sh` fill *every*
+  uppercase token it finds, or only a subset?
+- **Observation:** Two distinct token classes emerged, splitting along
+  a clean axis: *project-wide* tokens (`YEAR`, `OWNER_NAME`,
+  `OWNER_EMAIL`, `SPDX_LICENSE`, `PROJECT_NAME` — using the bracketed
+  `[[…]]` form in templates) appear in every template's SPDX/copyright
+  header block and have the same answer for every artifact in the
+  project; *per-record* tokens (`OWNER`, `OPP_TITLE`, `ADR_TITLE`,
+  `RISK_DESCRIPTION`, and others) appear in template bodies and have a
+  *different* answer for each instance.
+  Filling per-record tokens at bootstrap time would be actively wrong
+  (every ADR would name the same owner; every risk would have the same
+  description). The bootstrap helper's scope must respect the axis: fill
+  exactly the project-wide set and leave everything else for the
+  per-artifact author. The `validate-placeholders` regex (`[A-Z0-9_]+`)
+  treats both classes identically, so the distinction has to be enforced
+  by the *substituter*, not the *validator*.
+- **Implication:** When introducing a token-based system across multiple
+  artifact types, two questions matter from day one: (1) what's the
+  axis along which tokens divide? (2) which tool fills which class?
+  Both answers need to live in the documentation alongside the token
+  list, otherwise consumers will reach for the bootstrap helper and
+  expect it to fill everything. Captured in `platform/templates/README.md`
+  as the "two classes of token" callout. Generalizes: any future
+  tokenized surface (e.g., agent-pack metadata, MCP server-spec
+  templates) should declare its token classes up front and name which
+  tool owns each class.
+- **Confidence:** medium — one design instance (PRD-0005 v1), but the
+  pattern (token sets need a class taxonomy or the substituter
+  misbehaves) is structurally sound and likely recurs anywhere
+  templates carry both universal and per-instance fields.
+- **Severity:** architectural
+- **Contributed by:** @unclenate via Claude Code, 2026-05-22 (PRD-0005 implementation pass)

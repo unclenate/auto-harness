@@ -1,7 +1,6 @@
 <!--
-Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
-SPDX-License-Identifier: MIT OR Apache-2.0
-Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
+Copyright [[YEAR]] [[OWNER_NAME]] <[[OWNER_EMAIL]]>
+SPDX-License-Identifier: [[SPDX_LICENSE]]
 -->
 
 # Templates Reference
@@ -9,6 +8,16 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 All harness templates use `[[PLACEHOLDER_NAME]]` tokens to mark fields that must be
 filled before a file is production-ready. The `validate-placeholders.sh` validator
 will fail if any `[[...]]` token remains in a tracked file.
+
+> **Two classes of token.** *Header tokens* (`[[YEAR]]`, `[[OWNER_NAME]]`,
+> `[[OWNER_EMAIL]]`, `[[SPDX_LICENSE]]`, `[[PROJECT_NAME]]`) appear in
+> every template's SPDX/copyright header block — they are project-wide
+> and filled *once* via
+> [`platform/bootstrap/set-consumer-headers.sh`](../bootstrap/set-consumer-headers.sh).
+> *Per-record tokens* (e.g. `[[OWNER]]`, `[[OPP_TITLE]]`, `[[ADR_TITLE]]`)
+> appear in template bodies — filled per-artifact when the consumer scaffolds
+> a specific ADR / OPP / observation. The bootstrap helper deliberately
+> does *not* touch per-record tokens.
 
 ---
 

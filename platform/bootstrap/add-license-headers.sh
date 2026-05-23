@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Copyright 2026 Nate DiNiro <nate@bdits.io>
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
 # SPDX-License-Identifier: MIT OR Apache-2.0
 # Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 #
@@ -61,7 +61,7 @@ USAGE
 esac
 
 YEAR=2026
-AUTHOR='Nate DiNiro <nate@bdits.io>'
+AUTHOR='Nate DiNiro <UncleNate@gmail.com>'
 SPDX='MIT OR Apache-2.0'
 PROJECT_NAME='auto-harness'
 

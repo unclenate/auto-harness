@@ -6,12 +6,14 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # `platform/bootstrap/` — consumer-side bootstrap for auto-harness
 
-Two peer tools for integrating auto-harness into a consumer repo that has mounted auto-harness as a git submodule:
+Tools for integrating auto-harness into a consumer repo that has mounted auto-harness as a git submodule:
 
 | Tool | Purpose | Language |
 |------|---------|----------|
 | [`install.sh`](install.sh) | One-shot brownfield-safe setup: write harness-managed files, merge `AGENTS.md`, delegate skill-linking, smoke-test validators | Bash + Ruby heredoc |
 | [`link-skills.sh`](link-skills.sh) | Standalone skill-symlink creator. Can run independently to add or repair skill links | Pure bash |
+| [`set-consumer-headers.sh`](set-consumer-headers.sh) | Fill template-header tokens (`[[YEAR]]` / `[[OWNER_NAME]]` / `[[OWNER_EMAIL]]` / `[[SPDX_LICENSE]]` / `[[PROJECT_NAME]]`) in template-derived files; writes a project-local `.harness-headers.yaml` config so subsequent scaffolds auto-fill | Pure bash |
+| [`add-license-headers.sh`](add-license-headers.sh) | Maintainer tool — inserts SPDX/copyright headers into auto-harness's own source files (not used by consumers) | Pure bash |
 
 Both tools share one philosophy: **observe before write**. They never modify platform-artifact files from other AI clients (Cursor, Windsurf, Copilot, Codex, OpenClaw, Hermes, …) and report everything they see in a `PLATFORMS OBSERVED:` summary block. The rationale is recorded in [ADR-0003](../../docs/adr/ADR-0003-submodule-integration.md).
 
@@ -44,6 +46,45 @@ bash .harness/platform/bootstrap/install.sh    # idempotent; re-checks everythin
 ```
 
 Skills symlinked via `link-skills.sh` already reflect the updated submodule content — no re-sync needed. The bootstrap re-run only regenerates the `AGENTS.md` managed section (refreshing the marker block) and validates that harness-managed files are still in sync.
+
+### Setting consumer project headers
+
+Templates under `platform/templates/**` ship with **tokenized** SPDX/copyright headers:
+
+```text
+<!--
+Copyright [[YEAR]] [[OWNER_NAME]] <[[OWNER_EMAIL]]>
+SPDX-License-Identifier: [[SPDX_LICENSE]]
+-->
+```
+
+When you copy a template into your project (e.g., `cp .harness/platform/templates/adr.md docs/adr/ADR-0001-foo.md`), the resulting file inherits the tokens. **`validate-placeholders.sh` will fail CI** on any unfilled token — that's the floor.
+
+`set-consumer-headers.sh` is the ergonomic way to fill them:
+
+```bash
+# First-time setup — interactive prompts; writes .harness-headers.yaml
+bash .harness/platform/bootstrap/set-consumer-headers.sh
+
+# Subsequent scaffolds — re-run after copying templates; defaults loaded from config
+bash .harness/platform/bootstrap/set-consumer-headers.sh --non-interactive
+```
+
+Token set the script fills (and only these):
+
+| Token | What it captures |
+|-------|------------------|
+| `[[YEAR]]` | Copyright year (default: current year) |
+| `[[OWNER_NAME]]` | Person or organization |
+| `[[OWNER_EMAIL]]` | Contact email |
+| `[[SPDX_LICENSE]]` | SPDX license identifier (e.g., `MIT`, `Apache-2.0`, `MIT OR Apache-2.0`) |
+| `[[PROJECT_NAME]]` | Project name (or empty to leave the field blank) |
+
+Other `[[…]]` tokens (e.g. `[[OWNER]]`, `[[OPP_TITLE]]`, `[[ADR_TITLE]]`) are *deliberately* left alone — those are per-artifact fields that the consumer fills when scaffolding a specific ADR / OPP / observation. The header tokens are project-wide; the per-artifact tokens are per-record.
+
+The script supports `--dry-run`, `--non-interactive`, `--files=p1,p2,...` for targeted substitution, and `--scan=DIR` to scope the scan. See `set-consumer-headers.sh --help` for the full CLI.
+
+> **Composition with `validate-placeholders.sh`.** The validator gates at PR boundary; the bootstrap helper is the ergonomic way to satisfy the gate. They are paired primitives: the validator enforces, the helper fulfills.
 
 ### Adding more skills after initial bootstrap
 

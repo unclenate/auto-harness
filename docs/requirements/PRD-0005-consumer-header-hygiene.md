@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # PRD-0005: Consumer Header Hygiene — Stop Template Attribution Leakage
 
-**Version:** 1.0 | **Owner:** @unclenate | **Last Updated:** 2026-05-22 | **Review Cycle:** On-change
+**Version:** 1.0 | **Owner:** @unclenate | **Last Updated:** 2026-05-22 *(v1 shipped)* | **Review Cycle:** On-change
 
-**Status:** Proposed
-**Date:** 2026-05-22 (filed)
+**Status:** Accepted *(all v1 functional requirements shipped)*
+**Date:** 2026-05-22 (filed) | 2026-05-22 (accepted)
 **Author:** @unclenate
 **Reviewers:** @unclenate
 

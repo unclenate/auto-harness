@@ -56,6 +56,18 @@ this index exists only to group, cluster, or annotate them for human readers.
 
 ### Consumer onboarding & project hygiene
 
+- [OPP-0006](OPP-0006-trust-tier-enforcement.md) *(exploring;
+  PRD-0006 in flight, drafted 2026-05-23)* — Make the kernel-doctrine
+  trust tier model machine-checkable. Six tiers are referenced
+  everywhere (every agent pack, PR template, operating-principles)
+  but zero machinery enforces them. The harness's most-cited safety
+  guarantee runs on honor code. Initial bias: optional `tier` schema
+  field on `module.yaml`, production-shape `sensitivePaths` inference,
+  new `validate-trust-tier.sh` validator, and dogfood declarations on
+  auto-harness's own modules. Closes the highest-priority gap from the
+  2026-05-23 audit; named explicitly in the
+  "doctrine-without-enforcement" architectural observation.
+
 - [OPP-0005](OPP-0005-consumer-header-hygiene.md) *(accepted 2026-05-22;
   PRD-0005 v1 fully shipped — templates tokenized + bootstrap helper +
   sample-project markers + attribution drift fixed)* — Stop template

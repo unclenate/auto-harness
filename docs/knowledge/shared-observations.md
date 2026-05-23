@@ -456,3 +456,53 @@ here until distillation.
   artifact's neighborhood).
 - **Severity:** architectural
 - **Contributed by:** @unclenate via Claude Code, 2026-05-23 (catalog-counts validator)
+
+### Doctrine in prose without enforcement in code is a recurring harness gap pattern
+
+- **Context:** Detailed quality + capability audit (this session,
+  2026-05-23). Two parallel exploration agents enumerated documentation
+  gaps and missing capabilities. Synthesizing the findings revealed a
+  shape that recurs across multiple distinct gaps.
+- **Observation:** The harness has shipped strong machinery for some of
+  its claims — companion rules turning trigger paths into CI gates,
+  catalog-counts validator turning prose claims into asserted facts,
+  cycle-end distillation hook turning aspirational "heartbeat" prose
+  into actionable triggers — but a parallel set of *equally
+  load-bearing claims* remains pure documentation. The audit named at
+  least four:
+  - **Trust tier model** (kernel/base/trust-model.md) — six tiers of
+    agent autonomy with explicit auth-required-or-not rules. PR template
+    has manual checkboxes. Zero machine-checked enforcement; no module
+    schema field declares tier; no validator catches escalation.
+  - **Versioning** — CHANGELOG.md is "Unreleased" forever; no git tags
+    exist; maintenance docs reference hypothetical `v0.2.0`. Consumers
+    pin to commit hashes, defeating semver entirely.
+  - **Knowledge curation** — distillation *triggers* are machinery (PR
+    #34), but *promotion to distilled-learnings* and curation-vs-
+    accretion of operating-principles remain workflow prose only. No
+    sample project demonstrates the end-to-end curation cycle.
+  - **Consumer module operations** — adding / removing / changing
+    modules in an active manifest is governed by zero machinery; the
+    only operational doc is "pulling upstream changes."
+
+  The shape across all four: the harness has *named* the discipline but
+  not *built* the contract. Where the harness has built the contract,
+  drift is structurally bounded; where it hasn't, drift accumulates as
+  honor-code violation.
+- **Implication:** When auditing the harness for completeness, the
+  highest-yield prompt is *"name a discipline this project claims; is
+  there machinery that asserts the claim?"* The audit produced four
+  Wave-3 candidates this way (versioning, trust-tier enforcement,
+  knowledge curation, module operations) — each one is the same gap
+  shape applied to a different surface. Worth elevating the technique to
+  operating-principles as a recurring audit discipline if a future audit
+  produces additional candidates. For shipping decisions, the pattern
+  argues for prioritizing machinery-of-claim over additional prose
+  documentation when both are options for closing a gap; prose is
+  cheaper to produce but the gap stays open.
+- **Confidence:** medium — four data points in one audit, but the
+  *shape* (claim made, machinery absent) generalizes cleanly. The
+  technique is structurally sound; effectiveness depends on whether the
+  enumeration of "claims the harness makes" is comprehensive enough.
+- **Severity:** architectural
+- **Contributed by:** @unclenate via Claude Code, 2026-05-23 (audit synthesis)

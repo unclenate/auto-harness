@@ -94,7 +94,7 @@ harness provides:
 - **Artifact requirements** — the files that must exist for a module to be considered active
   and governed (problem statement, ADRs, risk register, release checklist, etc.)
 - **Sensitive path governance** — patterns that trigger elevated human review when changed
-- **Validator chain** — seven shell scripts you run locally or in CI that enforce all of the above
+- **Validator chain** — eight shell scripts you run locally or in CI that enforce all of the above
 - **Agent adapters** — `CLAUDE.md`, `AGENTS.md`, and `.claude/settings.json` shims that load
   the governance rules into agent context at session start
 
@@ -345,7 +345,7 @@ cp -r platform/skills/harness-governance .claude/skills/
 
 ## Validators
 
-Seven validators, each targeting a specific governance layer:
+Eight validators, each targeting a specific governance layer:
 
 | Validator | What It Checks |
 | --------- | -------------- |
@@ -356,6 +356,7 @@ Seven validators, each targeting a specific governance layer:
 | `validate-agent-pack.sh` | Agent adapter files exist and are consistent |
 | `validate-companions.sh` | PR diff satisfies all active companion rules |
 | `validate-doc-references.sh` | Markdown links to `platform/...` paths resolve on disk — catches stale path strings as the catalog evolves |
+| `validate-catalog-counts.sh` | Documented catalog counts (modules, validators, skills, templates, workflows, diagrams) match canonical recipes — closes the count-drift class |
 
 All validators are pure shell + Ruby (no external service calls). Ruby 3.0+ and ripgrep
 are the only runtime requirements.
@@ -552,6 +553,7 @@ Contributions are accepted under both licenses on the same terms. See [CONTRIBUT
 | Resource | Path |
 | -------- | ---- |
 | Table of contents | [`SUMMARY.md`](SUMMARY.md) |
+| Architecture diagrams | [`docs/architecture/diagrams.md`](docs/architecture/diagrams.md) — composition, trust tier flow, companion rule firing, OPP/PRD/ADR lifecycle, distillation, consumer adoption |
 | Glossary | [`platform/reference/glossary.md`](platform/reference/glossary.md) |
 | How to read the docs | [`platform/reference/how-to-read.md`](platform/reference/how-to-read.md) |
 | Adoption — Bootstrap quickstart | [`platform/workflow/bootstrap-quickstart.md`](platform/workflow/bootstrap-quickstart.md) |

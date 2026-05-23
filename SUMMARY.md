@@ -140,7 +140,7 @@ AI-tool packs and operating adapters.
 
 ## Validator Reference
 
-The seven validator scripts and their shared Ruby library. CI wiring and troubleshooting live in the workflow sections above.
+The eight validator scripts and their shared Ruby library. CI wiring and troubleshooting live in the workflow sections above.
 
 * [Validators Overview](platform/validators/README.md)
 * [validate-manifest.sh](platform/validators/validate-manifest.sh)
@@ -150,6 +150,7 @@ The seven validator scripts and their shared Ruby library. CI wiring and trouble
 * [validate-agent-pack.sh](platform/validators/validate-agent-pack.sh)
 * [validate-companions.sh](platform/validators/validate-companions.sh)
 * [validate-doc-references.sh](platform/validators/validate-doc-references.sh)
+* [validate-catalog-counts.sh](platform/validators/validate-catalog-counts.sh)
 * [Shared Library: harness\_registry.rb](platform/validators/lib/harness_registry.rb)
 
 ### Test Suite
@@ -404,12 +405,29 @@ Open-source-cut metadata: license, contribution flow, community standards, and t
 * [ADR-0006: Interview-Driven Management](docs/adr/ADR-0006-interview-driven-management.md)
 * [ADR-0007: Agentic Interface Awareness](docs/adr/ADR-0007-agentic-interface-awareness.md)
 * [ADR-0008: MCP Awareness](docs/adr/ADR-0008-mcp-awareness.md)
+* [ADR-0009: CI Hardening](docs/adr/ADR-0009-ci-hardening.md)
+* [ADR-0010: Cheap Satisfiers for Routine Governance](docs/adr/ADR-0010-cheap-satisfiers-for-routine-governance.md)
+* [ADR-0011: Markdownlint Policy](docs/adr/ADR-0011-markdownlint-policy.md)
+* [ADR-0012: Opportunity Capture — Index Split](docs/adr/ADR-0012-opportunity-capture-index-split.md)
+
+### Product Requirements Documents (this project)
+
+Specifications for substantive new capabilities, paired with their originating opportunity records.
+
+* [PRD-0001: Restore PRD Support](docs/requirements/PRD-0001-restore-prd-support.md)
+* [PRD-0002: Extend PRD Template Execution Sections](docs/requirements/PRD-0002-extend-prd-template-execution-sections.md)
+* [PRD-0003: Opportunity Capture Module](docs/requirements/PRD-0003-opportunity-capture-module.md)
+* [PRD-0004: Distillation Triggers](docs/requirements/PRD-0004-distillation-triggers.md)
+* [PRD-0005: Consumer Header Hygiene](docs/requirements/PRD-0005-consumer-header-hygiene.md)
 
 ### Opportunity Records (this project)
 
 Forward-looking pre-PRD candidates managed by the `opportunity-capture` module.
 
 * [Opportunity Records — Policy README](docs/opportunities/README.md)
+* [Opportunity Candidates Index](docs/opportunities/candidates.md)
 * [OPP-0001: Exportable Governance Contract for Runtime Harnesses](docs/opportunities/OPP-0001-exportable-governance-contract-for-runtime-harnesses.md)
 * [OPP-0002: Agentic Interface Awareness](docs/opportunities/OPP-0002-agentic-interface-awareness.md)
 * [OPP-0003: MCP Producer and Exportable Governance via MCP](docs/opportunities/OPP-0003-mcp-producer-and-exportable-governance-via-mcp.md)
+* [OPP-0004: Distillation Triggers](docs/opportunities/OPP-0004-distillation-triggers.md)
+* [OPP-0005: Consumer Header Hygiene](docs/opportunities/OPP-0005-consumer-header-hygiene.md)

@@ -155,6 +155,14 @@ ASSERTIONS=(
   "docs/_assets/cover-back.svg|>([0-9]+) templates<|templates"
   "docs/_assets/cover-back.svg|>([0-9]+) workflows<|workflows"
   "docs/_assets/cover-back.svg|>([0-9]+) diagrams<|diagrams"
+
+  # README.md — prose count claims (word-form caught via normalize_count)
+  "README.md|Validator chain\*\* — ([a-z]+) shell scripts|validators"
+  "README.md|^([A-Z][a-z]+) validators, each targeting|validators"
+  "README.md|The harness provides ([a-z]+) skills|skills"
+
+  # platform/workflow/skills-and-agents.md — skills count
+  "platform/workflow/skills-and-agents.md|The harness provides ([a-z]+) skills|skills"
 )
 
 # ----------------------------------------------------------------------
@@ -177,6 +185,37 @@ extract_first_capture() {
   done < "$file"
 }
 
+# normalize_count VALUE
+#   Convert a small English number word (one, two, …, twenty) to its
+#   numeric form. Pass-through for already-numeric input. Returns the
+#   value unchanged if it doesn't match a known word — the caller's
+#   compare step will then surface the mismatch.
+normalize_count() {
+  case "$(printf '%s' "$1" | tr '[:upper:]' '[:lower:]')" in
+    one) echo 1 ;;
+    two) echo 2 ;;
+    three) echo 3 ;;
+    four) echo 4 ;;
+    five) echo 5 ;;
+    six) echo 6 ;;
+    seven) echo 7 ;;
+    eight) echo 8 ;;
+    nine) echo 9 ;;
+    ten) echo 10 ;;
+    eleven) echo 11 ;;
+    twelve) echo 12 ;;
+    thirteen) echo 13 ;;
+    fourteen) echo 14 ;;
+    fifteen) echo 15 ;;
+    sixteen) echo 16 ;;
+    seventeen) echo 17 ;;
+    eighteen) echo 18 ;;
+    nineteen) echo 19 ;;
+    twenty) echo 20 ;;
+    *) echo "$1" ;;
+  esac
+}
+
 violations=0
 total=${#ASSERTIONS[@]}
 
@@ -190,16 +229,22 @@ for entry in "${ASSERTIONS[@]}"; do
     continue
   fi
 
-  actual="$(extract_first_capture "$file" "$regex" || true)"
+  actual_raw="$(extract_first_capture "$file" "$regex" || true)"
 
-  if [[ -z "$actual" ]]; then
+  if [[ -z "$actual_raw" ]]; then
     echo "✗ $file: regex '$regex' did not match (count-key: $key, canonical: $expected)" >&2
     violations=$((violations + 1))
     continue
   fi
 
+  actual="$(normalize_count "$actual_raw")"
+
   if [[ "$actual" != "$expected" ]]; then
-    echo "✗ $file: claims $actual but canonical $key is $expected (regex: $regex)" >&2
+    if [[ "$actual_raw" != "$actual" ]]; then
+      echo "✗ $file: claims '$actual_raw' ($actual) but canonical $key is $expected (regex: $regex)" >&2
+    else
+      echo "✗ $file: claims $actual but canonical $key is $expected (regex: $regex)" >&2
+    fi
     violations=$((violations + 1))
   fi
 done

@@ -16,7 +16,7 @@ need the picture in context.
 > repository view. Edit a diagram by editing the Mermaid block in this
 > file — there is no separate image to regenerate.
 
-Six diagrams below, grouped by what they answer:
+Nine diagrams below, grouped by what they answer:
 
 | # | Question the diagram answers | Section |
 |---|------------------------------|---------|
@@ -26,6 +26,9 @@ Six diagrams below, grouped by what they answer:
 | 4 | *How does an idea become an accepted decision?* | [Opportunity → PRD → ADR Lifecycle](#4-opportunity--prd--adr-lifecycle) |
 | 5 | *How is cycle-end distillation triggered?* | [Distillation Trigger Composition](#5-distillation-trigger-composition) |
 | 6 | *How does a consumer project adopt the harness?* | [Consumer Adoption Flow](#6-consumer-adoption-flow) |
+| 7 | *How do paired mechanisms catch each other's bugs?* | [Paired Mechanism Dynamic](#7-paired-mechanism-dynamic) |
+| 8 | *How does the OPP→PRD→ADR pipeline surface design questions?* | [OPP → PRD Design-Pressure Cascade](#8-opp--prd-design-pressure-cascade) |
+| 9 | *How does `validate-catalog-counts.sh` work?* | [Catalog-Counts Assertion Flow](#9-catalog-counts-assertion-flow) |
 
 ---
 
@@ -381,6 +384,225 @@ flowchart TD
 [`platform/workflow/submodule-integration.md`](../../platform/workflow/submodule-integration.md) ·
 [`platform/workflow/bootstrap-quickstart.md`](../../platform/workflow/bootstrap-quickstart.md) ·
 [`platform/bootstrap/README.md`](../../platform/bootstrap/README.md)
+
+---
+
+## 7. Paired Mechanism Dynamic
+
+**Question:** *How do paired mechanisms catch each other's bugs?*
+
+A recurring pattern in the harness's design: when two pieces of
+machinery encode the *same* concern (a regex pattern, a count claim,
+a configuration field), the *act of writing the second mirror* forces
+re-derivation that catches bugs the first one alone would never
+surface. Three instances captured in `shared-observations.md`:
+
+1. **PR #34 — Hook + Rule.** The Claude Code Stop-hook adapter was
+   built to mirror the companion rule's distillation-trigger regex.
+   Writing the hook surfaced a scope bug in the rule (the regex
+   missed agent-pack and kernel modules).
+2. **PR #38 — Templates + Validator.** Tokenizing template headers
+   produced files that dogfooded `validate-placeholders.sh`. The
+   validator caught the consumer-fill discipline the templates
+   needed.
+3. **PR #41 — Validator + Its Own Count.** Introducing
+   `validate-catalog-counts.sh` bumped the validator count 7→8. The
+   validator's first run caught its own count-drift at four call
+   sites.
+
+```mermaid
+flowchart TD
+    Concern["Single concern to enforce<br/>(regex, count, config field)"]
+
+    Concern --> Single["<b>Single-mechanism approach</b><br/>One artifact encodes the concern.<br/>Bugs in the artifact go undetected<br/>until exercise in production."]
+
+    Concern --> Paired["<b>Paired-mechanism approach</b><br/>Two artifacts encode the same concern<br/>independently (e.g., rule + hook,<br/>template + validator, validator + its-own-state)"]
+
+    Paired --> Write1["<b>Write artifact A</b><br/>(e.g., the companion rule's<br/>trigger regex)"]
+    Write1 --> Live["A lands; encodes the concern<br/>but no second check has run"]
+
+    Live --> Write2["<b>Write artifact B</b><br/>(e.g., the hook adapter<br/>mirroring the same regex)"]
+
+    Write2 --> Derive["Author must <b>re-derive</b><br/>what the concern actually covers<br/>(enumerate the paths, list the cases,<br/>etc.) to make B faithful to it"]
+
+    Derive --> Catch{"Does the re-derivation<br/>match what A encodes?"}
+
+    Catch -->|"yes"| Pair["✓ Paired mechanism in place;<br/>both sides agree on the concern"]
+
+    Catch -->|"no"| Bug["✗ <b>Bug surfaced in A</b><br/>(A had a silent gap<br/>that re-derivation revealed)"]
+
+    Bug --> Fix["Fix A; re-derive B; check again"]
+    Fix --> Catch
+
+    Pair --> Insurance["Insurance against future drift:<br/>if A or B drifts, the asymmetry<br/>becomes immediately visible<br/>on the next exercise"]
+
+    style Single fill:#5a3a1a,stroke:#8a6a3a,color:#fff
+    style Paired fill:#2d4a2d,stroke:#4a7a4a,color:#fff
+    style Bug fill:#7a2d2d,stroke:#aa4a4a,color:#fff
+    style Pair fill:#2d4a2d,stroke:#4a7a4a,color:#fff
+    style Insurance fill:#2d4a2d,stroke:#4a7a4a,color:#fff
+```
+
+**Specialization: machinery that asserts against state-including-itself.**
+
+A special case of the paired-mechanism dynamic is *single machinery
+that asserts against repo state that includes the machinery itself*.
+The new artifact's existence changes the asserted state; if the
+assertion is set up right, the first run catches the drift the new
+artifact's introduction caused. This is how PR #41 worked
+(validate-catalog-counts checking its own count), and it's
+captured in the operating-principle-adjacent observation:
+*"Governance machinery that asserts against state-including-itself
+creates a free first-run self-test."*
+
+**Design discipline:** when introducing new governance machinery,
+prefer the shape *"assertion that includes the new artifact's
+neighborhood"* over *"assertion that artificially excludes the new
+artifact's scope"*. The former gets a first-run self-test for free.
+
+---
+
+## 8. OPP → PRD Design-Pressure Cascade
+
+**Question:** *How does the OPP→PRD→ADR pipeline surface design questions?*
+
+Diagram 4 shows the *status transitions* (proposed → exploring →
+accepted). This diagram shows the *epistemic transitions* — what
+each document-pass *forces the author to commit to* that the prior
+pass elided. Captured in the PR #37 observation: *"PRD drafts surface
+questions the originating OPP successfully elided — the OPP→PRD
+pipeline is a discipline, not a redundancy."*
+
+```mermaid
+flowchart TD
+    Gap["<b>Gap noticed</b><br/>(observation, audit finding, maintainer hunch)"]
+
+    Gap --> OPP["<b>OPP filing</b><br/>captures: what's the gap?<br/>why does it matter?<br/>what are 3-5 design options?"]
+
+    OPP --> OPP_Pressure["<b>OPP-pass design pressure:</b><br/>force enumeration of alternatives<br/>+ tradeoffs<br/>+ initial bias with rationale"]
+
+    OPP_Pressure --> OPP_Elided["<b>What OPP elides:</b><br/>concrete machinery<br/>· schema field locations<br/>· config-file vs prompt UX<br/>· module placement"]
+
+    OPP_Elided --> PRD["<b>PRD drafting</b><br/>now forced to commit to:<br/>specific FRs · resolution<br/>of open questions · acceptance criteria"]
+
+    PRD --> PRD_Surfaces["<b>PRD-pass design pressure:</b><br/>each FR specification<br/>requires answering questions<br/>the OPP let slide"]
+
+    PRD_Surfaces --> PRD_Resolved["<b>What PRD resolves:</b><br/>tokenize SPDX? yes (consumer license)<br/>config-file vs prompt? config<br/>module placement? bootstrap/, not new module"]
+
+    PRD_Resolved --> Impl["<b>Implementation</b><br/>now forced to commit to:<br/>actual code paths<br/>· edge case handling<br/>· integration testing"]
+
+    Impl --> Impl_Surfaces["<b>Impl-pass design pressure:</b><br/>writing the code reveals<br/>what the PRD elided"]
+
+    Impl_Surfaces --> ADR["<b>ADR / observation</b><br/>captures durable learning<br/>from any pass that surfaced<br/>something generalizable"]
+
+    OPP -.feedback.-> Gap
+    PRD -.feedback.-> OPP
+    Impl -.feedback.-> PRD
+
+    style Gap fill:#3a4a5e,stroke:#5a7a9a,color:#fff
+    style OPP fill:#3a4a5e,stroke:#5a7a9a,color:#fff
+    style PRD fill:#3a4a5e,stroke:#5a7a9a,color:#fff
+    style Impl fill:#3a4a5e,stroke:#5a7a9a,color:#fff
+    style OPP_Pressure fill:#1a2332,stroke:#2c4a6b,color:#fff
+    style PRD_Surfaces fill:#1a2332,stroke:#2c4a6b,color:#fff
+    style Impl_Surfaces fill:#1a2332,stroke:#2c4a6b,color:#fff
+    style ADR fill:#2d4a2d,stroke:#4a7a4a,color:#fff
+```
+
+**Read this as:** each document-pass applies a different *kind* of
+design pressure. Questions that look settled at OPP-time turn out to
+be open at PRD-time. Questions that look resolved at PRD-time turn
+out to need refinement at implementation-time. **The pipeline is the
+discipline** — skipping a pass for "obvious" cases loses the
+design-surfacing function.
+
+**Confirmed across cycles:**
+
+- OPP-0004 → PRD-0004: PRD took positions on six OPP open questions
+- OPP-0005 → PRD-0005: PRD resolved three OPP-elided questions
+  (tokenize SPDX, config vs prompt, module placement)
+- OPP-0006 → PRD-0006: PRD resolved six OPP open questions including
+  schema location, required-vs-optional, and PR-vs-session-level
+  enforcement
+
+**Operational implication:** when the OPP→PRD→implementation pipeline
+feels redundant, that's a sign the gap is simple enough to skip a
+pass. When it surfaces a real question at each pass, the pipeline is
+working as designed.
+
+---
+
+## 9. Catalog-Counts Assertion Flow
+
+**Question:** *How does `validate-catalog-counts.sh` work?*
+
+The newest validator (PR #41) closes the count-drift class. Diagram
+shows the data flow from canonical recipe → documented claim →
+assertion → pass/fail.
+
+```mermaid
+flowchart LR
+    subgraph CANONICAL["Canonical recipes (inline in script)"]
+        R1["find platform/profiles<br/>-name module.yaml \| wc -l<br/>→ modules_profiles"]
+        R2["find platform/validators<br/>-name 'validate-*.sh' \| wc -l<br/>→ validators"]
+        R3["...7 recipes total..."]
+    end
+
+    subgraph TABLE["Assertion table (23 rows)"]
+        A1["how-to-read.md \| regex \| modules_profiles"]
+        A2["diagrams.md \| regex \| validators"]
+        A3["cover-back.svg \| regex \| diagrams"]
+        A4["...20 more..."]
+    end
+
+    subgraph EXTRACT["Extract from file"]
+        EX["For each row:<br/>read file line-by-line<br/>match regex<br/>capture the number"]
+        NORM["normalize_count():<br/>'eight' → 8<br/>'fourteen' → 14<br/>numeric → numeric"]
+    end
+
+    CANONICAL -->|"compute on each run"| Compare
+    TABLE -->|"iterate"| EXTRACT
+    EXTRACT --> NORM
+    NORM --> Compare["<b>Compare</b><br/>extracted == canonical?"]
+
+    Compare -->|"yes"| Pass["✓ assertion passes;<br/>iterate to next row"]
+    Compare -->|"no"| Fail["✗ drift detected;<br/>report file + claim + canonical;<br/>increment violation count"]
+
+    Pass --> AllPass{"All 23<br/>assertions<br/>checked?"}
+    AllPass -->|"yes, 0 violations"| Exit0["exit 0<br/>✓ All N catalog-count<br/>assertions match"]
+    AllPass -->|"some violations"| Exit1["exit 1<br/>N of 23 assertions failed<br/>(detail emitted per failure)"]
+
+    style Pass fill:#2d4a2d,stroke:#4a7a4a,color:#fff
+    style Exit0 fill:#2d4a2d,stroke:#4a7a4a,color:#fff
+    style Fail fill:#7a2d2d,stroke:#aa4a4a,color:#fff
+    style Exit1 fill:#7a2d2d,stroke:#aa4a4a,color:#fff
+```
+
+**Two design choices worth noting:**
+
+1. **Recipes inline, not external.** Each canonical count's `find`
+   command is written into the script body, not into a separate
+   config file. Maintenance cost is low (one file to update); the
+   recipe is self-documenting alongside the assertion table.
+
+2. **Assertions inline, not external.** The `(file, regex,
+   count-key)` triples live in the same script as the recipes. Adding
+   a new assertion site is *one line* of bash. No new file format,
+   no YAML parsing. Per operating-principles § 8, this is the
+   "prefer text representations" pattern applied to the validator's
+   own configuration surface.
+
+**When to add an assertion row:**
+
+- New file or doc cites a catalog count
+- Existing assertion's regex pattern changes (e.g., a doc gets
+  reorganized and the surrounding prose shifts)
+- New canonical count is added (also requires a new recipe + the
+  current 23 assertions might need re-coverage)
+
+The validator's `--help` documents the row format. See the
+`harness-governance` SKILL.md signature-notes for the consumer-side
+how-to.
 
 ---
 

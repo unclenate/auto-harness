@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2034
+# (COUNT_* vars below are read via indirect expansion `${!varname}` in
+# canonical_count(); the static analyzer cannot trace that pattern.)
 # Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
 # SPDX-License-Identifier: MIT OR Apache-2.0
 # Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
@@ -91,14 +94,26 @@ cd "$PROJECT_ROOT"
 # these in sync with the recipe comment at the top of
 # platform/reference/how-to-read.md (the comment is the
 # human-readable expression of the same logic).
-declare -A COUNT
-COUNT[modules_profiles]=$(find platform/profiles -name module.yaml 2>/dev/null | wc -l | tr -d ' ')
-COUNT[modules_all]=$(find platform -name module.yaml 2>/dev/null | wc -l | tr -d ' ')
-COUNT[validators]=$(find platform/validators -maxdepth 1 -name 'validate-*.sh' 2>/dev/null | wc -l | tr -d ' ')
-COUNT[skills]=$(find platform/skills -maxdepth 1 -mindepth 1 -type d 2>/dev/null | wc -l | tr -d ' ')
-COUNT[templates]=$(find platform/templates -type f -name '*.md' ! -name 'README.md' 2>/dev/null | wc -l | tr -d ' ')
-COUNT[workflows]=$(find platform/workflow -name '*.md' 2>/dev/null | wc -l | tr -d ' ')
-COUNT[diagrams]=$(grep -cE '^## [0-9]+\.' docs/architecture/diagrams.md 2>/dev/null || echo 0)
+#
+# Stored as separate variables (`COUNT_<key>`) rather than an
+# associative array so this script remains compatible with Bash 3.2
+# (the version macOS ships by default; the validators CI job uses the
+# system bash, not the Homebrew bash 4+ that bootstrap tests install).
+COUNT_modules_profiles=$(find platform/profiles -name module.yaml 2>/dev/null | wc -l | tr -d ' ')
+COUNT_modules_all=$(find platform -name module.yaml 2>/dev/null | wc -l | tr -d ' ')
+COUNT_validators=$(find platform/validators -maxdepth 1 -name 'validate-*.sh' 2>/dev/null | wc -l | tr -d ' ')
+COUNT_skills=$(find platform/skills -maxdepth 1 -mindepth 1 -type d 2>/dev/null | wc -l | tr -d ' ')
+COUNT_templates=$(find platform/templates -type f -name '*.md' ! -name 'README.md' 2>/dev/null | wc -l | tr -d ' ')
+COUNT_workflows=$(find platform/workflow -name '*.md' 2>/dev/null | wc -l | tr -d ' ')
+COUNT_diagrams=$(grep -cE '^## [0-9]+\.' docs/architecture/diagrams.md 2>/dev/null || echo 0)
+
+# Lookup a canonical count by key, using indirect variable expansion.
+# Returns the empty string for unknown keys (caller treats as
+# internal-error).
+canonical_count() {
+  local varname="COUNT_$1"
+  printf '%s' "${!varname-}"
+}
 
 # ----------------------------------------------------------------------
 # Assertion table
@@ -168,13 +183,13 @@ total=${#ASSERTIONS[@]}
 for entry in "${ASSERTIONS[@]}"; do
   IFS='|' read -r file regex key <<< "$entry"
 
-  if [[ -z "${COUNT[$key]+_}" ]]; then
+  expected="$(canonical_count "$key")"
+  if [[ -z "$expected" ]]; then
     echo "✗ Internal error: assertion references unknown count-key '$key' for $file" >&2
     violations=$((violations + 1))
     continue
   fi
 
-  expected="${COUNT[$key]}"
   actual="$(extract_first_capture "$file" "$regex" || true)"
 
   if [[ -z "$actual" ]]; then

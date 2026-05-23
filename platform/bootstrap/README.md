@@ -13,6 +13,7 @@ Tools for integrating auto-harness into a consumer repo that has mounted auto-ha
 | [`install.sh`](install.sh) | One-shot brownfield-safe setup: write harness-managed files, merge `AGENTS.md`, delegate skill-linking, smoke-test validators | Bash + Ruby heredoc |
 | [`link-skills.sh`](link-skills.sh) | Standalone skill-symlink creator. Can run independently to add or repair skill links | Pure bash |
 | [`set-consumer-headers.sh`](set-consumer-headers.sh) | Fill template-header tokens (`[[YEAR]]` / `[[OWNER_NAME]]` / `[[OWNER_EMAIL]]` / `[[SPDX_LICENSE]]` / `[[PROJECT_NAME]]`) in template-derived files; writes a project-local `.harness-headers.yaml` config so subsequent scaffolds auto-fill | Pure bash |
+| [`query-observations.sh`](query-observations.sh) | Filter and surface observations from `docs/knowledge/shared-observations.md` by severity / topic / date — addresses the "knowledge management is write-only" gap | Pure bash |
 | [`add-license-headers.sh`](add-license-headers.sh) | Maintainer tool — inserts SPDX/copyright headers into auto-harness's own source files (not used by consumers) | Pure bash |
 
 Both tools share one philosophy: **observe before write**. They never modify platform-artifact files from other AI clients (Cursor, Windsurf, Copilot, Codex, OpenClaw, Hermes, …) and report everything they see in a `PLATFORMS OBSERVED:` summary block. The rationale is recorded in [ADR-0003](../../docs/adr/ADR-0003-submodule-integration.md).

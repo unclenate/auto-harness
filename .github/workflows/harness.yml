@@ -156,3 +156,55 @@ jobs:
       # families produce errors vs warnings.
       - name: Run markdownlint-cli2
         run: markdownlint-cli2
+
+  sample-projects:
+    name: Sample Project Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+
+      - name: Install ripgrep
+        run: sudo apt-get install -y ripgrep
+
+      # Sample projects under platform/examples/sample-projects/ are
+      # reference implementations of different adoption patterns. They
+      # must remain harness-valid — if a template change, a module
+      # version bump, or a schema evolution causes a sample to fail
+      # validation, that's a teaching-tool drift and a CI failure here
+      # catches it immediately.
+      #
+      # Scope: validate-manifest, validate-module-graph,
+      # validate-required-artifacts, and validate-agent-pack — these
+      # answer "is the sample harness-shaped correctly?" without
+      # demanding consumer-fill discipline.
+      #
+      # Skipped intentionally:
+      # - validate-placeholders: samples include pedagogical examples
+      #   of `[[PLACEHOLDER]]` tokens in prose (showing readers what the
+      #   convention looks like). The validator can't distinguish
+      #   pedagogical mentions from genuinely-unfilled scaffolds. Per-
+      #   sample `.placeholder-ignore` files can be added as samples
+      #   mature, but the immediate goal is "samples don't drift on
+      #   schema / graph / required-artifact axes."
+      # - validate-companions: PR-diff-based; not meaningful against a
+      #   sample's static state.
+      # - validate-doc-references: project-root-scoped at the harness
+      #   level; runs separately in the main validators job.
+      # - validate-catalog-counts: harness-specific; samples don't
+      #   make catalog count claims.
+      - name: Validate each sample project (schema + graph + required artifacts + agent pack)
+        run: |
+          set -euo pipefail
+          for sample in platform/examples/sample-projects/*/; do
+            name=$(basename "$sample")
+            echo "::group::Validating sample: $name"
+            bash platform/validators/validate-manifest.sh "$sample/harness.manifest.yaml"
+            bash platform/validators/validate-module-graph.sh "$sample/harness.manifest.yaml"
+            bash platform/validators/validate-required-artifacts.sh "$sample/harness.manifest.yaml" "$sample"
+            bash platform/validators/validate-agent-pack.sh "$sample/harness.manifest.yaml" "$sample"
+            echo "::endgroup::"
+          done

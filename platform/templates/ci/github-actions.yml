@@ -1,0 +1,76 @@
+# NOTE: This is an auto-harness sample-project file (reference implementation).
+# If you copy this file into your own project, replace the SPDX/copyright
+# header below with your own — running
+# `bash .harness/platform/bootstrap/set-consumer-headers.sh` from your project root
+# after the copy will do this for you.
+#
+# Copyright [[YEAR]] [[OWNER_NAME]] <[[OWNER_EMAIL]]>
+# SPDX-License-Identifier: [[SPDX_LICENSE]]
+#
+# auto-harness validator chain for consumer projects.
+# Copy to .github/workflows/harness.yml in your project root.
+#
+# This workflow runs the harness validator chain on every PR and push to
+# main, gating merges when validators surface drift.
+#
+# Prerequisites:
+#   - auto-harness mounted as a git submodule at .harness/ (or copied
+#     to platform/; adjust the validator paths below if so)
+#   - harness.manifest.yaml at the consumer-project root
+#   - Ruby 3.0+ and ripgrep available on the runner
+#
+# Spec: platform/workflow/ci-integration.md in the auto-harness submodule.
+
+name: Harness Validators
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  validators:
+    name: Validators
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          # Submodule checkout — harness lives in .harness/
+          submodules: recursive
+          # Companion-rule validator needs full history to diff against base
+          fetch-depth: 0
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+
+      - name: Install ripgrep
+        run: sudo apt-get install -y ripgrep
+
+      - name: Validate manifest structure
+        run: bash .harness/platform/validators/validate-manifest.sh harness.manifest.yaml
+
+      - name: Validate module graph
+        run: bash .harness/platform/validators/validate-module-graph.sh harness.manifest.yaml
+
+      - name: Validate required artifacts
+        run: bash .harness/platform/validators/validate-required-artifacts.sh harness.manifest.yaml .
+
+      - name: Validate placeholders
+        run: bash .harness/platform/validators/validate-placeholders.sh .
+
+      - name: Validate agent pack
+        run: bash .harness/platform/validators/validate-agent-pack.sh harness.manifest.yaml .
+
+      - name: Validate doc references
+        run: bash .harness/platform/validators/validate-doc-references.sh .
+
+      - name: Validate companion rules
+        # PR-diff-based; only meaningful on pull_request events.
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          bash .harness/platform/validators/validate-companions.sh \
+            harness.manifest.yaml . "$BASE_REF"

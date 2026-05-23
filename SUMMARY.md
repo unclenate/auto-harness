@@ -170,6 +170,21 @@ The eight validator scripts and their shared Ruby library. CI wiring and trouble
 * [Unit Tests: HarnessRegistry](platform/validators/test/test_harness_registry.rb)
 * [Integration Tests: Validators](platform/validators/test/test_validators_integration.rb)
 
+### Bootstrap Tools
+
+* [Bootstrap Overview](platform/bootstrap/README.md)
+* [install.sh — consumer onboarding](platform/bootstrap/install.sh)
+* [link-skills.sh — skill symlink creator](platform/bootstrap/link-skills.sh)
+* [set-consumer-headers.sh — fill template-header tokens](platform/bootstrap/set-consumer-headers.sh)
+* [query-observations.sh — filter shared-observations by severity/topic/date](platform/bootstrap/query-observations.sh)
+* [add-license-headers.sh — maintainer-only header insertion](platform/bootstrap/add-license-headers.sh)
+
+### CI Templates (for consumer projects)
+
+* [CI Templates Overview](platform/templates/ci/README.md)
+* [GitHub Actions](platform/templates/ci/github-actions.yml)
+* [GitLab CI](platform/templates/ci/gitlab-ci.yml)
+
 ## Harness-Native Skills
 
 Skills in Agent Skills format, discoverable by Claude Code, VS Code Copilot, Cursor, and

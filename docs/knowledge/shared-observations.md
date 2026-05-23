@@ -251,3 +251,43 @@ here until distillation.
   re-derive what the first matches.
 - **Severity:** architectural
 - **Contributed by:** @unclenate via Claude Code, 2026-05-22 (hook adapter pass)
+
+### Harness primitives that don't compose toward the consumer-side surface are silent governance gaps
+
+- **Context:** Diagnosing the maintainer-flagged template-header
+  inheritance problem (filed as OPP-0005). Auto-harness has two
+  pre-existing primitives that *together* would close the gap entirely:
+  `platform/bootstrap/add-license-headers.sh` (inserts SPDX/copyright
+  headers, idempotent) and `platform/validators/validate-placeholders.sh`
+  (fails CI on unfilled `[[…]]` patterns). The header script is
+  scoped to auto-harness's own tree; the validator already enforces
+  token-fill discipline on consumer projects.
+- **Observation:** Neither primitive was composed with the templates
+  or with the consumer's bootstrap flow, so a real governance gap (61
+  template files shipping with wrong attribution; consumers inheriting
+  UncleNate's headers into their own ADRs/PRDs) persists despite the
+  capability to close it existing in the repo. The harness's existing
+  primitives are individually correct but unconnected at the
+  consumer-side boundary. This is a different shape from "missing
+  machinery" — it's *available machinery that nobody pointed at each
+  other*. The OPP-0004 lesson ("audit existing primitives before
+  building new") applies in reverse here: existing primitives can also
+  fail by not being *composed*, not only by not being *reached for*.
+- **Implication:** When scanning for governance gaps in this project,
+  ask both questions: "is there machinery for this?" *and* "is the
+  machinery composed with the consumer-side surface where the gap shows
+  up?" The second question is easier to miss because reading the
+  validator code and reading the template code in isolation each look
+  fine. The bug lives in the *negative space between them*. Suggests
+  a periodic audit pass: enumerate primitives × consumer-touchpoints
+  and check each cell for composition. The same pattern almost
+  certainly recurs elsewhere — e.g., do the agent-pack adapters compose
+  with the kernel's trust-tier prompts on consumer projects, or is each
+  side individually correct in isolation? Worth a follow-up audit.
+- **Confidence:** medium — one instance in this diagnosis, but the
+  *shape* (primitive A + primitive B both exist; consumer-side surface
+  C needs A∘B; nothing composes them) is structural and likely to
+  recur. The discovery technique (look for capabilities-that-exist-but-
+  don't-meet) generalizes beyond headers.
+- **Severity:** architectural
+- **Contributed by:** @unclenate via Claude Code, 2026-05-22 (OPP-0005 filing)

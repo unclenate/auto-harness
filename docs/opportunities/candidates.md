@@ -45,14 +45,28 @@ this index exists only to group, cluster, or annotate them for human readers.
 ### Knowledge distillation & self-improvement loop
 
 - [OPP-0004](OPP-0004-distillation-triggers.md) *(accepted 2026-05-22;
-  PRD-0004 v1 shipped — passive companion rule + workflow doc; active
-  hook adapter deferred to follow-up)* — Close the cycle-end distillation
+  PRD-0004 v1 fully shipped — passive companion rule + workflow doc +
+  Claude Code Stop-hook adapter)* — Close the cycle-end distillation
   gap: the harness provides destinations (observations, learnings,
   operating-principles) but no triggers to reliably cause distillation
-  to happen during or after work cycles. v1 ships the passive
-  companion-rule layer + canonical workflow doc; active agent-tool hook
-  is should-have follow-up. Same-day proposed → exploring → accepted
-  trajectory driven by maintainer priority signal.
+  to happen during or after work cycles. v1 ships both the PR-boundary
+  floor (companion rule) and the in-session reminder (hook adapter).
+  Same-day proposed → exploring → accepted trajectory driven by
+  maintainer priority signal.
+
+### Consumer onboarding & project hygiene
+
+- [OPP-0005](OPP-0005-consumer-header-hygiene.md) *(proposed
+  2026-05-22)* — Stop template SPDX/copyright headers from
+  propagating to consumer files. 61 template files + every
+  sample-project file currently ship with literal
+  `Copyright 2026 Nate DiNiro <UncleNate@gmail.com>` headers, so
+  consumers who scaffold their own ADR/PRD/observation from templates
+  end up with files attributed to UncleNate under MIT/Apache regardless
+  of their own license intent. Initial bias: tokenize template headers
+  so the existing `validate-placeholders.sh` machinery gates new files,
+  plus a small bootstrap helper that fills tokens project-wide. Real
+  legal correctness issue, not cosmetic.
 
 ---
 

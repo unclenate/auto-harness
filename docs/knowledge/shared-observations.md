@@ -291,3 +291,43 @@ here until distillation.
   don't-meet) generalizes beyond headers.
 - **Severity:** architectural
 - **Contributed by:** @unclenate via Claude Code, 2026-05-22 (OPP-0005 filing)
+
+### PRD drafts surface questions the originating OPP successfully elided — the OPP→PRD pipeline is a discipline, not a redundancy
+
+- **Context:** Drafting PRD-0005 (consumer header hygiene) immediately
+  after OPP-0005 was filed. OPP-0005 enumerated four design options
+  (A/B/C/D), expressed initial bias toward A+B, and listed six open
+  questions for the PRD pass — appearing thorough.
+- **Observation:** Writing the PRD forced commitments on questions the
+  OPP had successfully elided. The OPP asked "should SPDX be tokenized
+  too?" without answering. The OPP asked "config file vs. per-prompt?"
+  without answering. The OPP framed module placement as a multiple-
+  choice question. Each only resolved when the PRD had to specify
+  concrete machinery — at which point the answer was forced by the
+  shape of what was being specified. Tokenizing SPDX *only became
+  obvious* once we wrote out the example header block and saw that
+  leaving SPDX literal means consumers default to MIT/Apache when their
+  license intent might differ. Config-file-vs-prompt *only became
+  obvious* when we wrote the bootstrap flow and saw that per-prompt
+  forces re-asking on every template-copy. These weren't decisions the
+  OPP could have made cheaply; they required the PRD's design pressure.
+- **Implication:** The OPP→PRD pipeline isn't a paperwork chain — each
+  document type applies a different kind of design pressure. OPPs ask
+  "is this a real gap and what's the design space?" PRDs ask "what
+  specific machinery resolves the gap?" Questions that look settled
+  at OPP-time turn out to be open at PRD-time, and the gap-resolution
+  *requires* both passes. This is consistent with the PRD-0004
+  observation that *"writing the second mirror of a regex pattern forces
+  re-derivation that catches silent narrowness in the first"* — but
+  generalized from validator pairs to document pairs. Sibling pattern:
+  paired *documents* are a free correctness check the same way paired
+  *mechanisms* are. Suggests resisting the temptation to skip the PRD
+  for "obvious" cases — the document's job is precisely to surface
+  what's not obvious.
+- **Confidence:** medium — one instance in this session (PRD-0005), but
+  pattern is consistent with PRD-0004's experience (PRD took positions
+  on all six OPP-0004 open questions, several of which only had
+  defensible answers once the implementation surface was specified).
+  Two consistent data points in two cycles.
+- **Severity:** process
+- **Contributed by:** @unclenate via Claude Code, 2026-05-22 (PRD-0005 draft pass)

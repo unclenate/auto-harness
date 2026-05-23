@@ -56,8 +56,8 @@ this index exists only to group, cluster, or annotate them for human readers.
 
 ### Consumer onboarding & project hygiene
 
-- [OPP-0005](OPP-0005-consumer-header-hygiene.md) *(proposed
-  2026-05-22)* — Stop template SPDX/copyright headers from
+- [OPP-0005](OPP-0005-consumer-header-hygiene.md) *(exploring; PRD-0005 in flight,
+  drafted 2026-05-22)* — Stop template SPDX/copyright headers from
   propagating to consumer files. 61 template files + every
   sample-project file currently ship with literal
   `Copyright 2026 Nate DiNiro <UncleNate@gmail.com>` headers, so

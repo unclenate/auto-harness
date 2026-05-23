@@ -9,3 +9,10 @@ CONTRIBUTING.md
 # Implementation plans legitimately contain template content showing
 # file bodies to be created — the [[PLACEHOLDER_NAME]] tokens are illustrative.
 docs/superpowers/plans/**
+# PRD-0005 specifies the token names a future implementation will introduce
+# into templates — token mentions in this PRD are spec text, not unfilled
+# tokens. Same rationale as the platform/** exemption above. Re-evaluate
+# this exemption when PRD-0005 acceptance criteria are met (the PRD's
+# future-work section captures teaching the validator to skip code spans,
+# which would obviate this exemption).
+docs/requirements/PRD-0005-consumer-header-hygiene.md

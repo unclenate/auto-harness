@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0005 — Consumer Header Hygiene (Stop Template Headers from Propagating to Consumer Files)
 
-**Status:** proposed
+**Status:** exploring
 **Owner:** @unclenate
 **Created:** 2026-05-22
-**Last Updated:** 2026-05-22
+**Last Updated:** 2026-05-22 *(promoted to exploring; PRD-0005 drafted same day)*
 **Confidence:** high
 
 ---
@@ -190,15 +190,28 @@ templates lose too much by stripping. Fix the
 
 ## Disposition
 
-<!--
-Empty while Status: proposed. Populated when status flips to exploring,
-accepted, declined, or superseded. Captures rationale and any pointer
-(e.g., to the spawned PRD or the superseding OPP).
--->
+**2026-05-22 (proposed → exploring):** Same-day flip driven by maintainer
+priority signal (the legal-correctness shape — consumer attribution
+misrouting — is the kind of governance gap auto-harness exists to close,
+and remediation cost scales with continued silence). Direction set on
+**Option A + B** from the four candidates in the OPP — *tokenize template
+headers so the existing `validate-placeholders.sh` machinery gates new
+files, plus a small consumer-facing bootstrap helper that fills tokens
+project-wide on onboarding*. Option C (full `management/header-hygiene`
+module) deferred as premature primitive-creation given that A+B closes
+the gap with the primitives already in-tree. Option D (strip headers
+entirely) declined — templates lose too much pedagogical value when they
+no longer show the finished-header shape. Sample-projects keep their
+attribution (they're worked examples, not scaffolding sources) but gain
+a leading-comment marker explaining derivative copies must re-attribute.
+Internal drift in `platform/bootstrap/add-license-headers.sh` (line 2
+attributes to `nate@bdits.io`, not `UncleNate@gmail.com`) folded into the
+PRD-spawned implementation work. PRD-0005 drafted same day, paired with
+this Disposition update.
 
 ## Promotion
 
-<!--
-Empty until accepted. Then a link to PRD-NNNN. Format:
-- See `docs/requirements/PRD-NNNN-slug.md`
--->
+- See [PRD-0005](../requirements/PRD-0005-consumer-header-hygiene.md) —
+  drafted 2026-05-22; status `Proposed` (acceptance contingent on landing
+  the v1 implementation: tokenized templates + bootstrap helper +
+  validator composition + `add-license-headers.sh` attribution-drift fix).

@@ -13,6 +13,9 @@ one-file-per-candidate records with explicit status, evidence-linkage to the
 observation surface, and a binding promotion contract: accepting a candidate
 requires spawning a real PRD in the same commit.
 
+> **Visual:** [Opportunity → PRD → ADR Lifecycle diagram](../../../../docs/architecture/diagrams.md#4-opportunity--prd--adr-lifecycle) —
+> shows the status transitions and the promotion contract end-to-end.
+
 ---
 
 ## What This Overlay Requires

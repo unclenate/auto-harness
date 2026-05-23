@@ -11,6 +11,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 This repository IS the modular governance platform. It governs itself using its own
 module system, validators, and companion rules.
 
+> **Visual reference:** [Architecture Diagrams](docs/architecture/diagrams.md) — six
+> Mermaid diagrams covering composition, trust tier flow, companion rule firing,
+> opportunity-to-decision lifecycle, distillation triggers, and consumer adoption.
+
 **Manifest:** `harness.manifest.yaml`
 **Maturity:** Platform (Alpha)
 **Owner:** @unclenate

@@ -370,3 +370,45 @@ here until distillation.
   templates carry both universal and per-instance fields.
 - **Severity:** architectural
 - **Contributed by:** @unclenate via Claude Code, 2026-05-22 (PRD-0005 implementation pass)
+
+### Each new artifact asserting a catalog count is a new place that fact can drift
+
+- **Context:** Building the documentation visualization pass — six
+  Mermaid diagrams in `docs/architecture/diagrams.md` plus front/back
+  SVG covers. The diagrams cite `35 modules · 7 validators · 7 skills ·
+  56 templates · 14 workflows`; the back-cover SVG cites the same
+  numbers; the diagram's "Modules" node has `35 total in-tree` baked
+  into its label; `platform/reference/how-to-read.md` already cited the
+  numbers in prose AND in an ASCII-art authority-stack illustration.
+- **Observation:** Before this PR, the catalog counts lived in
+  *exactly one* mostly-correct place (`how-to-read.md` line 10) plus a
+  drifted copy two pages down (the same file's ASCII art said `55
+  templates · 13 workflows` while the prose said `55 / not-mentioned`,
+  and the actual counts were 56 / 14). After this PR, the counts also
+  live in (a) the back cover SVG, (b) the diagram-1 module-count
+  annotation, and (c) the diagrams.md "Editing These Diagrams"
+  guidance. We *added three new copies* of facts that drift.
+  Visualizations are powerful precisely because they re-state the same
+  data in a more digestible form — but the re-statement is replication,
+  and replication has a maintenance cost. The documented count
+  recipe at the top of `how-to-read.md` (HTML comment with `find …
+  | wc -l` invocations) saved us once today; nothing similar exists for
+  the back-cover counts or the diagram annotations.
+- **Implication:** When introducing a new artifact that asserts a fact
+  asserted elsewhere, *write down where the canonical copy is and how
+  to recompute it*. Better, encode the recipe inline so any future
+  reader can verify. Even better, build CI assertion that the counts
+  match (e.g., a `validate-catalog-counts.sh` validator that diffs
+  documented claims against `find | wc -l`). Until such a validator
+  exists, the human discipline is: when bumping a count anywhere,
+  grep for the old value across the repo and bump every occurrence in
+  the same PR. Treat catalog claims like API contracts — each call
+  site is a coupling that must be maintained. Worth elevating to
+  operating-principles if the drift recurs in a future audit.
+- **Confidence:** medium — the drift dynamic is structurally sound
+  (replication → drift) but the specific recommendation (count
+  validator) hasn't been built, so its effectiveness is speculative.
+  The discipline part (grep on bump) is high-confidence and immediately
+  actionable.
+- **Severity:** architectural
+- **Contributed by:** @unclenate via Claude Code, 2026-05-22 (visualization + QA pass)

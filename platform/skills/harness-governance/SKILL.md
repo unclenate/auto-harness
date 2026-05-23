@@ -18,6 +18,9 @@ working on any project that has a `harness.manifest.yaml` file.
 Every action falls into one of six tiers. Tier determines autonomy — higher tiers require
 human authorization, never self-elevation.
 
+> **Visual:** see the [Trust Tier Decision Flow diagram](../../../docs/architecture/diagrams.md#2-trust-tier-decision-flow)
+> for the same content rendered as a flowchart.
+
 | Tier | Name | Examples | Agent may proceed? |
 | ---- | ---- | -------- | ------------------ |
 | 0 | Read-only | Read files, search, inspect git history | Yes |
@@ -38,6 +41,9 @@ human authorization, never self-elevation.
 
 When a sensitive path changes, a companion file must also change in the same commit.
 If you change a trigger path without updating the companion, flag it before finishing.
+
+> **Visual:** see the [Companion Rule Firing diagram](../../../docs/architecture/diagrams.md#3-companion-rule-firing)
+> for the trigger → satisfier → CI-gate flow.
 
 Common companion rules in harness projects:
 

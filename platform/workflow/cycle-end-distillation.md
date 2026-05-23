@@ -14,6 +14,10 @@ provides the destinations for distilled knowledge; this workflow defines
 *when* to distill, *where each kind of learning belongs*, and *how the
 trigger mechanisms compose*.
 
+> **Visual:** [Distillation Trigger Composition diagram](../../docs/architecture/diagrams.md#5-distillation-trigger-composition) —
+> shows how the active hook + passive companion rule + trigger signals +
+> knowledge destinations all compose.
+
 This document is the canonical home for the "heartbeat with Knowledge
 Contribution step" pattern that earlier module READMEs reference as
 aspirational prose. The pattern is now grounded in actionable machinery:

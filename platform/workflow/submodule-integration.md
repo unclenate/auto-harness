@@ -10,6 +10,9 @@ This is the canonical guide for adopting auto-harness in a consumer repository b
 
 **Decision record:** [ADR-0003 — Auto-Harness Submodule Integration](../../docs/adr/ADR-0003-submodule-integration.md)
 
+> **Visual:** [Consumer Adoption Flow diagram](../../docs/architecture/diagrams.md#6-consumer-adoption-flow) —
+> end-to-end picture of submodule mount → bootstrap → headers → validate → CI.
+
 ## Why submodule mode
 
 The copy-based flow (`cp -r platform/skills/... .claude/skills/`) makes a snapshot. When auto-harness improves a skill, a validator, or a composition, that improvement reaches copies only if someone remembers to re-copy. In practice, consumer repos drift away from upstream over time.

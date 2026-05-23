@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  auto-harness — Back cover for GitBook PDF / print export.
+
+  Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+  SPDX-License-Identifier: MIT OR Apache-2.0
+
+  Dimensions: 1600 × 2400 (matches front cover).
+
+  Style: more text-heavy than the front; communicates *what's inside*
+  to a reader who picks up the book. Same color palette + accent rules.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 2400" width="1600" height="2400">
+  <!-- Background -->
+  <rect width="1600" height="2400" fill="#f6f4ee"/>
+
+  <!-- Top accent bar (matches front) -->
+  <rect x="0" y="0" width="1600" height="24" fill="#1f3a5f"/>
+
+  <!-- Title echo (smaller, top-left) -->
+  <text x="160" y="240" font-family="Georgia, 'Times New Roman', serif" font-size="80" fill="#0e1c2e" font-weight="700" letter-spacing="-2">auto-harness</text>
+  <rect x="160" y="270" width="160" height="4" fill="#1f3a5f"/>
+
+  <!-- Section 1: Description -->
+  <text x="160" y="380" font-family="Helvetica, Arial, sans-serif" font-size="36" fill="#1f3a5f" font-weight="700">What it is</text>
+
+  <g font-family="Georgia, 'Times New Roman', serif" fill="#0e1c2e" font-size="34">
+    <text x="160" y="450">A modular governance framework for projects</text>
+    <text x="160" y="496">where humans and AI agents work side-by-side.</text>
+    <text x="160" y="542">Trust tiers gate what agents may do autonomously.</text>
+    <text x="160" y="588">Companion rules turn governance into CI gates.</text>
+    <text x="160" y="634">Cycle-end distillation closes the learning loop.</text>
+  </g>
+
+  <!-- Section 2: What's inside (concrete catalog) -->
+  <text x="160" y="800" font-family="Helvetica, Arial, sans-serif" font-size="36" fill="#1f3a5f" font-weight="700">What is in this book</text>
+
+  <g font-family="Helvetica, Arial, sans-serif" fill="#0e1c2e" font-size="28">
+    <text x="160" y="870" font-weight="600">35 modules</text>
+    <text x="380" y="870">across stacks, architectures, data, delivery,</text>
+    <text x="380" y="906">management, domains, and agent packs</text>
+
+    <text x="160" y="980" font-weight="600">7 validators</text>
+    <text x="380" y="980">enforcing the contract at PR time</text>
+
+    <text x="160" y="1054" font-weight="600">7 skills</text>
+    <text x="380" y="1054">cross-client agent guidance (Claude, Cursor,</text>
+    <text x="380" y="1090">Copilot, Codex, Gemini, OpenClaw)</text>
+
+    <text x="160" y="1164" font-weight="600">56 templates</text>
+    <text x="380" y="1164">ADRs · PRDs · OPPs · risk registers ·</text>
+    <text x="380" y="1200">runbooks · knowledge captures · more</text>
+
+    <text x="160" y="1274" font-weight="600">14 workflows</text>
+    <text x="380" y="1274">bootstrap · discovery · brownfield · CI ·</text>
+    <text x="380" y="1310">distillation · troubleshooting</text>
+
+    <text x="160" y="1384" font-weight="600">6 diagrams</text>
+    <text x="380" y="1384">composition · trust tier · companion rules ·</text>
+    <text x="380" y="1420">lifecycle · distillation · consumer adoption</text>
+  </g>
+
+  <!-- Section 3: For whom -->
+  <text x="160" y="1620" font-family="Helvetica, Arial, sans-serif" font-size="36" fill="#1f3a5f" font-weight="700">For whom</text>
+
+  <g font-family="Georgia, 'Times New Roman', serif" fill="#0e1c2e" font-size="30">
+    <text x="160" y="1690">Engineering leads adopting AI tooling at scale</text>
+    <text x="160" y="1734">Solo maintainers shipping AI-assisted projects</text>
+    <text x="160" y="1778">Teams writing their own agent harnesses</text>
+    <text x="160" y="1822">Anyone tired of governance-as-aspiration</text>
+  </g>
+
+  <!-- License + author block -->
+  <line x1="160" y1="2080" x2="1440" y2="2080" stroke="#1f3a5f" stroke-width="2"/>
+
+  <g font-family="Helvetica, Arial, sans-serif" fill="#1f3a5f">
+    <text x="160" y="2140" font-size="26" font-weight="700">Dual-licensed MIT OR Apache-2.0</text>
+    <text x="160" y="2178" font-size="22" fill="#3a4a5e">at the consumer's choice</text>
+
+    <text x="160" y="2260" font-size="28" font-weight="700">Nate DiNiro</text>
+    <text x="160" y="2300" font-size="22" fill="#3a4a5e">github.com/unclenate/auto-harness</text>
+
+    <text x="1440" y="2260" font-size="28" text-anchor="end" font-weight="700">v1.0</text>
+    <text x="1440" y="2300" font-size="22" text-anchor="end" fill="#3a4a5e">2026</text>
+  </g>
+
+  <!-- Bottom accent bar -->
+  <rect x="0" y="2376" width="1600" height="24" fill="#1f3a5f"/>
+</svg>

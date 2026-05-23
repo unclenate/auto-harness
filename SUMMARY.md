@@ -66,6 +66,7 @@ The universal rules that apply to every harnessed project, regardless of modules
 
 ## Concepts and Reference
 
+* [Architecture Diagrams](docs/architecture/diagrams.md) — composition, trust tier flow, companion rule firing, OPP/PRD/ADR lifecycle, distillation triggers, consumer adoption
 * [Module Types](platform/core/registry/module-types.md) — families, field reference, compiled fragments vs skills
 * [Glossary](platform/reference/glossary.md) — shared terminology
 * [Topic Index](platform/reference/index.md) — cross-reference by concept

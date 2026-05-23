@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  auto-harness — Front cover for GitBook PDF / print export.
+
+  Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+  SPDX-License-Identifier: MIT OR Apache-2.0
+
+  Dimensions: 1600 × 2400 (2:3 ratio).
+  Renders cleanly at any size; prints crisply at US Letter / A4 / trade.
+
+  Style: bold typography + geometric module-composition motif. Inspired
+  by the diagram-1 "manifest → modules → enforcement → surfaces" stack.
+  Single accent color (deep slate); cream background prints with less ink
+  than full-bleed dark covers.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 2400" width="1600" height="2400">
+  <!-- Background -->
+  <rect width="1600" height="2400" fill="#f6f4ee"/>
+
+  <!-- Top accent bar -->
+  <rect x="0" y="0" width="1600" height="24" fill="#1f3a5f"/>
+
+  <!-- Geometric composition motif: nested rectangles representing
+       manifest → modules → contracts → enforcement → surfaces.
+       Positioned upper-left, deliberately understated. -->
+  <g transform="translate(160, 280)" stroke="#1f3a5f" stroke-width="3" fill="none">
+    <!-- outermost: manifest -->
+    <rect x="0" y="0" width="640" height="480" rx="6"/>
+    <text x="14" y="36" font-family="Menlo, Consolas, monospace" font-size="20" fill="#1f3a5f" font-weight="600">harness.manifest.yaml</text>
+
+    <!-- modules -->
+    <rect x="48" y="80" width="544" height="360" rx="4"/>
+    <text x="62" y="112" font-family="Menlo, Consolas, monospace" font-size="18" fill="#1f3a5f">modules</text>
+
+    <!-- contract layer (companionRules, requiredArtifacts, etc.) -->
+    <rect x="96" y="152" width="448" height="248" rx="4"/>
+    <text x="110" y="184" font-family="Menlo, Consolas, monospace" font-size="16" fill="#1f3a5f">companionRules · requiredArtifacts</text>
+
+    <!-- validators (filled, the enforcement layer) -->
+    <rect x="144" y="216" width="352" height="148" rx="4" fill="#1f3a5f" stroke="none"/>
+    <text x="160" y="252" font-family="Menlo, Consolas, monospace" font-size="18" fill="#f6f4ee" font-weight="600">validators · CI gates</text>
+    <text x="160" y="284" font-family="Menlo, Consolas, monospace" font-size="14" fill="#c8d4e3">validate-manifest.sh</text>
+    <text x="160" y="306" font-family="Menlo, Consolas, monospace" font-size="14" fill="#c8d4e3">validate-companions.sh</text>
+    <text x="160" y="328" font-family="Menlo, Consolas, monospace" font-size="14" fill="#c8d4e3">validate-placeholders.sh</text>
+    <text x="160" y="350" font-family="Menlo, Consolas, monospace" font-size="14" fill="#c8d4e3">... 4 more</text>
+  </g>
+
+  <!-- Main title -->
+  <text x="160" y="1080" font-family="Georgia, 'Times New Roman', serif" font-size="180" fill="#0e1c2e" font-weight="700" letter-spacing="-4">auto-harness</text>
+
+  <!-- Accent rule -->
+  <rect x="160" y="1140" width="240" height="6" fill="#1f3a5f"/>
+
+  <!-- Tagline -->
+  <text x="160" y="1280" font-family="Georgia, 'Times New Roman', serif" font-size="68" fill="#0e1c2e" font-style="italic">A governance framework</text>
+  <text x="160" y="1366" font-family="Georgia, 'Times New Roman', serif" font-size="68" fill="#0e1c2e" font-style="italic">for AI-assisted</text>
+  <text x="160" y="1452" font-family="Georgia, 'Times New Roman', serif" font-size="68" fill="#0e1c2e" font-style="italic">software development</text>
+
+  <!-- Three-line value-prop summary -->
+  <g font-family="Helvetica, Arial, sans-serif" fill="#3a4a5e">
+    <text x="160" y="1680" font-size="32">· Modular governance contracts as YAML</text>
+    <text x="160" y="1740" font-size="32">· Trust tiers, lifecycle gates, companion rules</text>
+    <text x="160" y="1800" font-size="32">· Cycle-end distillation built in</text>
+  </g>
+
+  <!-- Footer block -->
+  <line x1="160" y1="2200" x2="1440" y2="2200" stroke="#1f3a5f" stroke-width="2"/>
+
+  <g font-family="Helvetica, Arial, sans-serif" fill="#1f3a5f">
+    <text x="160" y="2260" font-size="36" font-weight="700">Nate DiNiro</text>
+    <text x="160" y="2300" font-size="24">github.com/unclenate/auto-harness</text>
+    <text x="1440" y="2260" font-size="32" text-anchor="end">v1.0</text>
+    <text x="1440" y="2300" font-size="24" text-anchor="end">2026</text>
+  </g>
+
+  <!-- Bottom accent bar -->
+  <rect x="0" y="2376" width="1600" height="24" fill="#1f3a5f"/>
+</svg>

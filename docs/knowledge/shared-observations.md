@@ -506,3 +506,53 @@ here until distillation.
   enumeration of "claims the harness makes" is comprehensive enough.
 - **Severity:** architectural
 - **Contributed by:** @unclenate via Claude Code, 2026-05-23 (audit synthesis)
+
+### Inference-with-declaration-override is the right shape for opt-in governance enforcement
+
+- **Context:** Drafting PRD-0006 (trust-tier enforcement). OPP-0006
+  enumerated five design options (A: optional schema only; B:
+  required schema + migration; C: inferred with override; D:
+  companion-rule level; E: hybrid of A + sensitivePaths inference).
+  The PRD-design pressure forced commitment to one.
+- **Observation:** When mechanizing existing-but-unenforced governance
+  doctrine, the *opt-in additive schema + inference fallback* pattern
+  (Option E) wins consistently over the alternatives. The reasoning
+  chain:
+  - Required schema breaks every existing module — high-friction
+    migration cost for marginal additional safety
+  - Optional schema alone leaves legacy modules permanently outside
+    enforcement — silent coverage gap that grows over time
+  - Inference alone is opaque (users don't know why their module
+    flagged as high-tier) — surprising and brittle
+  - Inference-with-declaration-override gives all parties the right
+    affordance: legacy modules covered by inference; new modules can
+    declare; declaration always wins when present (no surprise); the
+    inference rules are public contract (no opacity)
+
+  The general shape: *opt-in machinery for the migration path,
+  inference for the legacy coverage, declaration-wins for the
+  ergonomic surface*. This pattern recurred in PR #41
+  (validate-catalog-counts) where the inference was implicit recipes
+  and the declaration was the documented numeric claim, and in PR #38
+  (consumer header hygiene) where the declaration was the
+  `.harness-headers.yaml` config and the inference was *which tokens to
+  fill* (header-only, not per-record).
+- **Implication:** When mechanizing the remaining doctrine-without-
+  enforcement gaps identified by the 2026-05-23 audit (knowledge
+  curation workflow, consumer module operations, release versioning),
+  apply the same shape: inference-with-declaration-override. For
+  knowledge curation specifically: infer promotion candidates from
+  observation severity + repeat-count patterns; allow explicit
+  curator declarations to override. For consumer module operations:
+  infer required follow-up artifacts from module dependencies;
+  allow explicit overrides for cases where the inference is wrong.
+  The pattern generalizes; the audit's findings can be addressed
+  with a coherent design vocabulary rather than ad-hoc solutions per
+  gap.
+- **Confidence:** medium — three instances now (catalog-counts,
+  header hygiene, this PRD's bias toward Option E). The pattern is
+  structurally sound but the trust-tier implementation hasn't shipped
+  yet — Option E's effectiveness for *this* gap remains
+  hypothetical until v0.6.0 lands.
+- **Severity:** architectural
+- **Contributed by:** @unclenate via Claude Code, 2026-05-23 (OPP-0006 + PRD-0006 drafting)

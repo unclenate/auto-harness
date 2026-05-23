@@ -446,6 +446,7 @@ Specifications for substantive new capabilities, paired with their originating o
 * [PRD-0003: Opportunity Capture Module](docs/requirements/PRD-0003-opportunity-capture-module.md)
 * [PRD-0004: Distillation Triggers](docs/requirements/PRD-0004-distillation-triggers.md)
 * [PRD-0005: Consumer Header Hygiene](docs/requirements/PRD-0005-consumer-header-hygiene.md)
+* [PRD-0006: Trust-Tier Enforcement](docs/requirements/PRD-0006-trust-tier-enforcement.md)
 
 ### Opportunity Records (this project)
 
@@ -458,3 +459,4 @@ Forward-looking pre-PRD candidates managed by the `opportunity-capture` module.
 * [OPP-0003: MCP Producer and Exportable Governance via MCP](docs/opportunities/OPP-0003-mcp-producer-and-exportable-governance-via-mcp.md)
 * [OPP-0004: Distillation Triggers](docs/opportunities/OPP-0004-distillation-triggers.md)
 * [OPP-0005: Consumer Header Hygiene](docs/opportunities/OPP-0005-consumer-header-hygiene.md)
+* [OPP-0006: Trust-Tier Enforcement](docs/opportunities/OPP-0006-trust-tier-enforcement.md)

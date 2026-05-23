@@ -460,3 +460,4 @@ Forward-looking pre-PRD candidates managed by the `opportunity-capture` module.
 * [OPP-0004: Distillation Triggers](docs/opportunities/OPP-0004-distillation-triggers.md)
 * [OPP-0005: Consumer Header Hygiene](docs/opportunities/OPP-0005-consumer-header-hygiene.md)
 * [OPP-0006: Trust-Tier Enforcement](docs/opportunities/OPP-0006-trust-tier-enforcement.md)
+* [OPP-0007: Canonical-Position Artifact as Harness Primitive](docs/opportunities/OPP-0007-canonical-position-artifact.md)

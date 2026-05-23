@@ -82,6 +82,21 @@ this index exists only to group, cluster, or annotate them for human readers.
   plus a small bootstrap helper that fills tokens project-wide. Real
   legal correctness issue, not cosmetic.
 
+### Canonical direction & strategic alignment
+
+- [OPP-0007](OPP-0007-canonical-position-artifact.md) *(proposed 2026-05-23;
+  filed from `bdits/municipal-brain` reconciliation handoff; renumbered
+  from OPP-0006 after the trust-tier-enforcement OPP took that slot)* —
+  Introduce a canonical-position artifact as a first-class harness
+  primitive. Every other strategy / product / GTM / partnership artifact
+  cites it and cannot contradict it. Anchors four sibling observations
+  filed in the same session (validator opt-out staleness;
+  opportunity-capture backlog re-audit on canonical change; formal
+  review/reconciliation artifact type; intake-vs-canonical-direction
+  staleness). Identified as the highest-leverage single gap in the
+  harness's artifact catalog by the four-lens project alignment audit
+  (MB-REV-003) of `bdits/municipal-brain`.
+
 ---
 
 ## References

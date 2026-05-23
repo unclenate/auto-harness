@@ -2,7 +2,7 @@
 
 **Structure:** Structured Template (see README.md § Observation Structure; locked by ADR-0002)
 **Write Policy:** heartbeat-only (see README.md § Write Policy; adjustable)
-**Last Updated:** 2026-05-22 *(hook adapter pass)*
+**Last Updated:** 2026-05-23 *(municipal-brain reconciliation handoff — five observations appended)*
 
 Append-only structured observations from project participants (agents
 and humans). Read this file on each heartbeat. Observations accumulate
@@ -556,3 +556,233 @@ here until distillation.
   hypothetical until v0.6.0 lands.
 - **Severity:** architectural
 - **Contributed by:** @unclenate via Claude Code, 2026-05-23 (OPP-0006 + PRD-0006 drafting)
+
+### Validator opt-out has no staleness pressure
+
+- **Context:** `bdits/municipal-brain`'s `harness.manifest.yaml` carried
+  `disabledValidations: [required-artifacts]` and `requiredArtifacts: []`
+  set 2026-05-13 "for the discovery phase." That opt-out persisted
+  silently for 9+ days across multiple workflow cycles (firm-name sweep,
+  intake docx pipeline, Phase 0 build-readiness skeletons, OS partnership
+  v2.0 rework, intake re-pre-fill passes). The project moved through
+  Phase 0 build-readiness without any harness mechanism nudging that
+  the opt-out had outlived its rationale. Only an explicit
+  human-driven materials-alignment review (MB-REV-002 § 4) caught it.
+  See `bdits/municipal-brain` at commit `ff953c1`:
+  `docs/reviews/2026-05-22-materials-alignment-review.md`, the
+  pre-repair `harness.manifest.yaml`, and the repair commit `ff953c1`.
+- **Observation:** Validator opt-out (`overrides.disabledValidations`,
+  empty `requiredArtifacts`) has no built-in staleness pressure. The
+  harness honors the override correctly but provides no signal when
+  the override has outlived its original rationale. The override is
+  bound to *the original reason* (e.g., "discovery phase"), not to the
+  project's *current state*. As the project matures, the opt-out
+  becomes silent drift; nothing surfaces it. The failure class is
+  recoverable but only by an out-of-band human audit — which is exactly
+  the kind of work the harness exists to make unnecessary.
+- **Implication:** Treat validator opt-outs as time-bound: require a
+  short rationale (or a citation to the canonical-position section, per
+  OPP-0007) at the time the override is set, and emit a low-priority
+  warning on every validator run that names the override age and
+  rationale. Stronger version: a companion rule that fires when an
+  override has persisted N days beyond the project's last maturity
+  flip, asking for an explicit reconfirmation or revocation. Even
+  stronger: tie the override's basis to the canonical-position artifact
+  so it auto-invalidates when that artifact materially changes. The
+  goal is to make "set-and-forget overrides" structurally hard to do.
+- **Confidence:** high — the failure played end-to-end in a real
+  consumer project; the mechanism gap is structural and unambiguous,
+  and the same opt-out shape is available to every harness consumer
+- **Severity:** architectural
+- **Contributed by:** @unclenate via Claude Code, 2026-05-22 (municipal-brain reconciliation handoff)
+
+### Opportunity-capture has no backlog-reconciliation trigger when the canonical direction changes
+
+- **Context:** `bdits/municipal-brain` filed OPP-0001 through OPP-0024
+  between 2026-05-13 and 2026-05-18. The canonical direction then
+  changed substantially via the BDITS-000 ratification on 2026-05-22.
+  After ratification, OPP-0020 was manually flagged superseded; OPPs
+  0001..0018 (the bulk of the backlog) remained at `proposed` status
+  with their original framing intact, but most of them no longer
+  reference live concepts — the v4 platform thesis, the cycle-time
+  wedge, and the Microsoft-first stack they presumed are all archived.
+  The harness fired no rule on this state; the backlog drift sits as
+  silent inconsistency. See `bdits/municipal-brain` at commit
+  `ff953c1`: `docs/opportunities/OPP-00{01..18}-*.md` (framing predates
+  BDITS-000) vs. `docs/BDITS-000-canonical-position.md` (the new
+  canonical reference).
+- **Observation:** The opportunity-capture module ships a per-record
+  floor rule (audit-trail entry on each OPP edit) and a same-commit
+  PRD promotion contract for accepted candidates, but has no mechanism
+  that fires when a *global* canonical direction changes. Each OPP is
+  treated as independent; the backlog has no concept of "the basis on
+  which we filed these candidates has shifted." After a canonical
+  reset, the backlog increasingly disagrees with itself, requiring a
+  separate manual audit pass to triage which candidates remain viable,
+  which are superseded, and which need re-framing.
+- **Implication:** Opportunity-capture should carry a
+  "canonical-direction-change → backlog re-audit" discipline. Most
+  cleanly composes with OPP-0007 (canonical-position artifact): when
+  the canonical-position artifact is materially revised, a companion
+  rule fires demanding either a re-audit log entry in the change-log
+  (lightweight satisfier — *"the backlog was walked; N candidates
+  reconfirmed, M superseded, K re-framed"*) or, more strictly, an
+  explicit status review on every existing OPP. The re-audit itself
+  could be a checklist artifact (similar to the proposed review /
+  reconciliation type — Observation C below). Without this, the
+  backlog asymptotically becomes a museum of retired thinking.
+- **Confidence:** high — 24 OPPs of which roughly 18 are now framing-
+  stale; the failure is quantitative and the mechanism gap is structural
+- **Severity:** architectural
+- **Contributed by:** @unclenate via Claude Code, 2026-05-22 (municipal-brain reconciliation handoff)
+
+### No formal review / reconciliation artifact type — and the ad-hoc one proved high-value
+
+- **Context:** The `bdits/municipal-brain` reconciliation produced four
+  review artifacts in four days (MB-REV-001 plan-vs-call-record
+  reconciliation; MB-REV-002 planning improvement review, four-lens;
+  MB-REV-003 project alignment audit, four-lens; MB-REV-004 materials
+  alignment review). They landed in an ad-hoc `docs/reviews/` folder
+  with no harness template, no naming convention beyond a date-prefix,
+  topic slug, and an `MB-REV-NNN` ID, and no companion rules.
+  Despite the ad-hoc structure, MB-REV-001/002/003 directly drove the
+  BDITS-000 canonical position ratification, and MB-REV-004 produced
+  the four remediation actions (M-1..M-4) that closed out the materials
+  drift. They were the highest-value documents produced in the
+  reconciliation window after BDITS-000 itself. See `bdits/municipal-
+  brain` at commit `ff953c1`:
+  `docs/reviews/2026-05-22-project-alignment-audit.md` (one example).
+- **Observation:** The harness has ADR / PRD / OPP / change-log /
+  knowledge — five durable artifact types — but no formal *review*
+  artifact. ADRs document decisions; reviews document the *audit that
+  produces* a decision. They are different artifact classes: an ADR
+  commits to a course of action; a review surfaces gaps, scores
+  artifacts against criteria, and proposes remediations. Without a
+  formal review type, projects either (a) skip the audit step and let
+  drift accumulate (the failure mode `bdits/municipal-brain` hit
+  *before* MB-REV-001..004), or (b) invent the artifact ad-hoc (the
+  failure mode it hit *after* — the reviews work but their place in
+  the lifecycle is unowned).
+- **Implication:** Formalize a review artifact type, likely as an
+  addition to `management/project-standard` or as a new lightweight
+  overlay (`management/review-cadence`?). Template needs: ID convention
+  (per-project prefix similar to `MB-REV-NNN`), lens / dimension
+  structure (the four-lens shape proved valuable), verdict-per-
+  artifact table, remediation actions with `M-NNN` identifiers, and a
+  Companion field linking to the canonical-position artifact
+  (OPP-0007). Cadence may be event-driven (file when drift suspected)
+  and/or scheduled. The natural pair: the canonical-position artifact
+  is revised *by* a review proposing the revision; the two artifact
+  types compose into a coherent strategic-direction lifecycle.
+  `program-template/governance-cadence.md` (if it exists) may be the
+  scheduling home for the cadence side.
+- **Confidence:** high — four reviews in four days produced load-
+  bearing outputs; the gap in the harness's artifact catalog is
+  structural and reproducible across long-running projects
+- **Severity:** architectural
+- **Contributed by:** @unclenate via Claude Code, 2026-05-22 (municipal-brain reconciliation handoff)
+
+### Discovery-intake treats the intake as one-shot; canonical-direction-changed → intake-stale path is missing
+
+- **Context:** `bdits/municipal-brain`'s intake questionnaire was
+  pre-filled three times in nine days. The 2026-05-13 first pre-fill
+  was against the v4 stack + OPP-0001..0018. The 2026-05-21 second
+  pre-fill wove in OPP-0019..0024 (filed since the first pre-fill). The
+  2026-05-22 third pre-fill was a full re-pre-fill required because the
+  second pass still carried v4 framing that the canonical position
+  (BDITS-000) had retired. Three pre-fill passes; the first two were
+  architecturally trapped because when the canonical direction
+  changed, the existing pre-fill became stale silently and the only
+  way to recover was to re-do the work. See `bdits/municipal-brain` at
+  commit `ff953c1`: `docs/discovery/intake-questionnaire.md` (current
+  third-pass state) + the three corresponding 2026-05-22 / 2026-05-21
+  / 2026-05-13 change-log entries documenting each pass.
+- **Observation:** The `discovery-intake` module treats the intake-
+  questionnaire as a one-shot artifact: pre-filled, OPEN markers
+  resolved, downstream artifacts produced. There is no harness-level
+  model of *"the canonical direction changed → this intake's framing
+  is now stale."* The intake does not declare *which canonical
+  position it was filled against*; there is no companion rule that
+  fires when the canonical position changes and the intake hasn't been
+  re-pre-filled since. Each pre-fill pass is a one-shot human-triggered
+  event with no harness continuity.
+- **Implication:** Tie the intake to the canonical-position artifact
+  (OPP-0007). Concretely: add a required header field to the intake
+  template — *"Filled against: `<canonical-position-artifact-path>`
+  @commit `<SHA>`"* — captured at pre-fill time. Add a companion rule:
+  when the canonical-position artifact's content (not just metadata)
+  changes after the intake's recorded SHA, the intake's Status header
+  should flip to `stale-canonical-direction-changed` (or similar),
+  surfacing the need to re-pre-fill. This composes with the review
+  artifact type (Observation C): a review can propose a canonical-
+  position revision, which automatically flags the intake stale,
+  which triggers re-pre-fill — all visible to the harness instead of
+  requiring out-of-band human triggers.
+- **Confidence:** high — three pre-fill passes in nine days is a
+  quantitative measure of the gap; the mechanism gap is structural and
+  identical for every long-running planning project
+- **Severity:** architectural
+- **Contributed by:** @unclenate via Claude Code, 2026-05-22 (municipal-brain reconciliation handoff)
+
+### Three positive patterns from a heavy-load reconciliation worth promoting to harness conventions
+
+- **Context:** The `bdits/municipal-brain` reconciliation ran roughly
+  11 commits in 4 days across two repos, multiple Cowork ↔ Claude Code
+  handoffs, and a four-lens audit. Three patterns held up under load
+  and are worth promoting from project-local habit to harness
+  convention, before they fade. See `bdits/municipal-brain` at commit
+  `ff953c1`: `docs/project/change-log.md` (entire 2026-05-22 cluster),
+  `docs/archive/ARCHIVE-INDEX.md`, and the post-reconciliation manifest
+  state.
+- **Observation:** Three patterns:
+  1. **The change-log as commit-grouping spec.** The Cowork → Claude
+     Code session handoff used "one commit per change-log entry" as
+     the literal commit-boundary instruction. The change-log isn't
+     just a record — it became an active coordination contract
+     between authors and committers, with each entry's
+     `What changed` directly becoming the commit's body. This worked
+     cleanly across 6 dependency-ordered commits.
+  2. **Companion-rules discipline held under heavy load and caught
+     real misses.** The kernel/base rule fired on a new `scripts/`
+     addition demanding a change-log entry; the opportunity-capture
+     README rule had previously caught cluster-update edits that
+     warranted ratification — both were *real* governance signals,
+     not noise. The discipline never had to be bypassed across the
+     entire reconciliation.
+  3. **Salvage-before-archive + ARCHIVE-INDEX.** Before archiving the
+     pre-v4 planning iterations, valuable content was extracted into
+     the live corpus (MB-RES-CC-005 absorbed the v2 traceability
+     matrix; the OS working-session-invitation template absorbed the
+     v3.1 outreach memo). An `ARCHIVE-INDEX.md` records what each
+     archived document was and what superseded it. Both decisions —
+     salvage-before-archive *and* maintain an index — proved high-
+     value during and after the reconciliation: nothing was lost; the
+     archive remained navigable.
+- **Implication:** Promote the three patterns to harness conventions:
+  1. The change-log format already exists in `project-standard`. Add
+     an explicit note (in `platform/profiles/management/project-
+     standard/README.md` or a new `platform/workflow/change-log-as-
+     commit-spec.md`) that entries should be commit-grouping-ready,
+     and codify the "one entry = one logical commit" pattern as the
+     supported handoff format for multi-session work.
+  2. Companion-rules discipline is structurally encoded already; the
+     observation is positive — preserve the regex-over-paths
+     simplicity (per the file-boundary-as-precision discipline of
+     ADR-0012) and resist adding sophistication that would make
+     compliance harder. This is a "do not regress" observation, not
+     a new feature.
+  3. Add an `archive-discipline.md` workflow doc (or extend
+     `docs/operating-principles.md`): when retiring artifacts,
+     salvage valuable content into the live corpus first; then move;
+     then maintain `ARCHIVE-INDEX.md` in any archive directory.
+     Optionally promote `docs/archive/ARCHIVE-INDEX.md` to a
+     recognized optional artifact for `kernel/base` or
+     `project-standard`. The index is the natural place for the
+     supersession chain a future reader needs to reconstruct project
+     history without spelunking git log.
+- **Confidence:** high for patterns 1 and 3 (observed under load with
+  load-bearing outcomes); medium for the broader generalization to
+  other projects, but the patterns are structurally sound and worth
+  the cheap experiment of promoting them
+- **Severity:** process
+- **Contributed by:** @unclenate via Claude Code, 2026-05-22 (municipal-brain reconciliation handoff)

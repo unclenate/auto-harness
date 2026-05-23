@@ -80,7 +80,7 @@
     <text x="160" y="2260" font-size="28" font-weight="700">Nate DiNiro</text>
     <text x="160" y="2300" font-size="22" fill="#3a4a5e">github.com/unclenate/auto-harness</text>
 
-    <text x="1440" y="2260" font-size="28" text-anchor="end" font-weight="700">v1.0</text>
+    <text x="1440" y="2260" font-size="28" text-anchor="end" font-weight="700">v0.5</text>
     <text x="1440" y="2300" font-size="22" text-anchor="end" fill="#3a4a5e">2026</text>
   </g>
 

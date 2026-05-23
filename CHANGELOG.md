@@ -18,29 +18,199 @@ they update their submodule pin. For the *internal* per-decision audit trail
 
 ## [Unreleased]
 
+(empty — the next change to land here will populate the next release)
+
+---
+
+## [v0.5.0] — 2026-05-23
+
+First versioned release of auto-harness. Establishes the semantic-versioning
+baseline; everything before this tag is pre-versioned development history
+(see [`docs/project/change-log.md`](docs/project/change-log.md) for the
+granular per-decision audit log of pre-v0.5.0 work).
+
+Consumers should pin to `v0.5.0` (or later) instead of commit hashes going
+forward.
+
 ### Added
 
-- Top-level `CHANGELOG.md` (this file) — quality-audit finding L1-09.
-- Validator-level ReDoS defense: `Regexp.timeout = 1.0` set unconditionally
-  in `platform/validators/lib/harness_registry.rb`. Compiled user-supplied
-  regexes from `module.yaml` (companion rule paths + forbidden patterns) and
-  `.doc-reference-ignore` can no longer wedge a validator. Quality-audit
-  finding L2-07.
-- Renderer-aware link fixes across entry-point docs: license links now use
-  absolute GitHub URLs so they resolve correctly in GitBook (which treats
-  bare extensionless paths as directories and 404s on `LICENSE-MIT/README.md`).
-  Twenty directory-target links (trailing slash) in profile/template/sample
-  READMEs now point at specific files (`README.md` / `SKILL.md` / `HARNESS.md`)
-  for the same reason. Quality-audit finding L1-14 and the LICENSE-link issue
-  surfaced post-audit.
+- **Cycle-end distillation triggers** — paired machinery turning the
+  aspirational "heartbeat with Knowledge Contribution step" prose into
+  actionable contracts. Companion rule on `management/knowledge-capture`
+  fires at PR boundary when distillation-worthy work is committed (new
+  ADR, OPP, module manifest, or active-module catalog change); satisfied
+  by an entry in any knowledge destination
+  (`shared-observations.md` / `operating-principles.md` /
+  `distilled-learnings.md`). Optional Claude Code `Stop`-event hook
+  adapter at
+  [`platform/examples/sample-projects/node-web-saas-postgres/.claude/hooks/distillation-prompt.sh`](platform/examples/sample-projects/node-web-saas-postgres/.claude/hooks/distillation-prompt.sh)
+  emits a structured in-session prompt. Canonical workflow at
+  [`platform/workflow/cycle-end-distillation.md`](platform/workflow/cycle-end-distillation.md).
+  Spec: [PRD-0004](docs/requirements/PRD-0004-distillation-triggers.md),
+  [OPP-0004](docs/opportunities/OPP-0004-distillation-triggers.md).
+
+- **Consumer header hygiene v1** — 61 templates under
+  `platform/templates/**` had literal SPDX/copyright headers replaced
+  with `YEAR`, `OWNER_NAME`, `OWNER_EMAIL`, `SPDX_LICENSE` placeholder
+  tokens (in `[[…]]` brackets per the template convention). New
+  [`set-consumer-headers.sh`](platform/bootstrap/set-consumer-headers.sh)
+  bootstrap helper (interactive + flag-driven; writes
+  `.harness-headers.yaml` project-local config) substitutes tokens
+  project-wide for consumer adopters. Spec:
+  [PRD-0005](docs/requirements/PRD-0005-consumer-header-hygiene.md),
+  [OPP-0005](docs/opportunities/OPP-0005-consumer-header-hygiene.md).
+
+- **Six architecture diagrams** at
+  [`docs/architecture/diagrams.md`](docs/architecture/diagrams.md) —
+  composition, trust tier flow, companion rule firing, OPP/PRD/ADR
+  lifecycle, distillation trigger composition, consumer adoption.
+  Mermaid in Markdown so they render in GitHub web view + GitBook
+  natively. Cross-linked from HARNESS.md, harness-governance SKILL,
+  cycle-end-distillation, opportunity-capture, submodule-integration,
+  and SUMMARY.md.
+
+- **GitBook PDF / print cover assets** at
+  [`docs/_assets/cover-front.svg`](docs/_assets/cover-front.svg) and
+  `cover-back.svg` — 1600×2400, bold-typography + nested-rectangle
+  module-composition motif. Self-documenting in
+  [`docs/_assets/README.md`](docs/_assets/README.md).
+
+- **8th validator: `validate-catalog-counts.sh`** — runs inline recipes
+  (`find platform/profiles -name module.yaml | wc -l`, etc.) for seven
+  catalog metrics; iterates a 23-row assertion table mapping
+  `(file, regex, count-key)` to documented claim sites; reports drift
+  with file-and-key context. `normalize_count()` handles English number
+  words (one through twenty). Closes the count-drift class identified
+  in `docs/knowledge/shared-observations.md`.
+
+- **Operating-principles § 8: Prefer Text Representations** — codifies
+  the existing pattern (YAML modules, Bash validators, Markdown
+  SKILL/docs/templates, Mermaid diagrams, SVG covers) as durable
+  doctrine with explicit rationale, applied-vs-rejected table, and
+  three legitimate exception classes.
+
+- **Five new authoritative workflow + threat-model docs** —
+  [`extending-the-harness.md`](platform/workflow/extending-the-harness.md)
+  (module / validator / skill / template / agent-pack author guide),
+  [`modify-composition-mid-project.md`](platform/workflow/modify-composition-mid-project.md)
+  (add / change / remove modules in active manifests),
+  [`incident-response.md`](platform/workflow/incident-response.md)
+  (five-phase operational workflow using the existing `incident.md`
+  template),
+  [`release-and-versioning.md`](platform/workflow/release-and-versioning.md)
+  (the policy backing this release), and
+  [`threat-model.md`](docs/threat-model.md) (companion to SECURITY.md
+  with adversary models, attack surfaces, deployed mitigations).
+
+- **opportunity-capture v1.1** — candidate index split out of
+  README.md into sibling `candidates.md` per ADR-0012
+  (file-boundaries-as-precision pattern; first formalized in
+  operating-principles § 7).
+
+- **knowledge-capture v1.1** — adds the cycle-end distillation companion
+  rule.
+
+- **claude-code v1.1** — adds the Stop-hook adapter as optionalArtifact.
 
 ### Changed
 
-- `platform/validators/README.md` Bash-version requirement reworded to remove
-  self-contradiction. The seven `validate-*.sh` scripts delegate to Ruby and
-  work on Bash 3.2 (macOS default) + 4+; only the bootstrap scripts
-  (`install.sh`, `link-skills.sh`, `add-license-headers.sh`) require Bash 4+.
-  Quality-audit finding L1-08.
+- **Validator count: 7 → 8** (added `validate-catalog-counts.sh`).
+- **Workflow count: 14 → 18** (added extending-the-harness,
+  modify-composition-mid-project, incident-response,
+  release-and-versioning; cycle-end-distillation was already there).
+- **`validate-companions.sh`** companion-rule regex on
+  `management/knowledge-capture` broadened from
+  `^platform/profiles/.+/module\.yaml$` to `^platform/.+/module\.yaml$`
+  — covers agent-pack and kernel modules, not just profile modules.
+  (Caught by the hook adapter's regex-mirror during PR #34.)
+- **SUMMARY.md** reorganized — Day-to-Day Workflows gains four new
+  rows; Maintenance & Operations gains release-and-versioning; new
+  "Contributing & Extension" section adds extending-the-harness +
+  threat-model; all 12 ADRs, 5 PRDs, 5 OPPs now listed under their
+  respective sections (was lagging by 9 artifacts).
+- **README.md** Reference section gains
+  `docs/architecture/diagrams.md` entry; validator-count claims
+  updated; validators table gains the new row.
+- **`.gitignore`** scoped negation
+  (`!platform/examples/sample-projects/*/.claude/`) so checked-in
+  reference implementations under sample-projects ship alongside the
+  consumer-runtime `.claude/` ignore.
+
+### Fixed
+
+- **`platform/bootstrap/add-license-headers.sh`** attribution drift at
+  two sites (line 2 header + line 64 `AUTHOR=` variable) — both now
+  use the canonical personal email matching every other source file.
+- **Catalog count drift** at multiple call sites in
+  `platform/reference/how-to-read.md`,
+  `docs/architecture/diagrams.md`, `docs/_assets/cover-back.svg`,
+  and `README.md` (now structurally prevented by the new
+  `validate-catalog-counts.sh`).
+- **`.placeholder-ignore`** scoped exemption for PRD-0005 (which
+  legitimately specifies token names that the validator would
+  otherwise catch).
+
+### Architectural observations captured
+
+Each observation in
+[`docs/knowledge/shared-observations.md`](docs/knowledge/shared-observations.md)
+generalizes a v0.5.0 design pressure into durable institutional
+knowledge:
+
+- *Distillation triggers can land without bootstrap exception when the
+  introducing PR carries genuine learning*
+- *Paired-mechanism implementation is a free correctness check on the
+  governance side of the pair*
+- *Harness primitives that don't compose toward the consumer-side
+  surface are silent governance gaps*
+- *PRD drafts surface questions the originating OPP successfully
+  elided — the OPP→PRD pipeline is a discipline, not a redundancy*
+- *Header-token classes split cleanly along project-wide vs.
+  per-record axis*
+- *Each new artifact asserting a catalog count is a new place that
+  fact can drift*
+- *Governance machinery that asserts against state-including-itself
+  creates a free first-run self-test*
+- *Doctrine in prose without enforcement in code is a recurring
+  harness gap pattern* (the meta-finding driving Wave 3 work)
+- (Earlier this release, pre-Wave) *Maintainer "I thought that was
+  already happening" is the highest-signal gap-discovery pattern*
+
+### Known limitations
+
+- **No machine-checked trust-tier enforcement.** Tiers 0–5 remain
+  honor-code; trust-tier-enforcement OPP is filed for v0.6+.
+- **Knowledge management is write-only.** No query interface over
+  observations; `distilled-learnings.md` curation workflow is
+  aspirational. Smaller knowledge query tooling lands in v0.5.x; full
+  curation workflow deferred to v0.6+.
+- **Mermaid diagram labels** are not yet covered by the catalog-counts
+  validator's assertion table for all sites (covered for diagram-1's
+  `<br/>` boundary patterns but not for arbitrary diagram body text).
+  Diagram-label drift remains a human-discipline concern in the gap.
+- **No consumer-side migration tool** for projects that already
+  inherited bad template headers before v0.5.0 — manual remediation
+  pattern documented in `set-consumer-headers.sh` help text.
+
+### Upgrade notes (from pre-v0.5.0 commit-pinned consumption)
+
+If your project pinned to a commit hash on `main` between 2026-05-18
+and 2026-05-22, you can move to `v0.5.0` cleanly — no breaking
+changes in this release. The migration is essentially:
+
+```bash
+cd .harness
+git fetch --tags
+git checkout v0.5.0
+cd ..
+git add .harness
+git commit -m "chore: pin auto-harness to v0.5.0 first release"
+```
+
+If you have template-derived files in your project with literal
+auto-harness headers (`Copyright 2026 Nate DiNiro <UncleNate@gmail.com>`),
+run `bash .harness/platform/bootstrap/set-consumer-headers.sh` to fill
+the now-tokenized header forms with your project's identity.
 
 ## 2026-05-18 — Post-OSS-launch hardening sprint
 

@@ -41,15 +41,27 @@ How to use the harness during normal development on a project that has already a
 * [Skills and Agents](platform/workflow/skills-and-agents.md)
 * [CI Integration](platform/workflow/ci-integration.md)
 * [Standards Pattern](platform/workflow/standards-pattern.md)
+* [Cycle-End Distillation](platform/workflow/cycle-end-distillation.md) — when and where to capture institutional learning
+* [Modify Composition Mid-Project](platform/workflow/modify-composition-mid-project.md) — add / change / remove modules in an active manifest
+* [Incident Response](platform/workflow/incident-response.md) — operational workflow for production incidents and postmortems
 * [Agentic Interface Integration](platform/workflow/agentic-interface-integration.md) — operator workflow for in-product agent surfaces
 * [MCP Server Build](platform/workflow/mcp-server-build.md) — operator workflow for projects that ship an MCP server
+* [Multi-Agent Tool Coordination](platform/workflow/multi-agent-tool-coordination.md)
 
 ## Maintenance & Operations
 
 How to keep the harness itself healthy after adoption — upgrades, version pinning, drift recovery, governance audits.
 
 * [Maintenance & Operations Guide](platform/workflow/maintenance-operations.md) — upgrade flow, pinning, rollback, drift detection, copy-to-submodule migration, lifecycle transitions, periodic audits
+* [Release and Versioning](platform/workflow/release-and-versioning.md) — policy and process for releasing auto-harness itself
 * [Validator Error Solver (Troubleshooting)](platform/workflow/troubleshooting.md)
+
+## Contributing & Extension
+
+Authoring new modules, validators, skills, templates, and agent packs.
+
+* [Extending the Harness](platform/workflow/extending-the-harness.md) — module / validator / skill / template / agent-pack author guide
+* [Threat Model](docs/threat-model.md) — what auto-harness protects against; what it doesn't; mitigations in place
 
 ## Kernel — Governance Foundation
 

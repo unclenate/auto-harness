@@ -7,7 +7,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 # Operating Principles — Development Harness Framework
 
 > Owner: @unclenate
-> Last updated: 2026-05-22
+> Last updated: 2026-05-22 *(§ 8 added: prefer text representations)*
 
 These principles govern how the harness platform itself is built and evolved.
 They are derived from the kernel doctrine and adapted to this project's context.
@@ -110,3 +110,78 @@ layer about substructure.
 - When evaluating a new companion rule, ask: *does the file this rule
   guards contain exactly one change class?* If not, split it before
   writing the rule.
+
+---
+
+## 8. Prefer Text Representations
+
+When a new harness artifact can be expressed as text (YAML, Markdown,
+Mermaid, SVG, plain bash) or as binary / proprietary format (PNG, JPG,
+Figma file, Word doc, GUI-tool project file), choose text. The default
+is overwhelming: every binary asset introduced is a maintenance and
+governance debt the harness pays continuously.
+
+- **Versionable** — text diffs are reviewable; binary diffs are opaque.
+  A reviewer can see exactly what changed in a Mermaid diagram or SVG
+  cover; a reviewer cannot meaningfully review a PNG diff.
+- **Toolchain-free** — text artifacts edit in any editor on any
+  platform. Binary artifacts couple the project to specific tooling
+  (Figma seats, Photoshop licenses, Sketch on macOS-only) and to
+  specific people who have that tooling.
+- **CI-friendly** — validators can read, parse, and assert against
+  text. They cannot meaningfully inspect a binary. Companion rules,
+  placeholder validators, and link checkers all assume text input.
+- **Diffable in PR review** — the same property that makes text
+  reviewable in commits makes it reviewable in PR comments, where
+  reviewers can quote specific lines.
+- **Future-proof** — text representations survive tool deprecation.
+  A 2026 Figma project may not open in 2036; a Mermaid block in a
+  Markdown file will.
+
+**Applied in the harness:**
+
+| Surface | Text choice | Rejected alternative |
+|---------|-------------|----------------------|
+| Module contracts | `module.yaml` | GUI module-builder UI |
+| Validators | Bash + Ruby scripts | Compiled binary tool |
+| Architecture diagrams | Mermaid in Markdown | Static PNG / Figma export |
+| Book covers | SVG (text-based) | PNG / JPG / InDesign |
+| Skill definitions | Markdown SKILL.md | Compiled skill bundle |
+| ADRs / PRDs / OPPs | Markdown | Confluence / Notion pages |
+| Documentation diagrams | Mermaid blocks | Diagram-tool exports |
+| Configuration | `.harness-headers.yaml`, etc. | TUI / config UI |
+
+**When to break the rule:**
+
+- **Photography or illustration** that genuinely requires raster (logos
+  with photographic elements, screenshots of real product UIs, charts
+  with thousands of data points). Even then, store the *source* of the
+  artifact (Lightroom catalog, raw photo, screenshot recipe) alongside
+  the rendered binary so the regeneration path is documented.
+- **Render targets** for downstream tools that don't accept text (some
+  print services need PNG / TIFF; some browsers can't render SVG
+  filters). Generate from text source on demand rather than committing
+  the binary. See `docs/_assets/README.md` for the rsvg-convert recipe
+  that produces PNG covers from the SVG sources.
+- **Tool-specific binary that must round-trip** (e.g., a `.psd` whose
+  layers carry information the rendered PNG flattens away). Document
+  the round-trip dependency explicitly so the rule's exception is
+  legible.
+
+**When introducing a new artifact, ask:** *can this be expressed as
+text without losing essential meaning?* If yes, do so even if the text
+representation is slightly less polished than the binary alternative;
+the maintenance + governance gains compound across the project's
+lifetime. If no, document the exception and the regeneration path
+alongside the artifact.
+
+- Derived from accumulated evidence in
+  `docs/knowledge/shared-observations.md`: YAML manifests + bash
+  validators + Markdown SKILL files + Mermaid diagrams + SVG covers
+  each introduced under their own design pressure; the *pattern across
+  all of them* is what this principle codifies. See specifically the
+  observation *"Each new artifact asserting a catalog count is a new
+  place that fact can drift"* (2026-05-22) which articulated the
+  downstream cost of replicating facts across new artifacts —
+  manageable when those artifacts are text (greppable, diffable, CI-
+  assertable), much less so when they are binary.

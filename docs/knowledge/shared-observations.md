@@ -412,3 +412,47 @@ here until distillation.
   actionable.
 - **Severity:** architectural
 - **Contributed by:** @unclenate via Claude Code, 2026-05-22 (visualization + QA pass)
+
+### Governance machinery that asserts against state-including-itself creates a free first-run self-test
+
+- **Context:** Shipping `validate-catalog-counts.sh`. Adding the
+  validator script bumps the `validators` canonical count from 7 to
+  8. The validator's first run reads its own filesystem state (which
+  now includes itself), computes the new canonical count (8), and
+  compares to documented claims (which still say 7 across four call
+  sites until this PR updates them). The validator catches the drift
+  it just caused. Identical structural dynamic to PRD-0004's Stop-hook
+  catching the companion rule's regex-scope bug (PR #34) and to
+  PRD-0005's templates dogfooding `validate-placeholders.sh` against
+  the harness's own tree (PR #38).
+- **Observation:** When a new piece of governance machinery is
+  introduced and the machinery happens to assert against state that
+  *includes the machinery itself*, the act of introducing it produces
+  a free first-run self-test — because the machinery, before any docs
+  are updated, is checking documented claims that haven't caught up to
+  reality. This is a distinct dynamic from "paired mechanisms catch
+  each other's bugs" (PR #34's observation): there, two separate
+  artifacts cross-validated each other on introduction. Here, *one*
+  artifact validates a system-including-itself. Three instances now
+  (hook + rule, validator + templates, validator + own count) suggest
+  this is a reliable structural property: machinery whose contract
+  references repo-wide facts is self-stabilizing because the
+  introducing diff necessarily exercises the new contract.
+- **Implication:** When designing governance primitives, prefer the
+  shape *"validator/check that asserts against entire-repo state"*
+  over *"validator that asserts against a fixed-scoped subset that
+  excludes itself."* The former gets a first-run self-test for free;
+  the latter needs separate test infrastructure to verify it works.
+  Applied dimensions: count assertions across all docs (catalog
+  validator), regex coverage over all paths (placeholder validator),
+  doc-reference resolution across all markdown (doc-references
+  validator). Generalizes to: any check whose scope is *"the whole
+  repo"* will, by construction, be exercised by its own introducing PR.
+- **Confidence:** medium → high — three independent data points across
+  three different mechanism types (hook adapter, template tokenization,
+  validator-asserting-its-own-count) in this session alone. Pattern is
+  structurally sound and the cost of the design choice is essentially
+  zero (just *not* artificially scoping the check away from the new
+  artifact's neighborhood).
+- **Severity:** architectural
+- **Contributed by:** @unclenate via Claude Code, 2026-05-23 (catalog-counts validator)

@@ -51,6 +51,7 @@ validators:
   - validate-module-graph
   - validate-placeholders
   - validate-companions
+  - validate-catalog-counts
 reviewGates:
   - Human review is mandatory for governance entrypoint changes.
   - Validator success never replaces ownership review for protected governance files.

@@ -56,7 +56,7 @@ flowchart TD
     end
 
     subgraph ENFORCE["Enforcement (CI)"]
-        Validators["<b>Validators</b><br/>7 scripts"]
+        Validators["<b>Validators</b><br/>8 scripts"]
         Validators -.reads.-> Manifest
         Validators -.reads.-> Required
         Validators -.reads.-> Companions

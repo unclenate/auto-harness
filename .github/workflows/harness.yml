@@ -51,6 +51,9 @@ jobs:
       - name: Validate doc references
         run: bash platform/validators/validate-doc-references.sh .
 
+      - name: Validate catalog counts
+        run: bash platform/validators/validate-catalog-counts.sh .
+
       - name: Validate companion rules
         if: github.event_name == 'pull_request'
         env:

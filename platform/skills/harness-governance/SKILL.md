@@ -99,6 +99,7 @@ bash $PLATFORM/validators/validate-required-artifacts.sh harness.manifest.yaml .
 bash $PLATFORM/validators/validate-placeholders.sh       .
 bash $PLATFORM/validators/validate-agent-pack.sh         harness.manifest.yaml .
 bash $PLATFORM/validators/validate-doc-references.sh     .
+bash $PLATFORM/validators/validate-catalog-counts.sh     .
 bash $PLATFORM/validators/validate-companions.sh         harness.manifest.yaml . main
 ```
 
@@ -128,6 +129,14 @@ A few signature notes worth highlighting:
   CI; running it locally on a clean branch with no diff against base
   prints `No changed files detected ... Skipping companion validation.`
   and exits 0 without checking anything.
+- **`validate-catalog-counts.sh`** takes only `[<project-root>]`.
+  Asserts that documented catalog counts (modules, validators, skills,
+  templates, workflows, diagrams) cited in entry-point docs match the
+  canonical recipes. The recipes are inline in the script alongside an
+  assertion table mapping `(file, regex, count-key)` to documented
+  claim sites. When you add a new doc that cites a catalog count, append
+  a row to the script's `ASSERTIONS` table so the drift class stays
+  closed.
 
 ## Required Artifacts
 

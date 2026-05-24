@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 -->
 
-# OPP-0010 — Domain Module for Cryptographic Identity (Non-Ethereum HD Wallets, Personal Data Stores)
+# OPP-0010 — Domain Module for Cryptographic Identity (Non-Ethereum HD Wallets)
 
 **Status:** proposed
 **Owner:** @unclenate

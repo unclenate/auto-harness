@@ -461,3 +461,6 @@ Forward-looking pre-PRD candidates managed by the `opportunity-capture` module.
 * [OPP-0005: Consumer Header Hygiene](docs/opportunities/OPP-0005-consumer-header-hygiene.md)
 * [OPP-0006: Trust-Tier Enforcement](docs/opportunities/OPP-0006-trust-tier-enforcement.md)
 * [OPP-0007: Canonical-Position Artifact as Harness Primitive](docs/opportunities/OPP-0007-canonical-position-artifact.md)
+* [OPP-0008: Stack Module for Plain Node-JavaScript (and Legacy CoffeeScript)](docs/opportunities/OPP-0008-stack-module-node-javascript-and-coffeescript.md)
+* [OPP-0009: Data Module for Embedded Key-Value Stores (LevelDB-class)](docs/opportunities/OPP-0009-data-module-embedded-key-value.md)
+* [OPP-0010: Domain Module for Cryptographic Identity (Non-Ethereum HD Wallets, Personal Data Stores)](docs/opportunities/OPP-0010-domain-module-cryptographic-identity.md)

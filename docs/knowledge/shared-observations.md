@@ -2,7 +2,7 @@
 
 **Structure:** Structured Template (see README.md § Observation Structure; locked by ADR-0002)
 **Write Policy:** heartbeat-only (see README.md § Write Policy; adjustable)
-**Last Updated:** 2026-05-23 *(municipal-brain reconciliation handoff — five observations appended)*
+**Last Updated:** 2026-05-24 *(brownfield onboarding catalog-gap observation — YouBase batch)*
 
 Append-only structured observations from project participants (agents
 and humans). Read this file on each heartbeat. Observations accumulate
@@ -11,6 +11,59 @@ here until distillation.
 ---
 
 ## Observations
+
+### Brownfield onboarding is the harness's highest-leverage catalog-gap discovery mechanism
+
+- **Context:** The first non-trivial *external* brownfield consumer to be
+  put through the `harness-onboarding` skill (YouBase — a 2016-era Node +
+  CoffeeScript cryptographic identity store, abandoned by its original
+  company, ~600 LoC across 13 `.coffee` files, fork held by the
+  auto-harness maintainer) produced a clean 5-section assessment but
+  immediately surfaced *three* structural catalog gaps in a single pass:
+  no stack module fit (the catalog has `node-typescript` and `python`
+  only — neither matches plain Node-JavaScript or CoffeeScript); no
+  data module fit (the catalog has relational/document/object-store —
+  none matches LevelDB-class embedded key-value); no domain module fit
+  (the catalog's `domains/web3` is Ethereum-specific — does not cover
+  Bitcoin-style HD-wallet identity, DID/SSI primitives, or personal
+  data stores). All three holes were caught by the skill's "Evidence
+  only" + Conservative-module-selection rules behaving correctly —
+  refusing to claim coverage that doesn't exist — which is exactly
+  the right behavior, but it told the consumer "we don't have a
+  category for you" three times in one assessment.
+- **Observation:** Brownfield consumers exercise dimensions of the
+  catalog that the self-dogfood cannot. Auto-harness's self-dogfood is
+  a Ruby + Bash + Markdown project that never activates any stack,
+  data, or domain module — so the self-dogfood validates the kernel
+  + management + agents catalog but says *nothing* about whether the
+  stacks/data/domains catalog covers reality. The first real external
+  consumer immediately produced three concrete catalog additions
+  (filed as OPP-0008, OPP-0009, OPP-0010) that no amount of
+  self-dogfood could have surfaced.
+- **Implication:** Brownfield-onboarding-as-discovery is structurally
+  load-bearing for catalog completeness. Three near-term consequences:
+  (1) the harness should treat every brownfield onboarding pass as a
+  potential catalog-gap discovery event, not only as a consumer-
+  service event; (2) the `harness-onboarding` skill's output (the
+  Section 5 Risks and Open Questions block) already names catalog
+  gaps explicitly — that surface should be promoted into a recurring
+  *intake* for new OPPs rather than living only in the consumer's
+  assessment document; (3) the dimensions the self-dogfood does not
+  exercise (stacks, data, domains, architectures) deserve targeted
+  *synthetic-brownfield* test passes — run the skill against several
+  hypothetical-but-realistic consumer shapes (a Rust HTTP service, a
+  Go monorepo, a Python ML pipeline, a Swift mobile app, an Electron
+  app) and harvest the catalog gaps before real consumers hit them.
+- **Confidence:** medium-high — the pattern is supported by one strong
+  instance (YouBase produced three independent catalog hits in one
+  pass) and one supporting analog (`bdits/municipal-brain` produced
+  the canonical-position OPP and five sibling observations from its
+  reconciliation handoff — also a not-self-dogfood discovery event).
+  Generalization to "every brownfield pass yields ≥1 catalog gap"
+  is untested but the underlying mechanism (consumer exercises catalog
+  dimensions the maintainer doesn't) is structurally sound.
+- **Severity:** architectural
+- **Contributed by:** @unclenate via Claude Code, 2026-05-24
 
 ### Knowledge-capture module itself is an observation-worthy design
 

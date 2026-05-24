@@ -2,7 +2,7 @@
 
 **Structure:** Structured Template (see README.md § Observation Structure; locked by ADR-0002)
 **Write Policy:** heartbeat-only (see README.md § Write Policy; adjustable)
-**Last Updated:** 2026-05-24 *(brownfield onboarding catalog-gap observation — YouBase batch)*
+**Last Updated:** 2026-05-24 *(OpenEMR canonization handoff — three observations appended below the YouBase batch; satisfies cycle-end distillation rule for OPP-0011..0017)*
 
 Append-only structured observations from project participants (agents
 and humans). Read this file on each heartbeat. Observations accumulate
@@ -34,8 +34,8 @@ here until distillation.
 - **Observation:** Brownfield consumers exercise dimensions of the
   catalog that the self-dogfood cannot. Auto-harness's self-dogfood is
   a Ruby + Bash + Markdown project that never activates any stack,
-  data, or domain module — so the self-dogfood validates the kernel
-  + management + agents catalog but says *nothing* about whether the
+  data, or domain module — so the self-dogfood validates the kernel +
+  management + agents catalog but says *nothing* about whether the
   stacks/data/domains catalog covers reality. The first real external
   consumer immediately produced three concrete catalog additions
   (filed as OPP-0008, OPP-0009, OPP-0010) that no amount of
@@ -888,3 +888,115 @@ here until distillation.
   maintainer authored the OPP + five observations together.
 - **Severity:** process
 - **Contributed by:** @unclenate via Claude Code, 2026-05-24 (PRD-0007 drafting pass)
+
+### Two consumer projects converged on the stack-catalog breadth gap within 24 hours
+
+- **Context:** OpenEMR brownfield onboarding session 2026-05-24
+  produced a gap analysis at the consumer's
+  `docs/knowledge/harness-coverage-gap-analysis.md`. § G1 identifies
+  no `stacks/php` module as a blocker for substantive canonization
+  work. Independently, PR #49 (merged 2026-05-24, from a YouBase
+  brownfield onboarding by the maintainer) authored OPP-0008
+  identifying no `stacks/node-javascript` module as the same blocker.
+- **Observation:** Two independent consumer projects, two different
+  languages (PHP and Node-JS-without-TS), hit the *same structural
+  pattern* within the same 24-hour window: the harness-onboarding
+  skill's "Evidence only" rule correctly refuses to activate
+  `stacks/node-typescript` for non-TS Node projects (or `python` for
+  non-Python projects), leaving the proposed composition's `stacks/*`
+  section empty. The composition still validates, but a significant
+  fact about the consumer (it has a primary stack) is unrepresented.
+- **Implication:** The harness's stack catalog breadth — not its
+  catalog mechanics — is the load-bearing brownfield-onboarding
+  issue. Two consumer onboardings hitting the same gap from
+  different language angles is strong signal that *every*
+  brownfield onboarding outside the two pre-built stacks will hit
+  it. OPP-0008 (Node-JS, YouBase) and OPP-0011 (PHP, OpenEMR)
+  together justify a coordinated "fix the stack catalog breadth"
+  PRD pass rather than two parallel ones. Filing convergent OPPs
+  with explicit cross-reference is the constellation-filing
+  technique from the municipal-brain handoff (see prior
+  observation), applied across consumer projects rather than within
+  one.
+- **Confidence:** high — two independent instances with identical
+  structural shape
+- **Severity:** architectural
+- **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-24 (OpenEMR canonization)
+
+### Module sizing's hidden axis is consumer-audience granularity
+
+- **Context:** OpenEMR canonization 2026-05-24. Initial gap-analysis
+  draft proposed a single `domains/healthcare-ehr` module to cover
+  OpenEMR's healthcare surface. Deeper subsystem inspection
+  re-shaped the proposal into a decomposed 12-sub-module family
+  (`domains/healthcare-fhir`, `-hl7v2`, `-smart-on-fhir`, `-ccda`,
+  `-eprescribing`, `-cdr`, `-cqm`, `-phi-encryption`, `-audit-log`,
+  `-direct-messaging`, `-ehi-export`, `-patient-portal`) plus an
+  optional convenience composition for projects that implement the
+  full stack.
+- **Observation:** The coarseness gap surfaced as soon as the
+  hypothetical downstream consumer was named: a project building a
+  FHIR-only client does not need ePrescribing artifacts; a project
+  building HL7 v2 integration does not need patient portal
+  artifacts. A single `healthcare-ehr` module would have forced
+  every consumer to inherit *every* other consumer's required-
+  artifact debt. The granularity decision is not "how big a unit
+  governs cleanly?" — it is "what subset of artifacts does a
+  typical consumer actually need activated?" The latter forces
+  per-concern decomposition; the former tolerates bundling.
+- **Implication:** The harness's module sizing principle should
+  explicitly account for consumer-audience granularity as the
+  primary axis. Bundling artifacts a typical consumer does not
+  need is module-debt that downstream projects pay forever; the
+  cost is invisible at module-design time and compounds with each
+  consumer onboard. Worth elevating to operating-principles if a
+  second instance confirms (the OPP-0013 healthcare-family
+  decomposition is one instance; a similar decomposition pressure
+  may surface on the in-flight OPP-0010 cryptographic-identity
+  domain from YouBase, which faces analogous "is this one module
+  or a family?" tension).
+- **Confidence:** medium-high — strong single instance with a
+  clear structural argument; a second instance would lift to high
+- **Severity:** architectural
+- **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-24 (OpenEMR canonization)
+
+### Second instance confirms: brownfield-as-catalog-gap-discovery; standardizing the gap-analysis output is the next move
+
+- **Context:** Observation at top of this file (*"Brownfield
+  onboarding is the harness's highest-leverage catalog-gap discovery
+  mechanism"*, YouBase, 2026-05-24) named the pattern from one strong
+  instance with confidence medium-high. The OpenEMR canonization
+  pass earlier the same day is the second instance: a clean
+  brownfield onboarding that surfaced 20 catalog gaps in a single
+  pass (gap analysis at the consumer's
+  `docs/knowledge/harness-coverage-gap-analysis.md`; OPPs 0011–0017
+  filed against it the same day).
+- **Observation:** Both consumer onboardings — YouBase and OpenEMR,
+  filed within the same UTC day — produced gap analyses *as
+  byproducts of the onboarding work*. The agent could not complete
+  the assessment task without surfacing the gaps, because the
+  catalog's "Evidence only" + Conservative-module-selection rules
+  forced explicit "no module fits" declarations every time the
+  consumer's reality exceeded catalog coverage. The shape of the
+  output (Section 5 Risks and Open Questions; numbered gap items;
+  direct mapping from gap → potential OPP) is repeatable across
+  both sessions. The cost to the harness is near-zero — the
+  onboarding session was going to run anyway; the gap analysis
+  came along for free.
+- **Implication:** Confirms the YouBase observation's confidence
+  toward "high" — two independent instances with identical
+  productive yield is the bar that distinguishes pattern from
+  anecdote. The YouBase observation's named near-term consequence
+  #2 (promote the Section 5 surface into a recurring OPP intake)
+  becomes the actionable next step. The OpenEMR session's gap
+  analysis was sized for direct upstream extraction precisely
+  because the agent treated it as that recurring intake even
+  before the skill formalizes it. The `harness-onboarding` skill
+  should ship that surface as a *standard* output artifact
+  alongside the lite manifest and the assessment — the OpenEMR
+  session is structural evidence for what that artifact looks
+  like (`harness-coverage-gap-analysis.md` is the proof-of-concept).
+- **Confidence:** high (lifted from YouBase's medium-high after this
+  second instance)
+- **Severity:** governance-relevant
+- **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-24 (OpenEMR canonization)

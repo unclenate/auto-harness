@@ -84,13 +84,18 @@ this index exists only to group, cluster, or annotate them for human readers.
 
 ### Brownfield catalog coverage
 
-Catalog gaps surfaced by the first non-trivial external brownfield onboarding
-(YouBase, 2026-05-24). Each gap is a category the `harness-onboarding` skill
-correctly refused to claim under the Conservative-module-selection rule
-because no catalog module fits — telling the consumer "we don't have a
-category for you" when the harness could trivially have one. Filed as a
-coherent three-OPP batch so the brownfield-discovery pattern is visible as a
-class rather than scattered.
+Catalog gaps surfaced by two independent external brownfield onboardings on
+2026-05-24: YouBase (Node + CoffeeScript cryptographic identity store; OPP-0008,
+0009, 0010) and OpenEMR (25-year-old PHP healthcare EHR; OPP-0011..0017). Each
+gap is a category the `harness-onboarding` skill correctly refused to claim
+under the Conservative-module-selection rule because no catalog module fits.
+Filed as coherent batches so the brownfield-discovery pattern is visible as a
+class rather than scattered. The convergence between the two onboardings (both
+hit the stack-catalog-breadth gap from different language angles within 24
+hours) is captured in shared-observations.md as a structural signal that
+catalog breadth is the load-bearing brownfield-onboarding issue.
+
+#### From YouBase (cryptographic-identity / personal-data-store)
 
 - [OPP-0008](OPP-0008-stack-module-node-javascript-and-coffeescript.md) *(proposed 2026-05-24)* —
   Add a stack module for plain Node-JavaScript (and a sibling for legacy
@@ -120,6 +125,52 @@ class rather than scattered.
   `domains/cryptographic-identity`; defer the broader "personal data store"
   product framing to a future OPP if multiple PDS consumers exercise the
   catalog.
+
+#### From OpenEMR (PHP healthcare EHR)
+
+*Originally drafted as OPP-0008..0014; renumbered to OPP-0011..0017 to avoid
+collision with the YouBase batch, which was filed earlier the same day. Cross-
+references back to OPP-0008/0009/0010 record the convergence.*
+
+- [OPP-0011](OPP-0011-stack-module-php.md) *(proposed 2026-05-24)* — PHP stack
+  support: `stacks/php` module + `harness-php` skill +
+  `validate-php-strict-types.sh` + `validate-conventional-commits.sh`.
+  Closes the gap that forced OpenEMR's manifest to omit stacks entirely;
+  convergent with OPP-0008 (Node-JS-without-TS) from the YouBase
+  onboarding.
+- [OPP-0012](OPP-0012-data-module-relational-sql-engine-generalization.md) *(proposed 2026-05-24)*
+  — Generalize `data/relational-postgres` → `data/relational-sql` with
+  `engine: postgres | mysql | mariadb | sqlite` sub-field. 95% of
+  required artifacts are engine-independent; the rename keeps the
+  catalog compact and unblocks MySQL/MariaDB/SQLite consumers.
+- [OPP-0013](OPP-0013-domain-family-healthcare-decomposed.md) *(proposed 2026-05-24)*
+  — Decomposed `domains/healthcare-*` family (12 sub-modules) +
+  `templates/healthcare/` (8 templates) + `harness-healthcare` skill +
+  `healthcare-full-ehr.yaml` convenience composition. Healthcare is
+  the largest plausible regulated-domain expansion; per-concern
+  granularity avoids forcing consumers into bundled artifact debt.
+- [OPP-0014](OPP-0014-polyglot-companion-services.md) *(proposed 2026-05-24)* —
+  `domains/polyglot-services` module for companion-service pattern
+  (one language per service surface). Triggered by ccdaservice
+  Node.js companion in OpenEMR; recurs widely (Rails+Node,
+  Django+Lua, Go+Python).
+- [OPP-0015](OPP-0015-regulated-compliance-test-kits.md) *(proposed 2026-05-24)*
+  — `domains/regulated-compliance` module + compliance templates +
+  `regulated-saas.yaml` composition. External compliance test-kit
+  pattern (Inferno ONC G10, PCI scanners, SOC2 evidence harnesses);
+  generalizes beyond healthcare.
+- [OPP-0016](OPP-0016-specialist-healthcare-review-skills.md) *(proposed 2026-05-24)*
+  — Specialist healthcare review skill family: `harness-fhir`,
+  `harness-hl7v2`, `harness-onc-certification`, `harness-phi-audit`,
+  `harness-encryption-review`, `harness-rbac-review`. Refinement
+  layer on top of the broad `harness-healthcare` skill from
+  OPP-0013; incremental ship.
+- [OPP-0017](OPP-0017-legacy-coexistence-template-family.md) *(proposed 2026-05-24)*
+  — Legacy-coexistence template family + PHI tripwire validator.
+  Templates for upgrade-vault history, dual-data-layer migration,
+  template-engine migration, OAuth2/SMART scopes, ACL/RBAC, sub-app
+  portal auth. Pattern absorbed from a 25-year-old project's lived
+  coexistence experience.
 
 ### Canonical direction & strategic alignment
 

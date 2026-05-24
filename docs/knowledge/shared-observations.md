@@ -786,3 +786,52 @@ here until distillation.
   the cheap experiment of promoting them
 - **Severity:** process
 - **Contributed by:** @unclenate via Claude Code, 2026-05-22 (municipal-brain reconciliation handoff)
+
+### Anchor-OPP-and-satellite-observations is a stronger filing shape than disconnected OPPs
+
+- **Context:** Drafting PRD-0007 (canonical-position artifact)
+  surfaced that OPP-0007 was originally filed not in isolation but
+  as the *anchor* for four sibling observations (A, B, C, D in
+  `shared-observations.md` 2026-05-22, plus a process-pattern
+  observation E). Each sibling's proposed resolution explicitly
+  depends on OPP-0007's canonical-position primitive existing first.
+  This structure made PRD-0007's scoping materially easier than
+  prior PRDs: the OPP's design space was framed by *which siblings
+  to bundle into v1 vs. defer*, not by *what to even propose*.
+- **Observation:** Filing observations as a *constellation around an
+  anchor OPP* — the anchor proposes the central primitive; each
+  satellite observation names a dependent gap that the primitive
+  unlocks — produces better PRD scoping than filing each gap as an
+  independent OPP. Three structural advantages:
+  - **Composition discipline at PRD-time.** The PRD must explicitly
+    decide which satellites bundle into v1 vs. defer. Forced
+    composition decisions surface the right v1 scope (PRD-0007:
+    bundle Observation C's review-artifact because ratification
+    depends on it; bundle Observation E's patterns as cheap
+    operating-principle additions; defer A, B, D — each has its
+    own substantive scope and prerequisite).
+  - **Backlog coherence.** Independent OPPs that turn out to be
+    related get filed without the relationship being explicit; the
+    backlog reads as parallel gaps. Anchor-satellite makes the
+    dependency tree legible.
+  - **Deferred follow-ups inherit context.** When Observations A,
+    B, D become their own OPPs (post-PRD-0007 acceptance), they
+    cite OPP-0007 as prerequisite and carry the prior framing.
+- **Implication:** When filing observations from a heavy
+  reconciliation pass (or any work surfacing multiple related
+  gaps), explicitly identify the anchor gap and file it as an OPP
+  with satellite observations naming the dependents. Resist filing
+  each gap as its own OPP — that loses the structural relationship
+  that makes the PRD pass tractable. Worth elevating to
+  operating-principles if a second instance confirms the shape
+  (PRD-0004's distillation-triggers work had some of this shape —
+  heartbeat-formalization + cycle-end + audit-trail rules — but
+  wasn't filed as a constellation; could have been).
+- **Confidence:** medium — one strong instance (this PRD-0007
+  drafting pass) but structural argument is sound. The technique
+  requires filing-time discipline (recognize the anchor; name the
+  satellites) that may not be available when observations are
+  written rapid-fire. PRD-0007's case worked because the
+  maintainer authored the OPP + five observations together.
+- **Severity:** process
+- **Contributed by:** @unclenate via Claude Code, 2026-05-24 (PRD-0007 drafting pass)

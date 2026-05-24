@@ -895,10 +895,9 @@ here until distillation.
   produced a gap analysis at the consumer's
   `docs/knowledge/harness-coverage-gap-analysis.md`. § G1 identifies
   no `stacks/php` module as a blocker for substantive canonization
-  work. Independently, the `feat/opp-0008-0010-brownfield-catalog-gaps`
-  branch (filed 2026-05-24 by the maintainer from a YouBase
-  brownfield onboarding) authored OPP-0008 identifying no
-  `stacks/node-javascript` module as the same blocker.
+  work. Independently, PR #49 (merged 2026-05-24, from a YouBase
+  brownfield onboarding by the maintainer) authored OPP-0008
+  identifying no `stacks/node-javascript` module as the same blocker.
 - **Observation:** Two independent consumer projects, two different
   languages (PHP and Node-JS-without-TS), hit the *same structural
   pattern* within the same 24-hour window: the harness-onboarding

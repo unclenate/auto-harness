@@ -100,7 +100,7 @@ three-part contribution:
 - **Risk-register extensions need a structural home.** The existing
   `templates/risk-register.md` is generic. Healthcare projects need
   a risk register that *prompts* for PHI-specific risk categories.
-  Generic genericness doesn't help a healthcare-onboarding consumer
+  A generic template doesn't help a healthcare-onboarding consumer
   identify their actual risk surface. A
   `risk-register-healthcare.md` template (or
   `risk-register-regulated.md` more broadly) extends the parent

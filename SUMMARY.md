@@ -447,6 +447,7 @@ Specifications for substantive new capabilities, paired with their originating o
 * [PRD-0004: Distillation Triggers](docs/requirements/PRD-0004-distillation-triggers.md)
 * [PRD-0005: Consumer Header Hygiene](docs/requirements/PRD-0005-consumer-header-hygiene.md)
 * [PRD-0006: Trust-Tier Enforcement](docs/requirements/PRD-0006-trust-tier-enforcement.md)
+* [PRD-0007: Canonical-Position Artifact](docs/requirements/PRD-0007-canonical-position-artifact.md)
 
 ### Opportunity Records (this project)
 

@@ -123,9 +123,9 @@ class rather than scattered.
 
 ### Canonical direction & strategic alignment
 
-- [OPP-0007](OPP-0007-canonical-position-artifact.md) *(proposed 2026-05-23;
-  filed from `bdits/municipal-brain` reconciliation handoff; renumbered
-  from OPP-0006 after the trust-tier-enforcement OPP took that slot)* —
+- [OPP-0007](OPP-0007-canonical-position-artifact.md) *(exploring;
+  PRD-0007 in flight, drafted 2026-05-24; renumbered from OPP-0006
+  after the trust-tier-enforcement OPP took that slot)* —
   Introduce a canonical-position artifact as a first-class harness
   primitive. Every other strategy / product / GTM / partnership artifact
   cites it and cannot contradict it. Anchors four sibling observations

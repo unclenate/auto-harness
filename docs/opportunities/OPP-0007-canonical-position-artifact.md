@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0007 — Canonical-Position Artifact as Harness Primitive
 
-**Status:** proposed
+**Status:** exploring
 **Owner:** @unclenate
 **Created:** 2026-05-22
-**Last Updated:** 2026-05-22
+**Last Updated:** 2026-05-24 *(promoted to exploring; PRD-0007 drafted)*
 **Confidence:** high
 
 ---
@@ -232,17 +232,57 @@ deliver coherent value.
 
 ## Disposition
 
-<!-- Empty while proposed. -->
+**2026-05-24 (proposed → exploring):** Promoted same-cycle per
+established maintainer-priority cadence (consistent with OPP-0004,
+OPP-0005, OPP-0006). The "highest-leverage single change" framing
+from the municipal-brain handoff + the depend-on-this-anchor
+structure of the four sibling observations + the maintainer-stated-
+priority signal together justify proceeding to PRD rather than
+extending the open-design phase further.
+
+**Direction set** on a **new lightweight overlay module** —
+`management/canonical-position` — that depends on `project-standard`
+and adds exactly one required artifact (`docs/canonical-position.md`)
+plus the citation companion rule + the ratification flow. Hybrid path
+from the OPP's module-placement discussion: new module (clean
+separation; opt-in adoption) rather than extending project-standard
+(stretches its purpose) or building a full-weight strategic-direction
+module (premature ambition before adoption signal).
+
+**V1 scope** scoped to deliver coherent value without sprawl:
+
+1. The canonical-position artifact itself + template + module
+2. The citation companion rule (strategy-shaped artifacts must cite
+   the canonical-position file)
+3. The ratification companion rule (editing the canonical-position
+   artifact requires a paired review-artifact + change-log entry)
+4. The review-artifact type (Observation C) — *bundled into v1 because
+   the ratification flow depends on it*; no longer a separate
+   follow-up
+5. The three "positive patterns" from Observation E promoted to
+   `operating-principles.md` as § 9 additions
+
+**Deferred** to follow-up OPPs (each is substantial enough on its own):
+
+- Observation A — validator opt-out staleness pressure (needs
+  trust-tier machinery from OPP-0006/PRD-0006 to land first)
+- Observation B — opportunity-capture backlog re-audit on canonical
+  change (needs canonical-change-detection mechanism)
+- Observation D — discovery-intake canonical-SHA pinning (needs the
+  artifact + companion rule + intake schema update)
+
+These three follow-up OPPs will reference OPP-0007 as their anchor
+when filed. PRD-0007 drafted 2026-05-24 paired with this Disposition
+update.
 
 ## Promotion
 
-<!-- Empty until accepted. Likely PRD: PRD-0005 — Canonical-Position Artifact (artifact
-shape, module placement, companion-rule contract, citation form, composition with the
-four sibling observations). Likely paired ADR: ADR-0013 (or similar) establishing the
-canonical-position artifact as a harness primitive. Implementation likely spans
-new templates, new module.yaml or extensions to existing module.yaml, new companion
-rules wired through the existing validate-companions.sh machinery, and skill / workflow
-updates. -->
+- See [PRD-0007](../requirements/PRD-0007-canonical-position-artifact.md) —
+  drafted 2026-05-24; status `Proposed` (acceptance contingent on
+  landing the v1 implementation: new `management/canonical-position`
+  module + artifact template + citation companion rule + ratification
+  flow + review-artifact type from Observation C + § 9 operating-
+  principle additions from Observation E).
 
 ## Related
 

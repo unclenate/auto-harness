@@ -6,7 +6,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # auto-harness — Opportunity Candidates Index
 
-**Owner:** @unclenate | **Last Updated:** 2026-05-22
+**Owner:** @unclenate | **Last Updated:** 2026-05-24
 
 Organizational index of opportunity candidates filed in this directory. The
 canonical record for each candidate is its own `OPP-NNNN-slug.md` file —
@@ -81,6 +81,45 @@ this index exists only to group, cluster, or annotate them for human readers.
   so the existing `validate-placeholders.sh` machinery gates new files,
   plus a small bootstrap helper that fills tokens project-wide. Real
   legal correctness issue, not cosmetic.
+
+### Brownfield catalog coverage
+
+Catalog gaps surfaced by the first non-trivial external brownfield onboarding
+(YouBase, 2026-05-24). Each gap is a category the `harness-onboarding` skill
+correctly refused to claim under the Conservative-module-selection rule
+because no catalog module fits — telling the consumer "we don't have a
+category for you" when the harness could trivially have one. Filed as a
+coherent three-OPP batch so the brownfield-discovery pattern is visible as a
+class rather than scattered.
+
+- [OPP-0008](OPP-0008-stack-module-node-javascript-and-coffeescript.md) *(proposed 2026-05-24)* —
+  Add a stack module for plain Node-JavaScript (and a sibling for legacy
+  CoffeeScript). Catalog currently has `stacks/node-typescript` and
+  `stacks/python` only; a Node-not-TypeScript brownfield consumer leaves
+  `stacks/*` empty even when the stack is unambiguous. Initial bias:
+  sibling modules `stacks/node-javascript` + `stacks/coffeescript`, both
+  zero-required-artifact like the existing pair. Closes the smallest of
+  the three gaps.
+
+- [OPP-0009](OPP-0009-data-module-embedded-key-value.md) *(proposed 2026-05-24)* —
+  Add a data module for embedded key-value stores (LevelDB / LMDB / RocksDB
+  / SQLite-as-KV) plus a sibling `data/browser-storage` for IndexedDB /
+  localStorage / OPFS. Catalog currently has relational-postgres, document-
+  store, and object-storage only; YouBase's full LevelDB stack (five deps,
+  four of them already npm-deprecated and migrating upstream to
+  `abstract-level`) has nowhere to land. Initial bias: split server-embedded
+  from browser-embedded; zero required artifacts in v1.
+
+- [OPP-0010](OPP-0010-domain-module-cryptographic-identity.md) *(proposed 2026-05-24)* —
+  Add a domain module for cryptographic identity (BIP39 mnemonics, BIP32 HD
+  derivation, secp256k1 ECDSA, DID/SSI primitives), orthogonal to
+  `domains/web3` (which is Ethereum-specific). Five governance concerns
+  enumerated (encryption-mode invariants, crypto-library audit cadence,
+  mnemonic backup policy, purpose-code registration discipline,
+  signature-scheme migration). Initial bias: ship narrow as
+  `domains/cryptographic-identity`; defer the broader "personal data store"
+  product framing to a future OPP if multiple PDS consumers exercise the
+  catalog.
 
 ### Canonical direction & strategic alignment
 

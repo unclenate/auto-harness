@@ -128,9 +128,9 @@ catalog breadth is the load-bearing brownfield-onboarding issue.
 
 #### From OpenEMR (PHP healthcare EHR)
 
-_Originally drafted as OPP-0008..0014; renumbered to OPP-0011..0017 to avoid
+*Originally drafted as OPP-0008..0014; renumbered to OPP-0011..0017 to avoid
 collision with the YouBase batch, which was filed earlier the same day. Cross-
-references back to OPP-0008/0009/0010 record the convergence._
+references back to OPP-0008/0009/0010 record the convergence.*
 
 - [OPP-0011](OPP-0011-stack-module-php.md) *(proposed 2026-05-24)* — PHP stack
   support: `stacks/php` module + `harness-php` skill +

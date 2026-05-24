@@ -82,8 +82,8 @@ healthcare apps activate only what they need.
 - **Decomposition is grounded in observed subsystem boundaries**, not
   speculation:
   - `domains/healthcare-fhir` ← `src/FHIR/R4/`, `src/Services/FHIR/`,
-    `src/FHIR/Export/`, `apis/`, the documented FHIR R4 + US Core 8.0
-    + Bulk Data Export support
+    `src/FHIR/Export/`, `apis/`, the documented FHIR R4 + US Core 8.0 +
+    Bulk Data Export support
   - `domains/healthcare-hl7v2` ← `aranyasen/hl7 ^3.2.2` Composer
     dependency
   - `domains/healthcare-smart-on-fhir` ← `src/FHIR/SMART/`,
@@ -141,8 +141,8 @@ healthcare apps activate only what they need.
   cryptographic stack with proper primitives separation. This is itself
   an absorption candidate: the `domains/healthcare-phi-encryption`
   module's required-artifact template can reasonably encode the
-  *pattern* OpenEMR demonstrates (CipherSuite + Keychain + KeyMaterial
-  + KeyId domain primitive) as the recommended approach for any
+  *pattern* OpenEMR demonstrates (CipherSuite + Keychain + KeyMaterial +
+  KeyId domain primitive) as the recommended approach for any
   PHI-handling project.
 
 ## Why Now
@@ -188,8 +188,8 @@ healthcare apps activate only what they need.
   alongside other generalizable auth patterns.
 
 - **PHI handling vs PII / PCI handling.** The PHI encryption sub-module
-  is healthcare-flavored but the *technique* (cipher suite + keystore
-  + key rotation + domain primitives) generalizes to any
+  is healthcare-flavored but the *technique* (cipher suite + keystore +
+  key rotation + domain primitives) generalizes to any
   sensitive-data domain. Validation: prototype the
   `phi-encryption-design.md` template and assess whether ~80% of
   content is healthcare-specific or whether it would better live as a

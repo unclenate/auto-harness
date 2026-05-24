@@ -34,8 +34,8 @@ here until distillation.
 - **Observation:** Brownfield consumers exercise dimensions of the
   catalog that the self-dogfood cannot. Auto-harness's self-dogfood is
   a Ruby + Bash + Markdown project that never activates any stack,
-  data, or domain module — so the self-dogfood validates the kernel
-  + management + agents catalog but says *nothing* about whether the
+  data, or domain module — so the self-dogfood validates the kernel +
+  management + agents catalog but says *nothing* about whether the
   stacks/data/domains catalog covers reality. The first real external
   consumer immediately produced three concrete catalog additions
   (filed as OPP-0008, OPP-0009, OPP-0010) that no amount of
@@ -888,7 +888,6 @@ here until distillation.
   maintainer authored the OPP + five observations together.
 - **Severity:** process
 - **Contributed by:** @unclenate via Claude Code, 2026-05-24 (PRD-0007 drafting pass)
-
 
 ### Two consumer projects converged on the stack-catalog breadth gap within 24 hours
 

@@ -69,11 +69,17 @@ Leave the `modules:` block as-is for now. Adjust it after the validators pass.
 
 ## Step 2 — Run the Manifest Validator
 
+> **Submodule consumers:** Step 0 routes you to `install.sh`, which replaces Steps 1–6 below
+> end-to-end. The `$PLATFORM_ROOT` definition in this step is still useful for *ad-hoc*
+> validator invocations against your consumer project after install (e.g., re-running
+> `validate-placeholders.sh` by hand). The submodule-mode line below is included for that
+> purpose; the rest of Steps 2–6 are in-tree / subtree-consumption territory.
+
 First, point `$PLATFORM_ROOT` at the `platform/` directory. The value depends on how
 auto-harness sits inside your project:
 
 ```bash
-# If auto-harness is a git submodule at .harness/ (recommended path; Step 0):
+# If auto-harness is a git submodule at .harness/ (ad-hoc post-install validator runs):
 export PLATFORM_ROOT="$PWD/.harness/platform"
 
 # If auto-harness is vendored in-tree (monorepo / subtree consumption):

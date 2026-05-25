@@ -474,6 +474,7 @@ Specifications for substantive new capabilities, paired with their originating o
 * [PRD-0008: Agent Skill-Pack Architecture](docs/requirements/PRD-0008-agent-skill-pack-architecture.md)
 * [PRD-0009: Eval-Gated Testing Module](docs/requirements/PRD-0009-eval-gated-testing-module.md)
 * [PRD-0010: Self-Hosted OSS Delivery](docs/requirements/PRD-0010-self-hosted-oss-delivery.md)
+* [PRD-0011: Sunset distilled-learnings.md](docs/requirements/PRD-0011-distilled-learnings-disposition.md)
 
 ### Opportunity Records (this project)
 

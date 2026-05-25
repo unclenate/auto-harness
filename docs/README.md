@@ -109,6 +109,9 @@ clustered backlog with framing.
 | [0020](opportunities/OPP-0020-evaluation-tooling-in-harness-toolchain.md) | Evaluation & Safety Tooling in Toolchain (Tula) | proposed |
 | [0021](opportunities/OPP-0021-delivery-self-hosted-oss.md) | Delivery — Self-Hosted OSS (Tula) | accepted |
 | [0022](opportunities/OPP-0022-patient-facing-health-agent-safety.md) | Patient-Facing Health-Agent Safety (Tula) | proposed |
+| [0023](opportunities/OPP-0023-doc-references-consumer-scan.md) | `validate-doc-references` Consumer-Aware Scan | proposed |
+| [0025](opportunities/OPP-0025-consumer-integration-smoke-test.md) | Consumer-Side Integration Smoke Test | proposed |
+| [0026](opportunities/OPP-0026-distilled-learnings-disposition.md) | `distilled-learnings.md` Disposition (Sunset/Revive/Clarify) | proposed |
 
 ---
 
@@ -150,6 +153,7 @@ clustered backlog with framing.
 - [`threat-model.md`](threat-model.md) — adversary models, attack surfaces, mitigations
 - [`QUALITY-AUDIT-2026-05-18.md`](QUALITY-AUDIT-2026-05-18.md) — quality-audit 5-lane pass (Wave 1 onboarding readiness)
 - [`QUALITY-AUDIT-2026-05-24-documentation.md`](QUALITY-AUDIT-2026-05-24-documentation.md) — documentation-IA audit + 5-phase improvement plan (drives ADR-0013)
+- [`QUALITY-AUDIT-2026-05-25-documentation-refresh.md`](QUALITY-AUDIT-2026-05-25-documentation-refresh.md) — Refresh #1: confirms Phase 0+1 closed; merges still-open 2026-05-18 findings; surfaces list-completeness drift class (M-j)
 - [`standards/kpi-dictionary.md`](standards/kpi-dictionary.md) — review cadence and quality metrics
 
 ---

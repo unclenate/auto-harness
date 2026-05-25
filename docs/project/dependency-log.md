@@ -14,7 +14,7 @@ This log tracks external dependencies that affect delivery.
 
 | Dependency | Type | Owner | Status | Impact if Delayed | Notes |
 | ---------- | ---- | ----- | ------ | ----------------- | ----- |
-| Ruby (>= 3.0) | Infra | @unclenate | Resolved | Validators cannot run | Required by all 7 validators and test suite; CI pins 3.3 (matches `CONTRIBUTING.md`, `platform/validators/README.md`, `.github/workflows/harness.yml`) |
+| Ruby (>= 3.0) | Infra | @unclenate | Resolved | Ruby-backed validators cannot run | Required by 6 of 8 validators (Ruby-backed: `validate-manifest`, `-module-graph`, `-required-artifacts`, `-agent-pack`, `-companions`, `-doc-references`) and the full test suite. Shell-only validators (`validate-placeholders`, `validate-catalog-counts`) do not invoke Ruby. CI pins 3.3 (matches `CONTRIBUTING.md`, `platform/validators/README.md`, `.github/workflows/harness.yml`) |
 | ripgrep (rg) | Infra | @unclenate | Resolved | Placeholder validator skips file scanning | Required by validate-placeholders.sh |
 | Bash (>= 4.0) | Infra | @unclenate | Resolved | Validators cannot run | Required by all validator shell scripts |
 

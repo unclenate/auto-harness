@@ -67,8 +67,8 @@ cover when none is configured. To make the covers explicit:
 
 - **Version bump:** edit the `v1.0` and `2026` text near the bottom of
   each SVG.
-- **Catalog count refresh** (back cover): the counts (`35 modules`,
-  `56 templates`, `7 validators`, etc.) need to be updated by hand when
+- **Catalog count refresh** (back cover): the counts (`43 modules`,
+  `59 templates`, `8 validators`, etc.) need to be updated by hand when
   the catalog grows. Keep in sync with
   [`platform/reference/how-to-read.md`](../../platform/reference/how-to-read.md)
   and [`docs/architecture/diagrams.md`](../architecture/diagrams.md#1-component-composition).

@@ -2,7 +2,7 @@
 
 **Structure:** Structured Template (see README.md § Observation Structure; locked by ADR-0002)
 **Write Policy:** heartbeat-only (see README.md § Write Policy; adjustable)
-**Last Updated:** 2026-05-24 *(Tula onboarding handoff — two observations appended below the OpenEMR batch; satisfies cycle-end distillation rule for OPP-0018..0022 and the OPP-0013/0016 augmentation)*
+**Last Updated:** 2026-05-25 *(Phase 0.5 hotfix bundle — adds two observations on declaration-without-enforcement patterns: cross-repo silent failures paired with OPP-0025 + smoke-test addition to `submodule-integration.md`, and the intra-repo sibling on declared knowledge surfaces without inbound flow paired with OPP-0026)*
 
 Append-only structured observations from project participants (agents
 and humans). Read this file on each heartbeat. Observations accumulate
@@ -1246,3 +1246,132 @@ here until distillation.
   one template/guide mismatch confirmed) during the Tula CI wiring.
 - **Severity:** governance-relevant
 - **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-25 (Tula CI wiring)
+
+### Cross-repo declarations have the same silent-drift failure mode as intra-repo doctrine-without-enforcement, and the harness's own CI cannot see them
+
+- **Context:** A fresh `repo → harness → Website Design plan` initialization
+  session by the maintainer surfaced an integration-time observation: `.harness/`
+  is a gitlink (submodule), not a copy; cloning the consumer repo without
+  `--recurse-submodules` leaves the directory empty, and the pinned SHA must
+  remain reachable in the upstream remote. Both are silent failures at the
+  first-developer's machine — no error during clone, no error during commit;
+  the failure only manifests when a second developer joins, when CI clones
+  fresh, or when a contributor lands and the validators can't find their own
+  scripts. The auto-harness CI itself cannot see this failure mode by
+  construction: the harness *is* the upstream the consumer pins to, so it has
+  no consumer-side execution path to test.
+- **Observation:** This is the *cross-repo* version of a pattern the project
+  has already named in this file: *"doctrine in prose without enforcement in
+  code is a recurring harness gap."* The intra-repo version is a documented
+  catalog count that no validator asserts; the cross-repo version is a
+  documented integration step (submodule SHA pin, dependency reference,
+  manifest-cited external module) that no consumer-side check asserts. Both
+  share the same shape — a declaration with no mechanical check against its
+  referent — and both share the same failure dynamic: the declaration is
+  written when the referent is correct, then drifts silently as the referent
+  changes. PR #58 (in flight as of 2026-05-25) addresses one slice of this by
+  recording an explicit tracking branch (`-b main` on `git submodule add`),
+  which clarifies *intent* but does not provide a *check*: the SHA at that
+  branch can still be force-pushed away, the branch can be deleted, and the
+  remote can become auth-gated. Three observed-or-plausible instances of the
+  same class so far: (a) catalog-count drift in unwatched files — the M-j
+  finding from the 2026-05-25 audit refresh, surfaced as a list-completeness
+  validation gap; (b) submodule SHA-unreachability — the trigger for this
+  observation; (c) the broader space of cross-repo references the harness
+  hasn't catalogued yet — manifest-cited module URLs in lite-mode consumers,
+  reference URLs in module READMEs, external skill registries cited in
+  `harness-tools`. The unifying lesson: **every cross-repo declaration the
+  harness records on a consumer's behalf needs either a mechanical consumer-side
+  smoke test or a hand-discipline workaround documented prominently; the
+  harness should prefer the former because the failure mode is silent.**
+- **Implication:** Two concrete moves follow. First (filed as
+  [OPP-0025](../opportunities/OPP-0025-consumer-integration-smoke-test.md)):
+  the consumer-side integration smoke test — a tiny CI template + a recipe
+  documented in `submodule-integration.md` — closes the most common instance
+  (submodule SHA reachability). Second (the M-j list-completeness OPP
+  candidate, not yet filed): extending `validate-catalog-counts.sh` to assert
+  index completeness closes the intra-repo version. The two compose naturally
+  as anchor + satellite — same root cause, two different surface
+  manifestations, one durable design conclusion: when the harness declares
+  something on a consumer's behalf, ship the validator alongside the
+  declaration or accept that the declaration will rot.
+- **Confidence:** medium-high — one direct instance (this observation's
+  trigger) plus the structural argument paralleling the already-confirmed
+  intra-repo pattern (catalog-count drift). A second instance in the
+  cross-repo space — e.g., a manifest-cited module URL that 404'd, or a
+  skill-registry pointer that broke — would lift to high.
+- **Severity:** architectural
+- **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-25 (initialization-session
+  insight relayed by maintainer, paired with OPP-0025 filing)
+
+### Declared knowledge surfaces without an inbound-flow trigger silently die; operating-principles ate distilled-learnings' lunch
+
+- **Context:** Investigating *"when does the process trigger to generate
+  distilled learnings happen? distilled-learnings.md seems way behind and it
+  doesn't seem to be triggered by anything? Does it get read by anything?"*
+  raised by the maintainer mid-bundle on 2026-05-25. The investigation traced
+  the distillation flow end-to-end against the v1.1.0 `knowledge-capture`
+  module: PRD-0004's cycle-end trigger rule fires on ADR/OPP/module.yaml/
+  manifest changes (fresh and well-fed); shared-observations.md is the
+  default destination and grew to ~1,218 lines as expected;
+  operating-principles.md acquired §§ 7 and 8 this session via curation;
+  *distilled-learnings.md has been a 64-line shell since 2026-04-16, the day
+  the knowledge-capture module was first added — zero content entries in 40
+  days.* This was already flagged in the 2026-05-24 documentation audit
+  (finding M8: "review cadence ~7 months stale") but treated as a status-drift
+  cosmetic. The investigation revealed the gap is structural, not cosmetic.
+- **Observation:** This is the *intra-repo* sibling of the cross-repo
+  silent-declaration pattern recorded one entry above — same shape, different
+  surface. The `knowledge-capture` module *declares* three knowledge
+  destinations (shared-observations, operating-principles, distilled-learnings)
+  as `requiredArtifacts`, and the cycle-end rule accepts any of the three as
+  satisfiers. Two have inbound flow: shared-observations is the default
+  destination and absorbs the bulk of cycle-end traffic; operating-principles
+  receives promotions when patterns crystallize. **distilled-learnings has no
+  inbound-flow trigger by design** — the workflow doc explicitly tells
+  authors *not* to write to it opportunistically (*"Promote observations to
+  learnings during dedicated review, not opportunistically"*) and instead
+  reserves it for "dedicated review sessions." Nothing schedules those review
+  sessions. The audit-trail rule on distilled-learnings.md fires only if it
+  is edited, but nothing edits it. operating-principles.md has *de facto*
+  absorbed distilled-learnings' charter: §§ 7 and 8 are exactly the
+  cross-observation synthesis distilled-learnings was supposed to host.
+  Three instances of the same class are now visible: (a) the consumer-side
+  smoke test (one entry up, filed as OPP-0025); (b) catalog-count list-
+  completeness (M-j from the audit refresh, candidate OPP); (c) this — a
+  declared knowledge destination with no production path. The unifying lesson
+  extends the cross-repo one: **every declared surface — file, validator,
+  index, workflow — needs an inbound-flow trigger or an explicit dormancy
+  label. Declared-without-trigger is the slow-failure mode that survives
+  long enough to mislead future readers about what the project actually
+  practices.**
+- **Implication:** The narrow move (filed as [OPP-0026](
+  ../opportunities/OPP-0026-distilled-learnings-disposition.md)) is to
+  decide distilled-learnings.md's disposition — sunset (drop it from
+  `requiredArtifacts` + cycle-end satisfier list; consolidate curation in
+  operating-principles), revive (add a time-or-count-based trigger that
+  forces a curation session), or clarify (label it dormant pending an
+  established curation cadence). The broader move is the *deeper* concern
+  this surfaces, captured as a candidate in `candidates.md`: **the harness
+  has powerful automations (companion rules, distillation triggers,
+  Stop-event hooks) but no defined "optimal session shape" with review
+  checkpoints that systematically fire them.** A session might add ten
+  shared-observations, ship a PRD, and merge — but never run the curation
+  review that distilled-learnings was designed to receive, never check
+  whether operating-principles needs a new section, never audit the
+  back-pressure between observation accumulation and synthesis. The
+  automations exist; the *cadence that consumes their output* is
+  underspecified. This is bigger than distilled-learnings.md alone and
+  warrants its own examination — it is the trigger-side counterpart to
+  the audit-driven pattern the project has already named ("audits surface
+  what continuous discipline missed"). The candidate-stub in
+  candidates.md preserves the framing until a second instance accumulates.
+- **Confidence:** high on the narrow distilled-learnings claim (40 days of
+  zero inbound flow; audit-confirmed staleness); medium on the broader
+  session-cycle claim (one strong articulation by the maintainer this
+  session; the structural argument is sound but lacks a second concrete
+  instance of "review we wish had fired but didn't").
+- **Severity:** architectural
+- **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-25 (investigation
+  triggered by maintainer mid-bundle; paired with OPP-0026 and session-cycle
+  candidate stub)

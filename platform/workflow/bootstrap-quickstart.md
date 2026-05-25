@@ -69,10 +69,31 @@ Leave the `modules:` block as-is for now. Adjust it after the validators pass.
 
 ## Step 2 — Run the Manifest Validator
 
-```bash
-PLATFORM=path/to/platform
+> **Submodule consumers:** Step 0 routes you to `install.sh`, which replaces Steps 1–6 below
+> end-to-end. The `$PLATFORM_ROOT` definition in this step is still useful for *ad-hoc*
+> validator invocations against your consumer project after install (e.g., re-running
+> `validate-placeholders.sh` by hand). The submodule-mode line below is included for that
+> purpose; the rest of Steps 2–6 are in-tree / subtree-consumption territory.
 
-bash $PLATFORM/validators/validate-manifest.sh harness.manifest.yaml
+First, point `$PLATFORM_ROOT` at the `platform/` directory. The value depends on how
+auto-harness sits inside your project:
+
+```bash
+# If auto-harness is a git submodule at .harness/ (ad-hoc post-install validator runs):
+export PLATFORM_ROOT="$PWD/.harness/platform"
+
+# If auto-harness is vendored in-tree (monorepo / subtree consumption):
+export PLATFORM_ROOT="$PWD/platform"
+
+# If you are running these commands from inside the auto-harness checkout itself:
+export PLATFORM_ROOT="$PWD/platform"
+```
+
+This is the same `$PLATFORM_ROOT` that `ci-integration.md` uses; keeping the variable name
+identical between local and CI invocations means commands copy-paste cleanly between contexts.
+
+```bash
+bash $PLATFORM_ROOT/validators/validate-manifest.sh harness.manifest.yaml
 ```
 
 **Expected output:**
@@ -88,7 +109,7 @@ If this fails, see `platform/workflow/troubleshooting.md` → Manifest Validatio
 ## Step 3 — Run the Module Graph Validator
 
 ```bash
-bash $PLATFORM/validators/validate-module-graph.sh harness.manifest.yaml
+bash $PLATFORM_ROOT/validators/validate-module-graph.sh harness.manifest.yaml
 ```
 
 **Expected output:**
@@ -108,7 +129,7 @@ The `validate-required-artifacts.sh` validator checks that files declared in act
 actually exist in your project. Run it to see what's missing:
 
 ```bash
-bash $PLATFORM/validators/validate-required-artifacts.sh harness.manifest.yaml .
+bash $PLATFORM_ROOT/validators/validate-required-artifacts.sh harness.manifest.yaml .
 ```
 
 For a discovery-phase manifest, this validation is disabled by default. For a production
@@ -149,7 +170,7 @@ each batch to confirm progress.
 ## Step 5 — Scan for Unfilled Placeholders
 
 ```bash
-bash $PLATFORM/validators/validate-placeholders.sh .
+bash $PLATFORM_ROOT/validators/validate-placeholders.sh .
 ```
 
 This scans for any remaining `[[PLACEHOLDER_NAME]]` tokens (and bare `YYYY-MM-DD` placeholders)
@@ -164,7 +185,7 @@ templates have been filled in.
 If your manifest includes `agents/claude-code` or `agents/generic-llm`:
 
 ```bash
-bash $PLATFORM/validators/validate-agent-pack.sh harness.manifest.yaml .
+bash $PLATFORM_ROOT/validators/validate-agent-pack.sh harness.manifest.yaml .
 ```
 
 This checks that `AGENTS.md`, `CLAUDE.md`, and `.claude/settings.json` exist and are consistent.
@@ -249,9 +270,9 @@ Copy the minimal workflow from `platform/workflow/ci-integration.md` into
 `.github/workflows/harness.yml` in your project. At a minimum:
 
 ```yaml
-- run: bash $PLATFORM/validators/validate-manifest.sh harness.manifest.yaml
-- run: bash $PLATFORM/validators/validate-module-graph.sh harness.manifest.yaml
-- run: bash $PLATFORM/validators/validate-required-artifacts.sh harness.manifest.yaml .
+- run: bash $PLATFORM_ROOT/validators/validate-manifest.sh harness.manifest.yaml
+- run: bash $PLATFORM_ROOT/validators/validate-module-graph.sh harness.manifest.yaml
+- run: bash $PLATFORM_ROOT/validators/validate-required-artifacts.sh harness.manifest.yaml .
 ```
 
 See `platform/workflow/ci-integration.md` for the full workflow including companion rule

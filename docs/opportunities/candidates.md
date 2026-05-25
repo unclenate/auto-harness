@@ -54,6 +54,64 @@ this index exists only to group, cluster, or annotate them for human readers.
   Same-day proposed → exploring → accepted trajectory driven by
   maintainer priority signal.
 
+- [OPP-0026](OPP-0026-distilled-learnings-disposition.md) *(proposed
+  2026-05-25; filed as OPP-0024 in working tree, renumbered after PR #59
+  took the OPP-0023 slot)* — Decide the disposition of
+  `distilled-learnings.md`:
+  sunset, revive with a forcing trigger, or clarify as dormant.
+  Investigation revealed the file has had zero content entries in 40
+  days since the knowledge-capture module was added; the audit's M8
+  finding flagged it as stale-cosmetic, but the gap is structural —
+  `operating-principles.md` has *de facto* absorbed the curated-knowledge
+  charter (§§ 7 and 8 added this session) while distilled-learnings has
+  no forcing trigger to receive cross-observation synthesis. Initial
+  bias toward sunset (consolidate curation in operating-principles), but
+  PRD-pass should weigh the alternatives. Paired with a shared-observation
+  framing the gap as the intra-repo sibling of OPP-0025's cross-repo
+  silent-declaration pattern.
+
+### Session-cycle orchestration & review-trigger taxonomy
+
+This cluster captures a deeper concern surfaced by the OPP-0026
+investigation: the harness has accumulated powerful automations
+(companion rules, distillation triggers, Stop-event hooks, validator
+chains, audit-trail rules) but **no defined "optimal session shape"
+with review checkpoints that systematically fire them.** A session
+might add ten shared-observations, ship a PRD, and merge — but never
+run the curation review that distilled-learnings was designed to
+receive, never check whether operating-principles needs a new section,
+never audit the back-pressure between observation accumulation and
+synthesis. The automations exist; the *cadence that consumes their
+output* is underspecified. This is the trigger-side counterpart to the
+audit-driven pattern the project has already named ("audits surface
+what continuous discipline missed").
+
+- **Candidate (not yet an OPP — awaiting second instance):**
+  *Session-cycle orchestration / review-trigger taxonomy.* Frame the
+  ideal session shape end-to-end — from session start (load skills,
+  observe state) through work (companion rules, hooks, validators)
+  through session close (cycle-end distillation, observation review,
+  promotion-candidate scan, curation back-pressure check). Identify
+  which automations are *already firing* at which checkpoints and
+  which are *declared but unfired*. Produce a taxonomy of review
+  triggers (PR-boundary, session-boundary, time-boundary,
+  count-boundary, audit-boundary) and assign each declared review to
+  exactly one trigger class. Likely outputs: an additions to
+  `cycle-end-distillation.md` covering the full session arc (not just
+  cycle end); a possible new workflow doc `session-shape.md`; possibly
+  new companion rules for currently-unfired reviews; possibly
+  retirement of declared reviews that have no defensible trigger
+  (Option A of OPP-0026 is one instance of this). Promoted from
+  candidate-stub to OPP when a second concrete instance of
+  "declared review without a trigger" surfaces independently —
+  same evidence-pattern that lifted brownfield-onboarding-as-discovery
+  from observation to OPP cluster. **Origin:** maintainer framing
+  during the OPP-0026 investigation, 2026-05-25:
+  *"It may warrant further investigation because it seems that there's
+  an as yet undefined optimal set of process steps for a session, and
+  we are missing reviews that could be triggering these powerful
+  automations we've designed."*
+
 ### Consumer onboarding & project hygiene
 
 - [OPP-0006](OPP-0006-trust-tier-enforcement.md) *(exploring;
@@ -91,6 +149,24 @@ this index exists only to group, cluster, or annotate them for human readers.
   Surfaced by the Tula onboarding (recorded in its `ADR-0002`). Initial bias:
   make the validator scan consumer `*.md` when no `platform/` exists (skip the
   platform-specific pass), and align the template + guide.
+
+- [OPP-0025](OPP-0025-consumer-integration-smoke-test.md) *(proposed
+  2026-05-25; filed as OPP-0023 in working tree, renumbered after PR #59
+  took the OPP-0023 slot for a separate Tula-surfaced finding)* — Add a
+  consumer-side integration smoke test as a
+  first-class harness primitive: a tiny CI workflow template + a recipe
+  documented in `submodule-integration.md` § 6 (added in the same
+  hotfix bundle as this OPP). Closes two silent-failure modes the
+  harness's own CI cannot see by construction: (a) clones without
+  `--recurse-submodules` leave `.harness/` empty with no error; (b) the
+  pinned submodule SHA can become unreachable (force-push, branch
+  deletion, auth-gated remote) and `git submodule update --init` fails
+  with confusing errors. Complementary to PR #58's `-b main`
+  improvement — explicit branch tracking clarifies intent; the smoke
+  test provides the missing mechanical check. Framed in
+  shared-observations as the cross-repo instance of the "declaration
+  without enforcement" pattern; anchor for the M-j list-completeness
+  validator candidate (intra-repo sibling).
 
 ### Brownfield catalog coverage
 

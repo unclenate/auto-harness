@@ -6,8 +6,8 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # ADR-0004: Opportunity Capture — Record Structure Choice
 
-**Status:** Proposed
-**Date:** 2026-05-12
+**Status:** Accepted
+**Date:** 2026-05-12 (filed) | 2026-05-25 (status flipped to Accepted per ADR-0013 Phase 0)
 **Author:** @unclenate
 **Reviewers:** @unclenate
 **Context source:** Design session on closing the gap between forward-looking ideas and backward-looking observations; companion to PRD-0003 (Opportunity Capture module).

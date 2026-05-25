@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 600" font-family="'Segoe UI', Roboto, -apple-system, system-ui, sans-serif">
+  <defs>
+    <marker id="arrR" markerWidth="10" markerHeight="10" refX="7" refY="5" orient="auto">
+      <path d="M0,0 L9,5 L0,10 Z" fill="#E0696B"/>
+    </marker>
+    <marker id="arrG" markerWidth="10" markerHeight="10" refX="7" refY="5" orient="auto">
+      <path d="M0,0 L9,5 L0,10 Z" fill="#2F9E7E"/>
+    </marker>
+  </defs>
+
+  <rect x="1" y="1" width="1278" height="598" rx="18" fill="#FCFCFD" stroke="#E4E7EC"/>
+
+  <!-- eyebrow -->
+  <text x="640" y="42" text-anchor="middle" font-size="13" letter-spacing="2.5" font-weight="700" fill="#8A93A3">THE PROBLEM auto-harness SOLVES</text>
+  <text x="640" y="68" text-anchor="middle" font-size="17" fill="#5A6475">An AI agent can write, commit, and deploy code in seconds — auto-harness keeps a human holding the keys to the dangerous parts.</text>
+
+  <!-- ===================== LEFT PANEL ===================== -->
+  <rect x="40" y="92" width="576" height="476" rx="14" fill="#FFF6F6" stroke="#F1C9C9"/>
+  <text x="328" y="130" text-anchor="middle" font-size="17" font-weight="700" letter-spacing="1" fill="#B23B3F">WITHOUT A HARNESS</text>
+  <line x1="80" y1="146" x2="576" y2="146" stroke="#F0D5D5"/>
+
+  <!-- agent -->
+  <rect x="228" y="170" width="200" height="64" rx="12" fill="#FFFFFF" stroke="#DD9092"/>
+  <rect x="256" y="186" width="32" height="32" rx="7" fill="#EEF0F4" stroke="#9AA3B2"/>
+  <line x1="272" y1="180" x2="272" y2="186" stroke="#9AA3B2" stroke-width="2"/>
+  <circle cx="272" cy="178" r="3" fill="#9AA3B2"/>
+  <circle cx="266" cy="200" r="3.4" fill="#5A6475"/>
+  <circle cx="278" cy="200" r="3.4" fill="#5A6475"/>
+  <text x="312" y="207" font-size="15" font-weight="600" fill="#1A2233">AI agent</text>
+
+  <line x1="328" y1="234" x2="328" y2="258" stroke="#E0696B" stroke-width="2.5" marker-end="url(#arrR)"/>
+
+  <!-- empty governance box -->
+  <rect x="168" y="266" width="320" height="196" rx="12" fill="#FFFFFF" stroke="#E0696B" stroke-width="2" stroke-dasharray="7 6"/>
+  <text x="328" y="296" text-anchor="middle" font-size="14" font-style="italic" fill="#B23B3F">no governance layer</text>
+
+  <g font-size="13.5" fill="#7A4042">
+    <circle cx="200" cy="324" r="9" fill="#FBE3E3"/><path d="M196,320 l8,8 M204,320 l-8,8" stroke="#C0453F" stroke-width="2" stroke-linecap="round"/>
+    <text x="220" y="329">No paper trail — who changed what, and why?</text>
+    <circle cx="200" cy="362" r="9" fill="#FBE3E3"/><path d="M196,358 l8,8 M204,358 l-8,8" stroke="#C0453F" stroke-width="2" stroke-linecap="round"/>
+    <text x="220" y="367">No review gate — straight to production</text>
+    <circle cx="200" cy="400" r="9" fill="#FBE3E3"/><path d="M196,396 l8,8 M204,396 l-8,8" stroke="#C0453F" stroke-width="2" stroke-linecap="round"/>
+    <text x="220" y="405">No recovery path when it breaks</text>
+  </g>
+
+  <line x1="328" y1="462" x2="328" y2="488" stroke="#E0696B" stroke-width="2.5" marker-end="url(#arrR)"/>
+
+  <!-- production -->
+  <rect x="208" y="496" width="240" height="56" rx="10" fill="#FFFFFF" stroke="#DD9092"/>
+  <g stroke="#B23B3F" stroke-width="2">
+    <rect x="234" y="510" width="26" height="9" rx="2" fill="none"/>
+    <rect x="234" y="522" width="26" height="9" rx="2" fill="none"/>
+  </g>
+  <text x="328" y="529" text-anchor="middle" font-size="15" font-weight="700" fill="#1A2233">Production</text>
+
+  <!-- ===================== RIGHT PANEL ===================== -->
+  <rect x="664" y="92" width="576" height="476" rx="14" fill="#F1F9F5" stroke="#BFE3D0"/>
+  <text x="952" y="130" text-anchor="middle" font-size="17" font-weight="700" letter-spacing="1" fill="#1F7A5A">WITH auto-harness</text>
+  <line x1="704" y1="146" x2="1200" y2="146" stroke="#CDE8D9"/>
+
+  <!-- agent -->
+  <rect x="852" y="170" width="200" height="64" rx="12" fill="#FFFFFF" stroke="#93C9AC"/>
+  <rect x="880" y="186" width="32" height="32" rx="7" fill="#EAF3EE" stroke="#6FAF8E"/>
+  <line x1="896" y1="180" x2="896" y2="186" stroke="#6FAF8E" stroke-width="2"/>
+  <circle cx="896" cy="178" r="3" fill="#6FAF8E"/>
+  <circle cx="890" cy="200" r="3.4" fill="#3C7A5C"/>
+  <circle cx="902" cy="200" r="3.4" fill="#3C7A5C"/>
+  <text x="936" y="207" font-size="15" font-weight="600" fill="#1A2233">AI agent</text>
+
+  <line x1="952" y1="234" x2="952" y2="256" stroke="#2F9E7E" stroke-width="2.5" marker-end="url(#arrG)"/>
+
+  <!-- harness gate -->
+  <rect x="792" y="264" width="320" height="200" rx="14" fill="#FFFFFF" stroke="#2F9E7E" stroke-width="2.5"/>
+  <text x="952" y="292" text-anchor="middle" font-size="14.5" font-weight="700" fill="#1F7A5A">auto-harness governance gate</text>
+  <line x1="816" y1="304" x2="1088" y2="304" stroke="#CDE8D9"/>
+
+  <g font-size="13" fill="#2B4A3D">
+    <circle cx="832" cy="332" r="9" fill="#DDF0E5"/><path d="M828,332 l3,3 l5,-6" stroke="#1F7A5A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="852" y="330">Trust tier checked —</text>
+    <text x="852" y="346" fill="#5A6475">can the agent even do this unaided?</text>
+    <circle cx="832" cy="378" r="9" fill="#DDF0E5"/><path d="M828,378 l3,3 l5,-6" stroke="#1F7A5A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="852" y="376">Companion docs attached —</text>
+    <text x="852" y="392" fill="#5A6475">the change documents itself</text>
+    <circle cx="832" cy="424" r="9" fill="#DDF0E5"/><path d="M828,424 l3,3 l5,-6" stroke="#1F7A5A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="852" y="422">Validators green —</text>
+    <text x="852" y="438" fill="#5A6475">required artifacts &amp; rules satisfied</text>
+  </g>
+
+  <line x1="952" y1="464" x2="952" y2="490" stroke="#2F9E7E" stroke-width="2.5" marker-end="url(#arrG)"/>
+
+  <!-- outcome -->
+  <rect x="792" y="498" width="320" height="56" rx="10" fill="#EAF6EF" stroke="#2F9E7E"/>
+  <circle cx="824" cy="526" r="11" fill="#2F9E7E"/><path d="M819,526 l3.5,3.5 l6.5,-7.5" stroke="#FFFFFF" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="952" y="531" text-anchor="middle" font-size="14.5" font-weight="700" fill="#1F7A5A">A reviewable PR &#8594; Production</text>
+
+  <!-- footer caption -->
+  <text x="640" y="588" text-anchor="middle" font-size="12.5" fill="#9AA3B2">Mockup — proposed hero graphic for the top of README.md  ·  auto-harness documentation audit, 2026-05-24</text>
+</svg>

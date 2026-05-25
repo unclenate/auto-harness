@@ -1,0 +1,26 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+id: browser-storage
+type: data
+version: 1.0.0
+summary: Browser-side data overlay for IndexedDB, localStorage, OPFS, and other in-browser persistence APIs. Distinct from server-side embedded-KV because browser storage has tab-isolation, quota, and user-clear-data semantics that don't apply server-side.
+dependsOn:
+  - kernel/base
+conflictsWith: []
+requiredArtifacts: []
+optionalArtifacts:
+  - docs/data/browser-storage-strategy.md
+sensitivePaths: []
+companionRules: []
+validators:
+  - validate-module-graph
+  - validate-companions
+reviewGates:
+  - Browser storage has user-controllable clearing semantics (incognito mode, "clear browsing data"); criticality-medium-or-above projects should document data-recovery expectations.
+  - Quota limits vary by browser; projects depending on browser storage as a primary persistence layer should test under quota-pressure conditions.
+agentAdapters:
+  - platform/agents/claude-code
+compiledFragments:
+  - platform/profiles/data/browser-storage/README.md
+recommendedSkills:
+  - harness-governance

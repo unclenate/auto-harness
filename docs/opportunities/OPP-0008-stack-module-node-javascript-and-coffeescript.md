@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0008 — Stack Module for Plain Node-JavaScript (and Legacy CoffeeScript)
 
-**Status:** proposed
+**Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-05-24
-**Last Updated:** 2026-05-24
+**Last Updated:** 2026-05-25 *(v1 implementation landed: `stacks/node-javascript` + `stacks/coffeescript` modules shipped)*
 **Confidence:** high
 
 ---

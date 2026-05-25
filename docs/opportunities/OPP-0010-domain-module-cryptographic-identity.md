@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0010 — Domain Module for Cryptographic Identity (Non-Ethereum HD Wallets)
 
-**Status:** proposed
+**Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-05-24
-**Last Updated:** 2026-05-24
+**Last Updated:** 2026-05-25 *(v1 implementation landed: `domains/cryptographic-identity` module shipped)*
 **Confidence:** high
 
 ---

@@ -99,7 +99,7 @@ app or a service). Both signals are captured in shared-observations.md.
 
 #### From YouBase (cryptographic-identity / personal-data-store)
 
-- [OPP-0008](OPP-0008-stack-module-node-javascript-and-coffeescript.md) *(proposed 2026-05-24)* —
+- [OPP-0008](OPP-0008-stack-module-node-javascript-and-coffeescript.md) *(accepted 2026-05-25; v1 modules shipped)* —
   Add a stack module for plain Node-JavaScript (and a sibling for legacy
   CoffeeScript). Catalog currently has `stacks/node-typescript` and
   `stacks/python` only; a Node-not-TypeScript brownfield consumer leaves
@@ -108,7 +108,7 @@ app or a service). Both signals are captured in shared-observations.md.
   zero-required-artifact like the existing pair. Closes the smallest of
   the three gaps.
 
-- [OPP-0009](OPP-0009-data-module-embedded-key-value.md) *(proposed 2026-05-24)* —
+- [OPP-0009](OPP-0009-data-module-embedded-key-value.md) *(accepted 2026-05-25; v1 modules shipped)* —
   Add a data module for embedded key-value stores (LevelDB / LMDB / RocksDB
   / SQLite-as-KV) plus a sibling `data/browser-storage` for IndexedDB /
   localStorage / OPFS. Catalog currently has relational-postgres, document-
@@ -117,7 +117,7 @@ app or a service). Both signals are captured in shared-observations.md.
   `abstract-level`) has nowhere to land. Initial bias: split server-embedded
   from browser-embedded; zero required artifacts in v1.
 
-- [OPP-0010](OPP-0010-domain-module-cryptographic-identity.md) *(proposed 2026-05-24)* —
+- [OPP-0010](OPP-0010-domain-module-cryptographic-identity.md) *(accepted 2026-05-25; v1 module shipped)* —
   Add a domain module for cryptographic identity (BIP39 mnemonics, BIP32 HD
   derivation, secp256k1 ECDSA, DID/SSI primitives), orthogonal to
   `domains/web3` (which is Ethereum-specific). Five governance concerns

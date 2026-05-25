@@ -1,0 +1,39 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+id: coffeescript
+type: stack
+version: 1.0.0
+summary: CoffeeScript overlay for legacy projects compiling .coffee to JavaScript — covers the 2010-2016 Node ecosystem patterns where CoffeeScript was a first-class source language.
+dependsOn:
+  - kernel/base
+  - node-javascript
+conflictsWith: []
+requiredArtifacts: []
+optionalArtifacts:
+  - .coffeelintrc
+  - coffee.cmd
+  - .github/workflows/stack.yml
+sensitivePaths:
+  - description: CoffeeScript compiler configuration or compiled-output handling
+    patterns:
+      - ^\.coffeelintrc.*$
+      - ^.*\.coffee$
+companionRules:
+  - description: Migrations away from CoffeeScript (compile-target language change) require an ADR
+    triggerPaths:
+      - ^\.coffeelintrc.*$
+    requiredAny:
+      - ^docs/adr/ADR-
+      - ^docs/architecture/overview\.md$
+    humanReview: CoffeeScript-to-JS or CoffeeScript-to-TS migrations are language transitions; reviewers verify the migration plan is documented, not just the lint config edit.
+validators:
+  - validate-module-graph
+  - validate-companions
+reviewGates:
+  - CoffeeScript is a legacy language as of 2025; activating this module signals the project predates the TypeScript era. Modernization paths should be considered.
+agentAdapters:
+  - platform/agents/claude-code
+compiledFragments:
+  - platform/profiles/stacks/coffeescript/README.md
+recommendedSkills:
+  - harness-governance

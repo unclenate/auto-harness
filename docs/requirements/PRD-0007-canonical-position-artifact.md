@@ -26,6 +26,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
   - *"Three positive patterns from a heavy-load reconciliation worth promoting to harness conventions"* (E) — **bundled into v1 as operating-principles § 9 additions**
 - Field-evidence repo: `bdits/municipal-brain` at commit `ff953c1` — see OPP-0007 § Related for the specific artifacts that motivated the OPP
 - Related operating-principles: § 5 (Self-Governance), § 7 (Align File Boundaries with Change-Class Boundaries), § 8 (Prefer Text Representations)
+- Visual reference: [Diagram 10 — Canonical-Position Artifact Flow](../architecture/diagrams.md#10-canonical-position-artifact-flow) — visualizes the citation rule + ratification rule + review-artifact composition
 
 ## Overview
 
@@ -571,11 +572,15 @@ The OPP-0007 open questions are resolved as follows:
 
 ## Versioning Implications
 
-- Canonical-position v1 is a **MINOR bump** to v0.7.0 (additive
+- Canonical-position v1 is a **MINOR bump** to v0.6.0 (additive
   module; new templates; new companion rules; no breaking change).
-- The v0.6.0 release-marker is trust-tier-enforcement implementation
-  (PRD-0006); canonical-position is the v0.7.0 release-marker.
-- CHANGELOG.md `## [v0.7.0]` will document:
+- v0.6.0 is the canonical-position release-marker; trust-tier
+  enforcement implementation (PRD-0006) becomes v0.7.0. The order
+  was swapped 2026-05-24 after the OPP-0007 field evidence from
+  `bdits/municipal-brain` proved a higher signal than the audit-
+  identified trust-tier gap. See `docs/project/change-log.md` for
+  the prioritization rationale.
+- CHANGELOG.md `## [v0.6.0]` will document:
   - **Added:** `management/canonical-position` module, two new
     templates, § 9 operating-principle additions
   - **Changed:** SUMMARY.md catalogs, `validate-catalog-counts.sh`

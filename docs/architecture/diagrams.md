@@ -16,7 +16,7 @@ need the picture in context.
 > repository view. Edit a diagram by editing the Mermaid block in this
 > file — there is no separate image to regenerate.
 
-Nine diagrams below, grouped by what they answer:
+Eleven diagrams below, grouped by what they answer:
 
 | # | Question the diagram answers | Section |
 |---|------------------------------|---------|
@@ -29,6 +29,8 @@ Nine diagrams below, grouped by what they answer:
 | 7 | *How do paired mechanisms catch each other's bugs?* | [Paired Mechanism Dynamic](#7-paired-mechanism-dynamic) |
 | 8 | *How does the OPP→PRD→ADR pipeline surface design questions?* | [OPP → PRD Design-Pressure Cascade](#8-opp--prd-design-pressure-cascade) |
 | 9 | *How does `validate-catalog-counts.sh` work?* | [Catalog-Counts Assertion Flow](#9-catalog-counts-assertion-flow) |
+| 10 | *How does the canonical-position artifact compose with citation + ratification?* (PRD-0007, v0.6.0) | [Canonical-Position Artifact Flow](#10-canonical-position-artifact-flow) |
+| 11 | *How does anchor-satellite OPP filing produce better PRD scoping?* | [Anchor-Satellite Filing Pattern](#11-anchor-satellite-filing-pattern) |
 
 ---
 
@@ -603,6 +605,201 @@ flowchart LR
 The validator's `--help` documents the row format. See the
 `harness-governance` SKILL.md signature-notes for the consumer-side
 how-to.
+
+---
+
+## 10. Canonical-Position Artifact Flow
+
+**Question:** *How does the canonical-position artifact compose with citation + ratification?*
+
+**Status:** PRD-0007 specifies the v1 implementation; this diagram
+visualizes the contract. v0.6.0 release-marker (re-prioritized
+2026-05-24 ahead of PRD-0006 after `bdits/municipal-brain` field
+evidence).
+
+The canonical-position artifact is the single ratified north-star
+that every strategy-shaped artifact must cite and that cannot drift.
+Two companion rules enforce this:
+
+1. **Citation rule** — strategy artifact edits demand citation
+2. **Ratification rule** — canonical-position edits demand
+   review-artifact + change-log
+
+The review-artifact is bundled into v1 as the ratification flow's
+required satisfier (Observation C from the municipal-brain
+reconciliation).
+
+```mermaid
+flowchart TB
+    Canon["<b>docs/canonical-position.md</b><br/>(the project's north star)<br/>required artifact of<br/>management/canonical-position module"]
+
+    subgraph CITES["Strategy-shaped artifacts (must cite Canon)"]
+        Reqs["docs/product/requirements.md"]
+        ReleaseIntent["docs/product/release-intent.md"]
+        MVPScope["docs/product/mvp-scope.md"]
+        Problem["docs/product/problem-statement.md"]
+        Discovery["docs/discovery/*.md"]
+        OPPs["docs/opportunities/OPP-*"]
+        GTM["docs/gtm/*.md<br/>(if present)"]
+        Partnerships["docs/partnerships/*.md<br/>(if present)"]
+    end
+
+    CITES -.cite.-> Canon
+
+    EditStrategy["Edit any strategy-shaped artifact"]
+    EditStrategy --> CitationCheck{"<b>Citation rule fires</b><br/>(validate-companions)"}
+    CitationCheck -->|"existing citation present<br/>OR Canon also touched"| StrategyPass["✓ CI passes"]
+    CitationCheck -->|"no citation"| StrategyFail["✗ CI blocks merge"]
+
+    EditCanon["Edit docs/canonical-position.md"]
+    EditCanon --> RatifyCheck{"<b>Ratification rule fires</b><br/>(validate-companions)"}
+    RatifyCheck -->|"Review-artifact (REVIEW-N) present<br/>AND change-log entry"| RatifyPass["✓ CI passes"]
+    RatifyCheck -->|"no review-artifact"| RatifyFail["✗ CI blocks merge"]
+
+    Review["<b>docs/reviews/REVIEW-NNNN-*.md</b><br/>(the review that produced the revision;<br/>contains Findings + Recommendations + Disposition)"]
+
+    Review -.satisfies.-> RatifyCheck
+
+    ChangeLog["docs/project/change-log.md<br/>(audit trail of the ratification)"]
+    ChangeLog -.satisfies kernel rule.-> RatifyCheck
+
+    StrategyPass --> Coherent["Strategy artifacts remain<br/>aligned to a single ratified position"]
+    RatifyPass --> Coherent
+
+    style Canon fill:#1a2332,stroke:#2c4a6b,color:#fff
+    style Coherent fill:#2d4a2d,stroke:#4a7a4a,color:#fff
+    style StrategyPass fill:#2d4a2d,stroke:#4a7a4a,color:#fff
+    style RatifyPass fill:#2d4a2d,stroke:#4a7a4a,color:#fff
+    style StrategyFail fill:#7a2d2d,stroke:#aa4a4a,color:#fff
+    style RatifyFail fill:#7a2d2d,stroke:#aa4a4a,color:#fff
+    style Review fill:#3a4a5e,stroke:#5a7a9a,color:#fff
+```
+
+**Two failure modes the contract prevents:**
+
+1. **Silent strategy drift** — a strategy artifact gets edited without
+   reference to the canonical position; over time, accumulated edits
+   form a position the canonical document doesn't reflect. Citation
+   rule catches this at PR boundary.
+2. **Silent canon revision** — the canonical position gets edited
+   without a review trail; the project loses the history of *why*
+   it pivoted. Ratification rule catches this.
+
+**Where this diagram fits:** it's a refinement of Diagram 3
+(companion rule firing), specialized to the canonical-position
+artifact's two rules. The general companion-rule machinery does the
+work; this diagram shows what's wired up for v0.6.0.
+
+**References:**
+[PRD-0007](../requirements/PRD-0007-canonical-position-artifact.md) ·
+[OPP-0007](../opportunities/OPP-0007-canonical-position-artifact.md) ·
+[Diagram 3 — Companion Rule Firing](#3-companion-rule-firing) (general mechanism)
+
+---
+
+## 11. Anchor-Satellite Filing Pattern
+
+**Question:** *How does anchor-satellite OPP filing produce better PRD scoping?*
+
+A filing-time discipline that emerged from the
+`bdits/municipal-brain` reconciliation handoff: when a reconciliation
+or audit pass surfaces multiple related gaps, file the central gap
+as an *anchor* OPP and the dependent gaps as *satellite*
+observations. The structure makes the PRD pass more tractable because
+the design space is "which satellites bundle vs. defer," not "what
+to even propose."
+
+Captured in `shared-observations.md`:
+*"Anchor-OPP-and-satellite-observations is a stronger filing shape
+than disconnected OPPs"* (2026-05-24).
+
+```mermaid
+flowchart TB
+    Recon["Reconciliation / audit pass<br/>surfaces multiple related gaps"]
+
+    Recon --> Decide{"What's the<br/>central gap?"}
+
+    Decide --> AnchorOPP["<b>Anchor OPP</b><br/>proposes the central<br/>primitive"]
+
+    Decide --> SatObs1["Satellite observation 1<br/>(dependent gap A)"]
+    Decide --> SatObs2["Satellite observation 2<br/>(dependent gap B)"]
+    Decide --> SatObs3["Satellite observation 3<br/>(dependent gap C)"]
+    Decide --> SatObs4["Satellite observation 4<br/>(dependent gap D)"]
+    Decide --> SatObs5["Satellite observation 5<br/>(dependent gap E)"]
+
+    SatObs1 -.depends on.-> AnchorOPP
+    SatObs2 -.depends on.-> AnchorOPP
+    SatObs3 -.depends on.-> AnchorOPP
+    SatObs4 -.depends on.-> AnchorOPP
+    SatObs5 -.depends on.-> AnchorOPP
+
+    AnchorOPP --> PRD["<b>PRD pass</b><br/>(after promotion to exploring)"]
+
+    PRD --> Scope{"Which satellites<br/>bundle into v1?"}
+
+    Scope -->|"depends on anchor;<br/>v1 needs it"| Bundle["Bundled into v1<br/>(e.g., Observation C —<br/>review-artifact required<br/>for ratification flow)"]
+
+    Scope -->|"depends on anchor;<br/>v1 doesn't need it"| Defer["Deferred to follow-up OPP<br/>(e.g., Observations A, B, D —<br/>each becomes own OPP citing<br/>anchor as prerequisite)"]
+
+    Scope -->|"cheap addition;<br/>worth bundling"| BundleCheap["Bundled into v1 as<br/>operating-principle additions<br/>(e.g., Observation E —<br/>three process patterns)"]
+
+    Bundle --> V1["v1 implementation PR"]
+    BundleCheap --> V1
+
+    Defer --> FollowUpOPP["<b>Follow-up OPP filed</b><br/>citing anchor as prerequisite<br/>+ carrying prior framing<br/>(no re-derivation needed)"]
+
+    V1 --> AnchorAccepted["Anchor OPP → accepted"]
+    AnchorAccepted -.unblocks.-> FollowUpOPP
+
+    style AnchorOPP fill:#1a2332,stroke:#2c4a6b,color:#fff
+    style PRD fill:#3a4a5e,stroke:#5a7a9a,color:#fff
+    style V1 fill:#2d4a2d,stroke:#4a7a4a,color:#fff
+    style AnchorAccepted fill:#2d4a2d,stroke:#4a7a4a,color:#fff
+    style Bundle fill:#2d4a2d,stroke:#4a7a4a,color:#fff
+    style BundleCheap fill:#2d4a2d,stroke:#4a7a4a,color:#fff
+    style Defer fill:#5a5a2d,stroke:#8a8a4a,color:#fff
+    style FollowUpOPP fill:#5a5a2d,stroke:#8a8a4a,color:#fff
+```
+
+**Three structural advantages:**
+
+1. **Composition discipline at PRD-time** — the PRD must commit to
+   "which satellites bundle vs. defer." Forced composition decisions
+   surface the right v1 scope.
+2. **Backlog coherence** — the OPP backlog reads as a dependency tree
+   rather than parallel disconnected gaps. Anyone reading
+   `candidates.md` sees which gaps share a common prerequisite.
+3. **Deferred follow-ups inherit context** — satellite-turned-OPP
+   carries the prior framing; the maintainer doesn't re-derive
+   *why* the anchor's primitive matters.
+
+**OPP-0007 as the canonical instance:** filed with one anchor
+(canonical-position primitive) and five satellite observations (A:
+validator opt-out staleness, B: opportunity-capture backlog re-audit,
+C: review-artifact type, D: discovery-intake canonical-SHA pinning,
+E: positive reconciliation patterns). PRD-0007 bundled C + E into
+v1; deferred A, B, D to follow-up OPPs that will each cite OPP-0007
+as their prerequisite.
+
+**When to use this pattern:**
+
+- Multi-gap reconciliation pass (vs. a single discovered gap)
+- Audit findings where several relate to one missing primitive
+- Field-evidence handoffs where the consumer found a constellation
+  of related issues
+
+**When NOT to use this pattern:**
+
+- Independent gaps that don't share a prerequisite — file each as
+  its own OPP
+- Rapid-fire observations during a crisis where filing-time
+  discipline isn't available — capture as observations first,
+  re-group later if structural relationships emerge
+
+**References:**
+[OPP-0007](../opportunities/OPP-0007-canonical-position-artifact.md) (the canonical instance) ·
+[Anchor-Satellite Observation](../knowledge/shared-observations.md) (the process learning) ·
+[Diagram 8 — OPP → PRD Design-Pressure Cascade](#8-opp--prd-design-pressure-cascade) (related document-pressure pattern)
 
 ---
 

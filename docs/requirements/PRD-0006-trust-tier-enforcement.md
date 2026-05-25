@@ -403,11 +403,19 @@ The OPP-0006 open questions are resolved as follows:
 
 ## Versioning Implications
 
-- Trust-tier enforcement v1 is a **MINOR bump** to v0.6.0 (additive
-  schema, new validator; no breaking change).
+- Trust-tier enforcement v1 is a **MINOR bump** to v0.7.0 (additive
+  schema, new validator; no breaking change). The original plan was
+  v0.6.0, but the order was swapped 2026-05-24 after the OPP-0007
+  field evidence from `bdits/municipal-brain` proved a higher signal
+  than the audit-identified trust-tier gap. v0.6.0 now releases
+  canonical-position (PRD-0007); trust-tier follows as v0.7.0.
 - The new `tier` field on `module.yaml` is documented in CHANGELOG.md
   under `### Added`.
 - The dogfood declarations on auto-harness's own modules are
   documented under `### Changed` (modules transition from "tier
   undeclared" to "tier declared").
-- This PRD's acceptance becomes the v0.6.0 release-marker event.
+- This PRD's acceptance becomes the v0.7.0 release-marker event.
+- Trust-tier v2 (session-level enforcement) deferred to v0.8+ and
+  will likely cite canonical-position sections as the rationale
+  surface for validator opt-outs per Observation A from the
+  municipal-brain handoff.

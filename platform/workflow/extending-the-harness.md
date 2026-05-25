@@ -299,13 +299,20 @@ See `platform/agents/claude-code/` as the most fully-developed example.
 1. **Open an OPP** for substantive additions (new module families,
    new validators with novel semantics, new agent packs). Skip the OPP
    for cosmetic / drift-fix work.
-2. **Draft the PRD** if accepted. Take positions on the design
+2. **Consider the anchor-satellite filing shape.** If your
+   contribution surfaces multiple related gaps (an audit pass, a
+   reconciliation handoff, a multi-finding investigation), file the
+   central gap as the anchor OPP and the dependent gaps as satellite
+   observations in `shared-observations.md`. See
+   [Diagram 11 — Anchor-Satellite Filing Pattern](../../docs/architecture/diagrams.md#11-anchor-satellite-filing-pattern)
+   for the structural advantages and when to use vs. avoid this shape.
+3. **Draft the PRD** if accepted. Take positions on the design
    questions the OPP leaves open.
-3. **Implement** following the contracts in this guide. Run the full
+4. **Implement** following the contracts in this guide. Run the full
    validator chain locally before opening the PR.
-4. **Update catalog claims** wherever the contribution adds to a count.
+5. **Update catalog claims** wherever the contribution adds to a count.
    `validate-catalog-counts.sh` will catch what you miss.
-5. **Pair with a distillation** if your contribution produced a
+6. **Pair with a distillation** if your contribution produced a
    durable architectural or process learning — see
    [`cycle-end-distillation.md`](cycle-end-distillation.md).
 

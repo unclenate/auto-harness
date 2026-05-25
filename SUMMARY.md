@@ -10,6 +10,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 * [Introduction](README.md)
 * [Platform Overview](platform/README.md)
+* [Roadmap](docs/roadmap.md) — released versions, planned versions, and what's coming toward v1.0
 * [How to Use This Documentation](platform/reference/how-to-read.md)
 * [Glossary](platform/reference/glossary.md)
 * [Topic Index](platform/reference/index.md)

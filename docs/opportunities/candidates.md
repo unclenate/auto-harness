@@ -54,9 +54,10 @@ this index exists only to group, cluster, or annotate them for human readers.
   Same-day proposed → exploring → accepted trajectory driven by
   maintainer priority signal.
 
-- [OPP-0026](OPP-0026-distilled-learnings-disposition.md) *(exploring;
-  PRD-0011 in flight, drafted 2026-05-25; filed as OPP-0024 in working
-  tree, renumbered after PR #59 took the OPP-0023 slot)* — Decide the disposition of
+- [OPP-0026](OPP-0026-distilled-learnings-disposition.md) *(accepted
+  2026-05-25; PRD-0011 + ADR-0014 + 13 FRs shipped same-day; filed as
+  OPP-0024 in working tree, renumbered after PR #59 took the OPP-0023
+  slot)* — Decided the disposition of
   `distilled-learnings.md`:
   sunset, revive with a forcing trigger, or clarify as dormant.
   Investigation revealed the file has had zero content entries in 40

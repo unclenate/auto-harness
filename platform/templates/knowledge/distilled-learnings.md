@@ -3,69 +3,37 @@ Copyright [[YEAR]] [[OWNER_NAME]] <[[OWNER_EMAIL]]>
 SPDX-License-Identifier: [[SPDX_LICENSE]]
 -->
 
-# [[PROJECT_NAME]] — Distilled Learnings
+# [[PROJECT_NAME]] — Distilled Learnings (Dormant)
 
-**Version:** 1.0 | **Owner:** [[OWNER]] | **Last Updated:** YYYY-MM-DD
+**Status:** Dormant template — kept for compatibility with consumer
+projects that scaffolded knowledge surfaces before
+[ADR-0014](../../../docs/adr/ADR-0014-sunset-distilled-learnings.md) (2026-05-25)
+and [PRD-0011](../../../docs/requirements/PRD-0011-distilled-learnings-disposition.md)
+sunset this file as a `requiredArtifact` of `management/knowledge-capture`.
 
-Curated longitudinal synthesis of what this project has learned. Drafted
-periodically by agents from `shared-observations.md`, reviewed by the
-team, promoted here when accepted as durable institutional knowledge.
+If you are scaffolding a new consumer project today, you do **not** need
+this file. The `management/knowledge-capture` module v1.2.0+ no longer
+declares it as required. The curated longitudinal destination is
+`docs/operating-principles.md` — patterns crystallize there when they
+appear across multiple observations in `shared-observations.md`.
 
-Unlike `shared-observations.md` (append-only), this file is curated. Entries
-are rewritten, merged, superseded, or retired as the team's understanding
-matures. Git history is the durable record of what was once believed.
+If you are an existing consumer with `distilled-learnings.md` content,
+you have three options:
 
----
+1. **Keep it as-is.** The file is no longer required but is also not
+   prohibited. If your team has been actively curating into it, the
+   sunset does not delete your content.
+2. **Migrate to operating-principles.** Promote each existing
+   distilled-learning into a section of `docs/operating-principles.md`,
+   then convert `distilled-learnings.md` into a dormancy pointer
+   matching the upstream pattern at
+   [`docs/knowledge/distilled-learnings.md`](../../../docs/knowledge/distilled-learnings.md).
+3. **Maintain a fork-local extension.** If your team genuinely needs a
+   separate curated-synthesis surface distinct from operating-principles,
+   keep the file and document the local exception in your project's
+   change log.
 
-## Principles
-
-_Durable truths about how this project works. Each entry cites the
-observations that led to it._
-
-<!-- Example:
-### Automation must tolerate human unavailability
-
-Agents running commits must halt and surface when governance controls
-(signing, review gates, validators) fail, rather than bypass them.
-
-**Derived from:** shared-observations.md § "Commit signing bypassed" (JP, 2026-04-14)
-**Promoted:** 2026-04-15 after review session
-**Cross-references:** auto-harness H-14, adsclaw H-20
--->
-
----
-
-## Patterns
-
-_Repeatable patterns we've seen work (or fail). These guide future choices._
-
----
-
-## Anti-patterns
-
-_Things we've tried that didn't work, and why. Preserving these prevents
-repeat failures._
-
----
-
-## Decisions in Force
-
-_Strategic or operational decisions that remain active. When a decision is
-superseded, it moves to the Supersession Log below rather than being deleted._
-
----
-
-## Supersession Log
-
-_Prior distilled learnings that were revised, reversed, or retired. Keep
-the original text and the reason for the change. This is the longitudinal
-record of how the team's thinking evolved._
-
----
-
-## Review Metadata
-
-- **Last team review:** YYYY-MM-DD
-- **Next scheduled review:** YYYY-MM-DD
-- **Current Write Policy:** [[WRITE_POLICY]] (for context on how observations enter the pipeline)
-- **Observation count since last review:** [[OBSERVATION_COUNT]]
+For the rationale, the alternatives weighed, and the explicit revisit
+triggers that would justify reintroducing this file as a required
+artifact, see
+[ADR-0014](../../../docs/adr/ADR-0014-sunset-distilled-learnings.md).

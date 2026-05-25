@@ -255,13 +255,18 @@ PR boundary by `validate-companions.sh`.
 
 **Question:** *How is cycle-end distillation triggered?*
 
-The harness's *destinations* for knowledge (`shared-observations.md`,
-`operating-principles.md`, `distilled-learnings.md`) are gated by two
-paired mechanisms: a **passive** companion rule on
-`management/knowledge-capture` that fires at PR boundary, and an
-**active** Claude Code `Stop` hook adapter that fires in-session
-before the PR is even opened. Both observe the same change classes;
-the hook is the in-session reminder, the rule is the floor.
+The harness's *destinations* for knowledge (`shared-observations.md`
+and `operating-principles.md`) are gated by two paired mechanisms: a
+**passive** companion rule on `management/knowledge-capture` that
+fires at PR boundary, and an **active** Claude Code `Stop` hook
+adapter that fires in-session before the PR is even opened. Both
+observe the same change classes; the hook is the in-session reminder,
+the rule is the floor.
+
+> **Historical note (ADR-0014, 2026-05-25):** The destination set used
+> to include a third file, `docs/knowledge/distilled-learnings.md`. It
+> was sunset after 40 days of zero inbound flow when operating-principles
+> absorbed the curated-synthesis charter in practice.
 
 ```mermaid
 flowchart TD
@@ -299,7 +304,6 @@ flowchart TD
     subgraph SATISFIERS["Knowledge destinations (any one satisfies)"]
         S1["docs/knowledge/<br/>shared-observations.md"]
         S2["docs/operating-principles.md"]
-        S3["docs/knowledge/<br/>distilled-learnings.md"]
     end
 
     RuleFire -.matches.-> TRIGGERS

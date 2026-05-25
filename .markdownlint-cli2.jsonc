@@ -25,15 +25,12 @@
     "platform/validators/test/fixtures/**",
     "platform/templates/docs/**",
     "platform/bootstrap/test/fixtures/**",
-    ".remember/**",
-    // knowledge-capture distillation files are governed by the module's
-    // "distillation edits require team review" companion rule. Markdownlint
-    // mechanical fixes here would force a paired review-log/memory artifact
-    // for what is not a real distillation edit. Excluded so the linter
-    // doesn't surface MD049 emphasis-style on these files; team-level edits
-    // to them follow the knowledge-capture rule's review discipline instead.
-    "docs/knowledge/distilled-learnings.md",
-    "platform/templates/knowledge/distilled-learnings.md"
+    ".remember/**"
+    // (The pre-ADR-0014 exclusions for docs/knowledge/distilled-learnings.md
+    //  and platform/templates/knowledge/distilled-learnings.md were lifted
+    //  on 2026-05-25 when the audit-trail companion rule that gated those
+    //  files was removed. The dormancy stubs that replaced the originals are
+    //  ordinary markdown subject to normal linting going forward.)
   ],
 
   // Per-rule configuration. See https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md

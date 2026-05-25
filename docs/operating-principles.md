@@ -7,10 +7,20 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 # Operating Principles — Development Harness Framework
 
 > Owner: @unclenate
-> Last updated: 2026-05-22 *(§ 8 added: prefer text representations)*
+> Last updated: 2026-05-25 *(now the project's curated longitudinal destination per ADR-0014; previously § 8 added on 2026-05-22)*
 
 These principles govern how the harness platform itself is built and evolved.
 They are derived from the kernel doctrine and adapted to this project's context.
+
+This file is the project's **curated longitudinal destination** for durable
+how-this-project-works truths synthesized from accumulating observations in
+[`docs/knowledge/shared-observations.md`](knowledge/shared-observations.md).
+Promotion from observations to principles happens when patterns crystallize —
+when the same pattern appears across multiple observations or when a single
+observation has clearly universal scope. Promotion is not on a fixed cadence;
+it is driven by accumulated evidence (see ADR-0014 for the rationale and
+[PRD-0011](requirements/PRD-0011-distilled-learnings-disposition.md) for the
+design that consolidated this role here).
 
 ---
 

@@ -59,7 +59,9 @@
 # Satisfier signal set (silent if any are touched on the branch):
 #   - ^docs/knowledge/shared-observations\.md$
 #   - ^docs/operating-principles\.md$
-#   - ^docs/knowledge/distilled-learnings\.md$
+# (Pre-ADR-0014 the set also included ^docs/knowledge/distilled-learnings\.md$;
+#  that destination was sunset 2026-05-25 and consolidated into
+#  operating-principles.md.)
 #
 # Workflow reference:
 #   platform/workflow/cycle-end-distillation.md
@@ -115,8 +117,10 @@ if [[ -z "$TRIGGERS" ]]; then
 fi
 
 # Detect whether any satisfier has already been touched (rule pre-satisfied).
+# Pre-ADR-0014 this regex also matched docs/knowledge/distilled-learnings.md;
+# that destination was sunset and consolidated into operating-principles.md.
 SATISFIERS="$(echo "$CHANGED_FILES" | grep -E \
-  '^docs/(knowledge/shared-observations\.md|operating-principles\.md|knowledge/distilled-learnings\.md)$' \
+  '^docs/(knowledge/shared-observations\.md|operating-principles\.md)$' \
   || true)"
 
 if [[ -n "$SATISFIERS" ]]; then
@@ -164,10 +168,8 @@ Pick the destination that matches the shape of the learning:
 - **\`docs/knowledge/shared-observations.md\`** — single-data-point
   insight from this specific work (default; most common choice)
 - **\`docs/operating-principles.md\`** — durable how-this-project-works
-  truth applicable to all future work
-- **\`docs/knowledge/distilled-learnings.md\`** — synthesis of multiple
-  prior observations (curation work; usually done at review cadence,
-  not opportunistically)
+  truth applicable to all future work (also the curated longitudinal
+  destination per ADR-0014)
 
 ### Decision tree + anti-patterns
 

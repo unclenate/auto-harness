@@ -6,11 +6,11 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0026 — `distilled-learnings.md` Disposition (Sunset, Revive, or Clarify)
 
-**Status:** exploring
+**Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-05-25
-**Last Updated:** 2026-05-25 *(filed as OPP-0024 in working tree; renumbered to OPP-0026 after PR #59 took the OPP-0023 slot — same session, same renumbering cascade. Promoted `proposed` → `exploring` same-day per the maintainer-priority cadence; [PRD-0011](../requirements/PRD-0011-distilled-learnings-disposition.md) drafted committing to Option A — Sunset.)*
-**Confidence:** high (on the diagnosis); high (on Option A as the disposition, committed in PRD-0011)
+**Last Updated:** 2026-05-25 *(filed as OPP-0024 in working tree; renumbered to OPP-0026 after PR #59 took the OPP-0023 slot. Promoted `proposed` → `exploring` → `accepted` same-day per the maintainer-priority cadence. PRD-0011 drafted; ADR-0014 accepted; implementation shipped — all 13 must-have FRs merged + paired observations + acceptance criteria satisfied.)*
+**Confidence:** high (on the diagnosis); high (on Option A as the disposition); confirmed by end-to-end execution
 
 ---
 

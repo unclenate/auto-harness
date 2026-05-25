@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # PRD-0011: Sunset `distilled-learnings.md` — Consolidate Curated Knowledge in `operating-principles.md`
 
-**Version:** 1.0 | **Owner:** @unclenate | **Last Updated:** 2026-05-25 | **Review Cycle:** On-change
+**Version:** 1.0 | **Owner:** @unclenate | **Last Updated:** 2026-05-25 *(Accepted: 13 FRs implemented + ADR-0014 accepted + paired observations + validators green)* | **Review Cycle:** On-change
 
-**Status:** Proposed
-**Date:** 2026-05-25 (filed)
+**Status:** Accepted
+**Date:** 2026-05-25 (filed); accepted same-day on implementation merge
 **Author:** @unclenate
 **Reviewers:** @unclenate
 

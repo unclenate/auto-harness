@@ -54,16 +54,16 @@ Common companion rules in harness projects:
 | `package.json`, lock files, `.nvmrc` | ADR OR `docs/architecture/overview.md` |
 | `pyproject.toml`, `requirements.txt`, lock files | ADR OR `docs/architecture/overview.md` |
 | `supabase/`, `src/auth/`, session/jwt/token paths | `docs/security/risk-register.md`, ADR, or architecture overview |
-| New/modified ADR (`docs/adr/ADR-*`), OPP (`docs/opportunities/OPP-*`), module manifest (`platform/*/module.yaml` — anywhere under `platform/`), or active-module catalog (`harness.manifest.yaml`) — *cycle-end distillation trigger when `management/knowledge-capture` is active* | Any of: `docs/knowledge/shared-observations.md`, `docs/operating-principles.md`, `docs/knowledge/distilled-learnings.md`. See [`platform/workflow/cycle-end-distillation.md`](../../workflow/cycle-end-distillation.md) for the satisfier decision tree. |
+| New/modified ADR (`docs/adr/ADR-*`), OPP (`docs/opportunities/OPP-*`), module manifest (`platform/*/module.yaml` — anywhere under `platform/`), or active-module catalog (`harness.manifest.yaml`) — *cycle-end distillation trigger when `management/knowledge-capture` is active* | Either of: `docs/knowledge/shared-observations.md` or `docs/operating-principles.md`. See [`platform/workflow/cycle-end-distillation.md`](../../workflow/cycle-end-distillation.md) for the satisfier decision tree. Pre-ADR-0014 (2026-05-25) the satisfier set also included `docs/knowledge/distilled-learnings.md`; that destination was sunset and consolidated into operating-principles.md. |
 
 Active companion rules for the current project are declared in each module's `module.yaml`.
 
-> **Cycle-end distillation pattern (PRD-0004).** When a PR introduces
+> **Cycle-end distillation pattern (PRD-0004; satisfier set updated by ADR-0014).** When a PR introduces
 > distillation-worthy work (new ADR / OPP / module / catalog change), the
-> distillation-trigger rule fires. Pair the trigger with an observation,
-> operating-principle edit, or distilled-learning entry — the `humanReview`
-> text demands substantive connection between the trigger work and the
-> distillation, not a tangential entry appended to pass CI. See
+> distillation-trigger rule fires. Pair the trigger with either an observation
+> in `shared-observations.md` or a new/modified section in `operating-principles.md` —
+> the `humanReview` text demands substantive connection between the trigger
+> work and the distillation, not a tangential entry appended to pass CI. See
 > [`platform/workflow/cycle-end-distillation.md`](../../workflow/cycle-end-distillation.md)
 > for the canonical workflow.
 

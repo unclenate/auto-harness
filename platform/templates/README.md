@@ -244,7 +244,7 @@ Jump to: [Discovery](#discovery) | [Product](#product) | [Project](#project) |
 | -------- | ------------------ | ---- |
 | Knowledge README | `management/knowledge-capture` | `templates/knowledge/README.md` |
 | Shared observations | `management/knowledge-capture` | `templates/knowledge/shared-observations.md` |
-| Distilled learnings | `management/knowledge-capture` | `templates/knowledge/distilled-learnings.md` |
+| Distilled learnings *(dormant — see ADR-0014)* | — *(no longer required by `management/knowledge-capture` v1.2.0+; template retained as a dormancy pointer for existing consumers)* | `templates/knowledge/distilled-learnings.md` |
 
 ### Opportunity
 

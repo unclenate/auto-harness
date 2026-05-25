@@ -1435,3 +1435,51 @@ here until distillation.
   sound argument. Second instance would lift to high.
 - **Severity:** architectural
 - **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-25 (PRD-0011 drafting; satisfies the cycle-end distillation rule that fired on the OPP-0026 status flip and the PRD-0011 file creation, which CI caught — the rule's PR-boundary enforcement working as designed)
+
+### The distilled-learnings sunset shipped — the sunset-PRD discipline carried through to implementation
+
+- **Context:** PRD-0011 implementation, 2026-05-25. The PRD specified 13
+  must-have FRs covering the module.yaml edits, the dormancy stub, the
+  workflow-doc updates, ADR-0014, and the destination-side claim in
+  operating-principles.md. The previously-recorded observation
+  *"Sunsetting a declared-but-unused mechanism must rule out replicating
+  the failure mode at the surviving destination"* (2026-05-25, one entry
+  up) had named the discipline; the implementation was the test of
+  whether that discipline would actually carry through under execution
+  pressure, where the cheap move would have been to bolt a quarterly-
+  review trigger onto operating-principles to "preserve cadence."
+- **Observation:** The discipline held. Operating-principles.md gained
+  an explicit claim of the curated-longitudinal-knowledge role
+  (paragraph two of the file's header), but no synthetic trigger — no
+  time-based companion rule, no count-based threshold, no audit cadence
+  attached. The cycle-end distillation rule continues to fire on the
+  same ADR/OPP/module.yaml/manifest trigger set; the satisfier set
+  shrank from three destinations to two; the rule's *behavior* is
+  unchanged, only the satisfier surface area is smaller. The discipline
+  named in the prior observation — *"the failure of declared-without-
+  trigger is solved by ensuring the trigger that exists is driven by
+  accumulating evidence in another tracked surface, not by clock or
+  count"* — was exercised concretely: operating-principles is now
+  explicitly named as the curated destination *and* its promotion
+  cadence is evidence-driven by accumulation in shared-observations,
+  not by a synthetic clock. The OPP-0026 acceptance criterion *"PR
+  includes a paired observation confirming the sunset happened"* is
+  satisfied by this entry; the rule worked end-to-end on the
+  implementation PR exactly as it worked on the design PR (#61).
+- **Implication:** Two observations now connect (declared-without-flow +
+  sunset-discipline) and operate as a tested pair: the first names the
+  failure mode, the second names the discipline that prevents
+  recurrence, and the implementation exercised both. If a third sunset
+  PRD lands in the future with the same discipline visible in its
+  rejected-alternatives section, that's the lift to high-confidence
+  evidence and the candidate for operating-principles § 9. Until then,
+  the pair stands as observed-twice, applied-once. The implementation
+  also confirmed by absence: no consumer projects required migration
+  steps; the module-version bump (1.1.0 → 1.2.0) is a softening of the
+  contract, never a tightening, exactly as PRD-0011 specified.
+- **Confidence:** high — direct, observed end-to-end execution of the
+  discipline with concrete evidence (operating-principles' explicit
+  destination claim was added; a synthetic trigger was *not* added; the
+  satisfier set shrank exactly as designed).
+- **Severity:** governance-relevant
+- **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-25 (PRD-0011 implementation; satisfies the cycle-end distillation rule fired by the implementation PR's ADR-0014 + module.yaml + OPP-0026 acceptance edits; also satisfies the PRD-0011 acceptance criterion requiring a paired observation confirming the sunset)

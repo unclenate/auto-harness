@@ -15,24 +15,33 @@ rules and enforced by the harness.
 
 ## What This Overlay Requires
 
-Three files in `docs/knowledge/`:
+Two files in `docs/knowledge/`:
 
 **`docs/knowledge/README.md`** — The project's knowledge-capture policies.
 Declares the foundational Observation Structure choice (locked by ADR),
-the adjustable Write Policy, the Distillation and Review cadences, and
-the Escalation Table that governs what companion rules apply at each
-severity level.
+the adjustable Write Policy, and the Escalation Table that governs what
+companion rules apply at each severity level.
 
 **`docs/knowledge/shared-observations.md`** — Append-only structured
 observations from project participants. Agents write here during their
 Knowledge Contribution heartbeat step (or however the Write Policy
 permits). Humans append here after reviews or insights worth preserving.
 
-**`docs/knowledge/distilled-learnings.md`** — Curated longitudinal
-synthesis. Agents autonomously draft distillations from observations on
-a scheduled cadence. Humans and agents review together on a separate
-cadence, promoting accepted distillations into this file. Supersession
-is preserved; nothing is silently overwritten.
+The project's **curated longitudinal destination** — durable
+how-this-project-works truths synthesized from accumulating observations —
+is [`docs/operating-principles.md`](../../../../docs/operating-principles.md).
+Promotion from observations to principles happens when patterns
+crystallize, driven by evidence accumulating in shared-observations
+rather than a synthetic cadence.
+
+> **Historical note (ADR-0014, 2026-05-25).** This module previously
+> declared a third required artifact, `docs/knowledge/distilled-learnings.md`,
+> as a separate curated-synthesis destination. It was sunset after 40 days
+> of zero inbound flow; operating-principles absorbed the curated charter
+> in practice. See
+> [ADR-0014](../../../../docs/adr/ADR-0014-sunset-distilled-learnings.md)
+> and [PRD-0011](../../../../docs/requirements/PRD-0011-distilled-learnings-disposition.md).
+> The file remains as a dormancy pointer for external-link safety.
 
 ---
 
@@ -52,18 +61,23 @@ is preserved; nothing is silently overwritten.
 Three companion rules enforce the governance floor:
 
 1. **Observation additions** require a pointer in the day's daily memory
-   log. This is the audit trail. Higher-severity observations trigger
-   additional companion rules from OTHER modules — the agent's workflow
-   applies the escalation table in the knowledge README, which drives
-   those additional edits.
+   log (or the project change log). This is the audit trail. Higher-severity
+   observations trigger additional companion rules from OTHER modules —
+   the agent's workflow applies the escalation table in the knowledge
+   README, which drives those additional edits.
 
 2. **Changes to the Observation Structure** require an ADR. This is a
    foundational governance choice; changing it silently would invalidate
    every past observation's interpretation.
 
-3. **Distillation edits** require either a daily memory entry or a review
-   log entry. Curation of durable learnings is a team activity, not a
-   unilateral agent edit.
+3. **Cycle-end distillation** (PRD-0004): when a PR contains
+   distillation-worthy work (new/modified ADR, OPP, module manifest, or
+   the active-module catalog), the same PR must touch one of the two
+   knowledge destinations —
+   [`docs/knowledge/shared-observations.md`](../../../../docs/knowledge/shared-observations.md)
+   or [`docs/operating-principles.md`](../../../../docs/operating-principles.md).
+   See [`platform/workflow/cycle-end-distillation.md`](../../../workflow/cycle-end-distillation.md)
+   for the satisfier decision tree.
 
 ---
 
@@ -75,8 +89,8 @@ Human review ensures the overlay's intent is preserved:
   any ADR proposing a structural change with extra scrutiny — including
   verification that past observations can be interpreted under the new
   structure or that a migration plan exists.
-- Distilled learnings cite their sources. Unsourced assertions aren't
-  institutional knowledge; they're opinions.
+- Operating-principles promotions cite their source observations. Unsourced
+  principles aren't institutional knowledge; they're opinions.
 - Write Policy changes come with rationale. If a project toggles from
   heartbeat-only to autonomous mode, the rationale should name the
   specific signal/noise condition that motivated the change.
@@ -95,9 +109,12 @@ Agents in knowledge-capture-enabled projects:
 3. Apply the escalation table when severity warrants it — staging changes
    to the revision tracker, ADRs, or risk register alongside the
    observation, but not committing them.
-4. Autonomously draft proposed distilled learnings on the Draft Cadence.
-   Drafts are staged; humans and agents curate them together on the
-   Review Cadence.
+4. Promote patterns to `docs/operating-principles.md` when they
+   crystallize — when the same pattern appears across multiple
+   observations or when a single observation has clearly universal scope.
+   Operating-principles is the curated longitudinal destination; promotion
+   is the act of curation, driven by accumulated evidence rather than a
+   synthetic cadence.
 5. **At cycle end** (PR boundary, ADR landed, OPP status flip, new module
    published, manifest catalog change), perform the cycle-end distillation
    pass per [`platform/workflow/cycle-end-distillation.md`](../../../workflow/cycle-end-distillation.md).

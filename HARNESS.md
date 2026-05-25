@@ -70,7 +70,7 @@ This file states *what governance is active*. The other root files each have a d
 | Dependency log | `docs/project/dependency-log.md` |
 | Revision tracker | `docs/project/revision-tracker.md` |
 | Shared observations | `docs/knowledge/shared-observations.md` |
-| Distilled learnings | `docs/knowledge/distilled-learnings.md` |
+| Curated longitudinal knowledge | `docs/operating-principles.md` *(historical pointer at `docs/knowledge/distilled-learnings.md` — see ADR-0014)* |
 | Opportunity records | `docs/opportunities/` (policy README + `OPP-NNNN-slug.md` per candidate) |
 | ADRs | `docs/adr/` |
 | PRDs | `docs/requirements/` |

@@ -6,17 +6,32 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # auto-harness — Knowledge Capture
 
-**Version:** 1.0 | **Owner:** @unclenate | **Last Updated:** 2026-04-16
+**Version:** 1.1 | **Owner:** @unclenate | **Last Updated:** 2026-05-25 *(distilled-learnings.md sunset per ADR-0014 / PRD-0011; two files now compose this directory; operating-principles is the curated longitudinal destination)*
 
 This directory is the auto-harness project's durable, shared, reviewable
 surface for institutional knowledge produced by participants — human and
 agent alike.
 
-Three files compose it:
+Two files compose it:
 
 - `README.md` — policies and structure for this project's knowledge capture (this file)
 - `shared-observations.md` — append-only structured observations
-- `distilled-learnings.md` — curated longitudinal synthesis
+
+The **curated longitudinal destination** for the project — durable
+how-this-project-works truths synthesized from accumulating observations —
+is [`docs/operating-principles.md`](../operating-principles.md). Promotion
+from observations to principles happens when patterns crystallize, driven
+by evidence rather than a synthetic cadence.
+
+> **Historical note (ADR-0014, 2026-05-25).** This directory previously
+> declared a third file, `distilled-learnings.md`, as a separate
+> curated-synthesis destination. It was sunset after 40 days of zero
+> inbound flow; operating-principles absorbed the curated charter in
+> practice. See
+> [ADR-0014](../adr/ADR-0014-sunset-distilled-learnings.md) and
+> [PRD-0011](../requirements/PRD-0011-distilled-learnings-disposition.md).
+> The file remains as a dormancy pointer at
+> [`distilled-learnings.md`](distilled-learnings.md) for external-link safety.
 
 Agents read this README on each heartbeat to know how to behave when
 contributing. Humans update this README to tune the signal/noise levers
@@ -69,17 +84,14 @@ and should produce an entry in `shared-observations.md`.
 
 ---
 
-## Distillation Cadence (ADJUSTABLE)
+## Promotion to Operating-Principles (EVIDENCE-DRIVEN)
 
-**Agent drafts distilled learnings:** weekly
-**Team review sessions:** biweekly
-**Next scheduled review:** 2026-04-30
-
-Agents autonomously draft proposed distilled learnings on the draft
-cadence (staged, not committed). Humans and agents review drafts on
-the review cadence. Accepted distillations promote into
-`distilled-learnings.md`. The review session is also when the Write
-Policy is reconsidered if needed.
+Patterns reach `docs/operating-principles.md` when they crystallize —
+when the same pattern appears across multiple observations or when a
+single observation has clearly universal scope. Promotion is not on a
+fixed cadence; it is driven by evidence accumulating in
+`shared-observations.md`. The Write Policy is reconsidered when
+signal-to-noise conditions warrant, not on a calendar.
 
 ---
 

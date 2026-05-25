@@ -50,7 +50,7 @@ rationale.
 
 ## Which Destination — The Satisfier Decision Tree
 
-The companion rule accepts any of three destinations. Choose by the
+The companion rule accepts either of two destinations. Choose by the
 *shape* of the learning:
 
 ```text
@@ -62,11 +62,8 @@ The companion rule accepts any of three destinations. Choose by the
 │                                                                       │
 │  Durable how-this-project-works truth applicable to all future work?  │
 │    └─→ docs/operating-principles.md                                   │
-│        (new bullet under existing section, OR new section if novel)   │
-│                                                                       │
-│  Synthesis of multiple prior observations into curated knowledge?     │
-│    └─→ docs/knowledge/distilled-learnings.md                          │
-│        (note: separate audit-trail rule applies — review-log required)│
+│        (new bullet under existing section, OR new section if novel —  │
+│         this is the curated longitudinal destination for the project) │
 │                                                                       │
 └───────────────────────────────────────────────────────────────────────┘
 ```
@@ -74,19 +71,25 @@ The companion rule accepts any of three destinations. Choose by the
 **Default: shared-observations.** Most cycle-end distillations are
 single-data-point insights — that's why the file is append-only and
 severity-tagged. If you're unsure, write an observation; promotion to
-operating-principles or distilled-learnings happens later when the pattern
-crystallizes.
+operating-principles happens later when the pattern crystallizes.
 
 **Operating-principles only when durable.** A pattern reaches operating-
 principles when you can answer "yes" to: *"Is this true regardless of who
 is doing the work, what they are working on, and when?"* If the answer is
 "in this case" or "for this kind of work," it's an observation, not a
-principle.
+principle. Operating-principles is the project's *curated longitudinal*
+destination — promotion is the act of curation.
 
-**Distilled-learnings is curation work.** Don't write directly to
-`distilled-learnings.md` to satisfy the trigger rule. That file has its
-own audit-trail rule requiring a review-log satisfier. Promote
-observations to learnings during dedicated review, not opportunistically.
+> **Historical note (ADR-0014, 2026-05-25):** This decision tree used to
+> name a third destination, `docs/knowledge/distilled-learnings.md`,
+> intended for *"synthesis of multiple prior observations into curated
+> knowledge."* The file went 40 days with zero inbound flow while
+> operating-principles.md absorbed the curated-synthesis charter in
+> practice (§§ 7-8). Per operating-principle § 7 (*Align File Boundaries
+> with Change-Class Boundaries*), two destinations whose change-classes
+> collapsed into one are now one destination. The historical pointer at
+> `docs/knowledge/distilled-learnings.md` remains for external-link
+> safety; the satisfier set is the two destinations above.
 
 ---
 
@@ -159,9 +162,9 @@ Agents working in projects with `management/knowledge-capture` active:
    explicitly in the Context field. The connection between work and
    distillation must be legible months later.
 4. **Default to shared-observations.md** unless the insight is clearly
-   universal (operating-principles) or already a curated synthesis
-   (distilled-learnings — and even then, prefer drafting the observation
-   first and promoting during review).
+   universal — in which case operating-principles.md is the right
+   destination. Prefer drafting the observation first; promote to
+   operating-principles when the pattern crystallizes.
 
 ---
 

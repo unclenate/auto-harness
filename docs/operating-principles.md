@@ -185,3 +185,24 @@ alongside the artifact.
   downstream cost of replicating facts across new artifacts —
   manageable when those artifacts are text (greppable, diffable, CI-
   assertable), much less so when they are binary.
+
+**Markdown table caveat — never put a raw `|` inside backticks inside a
+table cell.** Markdown is a preferred text representation, but its table
+syntax has a sharp edge that costs review cycles: a literal `|` inside an
+inline code span within a table cell is parsed by the renderer as a column
+delimiter. It silently breaks the table (extra columns — `markdownlint`
+MD056) and cascades into spurious "spaces inside code span" warnings
+(MD038). When a table cell must show pipe-containing content — enum unions
+like `a / b / c`, shell pipelines — use one of:
+
+- **slashes:** `a / b / c`
+- **prose:** "a, b, or c"
+- **escaped pipes:** `a \| b \| c`
+
+This bit the auto-harness change-log twice in one session (the
+OPP-0011..0017 batch, 2026-05-24): an `engine` enum code span listing four
+SQL engines inside a table row reported nine columns where six were
+expected. The fix was slashes. The caveat is a corollary of this section,
+not an exception to it — Markdown remains the right choice; the table
+sub-syntax just has a trap worth naming so future authors don't re-pay the
+review cycles.

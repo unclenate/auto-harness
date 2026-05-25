@@ -210,6 +210,9 @@ modules. Use it to populate `harness.manifest.yaml`.
 | Throwaway prototype / validation only? (§7.4) | `delivery/prototype` |
 | MVP or production product? (§7.4) | `delivery/production-saas` |
 | Internal shared tooling? (§7.1, §7.4) | `delivery/internal-platform` |
+| Published OSS the user self-hosts (not a hosted service)? (§7.4) | `delivery/self-hosted-oss` |
+| Authored agent skill pack deployed to a runtime — the skills are the product? (§8.3) | `architectures/agent-skill-pack` |
+| Quality gated on binary-graded evals rather than coverage? (§8.3) | `management/eval-gated-testing` |
 | Multi-team or multi-workstream? (§7.1) | `management/program-lite` |
 | Claude Code as agent? (§7.2) | `agents/claude-code` |
 | Other LLM tool? (§7.2) | `agents/generic-llm` |

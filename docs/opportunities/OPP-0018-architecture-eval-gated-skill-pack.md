@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0018 — Authored, Eval-Gated Agent Skill-Pack as a Delivery Topology
 
-**Status:** proposed
+**Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-05-24
-**Last Updated:** 2026-05-24
+**Last Updated:** 2026-05-25 *(accepted; PRD-0008 drafted + module scaffolded; v0.5.2 batch)*
 **Confidence:** high
 
 ---
@@ -106,11 +106,19 @@ testing posture) and OPP-0020 (eval tooling in the harness toolchain).
 
 ## Disposition
 
-<!-- Empty: status is proposed -->
+**Accepted 2026-05-25.** Promoted to a v1 module in the v0.5.2 "agent-native
+delivery" batch alongside OPP-0019 and OPP-0021. Rationale: the skill-pack
+delivery topology is the load-bearing gap from the Tula onboarding (§TG1) and
+is reinforced by the `jmandel/health-skillz` lineage; the module is
+vendor-neutral and near-zero-required-artifact, so adoption cost is low. The
+`domains/openclaw` half of the OPP's bias was **deferred** — `agents/openclaw`
+already governs OpenClaw workspace files, so a second OpenClaw surface would
+double-govern. See PRD-0008 for resolved design questions.
 
 ## Promotion
 
-<!-- Empty: not yet accepted -->
+- See [`docs/requirements/PRD-0008-agent-skill-pack-architecture.md`](../requirements/PRD-0008-agent-skill-pack-architecture.md)
+- Module: `platform/profiles/architectures/agent-skill-pack/`
 
 ## Related
 

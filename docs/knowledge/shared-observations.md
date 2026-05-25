@@ -1140,3 +1140,40 @@ here until distillation.
   one-off.
 - **Severity:** process
 - **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-25 (this-week bundle PR)
+
+### A guardrail filed in one pass correctly partitioned the very next pass's build scope
+
+- **Context:** The Tula onboarding filed five OPPs and a US-healthcare-bias
+  guardrail (#53, 2026-05-24). The immediately-following pass (2026-05-25)
+  fleshed three of those OPPs into shipped v1 modules (the v0.5.2 agent-native
+  delivery batch: `architectures/agent-skill-pack`,
+  `management/eval-gated-testing`, `delivery/self-hosted-oss` via
+  PRD-0008/0009/0010). The decision of *which* OPPs to build was made by the
+  guardrail the previous pass had just filed: the bias guardrail says
+  "international second-evidence required before freezing any healthcare
+  artifact," so the three healthcare/safety-adjacent items (OPP-0022
+  patient-agent safety, OPP-0020 eval/safety tooling, and the OPP-0013
+  healthcare-fhir/smart sub-modules) were held, and only the three
+  bias-unblocked agent-native items shipped.
+- **Observation:** The guardrail was not a passive note — it actively
+  constrained the next build step, and building the deferred items would have
+  *violated the guardrail on the first move after filing it*. The
+  agent-native delivery OPPs carried no equivalent constraint, so they were
+  the correct things to build first. The brownfield-discovery → OPP → PRD →
+  shipped-module loop closed in under 48 hours for the unblocked subset, while
+  the bias-gated subset waits on evidence the harness does not yet have.
+- **Implication:** (1) Guardrail-style risks recorded in OPPs are
+  load-bearing for sequencing, not just for the eventual PRD — a "freeze-later"
+  marker should be read as "do-not-build-yet" by the next pass. (2) A single
+  brownfield consumer can both *expand* the catalog (three new modules) and
+  *block* part of it (three deferred), and that asymmetry is healthy: it
+  prevents the catalog from ossifying around one jurisdiction's evidence while
+  still capturing the vendor-neutral gaps immediately. (3) The agent-native
+  delivery family (skill-pack topology + eval-gate posture + self-hosted-oss)
+  is now activatable, so the next agent-native brownfield consumer — and
+  Tula's own second-pass intake — profiles against real modules rather than
+  "no module fits."
+- **Confidence:** high — directly observed across the #53 → v0.5.2 sequence in
+  this session.
+- **Severity:** governance-relevant
+- **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-25 (Tula OPP fleshing / v0.5.2 batch)

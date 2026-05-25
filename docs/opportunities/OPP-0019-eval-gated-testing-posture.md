@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0019 — Binary-Eval Quality-Gate as a Testing Posture
 
-**Status:** proposed
+**Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-05-24
-**Last Updated:** 2026-05-24
+**Last Updated:** 2026-05-25 *(accepted; PRD-0009 drafted + module scaffolded; v0.5.2 batch)*
 **Confidence:** high
 
 ---
@@ -95,11 +95,18 @@ gates — wiring Waza / GAIA / Inspect into the toolchain — is OPP-0020.
 
 ## Disposition
 
-<!-- Empty: status is proposed -->
+**Accepted 2026-05-25.** Promoted to a v1 **sibling** module
+(`management/eval-gated-testing`) in the v0.5.2 batch. The OPP's mode-field
+bias was **not** taken: a `mode: eval-gate` field on `testing-standard` would
+require conditional-artifact logic in `validate-required-artifacts.sh`; a
+sibling module needs zero validator changes and does not risk existing
+`testing-standard` consumers. The mode-field convergence is recorded as future
+work in PRD-0009. See PRD-0009 for resolved design questions.
 
 ## Promotion
 
-<!-- Empty: not yet accepted -->
+- See [`docs/requirements/PRD-0009-eval-gated-testing-module.md`](../requirements/PRD-0009-eval-gated-testing-module.md)
+- Module: `platform/profiles/management/eval-gated-testing/`
 
 ## Related
 

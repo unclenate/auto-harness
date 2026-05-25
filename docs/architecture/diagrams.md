@@ -50,7 +50,7 @@ flowchart TD
     Manifest["<b>harness.manifest.yaml</b><br/>project-local activation"]
 
     subgraph CATALOG["Active Catalog (per project)"]
-        Manifest --> Modules["<b>Modules</b><br/>core · profiles · agents<br/>(40 total in-tree)"]
+        Manifest --> Modules["<b>Modules</b><br/>core · profiles · agents<br/>(43 total in-tree)"]
     end
 
     subgraph CONTRACT["Per-Module Contract (module.yaml)"]
@@ -70,7 +70,7 @@ flowchart TD
 
     subgraph SURFACE["Consumer-Facing Surfaces"]
         Skills["<b>Skills</b><br/>governance, onboarding,<br/>testing, web3, tools,<br/>agentic-interfaces, mcp"]
-        Templates["<b>Templates</b><br/>56 scaffolding files<br/>(tokenized headers)"]
+        Templates["<b>Templates</b><br/>59 scaffolding files<br/>(tokenized headers)"]
         Workflows["<b>Workflows</b><br/>18 guides:<br/>bootstrap, discovery,<br/>distillation, etc."]
     end
 

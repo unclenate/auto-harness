@@ -15,8 +15,9 @@ OPP backlog).
 **Maturity:** Alpha; pre-1.0. Versions are semver-disciplined per
 [`platform/workflow/release-and-versioning.md`](../platform/workflow/release-and-versioning.md).
 
-> **Updated:** 2026-05-24 *(post-prioritization-examination; v0.5.1
-> YouBase patch surfaced; OpenEMR Phase 1 anchored at v0.8.0)*
+> **Updated:** 2026-05-25 *(post-prioritization-examination; v0.5.1
+> YouBase patch surfaced; OpenEMR Phase 1 anchored at v0.8.0; v0.5.2 Tula
+> agent-native catalog patch added, in review as PR #55)*
 
 ---
 
@@ -72,6 +73,37 @@ new templates with placeholders, zero schema changes. Pure catalog
 addition. Does not compete with the governance-machinery work for
 v0.6/v0.7 sequencing — it slots in as a fast-follow that costs
 essentially no calendar time.
+
+### v0.5.2 — Tula Agent-Native Delivery Catalog Patch (OPP-0018 + OPP-0019 + OPP-0021)
+
+**Status:** Three OPPs `accepted`; modules implemented; **PR #55 in review**.
+Same release class as the v0.5.1 YouBase patch — pure catalog growth, no new
+machinery.
+
+The v0.5.2 patch closes three of the gaps surfaced by the Tula brownfield
+onboarding (2026-05-24) — the *delivery-topology* gaps for agent-native
+products, distinct from the YouBase / OpenEMR *stack-breadth* gaps. Pure
+catalog growth: three small modules + three templates, **zero new validators
+and zero schema changes**.
+
+| Module | Source OPP / PRD | What |
+|--------|------------------|------|
+| `architectures/agent-skill-pack` | OPP-0018 / PRD-0008 | Authored, eval-gated skill pack as a delivery topology (requires `docs/architecture/overview.md`) |
+| `management/eval-gated-testing` | OPP-0019 / PRD-0009 | Binary-graded eval quality gate, sibling to `testing-standard` (requires `docs/testing/eval-strategy.md`) |
+| `delivery/self-hosted-oss` | OPP-0021 / PRD-0010 | Posture between `prototype` and `production-saas` (requires `docs/deployment/self-hosting-guide.md`) |
+
+Deferred behind the **US-healthcare-bias guardrail** (international
+second-evidence required before freezing healthcare artifacts): OPP-0022
+(patient-agent safety), OPP-0020 (eval/safety tooling in the harness
+toolchain), and the OPP-0013 healthcare-fhir / smart-on-fhir sub-modules.
+
+**Why this is a v0.5.2 patch (not v0.8.0):** v0.8.0 is OpenEMR Phase 1 per the
+2026-05-24 prioritization examination. The Tula agent-native batch is the same
+pure-catalog-growth, zero-machinery class as the v0.5.1 YouBase patch — the
+eval-gate posture is a sibling module (not a `testing-standard` mode-field) and
+the self-hosted-oss posture declares no conflicts, so nothing here requires
+validator or schema work. It ships in the patch lane rather than competing with
+the v0.6/v0.7 governance-machinery sequencing.
 
 ### v0.6.0 — Canonical-Position Artifact (PRD-0007)
 

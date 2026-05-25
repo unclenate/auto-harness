@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0021 — `delivery/self-hosted-oss` Posture
 
-**Status:** proposed
+**Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-05-24
-**Last Updated:** 2026-05-24
+**Last Updated:** 2026-05-25 *(accepted; PRD-0010 drafted + module scaffolded; v0.5.2 batch)*
 **Confidence:** medium-high
 
 ---
@@ -97,11 +97,19 @@ hosted-infra ops artifacts.
 
 ## Disposition
 
-<!-- Empty: status is proposed -->
+**Accepted 2026-05-25.** Promoted to a v1 delivery posture
+(`delivery/self-hosted-oss`) in the v0.5.2 batch. v1 uses `conflictsWith: []`
+(matching the `internal-platform` precedent) and documents the single-posture
+expectation in the README rather than editing `prototype`/`production-saas`
+for symmetric conflicts; a graph-level "exactly one delivery posture" check is
+the cleaner long-term home for mutual exclusivity (future work). Required
+artifacts kept minimal (self-hosting guide only; risk register optional,
+review-gated by criticality). See PRD-0010 for resolved design questions.
 
 ## Promotion
 
-<!-- Empty: not yet accepted -->
+- See [`docs/requirements/PRD-0010-self-hosted-oss-delivery.md`](../requirements/PRD-0010-self-hosted-oss-delivery.md)
+- Module: `platform/profiles/delivery/self-hosted-oss/`
 
 ## Related
 

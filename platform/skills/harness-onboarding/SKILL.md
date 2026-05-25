@@ -419,8 +419,9 @@ prefer separate manifests over a combined polyglot manifest.
 | `architectures/web-app` | `pages/`, `app/`, view layer, SSR framework config (Next.js, SvelteKit, Nuxt) found |
 | `architectures/api-service` | `src/routes/`, `src/api/`, OpenAPI spec, REST or GraphQL endpoint structure found |
 | `architectures/event-driven` | Queue consumers, worker processes, background job scheduler, or event bus config found |
+| `architectures/agent-skill-pack` | Authored skill collection (`skills/<name>/SKILL.md` + references + scripts) deployed to an agent runtime (OpenClaw / ClawHub, Claude Code, Cursor); eval-gated; the skills ARE the product — not an app, service, MCP server, or in-product agent UI |
 
-Required artifact (all three): `docs/architecture/overview.md`
+Required artifact (all four): `docs/architecture/overview.md`
 
 ---
 
@@ -445,8 +446,11 @@ No required artifacts for `document-store` or `object-storage`.
 | `delivery/prototype` | No real external users; throwaway, experimental, or purely internal | `delivery/production-saas` |
 | `delivery/production-saas` | Real users, external dependencies, or data that matters; production or pre-production | `delivery/prototype` |
 | `delivery/internal-platform` | Internal shared tooling with no external user-facing surface | — |
+| `delivery/self-hosted-oss` | Published OSS shipped as a self-hosted deployment the user operates (not a hosted service, not throwaway); between prototype and production-saas | — |
 
 Required artifacts for `delivery/production-saas`: `docs/ops/environment-inventory.md`, `docs/ops/release-checklist.md`, `docs/ops/rollback-checklist.md`, `docs/security/risk-register.md`
+
+Required artifact for `delivery/self-hosted-oss`: `docs/deployment/self-hosting-guide.md` (risk register optional; expected at criticality ≥ medium).
 
 No required artifacts for `delivery/prototype` or `delivery/internal-platform`.
 
@@ -461,6 +465,7 @@ No required artifacts for `delivery/prototype` or `delivery/internal-platform`.
 | `management/project-standard` | Active project management, milestones, or scope tracking needed | `docs/project/scope-plan.md`, `docs/project/dependency-log.md`, `docs/project/milestones.md`, `docs/project/change-log.md`, `docs/project/revision-tracker.md` |
 | `management/program-lite` | Multi-team or multi-workstream coordination | `docs/program/workstream-map.md`, `docs/program/stakeholder-report.md`, `docs/program/governance-cadence.md` |
 | `management/testing-standard` | Formal test strategy and enforced coverage thresholds required | `docs/testing/test-strategy.md`, `docs/testing/coverage-thresholds.md` |
+| `management/eval-gated-testing` | Quality gated on binary-graded evaluation of model/agent outputs (Waza / GAIA / UK-AISI Inspect) rather than line coverage; sibling to testing-standard, may combine | `docs/testing/eval-strategy.md` |
 | `management/knowledge-capture` | Multi-participant project (agents + humans) producing longitudinal observations and institutional knowledge worth distilling over time | `docs/knowledge/README.md`, `docs/knowledge/shared-observations.md`, `docs/knowledge/distilled-learnings.md` |
 | `management/opportunity-capture` | Capturing pre-PRD product candidates with explicit status, evidence linkage to observations, and a promotion path to PRDs | `docs/opportunities/README.md` (required); `docs/opportunities/candidates.md` (optional — organizational candidate index, add when the candidate set grows past a flat list) |
 

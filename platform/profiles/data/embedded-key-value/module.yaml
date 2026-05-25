@@ -1,0 +1,35 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+id: embedded-key-value
+type: data
+version: 1.0.0
+summary: Embedded key-value data overlay for server-side LevelDB-family stores (LevelDB, LMDB, RocksDB, SQLite-as-KV, Bun-KV, Deno-KV). Covers schema-on-code projects where the database is a library dependency, not a network service.
+dependsOn:
+  - kernel/base
+conflictsWith: []
+requiredArtifacts: []
+optionalArtifacts:
+  - docs/data/persistence-strategy.md
+  - docs/data/backup-recovery.md
+sensitivePaths:
+  - description: Embedded KV library dependencies
+    patterns:
+      - ^package\.json$
+      - ^package-lock\.json$
+      - ^Cargo\.toml$
+      - ^Cargo\.lock$
+      - ^go\.mod$
+      - ^go\.sum$
+companionRules: []
+validators:
+  - validate-module-graph
+  - validate-companions
+reviewGates:
+  - Schema-on-code evolution (data layout changes implicit in code) needs explicit migration discipline; reviewers verify migration paths are documented even though no required artifact gates the rule.
+  - Backup and recovery semantics differ per KV engine (LevelDB snapshots vs. LMDB read-only forks vs. SQLite VACUUM). Project should document its engine choice and backup strategy if criticality is medium or higher.
+agentAdapters:
+  - platform/agents/claude-code
+compiledFragments:
+  - platform/profiles/data/embedded-key-value/README.md
+recommendedSkills:
+  - harness-governance

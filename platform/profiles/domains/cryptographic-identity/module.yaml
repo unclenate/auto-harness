@@ -1,0 +1,53 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+id: cryptographic-identity
+type: domain
+version: 1.0.0
+summary: Cryptographic identity overlay covering non-Ethereum identity primitives — BIP32/BIP39 HD wallets, DID/SSI methods, key custody, signature schemes. Orthogonal to domains/web3 (which is Ethereum smart-contract-specific). Activate when the project handles cryptographic keys, derivation paths, or identity attestations without being an Ethereum smart-contract project.
+dependsOn:
+  - kernel/base
+conflictsWith: []
+requiredArtifacts: []
+optionalArtifacts:
+  - docs/crypto/library-audit-log.md
+  - docs/crypto/key-management-policy.md
+  - docs/crypto/signature-scheme.md
+sensitivePaths:
+  - description: Cryptographic library dependencies
+    patterns:
+      - ^package\.json$
+      - ^Cargo\.toml$
+      - ^go\.mod$
+      - ^requirements\.txt$
+      - ^pyproject\.toml$
+  - description: Key custody and derivation configuration paths
+    patterns:
+      - ^.*\.mnemonic.*$
+      - ^.*purpose-code.*$
+      - ^src/crypto/.*$
+companionRules:
+  - description: Cryptographic-library upgrades require explicit audit context — silent failures here have outsized stakes
+    triggerPaths:
+      - ^package\.json$
+      - ^Cargo\.toml$
+      - ^go\.mod$
+      - ^requirements\.txt$
+      - ^pyproject\.toml$
+    requiredAny:
+      - ^docs/adr/ADR-
+      - ^docs/architecture/overview\.md$
+      - ^docs/crypto/library-audit-log\.md$
+    humanReview: Cryptographic library updates can silently change signature semantics, encryption modes, or key-derivation outputs. Reviewers verify the upgrade has been audited against the project's stated cryptographic invariants.
+validators:
+  - validate-module-graph
+  - validate-companions
+reviewGates:
+  - Encryption-mode invariants (e.g., "we always use AES-GCM with a fresh nonce, never AES-CBC") should be documented when criticality is medium or higher.
+  - Mnemonic backup policy is a Tier 4-or-higher action — agents must not generate, store, or rotate mnemonics without explicit human direction.
+  - Signature-scheme migrations (e.g., ECDSA → Ed25519, secp256k1 → NIST P-256) are project-shaping decisions; an ADR is recommended.
+agentAdapters:
+  - platform/agents/claude-code
+compiledFragments:
+  - platform/profiles/domains/cryptographic-identity/README.md
+recommendedSkills:
+  - harness-governance

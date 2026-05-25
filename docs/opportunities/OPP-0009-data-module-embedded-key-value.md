@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0009 — Data Module for Embedded Key-Value Stores (LevelDB-class)
 
-**Status:** proposed
+**Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-05-24
-**Last Updated:** 2026-05-24
+**Last Updated:** 2026-05-25 *(v1 implementation landed: `data/embedded-key-value` + `data/browser-storage` modules shipped)*
 **Confidence:** high
 
 ---

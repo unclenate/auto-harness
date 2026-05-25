@@ -91,6 +91,8 @@ The universal rules that apply to every harnessed project, regardless of modules
 Language, runtime, and framework adaptations.
 
 * [Node / TypeScript](platform/profiles/stacks/node-typescript/README.md)
+* [Node / JavaScript](platform/profiles/stacks/node-javascript/README.md) — plain JavaScript (no TypeScript)
+* [CoffeeScript](platform/profiles/stacks/coffeescript/README.md) — legacy CoffeeScript projects
 * [Python](platform/profiles/stacks/python/README.md)
 
 ### Architectures
@@ -110,6 +112,8 @@ Storage and state-management overlays.
 * [Relational Postgres](platform/profiles/data/relational-postgres/README.md)
 * [Document Store](platform/profiles/data/document-store/README.md)
 * [Object Storage](platform/profiles/data/object-storage/README.md)
+* [Embedded Key-Value](platform/profiles/data/embedded-key-value/README.md) — server-side LevelDB / LMDB / SQLite-as-KV / Bun-KV / Deno-KV
+* [Browser Storage](platform/profiles/data/browser-storage/README.md) — IndexedDB / localStorage / OPFS
 
 ### Delivery
 
@@ -139,7 +143,8 @@ Vendor, ecosystem, or specialist overlays.
 * [Agentic Interfaces](platform/profiles/domains/agentic-interfaces/README.md) — in-product copilot panels, generative-UI surfaces, conversational-primary products
 * [Supabase](platform/profiles/domains/supabase/README.md)
 * [Media Pipeline](platform/profiles/domains/media-pipeline/README.md)
-* [Web3](platform/profiles/domains/web3/README.md)
+* [Web3](platform/profiles/domains/web3/README.md) — Ethereum-specific smart-contract concerns
+* [Cryptographic Identity](platform/profiles/domains/cryptographic-identity/README.md) — BIP32/BIP39 wallets, DID/SSI, key custody (non-Ethereum)
 * [GitBook](platform/profiles/domains/gitbook/README.md)
 
 ### Agents

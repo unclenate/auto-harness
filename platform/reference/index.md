@@ -64,6 +64,7 @@ the topic but not which page covers it.
 
 ## Workflows
 
+- **Submodule integration (recommended)** — [Submodule Integration](../workflow/submodule-integration.md)
 - New project bootstrap — [Bootstrap Quickstart](../workflow/bootstrap-quickstart.md)
 - Web3 bootstrap — [Web3 Bootstrap Quickstart](../workflow/bootstrap-web3-quickstart.md)
 - Idea to manifest — [Discovery to Composition](../workflow/discovery-to-composition.md)

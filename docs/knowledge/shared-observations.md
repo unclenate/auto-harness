@@ -1096,3 +1096,47 @@ here until distillation.
   maintainer.
 - **Severity:** architectural
 - **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-24 (Tula onboarding)
+
+### Bundling truth-fixes with catalog growth produces a higher-confidence shipping unit
+
+- **Context:** The 2026-05-25 "this-week bundle" PR (Phase 0 factual
+  fixes from the documentation audit + YouBase v0.5.1 catalog patch +
+  ADR-0013 governance umbrella + docs/README.md ADR/PRD/OPP index)
+  bundled four independently-shippable pieces of work into one PR.
+  The bundling came out of a prioritization examination that
+  recommended each piece separately; combining them was pragmatic
+  ("they're all cheap and orthogonal").
+- **Observation:** Bundling truth-repair (validator count drift,
+  diagram count drift, ADR-0004 stale status, dangling
+  `docs/architecture/overview.md`, `$PLATFORM` standardization) with
+  catalog growth (5 new modules from OPP-0008/0009/0010) produces a
+  higher-confidence shipping unit than either piece in isolation. The
+  truth-repair changes harden documentation trust *for the same
+  reviewers who will then assess the new modules*; the catalog growth
+  gives the truth-repair PR substantive content that justifies the
+  review effort. Either piece alone is a "small patch" (truth-repair
+  is mechanical; catalog growth is module-copy). Together they're a
+  coherent v0.5.1 unit with internal logic — *the newcomer experience
+  (Phase 0 fixes) and the active-consumer experience (new modules) are
+  both served by the same PR*. This is distinct from cargo-cult
+  bundling (combining unrelated work for review economy); here the
+  bundling rationale is structural — Phase 0's count fixes touch the
+  documentation that the new modules' READMEs cross-reference, and
+  ADR-0013 is the governance umbrella under which both halves sit.
+- **Implication:** When prioritization analyses surface independent
+  pieces of work that share a *governance umbrella* (here: ADR-0013's
+  Phase 0 + the catalog-growth opportunity acceptance), look for
+  bundling that preserves substantive coherence rather than just
+  review economy. The signal that bundling is right: each piece's
+  change-log entry would naturally cite the other pieces. The signal
+  that bundling is wrong: the pieces' rationale paragraphs read as
+  independent — that's two PRs masquerading as one. Worth testing
+  against the next multi-piece prioritization decision to see if the
+  shape recurs.
+- **Confidence:** medium — one instance where the bundling felt
+  coherent. Structurally sound but bundling decisions are easy to
+  rationalize after the fact. Watch for whether the next examination
+  surfaces similar bundling opportunities or whether this was a
+  one-off.
+- **Severity:** process
+- **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-25 (this-week bundle PR)

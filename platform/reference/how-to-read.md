@@ -7,7 +7,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 # How to Use This Documentation
 
 This page helps you find the right starting point based on what you are trying to do.
-The harness documentation is large — 26 modules, 56 templates, 8 validators, 7 skills, 18 workflows —
+The harness documentation is large — 31 modules, 56 templates, 8 validators, 7 skills, 18 workflows —
 but most readers need only a narrow slice at any given time.
 
 <!--
@@ -26,11 +26,12 @@ diagram in "Authority Stack" below.
 
 ### "I want to adopt the harness for my project"
 
-1. [Bootstrap Quickstart](../workflow/bootstrap-quickstart.md) — zero to running harness
-2. [Starter Compositions](../compositions/README.md) — pick a manifest template
-3. [Validators Overview](../validators/README.md) — understand the enforcement chain
-4. [CI Integration](../workflow/ci-integration.md) — wire validators into your pipeline
-5. [Troubleshooting](../workflow/troubleshooting.md) — when validators fail
+1. **[Submodule Integration](../workflow/submodule-integration.md)** — the recommended consumption pattern; mount auto-harness as a git submodule for automatic upstream updates
+2. [Bootstrap Quickstart](../workflow/bootstrap-quickstart.md) — alternative copy-based flow when submodules aren't viable
+3. [Starter Compositions](../compositions/README.md) — pick a manifest template
+4. [Validators Overview](../validators/README.md) — understand the enforcement chain
+5. [CI Integration](../workflow/ci-integration.md) — wire validators into your pipeline
+6. [Troubleshooting](../workflow/troubleshooting.md) — when validators fail
 
 Already have a codebase? Start with
 [Brownfield Onboarding](../workflow/brownfield-onboarding.md) instead.
@@ -84,7 +85,7 @@ precedence.
                               │
                     ┌─────────▼───────────┐
                     │   module.yaml tree   │  Contractual: each module's machine-
-                    │   (26 modules)       │  readable governance declaration.
+                    │   (31 modules)       │  readable governance declaration.
                     │                      │  Validators enforce these.
                     └─────────┬───────────┘
                               │

@@ -63,9 +63,9 @@ the same directory provides human-readable documentation for the same module.
 ### Validator
 
 A shell script (with inline Ruby) that checks one dimension of the governance contract.
-Six validators exist: manifest schema, module graph, required artifacts, placeholders,
-agent pack, and companion rules. Each exits 0 on pass, 1 on failure. Validators run
-locally and in CI.
+Eight validators exist: manifest schema, module graph, required artifacts, placeholders,
+agent pack, doc references, catalog counts, and companion rules. Each exits 0 on pass,
+1 on violation, 2 on usage error. Validators run locally and in CI.
 
 ### Companion Rule
 

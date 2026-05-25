@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 720" font-family="'Segoe UI', Roboto, -apple-system, system-ui, sans-serif">
+  <rect x="1" y="1" width="918" height="718" rx="18" fill="#FCFCFD" stroke="#E4E7EC"/>
+
+  <text x="460" y="48" text-anchor="middle" font-size="22" font-weight="700" fill="#1A2233">The Trust Tier Model</text>
+  <text x="460" y="74" text-anchor="middle" font-size="14.5" fill="#5A6475">Every action an agent can take sits on one of six tiers. One rule binds them all: an agent may drop lower, but never lift itself higher.</text>
+
+  <!-- ascending axis -->
+  <line x1="58" y1="624" x2="58" y2="116" stroke="#C3C9D4" stroke-width="2" marker-end="url(#axU)"/>
+  <defs>
+    <marker id="axU" markerWidth="12" markerHeight="12" refX="5" refY="8" orient="auto">
+      <path d="M5,0 L10,9 L0,9 Z" fill="#C3C9D4"/>
+    </marker>
+  </defs>
+  <text x="40" y="370" font-size="12.5" font-weight="600" letter-spacing="2" fill="#8A93A3" transform="rotate(-90 40 370)" text-anchor="middle">MORE AUTONOMY  ·  MORE RISK</text>
+
+  <!-- ===== Tier 5 ===== -->
+  <rect x="92" y="108" width="736" height="78" rx="11" fill="#FDECEC" stroke="#E5484D"/>
+  <circle cx="138" cy="147" r="26" fill="#E5484D"/>
+  <text x="138" y="155" text-anchor="middle" font-size="24" font-weight="700" fill="#FFFFFF">5</text>
+  <text x="184" y="140" font-size="16.5" font-weight="700" fill="#1A2233">Remote / production</text>
+  <text x="184" y="162" font-size="13" fill="#5A6475">Deploys, production migrations, secrets rotation</text>
+  <rect x="600" y="128" width="208" height="38" rx="19" fill="#FFFFFF" stroke="#E5484D"/>
+  <path d="M651,141 v-4 a5,5 0 0 1 10,0 v4 M647,141 h18 v13 h-18 z" fill="none" stroke="#E5484D" stroke-width="2"/>
+  <text x="676" y="152" font-size="12" font-weight="600" fill="#C0353A">Human + 2nd sign-off</text>
+
+  <!-- ===== Tier 4 ===== -->
+  <rect x="92" y="194" width="736" height="78" rx="11" fill="#FEF4E6" stroke="#F2A33C"/>
+  <circle cx="138" cy="233" r="26" fill="#F2A33C"/>
+  <text x="138" y="241" text-anchor="middle" font-size="24" font-weight="700" fill="#FFFFFF">4</text>
+  <text x="184" y="226" font-size="16.5" font-weight="700" fill="#1A2233">Environment-altering</text>
+  <text x="184" y="248" font-size="13" fill="#5A6475">Run migrations, install dependencies, change env vars</text>
+  <rect x="618" y="214" width="190" height="38" rx="19" fill="#FFFFFF" stroke="#E0902C"/>
+  <path d="M651,227 v-4 a5,5 0 0 1 10,0 v4 M647,227 h18 v13 h-18 z" fill="none" stroke="#E0902C" stroke-width="2"/>
+  <text x="676" y="238" font-size="12" font-weight="600" fill="#B9791F">Human authorizes</text>
+
+  <!-- ===== Tier 3 ===== -->
+  <rect x="92" y="280" width="736" height="78" rx="11" fill="#EEF0FA" stroke="#6B7BC9"/>
+  <circle cx="138" cy="319" r="26" fill="#6B7BC9"/>
+  <text x="138" y="327" text-anchor="middle" font-size="24" font-weight="700" fill="#FFFFFF">3</text>
+  <text x="184" y="312" font-size="16.5" font-weight="700" fill="#1A2233">Git-writing</text>
+  <text x="184" y="334" font-size="13" fill="#5A6475">Commit, push to feature branches</text>
+  <rect x="636" y="300" width="172" height="38" rx="19" fill="#FFFFFF" stroke="#6B7BC9"/>
+  <text x="722" y="324" text-anchor="middle" font-size="12" font-weight="600" fill="#4A589E">Explicit instruction</text>
+
+  <!-- ===== Tier 2 ===== -->
+  <rect x="92" y="366" width="736" height="78" rx="11" fill="#EAF1F8" stroke="#4F8FC0"/>
+  <circle cx="138" cy="405" r="26" fill="#4F8FC0"/>
+  <text x="138" y="413" text-anchor="middle" font-size="24" font-weight="700" fill="#FFFFFF">2</text>
+  <text x="184" y="398" font-size="16.5" font-weight="700" fill="#1A2233">Workspace mutation</text>
+  <text x="184" y="420" font-size="13" fill="#5A6475">Edit files, create artifacts, scaffold docs</text>
+  <rect x="636" y="386" width="172" height="38" rx="19" fill="#DCEAF5" stroke="#4F8FC0"/>
+  <text x="722" y="410" text-anchor="middle" font-size="12" font-weight="700" fill="#356A95">Default agent scope</text>
+
+  <!-- ===== Tier 1 ===== -->
+  <rect x="92" y="452" width="736" height="78" rx="11" fill="#E9F4EF" stroke="#3E9B8F"/>
+  <circle cx="138" cy="491" r="26" fill="#3E9B8F"/>
+  <text x="138" y="499" text-anchor="middle" font-size="24" font-weight="700" fill="#FFFFFF">1</text>
+  <text x="184" y="484" font-size="16.5" font-weight="700" fill="#1A2233">Local analysis</text>
+  <text x="184" y="506" font-size="13" fill="#5A6475">Run tests, builds, linters</text>
+  <rect x="664" y="472" width="144" height="38" rx="19" fill="#FFFFFF" stroke="#3E9B8F"/>
+  <text x="736" y="496" text-anchor="middle" font-size="12" font-weight="600" fill="#2E7166">No gate</text>
+
+  <!-- ===== Tier 0 ===== -->
+  <rect x="92" y="538" width="736" height="78" rx="11" fill="#E7F3EC" stroke="#2F9E7E"/>
+  <circle cx="138" cy="577" r="26" fill="#2F9E7E"/>
+  <text x="138" y="585" text-anchor="middle" font-size="24" font-weight="700" fill="#FFFFFF">0</text>
+  <text x="184" y="570" font-size="16.5" font-weight="700" fill="#1A2233">Read-only</text>
+  <text x="184" y="592" font-size="13" fill="#5A6475">Read files, search, inspect git history</text>
+  <rect x="664" y="558" width="144" height="38" rx="19" fill="#FFFFFF" stroke="#2F9E7E"/>
+  <text x="736" y="582" text-anchor="middle" font-size="12" font-weight="600" fill="#1F7A5A">No gate</text>
+
+  <!-- gate divider note -->
+  <line x1="92" y1="190" x2="828" y2="190" stroke="#E5484D" stroke-width="1" stroke-dasharray="3 4" opacity="0.5"/>
+  <text x="460" y="660" text-anchor="middle" font-size="13" fill="#5A6475">Tiers 0&#8211;3 are the agent's own domain. Tiers 4 and 5 cross into the world — and a named human must open the gate.</text>
+  <text x="460" y="694" text-anchor="middle" font-size="12.5" fill="#9AA3B2">Mockup — proposed designed graphic for trust-model.md  ·  auto-harness documentation audit, 2026-05-24</text>
+</svg>

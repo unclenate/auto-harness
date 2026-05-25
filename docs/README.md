@@ -1,0 +1,191 @@
+<!--
+Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+SPDX-License-Identifier: MIT OR Apache-2.0
+Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
+-->
+
+# `docs/` — auto-harness Governance Records Index
+
+This directory holds the **project's own self-governance records** —
+ADRs, PRDs, OPPs, knowledge captures, operating principles, threat
+model, audits, and the project-level change log. These are
+contributor- and maintainer-targeted; **first-time users should start
+at the [repository README](../README.md)**, not here.
+
+The auto-harness project applies its own harness machinery to itself:
+this is the artifact tree the kernel and management modules govern.
+
+> **New here?** Read [`../README.md`](../README.md) first for the value
+> proposition. The records in this tree are for understanding why
+> decisions were made, what's planned, and how the project audits
+> itself — not for evaluating whether to adopt the harness.
+
+---
+
+## Quick navigation
+
+- [Architecture Decision Records](#architecture-decision-records-adrs) — what we decided and why
+- [Product Requirements Documents](#product-requirements-documents-prds) — specifications for substantive new capabilities
+- [Opportunity Records](#opportunity-records-opps) — pre-PRD candidates with promotion contract
+- [Knowledge surfaces](#knowledge-surfaces) — observations, distilled learnings, operating principles
+- [Project tracking](#project-tracking) — change log, milestones, scope plan, dependency log, revision tracker
+- [Product framing](#product-framing) — problem statement, requirements, release intent, personas
+- [Security & quality](#security--quality) — threat model, quality audits
+- [Roadmap](roadmap.md) — what's released, what's planned, what's toward v1.0
+
+---
+
+## Architecture Decision Records (ADRs)
+
+Decisions that shape how the harness works. ADRs are immutable once
+Accepted; supersession is recorded by status flip + a new ADR.
+
+| # | Title | Status |
+|---|-------|--------|
+| [0001](adr/ADR-0001-modular-governance.md) | Modular Governance | Accepted |
+| [0002](adr/ADR-0002-knowledge-capture-structured-observations.md) | Knowledge Capture — Structured Observations | Accepted |
+| [0003](adr/ADR-0003-submodule-integration.md) | Submodule Integration | Accepted |
+| [0004](adr/ADR-0004-opportunity-capture-record-structure.md) | Opportunity Capture — Record Structure | Accepted |
+| [0005](adr/ADR-0005-open-source-cut.md) | Open-Source Cut | Accepted |
+| [0006](adr/ADR-0006-interview-driven-management.md) | Interview-Driven Management | Accepted |
+| [0007](adr/ADR-0007-agentic-interface-awareness.md) | Agentic Interface Awareness | Accepted |
+| [0008](adr/ADR-0008-mcp-awareness.md) | MCP Awareness | Accepted |
+| [0009](adr/ADR-0009-ci-hardening.md) | CI Hardening | Accepted |
+| [0010](adr/ADR-0010-cheap-satisfiers-for-routine-governance.md) | Cheap Satisfiers for Routine Governance | Accepted |
+| [0011](adr/ADR-0011-markdownlint-policy.md) | Markdownlint Policy | Accepted |
+| [0012](adr/ADR-0012-opportunity-capture-index-split.md) | Opportunity Capture — Index Split | Accepted |
+| [0013](adr/ADR-0013-documentation-information-architecture.md) | Documentation Information Architecture | Accepted |
+
+---
+
+## Product Requirements Documents (PRDs)
+
+Specifications for substantive new capabilities, paired with their
+originating opportunity records.
+
+| # | Title | Status | OPP |
+|---|-------|--------|-----|
+| [0001](requirements/PRD-0001-restore-prd-support.md) | Restore PRD Support | Accepted | — |
+| [0002](requirements/PRD-0002-extend-prd-template-execution-sections.md) | Extend PRD Template Execution Sections | Accepted | — |
+| [0003](requirements/PRD-0003-opportunity-capture-module.md) | Opportunity Capture Module | Accepted | — |
+| [0004](requirements/PRD-0004-distillation-triggers.md) | Distillation Triggers | Accepted | [OPP-0004](opportunities/OPP-0004-distillation-triggers.md) |
+| [0005](requirements/PRD-0005-consumer-header-hygiene.md) | Consumer Header Hygiene | Accepted | [OPP-0005](opportunities/OPP-0005-consumer-header-hygiene.md) |
+| [0006](requirements/PRD-0006-trust-tier-enforcement.md) | Trust-Tier Enforcement | Proposed | [OPP-0006](opportunities/OPP-0006-trust-tier-enforcement.md) |
+| [0007](requirements/PRD-0007-canonical-position-artifact.md) | Canonical-Position Artifact | Proposed | [OPP-0007](opportunities/OPP-0007-canonical-position-artifact.md) |
+
+---
+
+## Opportunity Records (OPPs)
+
+Forward-looking pre-PRD candidates managed by the
+`opportunity-capture` module. See
+[`opportunities/candidates.md`](opportunities/candidates.md) for the
+clustered backlog with framing.
+
+| # | Title | Status |
+|---|-------|--------|
+| [0001](opportunities/OPP-0001-exportable-governance-contract-for-runtime-harnesses.md) | Exportable Governance Contract for Runtime Harnesses | accepted |
+| [0002](opportunities/OPP-0002-agentic-interface-awareness.md) | Agentic Interface Awareness | accepted |
+| [0003](opportunities/OPP-0003-mcp-producer-and-exportable-governance-via-mcp.md) | MCP Producer and Exportable Governance via MCP | accepted |
+| [0004](opportunities/OPP-0004-distillation-triggers.md) | Distillation Triggers | accepted |
+| [0005](opportunities/OPP-0005-consumer-header-hygiene.md) | Consumer Header Hygiene | accepted |
+| [0006](opportunities/OPP-0006-trust-tier-enforcement.md) | Trust-Tier Enforcement | exploring |
+| [0007](opportunities/OPP-0007-canonical-position-artifact.md) | Canonical-Position Artifact | exploring |
+| [0008](opportunities/OPP-0008-stack-module-node-javascript-and-coffeescript.md) | Stack Module — Node-JavaScript + CoffeeScript | accepted |
+| [0009](opportunities/OPP-0009-data-module-embedded-key-value.md) | Data Module — Embedded Key-Value | accepted |
+| [0010](opportunities/OPP-0010-domain-module-cryptographic-identity.md) | Domain Module — Cryptographic Identity | accepted |
+| [0011](opportunities/OPP-0011-stack-module-php.md) | Stack Module — PHP | proposed |
+| [0012](opportunities/OPP-0012-data-module-relational-sql-engine-generalization.md) | Data Module — Relational SQL Engine Generalization | proposed |
+| [0013](opportunities/OPP-0013-domain-family-healthcare-decomposed.md) | Domain Family — Healthcare Decomposed | proposed |
+| [0014](opportunities/OPP-0014-polyglot-companion-services.md) | Polyglot Companion Services | proposed |
+| [0015](opportunities/OPP-0015-regulated-compliance-test-kits.md) | Regulated Compliance + External Test Kits | proposed |
+| [0016](opportunities/OPP-0016-specialist-healthcare-review-skills.md) | Specialist Healthcare Review Skills | proposed |
+| [0017](opportunities/OPP-0017-legacy-coexistence-template-family.md) | Legacy Coexistence Template Family | proposed |
+| [0018](opportunities/OPP-0018-architecture-eval-gated-skill-pack.md) | Authored Eval-Gated Agent Skill-Pack (Tula) | proposed |
+| [0019](opportunities/OPP-0019-eval-gated-testing-posture.md) | Binary-Eval Testing Posture (Tula) | proposed |
+| [0020](opportunities/OPP-0020-evaluation-tooling-in-harness-toolchain.md) | Evaluation & Safety Tooling in Toolchain (Tula) | proposed |
+| [0021](opportunities/OPP-0021-delivery-self-hosted-oss.md) | Delivery — Self-Hosted OSS (Tula) | proposed |
+| [0022](opportunities/OPP-0022-patient-facing-health-agent-safety.md) | Patient-Facing Health-Agent Safety (Tula) | proposed |
+
+---
+
+## Knowledge surfaces
+
+- [`knowledge/shared-observations.md`](knowledge/shared-observations.md) —
+  append-only severity-tagged observations from project participants
+- [`knowledge/distilled-learnings.md`](knowledge/distilled-learnings.md) —
+  curated longitudinal synthesis (heavyweight; review-required)
+- [`operating-principles.md`](operating-principles.md) — durable how-this-
+  project-works truths derived from observations
+
+---
+
+## Project tracking
+
+- [`project/change-log.md`](project/change-log.md) — per-decision audit
+  log (different from the externally-visible `CHANGELOG.md` at repo
+  root, which covers releases)
+- [`project/milestones.md`](project/milestones.md)
+- [`project/scope-plan.md`](project/scope-plan.md)
+- [`project/dependency-log.md`](project/dependency-log.md)
+- [`project/revision-tracker.md`](project/revision-tracker.md)
+- [`project/implementation-log-submodule.md`](project/implementation-log-submodule.md)
+
+---
+
+## Product framing
+
+- [`product/problem-statement.md`](product/problem-statement.md)
+- [`product/requirements.md`](product/requirements.md)
+- [`product/release-intent.md`](product/release-intent.md)
+
+---
+
+## Security & quality
+
+- [`../SECURITY.md`](../SECURITY.md) — disclosure process and supported versions
+- [`threat-model.md`](threat-model.md) — adversary models, attack surfaces, mitigations
+- [`QUALITY-AUDIT-2026-05-18.md`](QUALITY-AUDIT-2026-05-18.md) — quality-audit 5-lane pass (Wave 1 onboarding readiness)
+- [`QUALITY-AUDIT-2026-05-24-documentation.md`](QUALITY-AUDIT-2026-05-24-documentation.md) — documentation-IA audit + 5-phase improvement plan (drives ADR-0013)
+- [`standards/kpi-dictionary.md`](standards/kpi-dictionary.md) — review cadence and quality metrics
+
+---
+
+## How the records cross-reference each other
+
+Most ADRs cite their originating PRD (when one exists). Most PRDs cite
+their originating OPP. Most OPPs cite the observations that motivated
+them. Reading order for understanding *why* a feature exists:
+
+```text
+Observation (insight, severity-tagged)
+     │
+     ▼
+OPP (gap captured, options enumerated, status proposed)
+     │  Disposition flipped — exploring
+     ▼
+PRD (specification, FRs, scope decisions, acceptance criteria)
+     │  Status flipped — Accepted
+     ▼
+ADR (decision recorded, alternatives explained, consequences known)
+     │
+     ▼
+Implementation (the actual code/doc change)
+```
+
+See [Diagram 4 — Opportunity → PRD → ADR Lifecycle](architecture/diagrams.md#4-opportunity--prd--adr-lifecycle) and [Diagram 8 — OPP → PRD Design-Pressure Cascade](architecture/diagrams.md#8-opp--prd-design-pressure-cascade) for the visual references.
+
+---
+
+## When to add a new record
+
+- **Observation** when you notice something worth keeping (severity:
+  architectural / process / informational / security)
+- **OPP** when an observation has crystallized into a candidate
+  capability worth scoping
+- **PRD** when an OPP has been promoted to `exploring` and the design
+  space is ready to commit
+- **ADR** when a substantive decision has been made (typically as part
+  of PRD acceptance, sometimes standalone)
+
+See [`platform/workflow/extending-the-harness.md`](../platform/workflow/extending-the-harness.md) § Submitting Your Contribution for the OPP→PRD→ADR cadence the project follows.

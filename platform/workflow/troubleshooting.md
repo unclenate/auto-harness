@@ -572,14 +572,20 @@ bash validate-manifest.sh harness.manifest.yaml
 
 ### Running all validators at once
 
-There's no `validate-all.sh` script. Run each validator explicitly in order:
+There's no `validate-all.sh` script. Run each validator explicitly in order. Set
+`$PLATFORM_ROOT` first per the definitions in
+[`bootstrap-quickstart.md` Step 2](bootstrap-quickstart.md) (typically
+`"$PWD/.harness/platform"` for submodule consumers or `"$PWD/platform"` for in-tree
+checkouts):
 
 ```bash
-bash platform/validators/validate-manifest.sh harness.manifest.yaml
-bash $PLATFORM/validators/validate-module-graph.sh harness.manifest.yaml
-bash $PLATFORM/validators/validate-required-artifacts.sh harness.manifest.yaml .
-bash $PLATFORM/validators/validate-placeholders.sh .
-bash $PLATFORM/validators/validate-agent-pack.sh harness.manifest.yaml .
+bash $PLATFORM_ROOT/validators/validate-manifest.sh harness.manifest.yaml
+bash $PLATFORM_ROOT/validators/validate-module-graph.sh harness.manifest.yaml
+bash $PLATFORM_ROOT/validators/validate-required-artifacts.sh harness.manifest.yaml .
+bash $PLATFORM_ROOT/validators/validate-placeholders.sh .
+bash $PLATFORM_ROOT/validators/validate-agent-pack.sh harness.manifest.yaml .
+bash $PLATFORM_ROOT/validators/validate-doc-references.sh .
+bash $PLATFORM_ROOT/validators/validate-catalog-counts.sh .
 # Companion validator requires a base branch — skip locally unless comparing branches
 ```
 

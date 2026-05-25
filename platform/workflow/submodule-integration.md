@@ -119,6 +119,45 @@ Your repo now references `platform/` content via symlinks — a tiny tree of ref
 
 The bootstrap prints a suggested workflow (search stdout for `Suggested CI workflow`). Copy it into `.github/workflows/harness.yml`, review it, commit it. The snippet uses `HARNESS_SUBMODULE_ROOT` parameterization and `ruby/setup-ruby@v1` — see [ci-integration.md](ci-integration.md) for the extended patterns (multi-runner, alternate CI systems, caching).
 
+### 6. Verify fresh-clone integration
+
+`.harness/` is a **gitlink**, not a copy. Your repo stores only the commit SHA the submodule
+points at — the actual files materialize when someone runs `git submodule update --init` (or
+clones with `--recurse-submodules`). Two failure modes are silent at *your* developer machine
+and only surface for the second developer or in CI:
+
+1. **Clones without `--recurse-submodules` leave `.harness/` empty.** No error — the
+   directory just isn't populated. Validator commands fail with "file not found", not
+   "submodule not initialized."
+2. **The pinned SHA must remain reachable in the submodule's remote.** Recording an explicit
+   tracking branch (`-b main`, per step 1 above) makes intent unambiguous, but the *pinned
+   commit* can still go away — force-pushed history, deleted branch, archived remote, or an
+   auth-gated remote the consumer can't reach. When that happens, `git submodule update --init`
+   fails — sometimes with a confusing `fatal: reference is not a tree`.
+
+Run the smoke test from a clean directory before you ask anyone else to clone:
+
+```bash
+# From a scratch directory, not your existing working tree
+cd "$(mktemp -d)"
+git clone --recurse-submodules <your-repo-url> smoke-test
+cd smoke-test
+test -f .harness/platform/validators/validate-manifest.sh \
+  && bash .harness/platform/validators/validate-manifest.sh harness.manifest.yaml \
+  && echo "✓ Fresh-clone integration verified"
+```
+
+If that script fails on the `test -f` check, the gitlink is broken (unreachable SHA or
+submodule URL); if it fails on the validator, your manifest is broken. Either way, fix it
+before announcing the integration to teammates — the silent failure mode is the worst kind
+of integration debt.
+
+Consider adding this same smoke test to your CI: see
+[`platform/templates/ci/README.md`](../templates/ci/README.md) for the CI starter
+templates, and look for the `submodule-smoke-test` job in the consumer CI templates
+once
+[OPP-0025](../../docs/opportunities/OPP-0025-consumer-integration-smoke-test.md) lands.
+
 ## The `HARNESS_SUBMODULE_ROOT` contract
 
 The `install.sh` bootstrap and all generated artifacts reference `$HARNESS_SUBMODULE_ROOT` rather than a hardcoded `.harness/` path. This has three consequences:

@@ -821,6 +821,7 @@ VALIDATOR_SCRIPTS = %w[
   validate-agent-pack.sh
   validate-companions.sh
   validate-doc-references.sh
+  validate-catalog-counts.sh
 ].freeze
 
 class TestValidatorHelpFlag < Minitest::Test

@@ -37,14 +37,16 @@ Symlinks from `.agents/skills/` and `.claude/skills/` into the submodule mean th
 
 ```bash
 cd your-repo
-git submodule add https://github.com/unclenate/auto-harness .harness
+git submodule add -b main https://github.com/unclenate/auto-harness .harness
 git commit -m "chore: add auto-harness as submodule"
 ```
+
+The `-b main` records a tracking branch in `.gitmodules`, so the `git submodule update --remote .harness` workflow used throughout this guide follows `main` explicitly. If you omit it, `.gitmodules` has no `branch` key and `--remote` falls back to the submodule remote's default branch (its `HEAD`) — which is `main` today, but relying on that default is implicit. See [Version Management](maintenance-operations.md#version-management) for how the tracking branch interacts with pinning.
 
 The path `.harness` is conventional — the bootstrap defaults to it — but you can mount anywhere relative to your repo root. If you prefer `vendor/auto-harness`:
 
 ```bash
-git submodule add https://github.com/unclenate/auto-harness vendor/auto-harness
+git submodule add -b main https://github.com/unclenate/auto-harness vendor/auto-harness
 ```
 
 The rest of this guide uses `.harness` for brevity. Substitute your mount path if different.

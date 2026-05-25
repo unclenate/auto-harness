@@ -102,7 +102,7 @@ Either approach surfaces gaps before they break CI.
 
 ### Pinning to a Specific Harness Version
 
-Submodules track a specific commit, not a moving branch reference. By default, `git submodule update --remote` follows whatever branch the submodule was added on (usually `main`). If you want stability — for example, during a release freeze or a regulated period — you can pin to a specific commit or tag.
+Submodules track a specific commit, not a moving branch reference. When you run `git submodule update --remote`, the branch it follows is taken from the `submodule.<name>.branch` key in `.gitmodules`. If that key is unset, `--remote` falls back to the submodule remote's default branch (its `HEAD`) — *not* "whatever branch you were on when you added it." Recording the branch explicitly (`git submodule add -b main …`, or `git submodule set-branch --branch main .harness` on an existing mount) makes the tracking target unambiguous and resilient to the remote's default changing. If you want stability — for example, during a release freeze or a regulated period — you can pin to a specific commit or tag.
 
 **Pinning to a tag** (recommended when an upstream version has been tagged):
 
@@ -125,13 +125,17 @@ git add .harness
 git commit -m "chore: pin auto-harness to commit 3193270"
 ```
 
-After pinning, `git submodule update --remote` will keep following the configured branch (and would move you off the pinned commit). To prevent that, change the tracking branch in `.gitmodules`:
+After pinning, `git submodule update --remote` will keep following the tracking branch — the `submodule.<name>.branch` key, or the remote's default branch if that key is unset — and would move you off the pinned commit. The `branch` key accepts a **branch name only**: when `--remote` runs it resolves `refs/remotes/<remote>/<branch>`, which does not exist for a tag. Two workable approaches to hold the pin:
+
+**Option 1 — Don't use `--remote` while pinned.** Leave the `branch` key as it was (or unset it with `git submodule set-branch --default .harness`) and just don't run `git submodule update --remote` against the pinned submodule. The commit SHA your supermodule recorded at pin time is what `git submodule update` (without `--remote`) will keep restoring; that's the durable mechanism. Document the pin and the "no `--remote` until unpinned" rule in your `docs/project/change-log.md`.
+
+**Option 2 — Track a dedicated upstream release branch.** If auto-harness publishes a long-lived release branch (e.g., `release/0.2.x`), point `submodule.<name>.branch` at *that* branch — `git submodule set-branch --branch release/0.2.x .harness` — so `--remote` follows the release line rather than `main`. This only works when the upstream ref exists as a branch; it does **not** work with tag names.
 
 ```ini
 [submodule ".harness"]
     path = .harness
     url = https://github.com/unclenate/auto-harness
-    branch = v0.2.0       ; or leave unset and only use explicit checkouts
+    branch = release/0.2.x       ; an upstream branch, NOT a tag
 ```
 
 Then run `git submodule sync` so the change takes effect.

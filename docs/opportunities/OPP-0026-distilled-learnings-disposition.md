@@ -83,7 +83,7 @@ to predetermine the answer.
 - **Maintainer question, 2026-05-25 (mid-bundle):** *"when does the
   process trigger to generate distilled learnings happen?
   distilled-learnings.md seems way behind and it doesn't seem to be
-  triggered by anything? Does it get read by anyhting [sic]?"* The investigation
+  triggered by anything? Does it get read by anything?"* The investigation
   that answered the question surfaced the gap and motivated this OPP.
 - **Documentation audit M8 (2026-05-24):** *"`distilled-learnings.md`
   shows a review cadence ~7 months stale."* Audit-confirmed staleness.

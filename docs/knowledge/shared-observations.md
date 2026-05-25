@@ -2,7 +2,7 @@
 
 **Structure:** Structured Template (see README.md § Observation Structure; locked by ADR-0002)
 **Write Policy:** heartbeat-only (see README.md § Write Policy; adjustable)
-**Last Updated:** 2026-05-25 *(Phase 0.5 hotfix bundle — adds two observations on declaration-without-enforcement patterns: cross-repo silent failures paired with OPP-0025 + smoke-test addition to `submodule-integration.md`, and the intra-repo sibling on declared knowledge surfaces without inbound flow paired with OPP-0026)*
+**Last Updated:** 2026-05-25 *(Phase 0.5 hotfix bundle + OPP-0026 promotion: three new observations on declaration-without-enforcement patterns — cross-repo silent failures paired with OPP-0025, the intra-repo sibling paired with OPP-0026, and a third on sunset-PRD discipline appended during the OPP-0026 → exploring promotion that CI's cycle-end rule forced into being)*
 
 Append-only structured observations from project participants (agents
 and humans). Read this file on each heartbeat. Observations accumulate
@@ -1375,3 +1375,63 @@ here until distillation.
 - **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-25 (investigation
   triggered by maintainer mid-bundle; paired with OPP-0026 and session-cycle
   candidate stub)
+
+### Sunsetting a declared-but-unused mechanism must rule out replicating the failure mode at the surviving destination
+
+- **Context:** Drafting PRD-0011 (sunset `distilled-learnings.md`,
+  promotion of OPP-0026 → exploring, 2026-05-25). The Option-A
+  disposition was straightforward on its evidence — 40 days of zero
+  inbound flow, `operating-principles.md` had absorbed the charter,
+  operating-principle § 7 explicitly argues against keeping two
+  destinations whose change-classes have collapsed. The non-obvious
+  part of the PRD was the rejection of Option B (revive with a
+  forcing trigger). The reason was not "forcing triggers are bad" —
+  PRD-0004 demonstrably ships a successful forcing trigger (the
+  cycle-end-distillation rule). The reason was that a forcing trigger
+  added *now* against operating-principles.md would either fire on
+  the same change-class operating-principles already serves (creating
+  a routing problem) or fire on a synthetic schedule the team would
+  resent or game — which is the *exact failure mode the PRD is
+  removing from distilled-learnings*.
+- **Observation:** When sunsetting a declared-but-unused mechanism,
+  the v1 must rule out replicating that mechanism's failure mode at
+  the surviving destination — or the sunset will recur there. The
+  failure mode that kills a declared destination is *declared triggers
+  nobody adopts*: distilled-learnings died because its "dedicated
+  review sessions" trigger had no forcing pressure upstream. The naive
+  Option-B response is to add upstream pressure to operating-principles
+  ("quarterly review", "every N observations triggers a check") — but
+  that pressure would be just as synthetic as the one that failed at
+  distilled-learnings, and operating-principles' current "promote when
+  the pattern crystallizes" cadence is healthy *because the promotion
+  is driven by real evidence accumulating in shared-observations.md*,
+  not by clock or count. The structural insight: the failure of
+  declared-without-trigger is not solved by adding *any* trigger — it
+  is solved by ensuring the trigger that exists is *driven by
+  accumulating evidence in another tracked surface*, not by clock or
+  count. This generalizes: every sunset PRD should explicitly enumerate
+  the failure mode that killed the original mechanism, and check that
+  the surviving destination's mechanism is structurally protected from
+  the same mode.
+- **Implication:** Add this as an explicit check item to the OPP→PRD
+  promotion workflow: *"If this PRD sunsets a declared mechanism, the
+  Rejected Alternatives section must enumerate the failure mode that
+  killed the original and show why the surviving destination is
+  structurally immune."* This is not yet operating-principle-grade
+  (one instance), but lift to that surface if a second sunset PRD
+  exercises the same discipline successfully. Possible candidate for
+  a future operating-principles § 9 if so. There is also a meta-point
+  worth noting: this observation exists because the cycle-end
+  distillation rule fired on the PR that drafted PRD-0011 and *forced*
+  the distillation to be written before merge — exactly the rule's
+  designed PR-boundary behavior. The PR author had initially claimed
+  the rule was not triggered (the OPP edit was framed as a status flip,
+  not new substantive work); CI rejected that framing and required a
+  real distillation entry. The rule worked: it caught the over-narrow
+  "this is just a status flip" framing and forced the distillation a
+  reader would benefit from.
+- **Confidence:** medium-high — one direct instance with explicit
+  reasoning (PRD-0011's Option B rejection rationale), structurally
+  sound argument. Second instance would lift to high.
+- **Severity:** architectural
+- **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-25 (PRD-0011 drafting; satisfies the cycle-end distillation rule that fired on the OPP-0026 status flip and the PRD-0011 file creation, which CI caught — the rule's PR-boundary enforcement working as designed)

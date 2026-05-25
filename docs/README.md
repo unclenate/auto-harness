@@ -75,6 +75,7 @@ originating opportunity records.
 | [0008](requirements/PRD-0008-agent-skill-pack-architecture.md) | Agent Skill-Pack Architecture | Accepted | [OPP-0018](opportunities/OPP-0018-architecture-eval-gated-skill-pack.md) |
 | [0009](requirements/PRD-0009-eval-gated-testing-module.md) | Eval-Gated Testing Module | Accepted | [OPP-0019](opportunities/OPP-0019-eval-gated-testing-posture.md) |
 | [0010](requirements/PRD-0010-self-hosted-oss-delivery.md) | Self-Hosted OSS Delivery | Accepted | [OPP-0021](opportunities/OPP-0021-delivery-self-hosted-oss.md) |
+| [0011](requirements/PRD-0011-distilled-learnings-disposition.md) | Sunset `distilled-learnings.md` | Proposed | [OPP-0026](opportunities/OPP-0026-distilled-learnings-disposition.md) |
 
 ---
 
@@ -111,7 +112,7 @@ clustered backlog with framing.
 | [0022](opportunities/OPP-0022-patient-facing-health-agent-safety.md) | Patient-Facing Health-Agent Safety (Tula) | proposed |
 | [0023](opportunities/OPP-0023-doc-references-consumer-scan.md) | `validate-doc-references` Consumer-Aware Scan | proposed |
 | [0025](opportunities/OPP-0025-consumer-integration-smoke-test.md) | Consumer-Side Integration Smoke Test | proposed |
-| [0026](opportunities/OPP-0026-distilled-learnings-disposition.md) | `distilled-learnings.md` Disposition (Sunset/Revive/Clarify) | proposed |
+| [0026](opportunities/OPP-0026-distilled-learnings-disposition.md) | `distilled-learnings.md` Disposition (Sunset/Revive/Clarify) | exploring |
 
 ---
 

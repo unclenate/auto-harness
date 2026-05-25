@@ -6,11 +6,11 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0026 — `distilled-learnings.md` Disposition (Sunset, Revive, or Clarify)
 
-**Status:** proposed
+**Status:** exploring
 **Owner:** @unclenate
 **Created:** 2026-05-25
-**Last Updated:** 2026-05-25 *(filed as OPP-0024 in working tree; renumbered to OPP-0026 after PR #59 took the OPP-0023 slot — same session, same renumbering cascade)*
-**Confidence:** high (on the diagnosis); medium (on which disposition to take)
+**Last Updated:** 2026-05-25 *(filed as OPP-0024 in working tree; renumbered to OPP-0026 after PR #59 took the OPP-0023 slot — same session, same renumbering cascade. Promoted `proposed` → `exploring` same-day per the maintainer-priority cadence; [PRD-0011](../requirements/PRD-0011-distilled-learnings-disposition.md) drafted committing to Option A — Sunset.)*
+**Confidence:** high (on the diagnosis); high (on Option A as the disposition, committed in PRD-0011)
 
 ---
 
@@ -177,12 +177,32 @@ compounds.
 
 ## Disposition
 
-<!--
-Empty while Status: proposed.
--->
+**2026-05-25 — `proposed` → `exploring`.** Promoted same-day per the
+established maintainer-priority cadence (the OPP-0004/0005/0006/0007
+pattern). Direction committed: **Option A — Sunset.** Evidence
+strongly favors: 40 days of zero inbound flow,
+`operating-principles.md` has *de facto* absorbed the
+curated-knowledge charter (§§ 7 and 8 added this session are exactly
+the cross-observation synthesis distilled-learnings was supposed to
+host), and operating-principle § 7 itself explicitly argues against
+keeping two destinations whose change-classes have collapsed into
+one. Option B (revive with a forcing trigger) and Option C (label
+dormant pending established cadence) were both weighed and rejected
+for v1; PRD-0011 records the rejection rationale and the triggers
+that would justify revisiting either.
+
+[PRD-0011 — Sunset distilled-learnings.md](../requirements/PRD-0011-distilled-learnings-disposition.md)
+drafted as the paired design, covering 13 must-have FRs (module.yaml
+edits, workflow-doc updates, dormancy stub for the file itself, ADR-0014
+as the decision record, knowledge README + HARNESS.md + cycle-end
+workflow updates) plus 3 should-have FRs (template-side mirror,
+templates README update, optional review-log entry).
+
+Acceptance criteria for OPP-0026 → `accepted` mirrors PRD-0007's
+pattern: PRD-0011 Accepted, FR-001..FR-013 merged, ADR-0014 Accepted,
+validators green, and a paired observation in `shared-observations.md`
+confirming the sunset.
 
 ## Promotion
 
-<!--
-Empty until accepted. Then a link to PRD-NNNN.
--->
+See [`docs/requirements/PRD-0011-distilled-learnings-disposition.md`](../requirements/PRD-0011-distilled-learnings-disposition.md).

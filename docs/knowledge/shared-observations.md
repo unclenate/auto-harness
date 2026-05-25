@@ -1216,3 +1216,33 @@ here until distillation.
   ADR-0013 will surface whether this generalizes.
 - **Severity:** process
 - **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-25 (Phase 1 README rebuild)
+
+### A validator that hard-requires the harness's own repo layout is a consumer-onboarding stumbling block
+
+- **Context:** Wiring the harness validator chain into CI for the first
+  submodule consumer (Tula, 2026-05-25) surfaced that
+  `validate-doc-references.sh` exits `2` ("`<root>/platform` does not exist")
+  for any consumer whose platform lives at `.harness/platform/` rather than
+  `./platform/`. The consumer CI template includes the step; the
+  `ci-integration.md` minimal workflow omits it. Filed as OPP-0023.
+- **Observation:** This is the *inverse* of the brownfield-catalog-breadth
+  pattern. Catalog gaps surface when a consumer's *reality exceeds the
+  catalog*; this is a *tooling* gap — a validator written for the harness's own
+  dogfood (which always has `platform/`) silently bakes in that layout and so
+  fails for the recommended submodule consumption mode. The template-vs-guide
+  disagreement is the visible symptom; the root cause is that the dogfood never
+  exercises the no-`platform/` path. It is the same class as the YouBase
+  observation that the self-dogfood "says nothing about the dimensions it
+  doesn't exercise" — here the unexercised dimension is the *consumer runner
+  environment*, not the catalog.
+- **Implication:** (1) Every validator in the consumer chain should be run, in
+  a self-test, against a no-`platform/` consumer fixture — the dogfood's own
+  `platform/` masks layout assumptions. (2) The consumer CI template and the
+  `ci-integration.md` minimal workflow are two assertions of the same validator
+  set and should be kept in sync by construction; they drifted. (3) "Nothing to
+  scan" should be a clean exit `0` across the chain — a consumer with no
+  matching files is a valid state, not misuse.
+- **Confidence:** high — directly observed (one validator confirmed failing,
+  one template/guide mismatch confirmed) during the Tula CI wiring.
+- **Severity:** governance-relevant
+- **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-25 (Tula CI wiring)

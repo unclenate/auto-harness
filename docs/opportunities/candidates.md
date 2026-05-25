@@ -82,6 +82,16 @@ this index exists only to group, cluster, or annotate them for human readers.
   plus a small bootstrap helper that fills tokens project-wide. Real
   legal correctness issue, not cosmetic.
 
+- [OPP-0023](OPP-0023-doc-references-consumer-scan.md) *(proposed 2026-05-25)* —
+  `validate-doc-references.sh` hard-fails (exit 2) for **submodule consumers**:
+  it requires a `<root>/platform/` tree and never reaches its general
+  markdown-link-resolution pass on consumer docs. The consumer CI template
+  includes a doc-references step while `ci-integration.md`'s minimal workflow
+  omits it — they disagree, so following the template reds a consumer's CI.
+  Surfaced by the Tula onboarding (recorded in its `ADR-0002`). Initial bias:
+  make the validator scan consumer `*.md` when no `platform/` exists (skip the
+  platform-specific pass), and align the template + guide.
+
 ### Brownfield catalog coverage
 
 Catalog gaps surfaced by three independent external brownfield onboardings on

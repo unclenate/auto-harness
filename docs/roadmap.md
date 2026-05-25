@@ -15,8 +15,8 @@ OPP backlog).
 **Maturity:** Alpha; pre-1.0. Versions are semver-disciplined per
 [`platform/workflow/release-and-versioning.md`](../platform/workflow/release-and-versioning.md).
 
-> **Updated:** 2026-05-24 *(post-PRD-0007 drafting; prioritization
-> swap captured)*
+> **Updated:** 2026-05-24 *(post-prioritization-examination; v0.5.1
+> YouBase patch surfaced; OpenEMR Phase 1 anchored at v0.8.0)*
 
 ---
 
@@ -47,6 +47,31 @@ Full release notes:
 ---
 
 ## Planned
+
+### v0.5.1 — YouBase Brownfield Catalog Patch (OPP-0008 + OPP-0009 + OPP-0010)
+
+**Status:** Three OPPs `proposed`; small patch release; ready to pick
+up as a single bundled PR.
+
+The v0.5.1 patch closes the three catalog gaps surfaced by the YouBase
+brownfield onboarding (2026-05-24) without introducing new governance
+machinery. Pure catalog growth — three small modules, each with zero
+required artifacts.
+
+| Module | Source OPP | What |
+|--------|------------|------|
+| `stacks/node-javascript` (+ `stacks/coffeescript`) | OPP-0008 | Sibling to the existing `stacks/node-typescript`; no required artifacts |
+| `data/embedded-key-value` (+ `data/browser-storage`) | OPP-0009 | LevelDB/LMDB/RocksDB/SQLite-as-KV (server) + IndexedDB/localStorage/OPFS (browser); no required artifacts |
+| `domains/cryptographic-identity` | OPP-0010 | BIP32/BIP39 HD wallets + DID/SSI + key-custody primitives (orthogonal to `domains/web3`); no required artifacts |
+
+**Effort estimate:** ~3 hours engineering + ~1-2 hours dogfood
+validation. Single PR, single working session.
+
+**Why this is a v0.5.1 patch (not v0.6.0):** zero new validators, zero
+new templates with placeholders, zero schema changes. Pure catalog
+addition. Does not compete with the governance-machinery work for
+v0.6/v0.7 sequencing — it slots in as a fast-follow that costs
+essentially no calendar time.
 
 ### v0.6.0 — Canonical-Position Artifact (PRD-0007)
 
@@ -110,15 +135,39 @@ runs on honor code.
 - [`docs/opportunities/OPP-0006-trust-tier-enforcement.md`](opportunities/OPP-0006-trust-tier-enforcement.md)
 - [`docs/requirements/PRD-0006-trust-tier-enforcement.md`](requirements/PRD-0006-trust-tier-enforcement.md)
 
-### v0.8+ — Sibling-Observation Follow-ups
+### v0.8.0 — OpenEMR Brownfield Catalog Phase 1 (OPP-0011 + OPP-0012 + OPP-0013 core)
 
-After PRD-0007's v0.6.0 lands, three follow-up OPPs will be filed
-that each anchor on OPP-0007 as their prerequisite:
+**Status:** Seven OPPs `proposed`; Phase 1 is a 3-OPP minimum viable
+subset. Internal dependency tree confirmed by the 2026-05-24
+prioritization examination.
+
+Phase 1 is the minimum viable PHP-healthcare catalog — the smallest
+subset that unblocks OpenEMR consumer adoption:
+
+| OPP | What |
+|-----|------|
+| OPP-0011 | `stacks/php` module + `harness-php` skill + `validate-php-strict-types.sh` + `validate-conventional-commits.sh` |
+| OPP-0012 | Generalize `data/relational-postgres` → `data/relational-sql` with engine sub-field (postgres / mysql / mariadb / sqlite) |
+| OPP-0013 core | Healthcare domain family with the *core* sub-modules (FHIR, HL7v2, audit-log, PHI-encryption, patient-portal) — not all 12; the rest land in v0.9+ Phase 2 |
+
+**Effort estimate:** ~4-6 weeks for Phase 1. OPP-0013 should be
+promoted to `exploring` and get its own PRD pass when the time comes
+(it's the cluster's anchor; warrants the OPP→PRD discipline).
+
+Phase 2 (v0.9.0+) lands the remaining healthcare sub-modules (CCDA,
+SMART, ePrescribing, CDR, CQM, Direct, EHI-export) + OPP-0014
+(polyglot-companion-services) + OPP-0015 (regulated-compliance) +
+OPP-0016 (specialist healthcare review skills) + OPP-0017 (legacy-
+coexistence templates).
+
+### v0.8+ — Sibling-Observation Follow-ups (after PRD-0007 + PRD-0006 land)
+
+Three follow-up OPPs will be filed that each anchor on OPP-0007 as
+their prerequisite:
 
 - **Observation A — Validator opt-out staleness pressure.** Needs
   trust-tier (PRD-0006) machinery to land first; the override
-  citation works cleanest once tier declarations exist. Likely
-  v0.8 work.
+  citation works cleanest once tier declarations exist.
 - **Observation B — Opportunity-capture backlog re-audit on canonical
   change.** Needs canonical-change-detection mechanism
   (content-hash compare); separate scope.

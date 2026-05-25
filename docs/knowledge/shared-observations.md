@@ -2,7 +2,7 @@
 
 **Structure:** Structured Template (see README.md § Observation Structure; locked by ADR-0002)
 **Write Policy:** heartbeat-only (see README.md § Write Policy; adjustable)
-**Last Updated:** 2026-05-24 *(OpenEMR canonization handoff — three observations appended below the YouBase batch; satisfies cycle-end distillation rule for OPP-0011..0017)*
+**Last Updated:** 2026-05-24 *(Tula onboarding handoff — two observations appended below the OpenEMR batch; satisfies cycle-end distillation rule for OPP-0018..0022 and the OPP-0013/0016 augmentation)*
 
 Append-only structured observations from project participants (agents
 and humans). Read this file on each heartbeat. Observations accumulate
@@ -1000,3 +1000,99 @@ here until distillation.
   second instance)
 - **Severity:** governance-relevant
 - **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-24 (OpenEMR canonization)
+
+### Third brownfield instance surfaces a *second* gap class: delivery-topology breadth for agent-native products
+
+- **Context:** YouBase and OpenEMR (both 2026-05-24) converged on
+  **stack/data catalog breadth** — a Node-not-TypeScript stack, a PHP
+  stack, embedded key-value, relational-SQL generalization. The third
+  external brownfield pass the same day — Tula (`github.com/unclenate/tula`
+  fork), an OpenClaw personal-health-agent skill pack — is plain
+  Node/TypeScript, which the catalog already handles. Yet it produced five
+  new OPPs (0018..0022) plus an augmentation of the OpenEMR healthcare
+  family. The gaps were not about *language* or *storage*; they were about
+  how the product is **built, gated, and shipped**: the unit of product is
+  an authored, eval-gated skill pack deployed to an agent runtime
+  (OPP-0018), gated by binary LLM evals rather than percentage coverage
+  (OPP-0019), shipped as single-user self-hosted OSS (OPP-0021). The
+  catalog's conventional layers (node-typescript, web-app, product-lite,
+  the dev-agent packs) described Tula's *surface* perfectly; the miss was
+  concentrated entirely in its *delivery topology*.
+- **Observation:** Catalog-gap discovery has (at least) two distinct axes,
+  and they are surfaced by different consumer kinds. *Legacy / polyglot*
+  brownfields (YouBase, OpenEMR) exercise **stack/data breadth**.
+  *Agent-native* products (Tula) exercise **delivery-topology breadth** —
+  the catalog has rich coverage of apps and services but thin coverage of
+  the agent-native production model (authored skill pack, eval gate,
+  self-hosted runtime). A corollary surfaced in the same session: the
+  harness's enforcement surface is entirely *structural* (markdown/YAML/Bash
+  validators) and has no *behavioral* gate — it cannot check whether an
+  agent skill does what it claims or does so safely. The maintainer named
+  the inbound move directly: make evaluation/safety tooling (Waza, the GAIA
+  benchmark, the UK AI Safety Institute's Inspect) *components* of the
+  harness toolchain, not merely things it is aware of (OPP-0020), as the
+  inbound complement to OPP-0001's outbound governance export.
+- **Implication:** (1) The next catalog-breadth investment after the
+  YouBase/OpenEMR stack work is **agent-native delivery**, not more language
+  stacks — and the harness's own `recommendedSkills` blocks already assume a
+  skill-pack ecosystem the catalog does not yet govern producing. (2) The
+  `harness-onboarding` skill's module catalog should grow an
+  `architectures/agent-skill-pack` family once OPP-0018 is shaped, since
+  agent-native consumers will recur. (3) Behavioral gating (OPP-0020) is the
+  harness's most-cited absent capability and is now evidence-backed by a
+  working consumer CI (`.waza.yaml` + eval-status workflow) — it is a
+  generalize-the-wiring problem, not a greenfield one. (4) Synthetic-
+  brownfield test passes (proposed in the YouBase observation) should add an
+  *agent-native* shape (a skill pack, an MCP server, a self-hosted agent
+  runtime) to the language/framework shapes already suggested, so this axis
+  is exercised before the next real consumer hits it.
+- **Confidence:** medium-high — one strong instance for the *agent-native*
+  axis (Tula), but the axis is reinforced by the harness's own dependence on
+  a skill ecosystem it does not govern, and by an explicit maintainer
+  priority signal on the behavioral-gating corollary.
+- **Severity:** architectural
+- **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-24 (Tula onboarding)
+
+### Healthcare catalog evidence is US-centric — guard against baking US health-system assumptions into module shapes
+
+- **Context:** The harness's healthcare coverage (OPP-0013 family, OPP-0015
+  regulated-compliance, OPP-0016 specialist skills, and now OPP-0022
+  patient-agent safety) is grounded in exactly two consumers, both American:
+  OpenEMR (ONC certification, HITECH, HIPAA, US Core, Inferno G10) and Tula
+  (Epic MyChart, HIPAA §164.526 amendment law, US Core, US patient-access /
+  Cures Act framing). The maintainer flagged this directly during the Tula
+  pass: there is a real risk of baking the cultural and economic assumptions
+  of the **US** health system — its payer model, its certification regime,
+  its consent and amendment law, MyChart as the canonical patient portal,
+  US Core as the canonical profile — into module shapes as if they were
+  universal, and an intent to seek healthcare consumers from Europe, the
+  Near East, and the Far East to correct it.
+- **Observation:** The bias is structural, not incidental. FHIR *core* is an
+  international HL7 standard, but the artifacts a US-grounded onboarding
+  naturally reaches for (US Core profiles, ONC G10 conformance, HIPAA
+  citations, MyChart UX assumptions) are US-realm-specific. A healthcare
+  module family frozen on US-only evidence would encode US regulatory and
+  economic structure into its required artifacts, forcing every
+  international consumer to either misrepresent their context or carry
+  irrelevant US artifact debt — the same "forced bundling" failure mode
+  OPP-0013's module-sizing observation already names, but along a
+  *jurisdictional* axis rather than a capability axis.
+- **Implication:** (1) Healthcare module artifacts must be designed around
+  *concepts* that hold cross-jurisdiction (red-flag triage, draft-not-send,
+  patient-as-resource-owner, audit/breakglass, encryption-at-rest), with
+  realm-specific law carried as *fill-in references* (HIPAA, GDPR/EHDS
+  rectification rights, etc.), never hard-coded. (2) The non-diagnostic
+  stance must not encode a single jurisdiction's medical-device or liability
+  framing. (3) `harness-onc-certification`-style skills are inherently
+  US-specific and should be named as such, with international analogues
+  (EU EHDS conformance, national certification regimes) as distinct skills,
+  not the same one renamed. (4) **Required before freezing any healthcare
+  artifact:** at least one non-US healthcare second-evidence consumer
+  (OpenMRS is a strong LMIC-deployed candidate; EHDS-aligned EU software is
+  another). This gate is recorded as a Risk in OPP-0013, OPP-0016, and
+  OPP-0022.
+- **Confidence:** high — the bias is directly observable in the evidence set
+  (two US consumers, zero non-US) and was independently flagged by the
+  maintainer.
+- **Severity:** architectural
+- **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-24 (Tula onboarding)

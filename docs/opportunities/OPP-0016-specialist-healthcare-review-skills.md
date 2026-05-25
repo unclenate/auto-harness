@@ -9,7 +9,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 **Status:** proposed
 **Owner:** @unclenate
 **Created:** 2026-05-24
-**Last Updated:** 2026-05-24
+**Last Updated:** 2026-05-24 *(augmented: Tula patient-client role refines harness-fhir/harness-smart scope; US-bias guardrail — see §TG5, OPP-0022)*
 **Confidence:** medium
 
 ---
@@ -70,6 +70,20 @@ practice.
     `src/Gacl/Gacl.php`
 
   Every skill has concrete subsystem evidence; nothing is speculative.
+
+- **Second consumer refines `harness-fhir` / `harness-smart` scope: Tula
+  (`github.com/unclenate/tula` fork).** Gap analysis §TG5. OpenEMR exercises
+  FHIR/SMART as a **server / provider-launch**; Tula's
+  `skills/health-records` (from [`jmandel/health-skillz`](https://github.com/jmandel/health-skillz),
+  SMART co-creator) exercises them as a **patient-authorized client**. A
+  `harness-fhir` / `harness-smart` specialist must therefore cover *both*
+  conformance lenses — server resource/profile coverage **and** patient-
+  access scope correctness (`patient/*.read`, launch context, token
+  audience). The SMART-on-FHIR community itself
+  ([`smart-on-fhir`](https://github.com/smart-on-fhir),
+  [`smart-fetch`](https://github.com/smart-on-fhir/smart-fetch),
+  [`gotdan`](https://github.com/gotdan)) is the authority a `harness-smart`
+  skill would encode.
 
 - **The broad-vs-narrow tradeoff is structural.** Skills are loaded on
   demand based on description-match. A broad `harness-healthcare` skill
@@ -140,6 +154,15 @@ practice.
   skill-trigger contract grows a module-precondition field — that's
   a harness-level decision separate from this OPP.
 
+- **US-healthcare bias.** Like the rest of the healthcare family, both
+  evidence points are American. A `harness-fhir` specialist must not assume
+  US Core is *the* profile (it is a US-realm profile; IPS and national
+  profiles exist), and `harness-onc-certification` is inherently
+  US-specific — its international analogues (e.g. EU EHDS conformance) are
+  distinct skills, not the same one renamed. Carry realm specificity
+  explicitly. See the US-healthcare-bias observation in
+  `docs/knowledge/shared-observations.md`.
+
 ## Disposition
 
 <!-- Empty: status is proposed -->
@@ -157,6 +180,9 @@ practice.
   `harness-healthcare` broad skill
 - Existing narrow skills (parallels): `platform/skills/harness-web3/`,
   `platform/skills/harness-mcp/`
+- Patient-side counterpart + bias guardrail: [OPP-0022](OPP-0022-patient-facing-health-agent-safety.md)
+- Second-consumer (patient-client) gap analysis: consumer project (`tula`)
+  at `docs/knowledge/harness-coverage-gap-analysis.md` §TG5
 - Companion OPPs filed in the same session (OpenEMR canonization):
   [OPP-0011](OPP-0011-stack-module-php.md),
   [OPP-0012](OPP-0012-data-module-relational-sql-engine-generalization.md),

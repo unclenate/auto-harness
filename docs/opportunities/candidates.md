@@ -6,7 +6,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # auto-harness — Opportunity Candidates Index
 
-**Owner:** @unclenate | **Last Updated:** 2026-05-24
+**Owner:** @unclenate | **Last Updated:** 2026-05-24 *(added Tula cluster: OPP-0018..0022 + OPP-0013/0016 augmentation)*
 
 Organizational index of opportunity candidates filed in this directory. The
 canonical record for each candidate is its own `OPP-NNNN-slug.md` file —
@@ -84,16 +84,18 @@ this index exists only to group, cluster, or annotate them for human readers.
 
 ### Brownfield catalog coverage
 
-Catalog gaps surfaced by two independent external brownfield onboardings on
+Catalog gaps surfaced by three independent external brownfield onboardings on
 2026-05-24: YouBase (Node + CoffeeScript cryptographic identity store; OPP-0008,
-0009, 0010) and OpenEMR (25-year-old PHP healthcare EHR; OPP-0011..0017). Each
-gap is a category the `harness-onboarding` skill correctly refused to claim
-under the Conservative-module-selection rule because no catalog module fits.
-Filed as coherent batches so the brownfield-discovery pattern is visible as a
-class rather than scattered. The convergence between the two onboardings (both
-hit the stack-catalog-breadth gap from different language angles within 24
-hours) is captured in shared-observations.md as a structural signal that
-catalog breadth is the load-bearing brownfield-onboarding issue.
+0009, 0010), OpenEMR (25-year-old PHP healthcare EHR; OPP-0011..0017), and Tula
+(OpenClaw personal-health-agent skill pack; OPP-0018..0022 + augmentation of
+OPP-0013/0016). Each gap is a category the `harness-onboarding` skill correctly
+refused to claim under the Conservative-module-selection rule because no catalog
+module fits. Filed as coherent batches so the brownfield-discovery pattern is
+visible as a class rather than scattered. YouBase and OpenEMR converged on
+**stack/data catalog breadth** (different language angles within 24 hours); Tula
+surfaced a distinct class — **delivery-topology breadth for agent-native
+products** (the unit of product is an eval-gated skill pack on a runtime, not an
+app or a service). Both signals are captured in shared-observations.md.
 
 #### From YouBase (cryptographic-identity / personal-data-store)
 
@@ -171,6 +173,46 @@ references back to OPP-0008/0009/0010 record the convergence.*
   template-engine migration, OAuth2/SMART scopes, ACL/RBAC, sub-app
   portal auth. Pattern absorbed from a 25-year-old project's lived
   coexistence experience.
+
+#### From Tula (OpenClaw personal-health-agent skill pack)
+
+*Distinct gap class from the YouBase/OpenEMR stack-breadth batch:
+**delivery-topology breadth for agent-native products**. The catalog's
+conventional layers (node-typescript, web-app, product-lite, dev-agent
+packs) described Tula fine; the miss is concentrated in how an agent-native
+product is built, gated, and shipped — plus the patient-side of healthcare,
+which OpenEMR's operator-side family did not see.*
+
+- [OPP-0018](OPP-0018-architecture-eval-gated-skill-pack.md) *(proposed 2026-05-24)* —
+  Authored, eval-gated **agent skill-pack** as a delivery topology
+  (`architectures/agent-skill-pack` + thin `domains/openclaw`). The unit of
+  product is a conventioned skill collection deployed to an agent runtime —
+  neither an app, a service, an in-product copilot, nor an MCP server.
+  Lineage: `jmandel/health-skillz` (SMART co-creator publishing agent skills).
+- [OPP-0019](OPP-0019-eval-gated-testing-posture.md) *(proposed 2026-05-24)* —
+  **Binary-eval quality gate** as a testing posture (consumer-facing).
+  `testing-standard` is percentage-coverage shaped; this adds grader
+  thresholds, an eval task taxonomy (basic/edge/should-not-trigger/override),
+  and synthetic-fixture discipline. Bias: a `mode: eval-gate` variant.
+- [OPP-0020](OPP-0020-evaluation-tooling-in-harness-toolchain.md) *(proposed 2026-05-24)* —
+  **Evaluation & safety tooling as harness toolchain components** (Waza /
+  GAIA / UK-AISI Inspect). Inbound complement to OPP-0001: auto-harness adds
+  a *behavioral* gate alongside its structural validators. Maintainer-signaled
+  direction (Waza as component, not just awareness).
+- [OPP-0021](OPP-0021-delivery-self-hosted-oss.md) *(proposed 2026-05-24)* —
+  **`delivery/self-hosted-oss`** posture for published OSS that ships as a
+  single-user self-hosted reference deployment — between `prototype` (undersells)
+  and `production-saas` (oversells with hosted-ops artifacts).
+- [OPP-0022](OPP-0022-patient-facing-health-agent-safety.md) *(proposed 2026-05-24)* —
+  **Patient-facing health-agent safety** (triage gating, draft-never-send,
+  non-diagnostic stance, PHI workspace boundary, indirect-injection-via-ingestion).
+  Patient-side counterpart to OPP-0013's operator-side family. Carries the
+  **US-healthcare-bias guardrail**: both healthcare evidence points are American;
+  international second-evidence (EHDS, Near/Far East) required before freezing.
+- *Augmentation (not new OPPs):* [OPP-0013](OPP-0013-domain-family-healthcare-decomposed.md)
+  and [OPP-0016](OPP-0016-specialist-healthcare-review-skills.md) gain Tula as a
+  role-distinct second healthcare consumer (patient-authorized SMART client vs
+  OpenEMR's server/provider-launch), plus the US-bias guardrail.
 
 ### Canonical direction & strategic alignment
 

@@ -9,7 +9,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 **Status:** proposed
 **Owner:** @unclenate
 **Created:** 2026-05-24
-**Last Updated:** 2026-05-24
+**Last Updated:** 2026-05-24 *(augmented with Tula patient-client SMART-on-FHIR evidence + US-healthcare-bias guardrail; see §TG5 and OPP-0022)*
 **Confidence:** high
 
 ---
@@ -78,6 +78,23 @@ healthcare apps activate only what they need.
   in the consumer project tree. The decomposition table above is lifted
   directly from § G3, which derived it from subsystem-by-subsystem
   inspection of OpenEMR's actual code paths.
+
+- **Second consumer, role-distinct: Tula (`github.com/unclenate/tula`
+  fork).** Brownfield onboarding 2026-05-24; gap analysis §TG5. Tula is the
+  "second healthcare consumer" this OPP's Risks section asked for — and it
+  exercises `healthcare-fhir` and `healthcare-smart-on-fhir` from the
+  **patient-authorized-client** role rather than OpenEMR's
+  **server/provider-launch** role. `skills/health-records` (derived from
+  [`jmandel/health-skillz`](https://github.com/jmandel/health-skillz), by
+  SMART co-creator Josh Mandel) reads the patient's *own* records via a
+  patient-access SMART launch; records land as FHIR R4 JSON in a workspace
+  cache. This validates the two sub-modules' boundary and refines their
+  required-artifact shape: the SMART scope map must distinguish
+  patient-access scopes (`patient/*.read`) from provider-launch scopes, and
+  the trust model differs (the patient is the resource owner). The
+  patient-side *safety* surface this consumer surfaced is filed separately
+  as OPP-0022 (patient-facing health-agent safety), the patient-side
+  counterpart to this operator-side family.
 
 - **Decomposition is grounded in observed subsystem boundaries**, not
   speculation:
@@ -211,6 +228,25 @@ healthcare apps activate only what they need.
   OpenMRS, HAPI FHIR, or a commercial reference like Epic's open
   surfaces. Initial bias: include them in the family; flag for
   re-evaluation after the second healthcare consumer onboards.
+  *(Partially satisfied: Tula is the second consumer, but from the
+  patient-client angle — see Origin/Evidence — so the operator-only
+  sub-modules above remain OpenEMR-grounded.)*
+
+- **US-healthcare bias (cross-cutting, architectural).** Both evidence
+  points to date are American: OpenEMR (ONC certification, HIPAA) and Tula
+  (Epic MyChart, HIPAA §164.526, US Core). There is a real risk of baking
+  the cultural and economic assumptions of the **US** health system — its
+  payer model, certification regime (ONC), consent/amendment law, MyChart
+  as the canonical portal, US Core as the canonical profile — into module
+  shapes as if universal. **Required before freezing any artifact in this
+  family:** seek international second-evidence (Europe / EHDS, the Near East,
+  the Far East; OpenMRS is a strong LMIC-deployed candidate) and design
+  required artifacts around *concepts* that hold cross-jurisdiction, with
+  realm-specific law carried as fill-in references (HIPAA, GDPR/EHDS, etc.)
+  rather than hard-coded. FHIR core is an international HL7 standard, but
+  US Core is a US-realm profile — the family must keep that distinction
+  explicit. See the US-healthcare-bias observation in
+  `docs/knowledge/shared-observations.md`.
 
 ## Disposition
 
@@ -229,6 +265,9 @@ healthcare apps activate only what they need.
   — regulated-compliance and external test kits
 - Module sizing meta-observation: shared-observations entry filed
   alongside this OPP (cycle-end distillation)
+- Patient-side counterpart (second consumer, Tula): [OPP-0022](OPP-0022-patient-facing-health-agent-safety.md)
+- Second-consumer gap analysis: consumer project (`tula`) at
+  `docs/knowledge/harness-coverage-gap-analysis.md` §TG5
 - Companion OPPs filed in the same session (OpenEMR canonization):
   [OPP-0011](OPP-0011-stack-module-php.md),
   [OPP-0012](OPP-0012-data-module-relational-sql-engine-generalization.md),

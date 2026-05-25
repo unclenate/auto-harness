@@ -1177,3 +1177,42 @@ here until distillation.
   this session.
 - **Severity:** governance-relevant
 - **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-25 (Tula OPP fleshing / v0.5.2 batch)
+
+### Documentation reorder costs almost nothing and unblocks the audience the docs were already serving
+
+- **Context:** Phase 1 of ADR-0013's documentation IA work — the
+  README rebuild. The 2026-05-24 audit's headline finding was
+  "The hook exists. It is just buried under the navigation." Phase 1
+  exercises that diagnosis literally: rewrite zero prose, surface the
+  existing hook, embed the existing diagram, and demote the existing
+  5-way fork.
+- **Observation:** The README rebuild was almost entirely *reorder*,
+  not *rewrite*. Every piece of substance — the value framing, the
+  "Who This Is For," the "What It Does," the adoption paths — already
+  existed and was already good. The only new content was the H1
+  wordmark fix (`Development Harness` → `auto-harness`), the hero SVG
+  reference (the file already existed in `_assets/proposed-visuals/`
+  from PR #56), and the Mermaid Diagram 1 embed in "How It Works"
+  (the diagram already existed at `diagrams.md` § 1). Net new prose:
+  roughly two sentences. Net structural change: top section reordered,
+  TOC collapsed under `<details>`, and the 5-way fork demoted from
+  above the value to below it. The high-impact change is the *visual
+  order* of what readers encounter first, not what's actually written.
+- **Implication:** When an audit identifies a "buried value" or "hook
+  too deep" pattern, suspect the fix is reorder, not rewrite. The
+  tell: the audit's recommendations name *which content to promote*
+  rather than *what new content to write*. This was the shape of
+  ADR-0013's Phase 1, and the Phase 1 PR did virtually zero new
+  authorship — just rearrangement. The discipline this argues for is:
+  before drafting new prose to fix a comprehension gap, *audit
+  whether the comprehension content already exists somewhere*; if it
+  does, the cheaper fix is to surface it. Worth elevating to
+  operating-principles after the rest of ADR-0013's phases land — if
+  Phases 2-4 also turn out to be mostly reorder/surface work, the
+  pattern is robust enough to codify.
+- **Confidence:** medium-high — one strong instance (this Phase 1
+  PR). The "reorder, not rewrite" diagnosis matched the audit's
+  framing and the actual implementation experience. Phases 2-4 of
+  ADR-0013 will surface whether this generalizes.
+- **Severity:** process
+- **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-25 (Phase 1 README rebuild)

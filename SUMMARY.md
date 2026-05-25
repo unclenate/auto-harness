@@ -4,7 +4,12 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 -->
 
-# Development Harness
+# auto-harness
+
+> **New here? Start with the [README](README.md).** It has the value
+> proposition, the hero graphic, and the adoption paths. This page is
+> the GitBook table of contents — useful once you know what you're
+> looking for.
 
 ## Start Here
 

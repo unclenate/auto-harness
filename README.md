@@ -4,74 +4,33 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 -->
 
-# Development Harness
+# auto-harness
 
 [![License: MIT OR Apache-2.0](https://img.shields.io/badge/License-MIT_OR_Apache--2.0-blue.svg)](#license)
 [![Status: Alpha](https://img.shields.io/badge/Status-Alpha-orange.svg)](HARNESS.md)
 [![Contributions: Welcome](https://img.shields.io/badge/Contributions-Welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-A modular governance framework for AI-assisted software development. It gives AI agents
-(Claude Code, Cursor, GitHub Copilot, and others) a structured operating contract — so they
-know what they're allowed to do, what artifacts must exist, when human review is required,
-and what companion documentation must accompany every significant change.
+![auto-harness — without it vs with it](docs/_assets/proposed-visuals/hero-before-after.svg)
 
-**Maintainer:** Nate DiNiro &middot; <UncleNate@gmail.com>
-**Contributing:** see [CONTRIBUTING.md](CONTRIBUTING.md) &middot; **Security:** see [SECURITY.md](SECURITY.md) &middot; **Conduct:** see [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
+**A modular governance framework for AI-assisted software development.**
 
-> **Starting a new project?** Go straight to
-> [`platform/workflow/bootstrap-quickstart.md`](platform/workflow/bootstrap-quickstart.md).
-> Starting from just an idea? Use
-> [`platform/workflow/discovery-to-composition.md`](platform/workflow/discovery-to-composition.md).
-> Existing codebase? Use
-> [`platform/workflow/brownfield-onboarding.md`](platform/workflow/brownfield-onboarding.md).
-> Web3 project? Use
-> [`platform/workflow/bootstrap-web3-quickstart.md`](platform/workflow/bootstrap-web3-quickstart.md).
-> Already adopted and need to update or audit? Use
-> [`platform/workflow/maintenance-operations.md`](platform/workflow/maintenance-operations.md).
+Without it, AI agents can write, commit, and deploy at the speed of inference — with no paper trail, no ownership, and no recovery path when something breaks. With it, the same agents work under a structured operating contract: trust tiers, companion rules, required artifacts, and validators that fail CI when documentation drifts.
 
----
+Here is what a project's harness looks like in a `harness.manifest.yaml`:
 
-## Table of Contents
+```yaml
+modules:
+  core:
+    - kernel/base
+  stacks:
+    - node-typescript
+  delivery:
+    - production-saas
+  agents:
+    - claude-code
+```
 
-- [Who This Is For](#who-this-is-for)
-- [Entry Points at the Repo Root](#entry-points-at-the-repo-root)
-- [What It Does](#what-it-does)
-- [How It Works](#how-it-works)
-- [Concepts](#concepts) — Trust Tier Model, Module System, Companion Rules
-- [Starter Compositions](#starter-compositions)
-- [Operator Workflows](#operator-workflows) — Adoption, Day-to-Day, Maintenance & Operations
-- [Agent Skills](#agent-skills)
-- [Validators](#validators)
-- [Templates](#templates)
-- [Getting Started](#getting-started)
-- [Integrating into Your Repo](#integrating-into-your-repo)
-- [Platform Structure](#platform-structure)
-- [Design Principles](#design-principles)
-- [Contributing](#contributing)
-- [License](#license)
-- [Reference](#reference)
-
----
-
-## Who This Is For
-
-- **Solo founder vibecoding an MVP** — you want guardrails so your AI agents don't merge themselves into a corner. Adopt the smallest composition (`brownfield-lite` or `interview-driven-discovery`), wire one CI job, and grow from there.
-- **Senior dev adding discipline to a growing project** — you want module governance you can opt into incrementally without rewriting your repo. Pick the composition closest to your stack, run the validators, and tune `disabledValidations` until you're ready to enable each one.
-- **AI agent (Claude Code, Cursor, Copilot, OpenClaw, Gemini)** — read [`AGENTS.md`](AGENTS.md) first; it states the trust tier model, what you can and cannot do, when to stop, and the first-session workflow.
-
----
-
-## Entry Points at the Repo Root
-
-Five files share the repo root. Each has a distinct job — read the one that matches your role first, then read the others as needed.
-
-| File | Role | Best for |
-| ---- | ---- | -------- |
-| [`README.md`](README.md) | Repo and GitBook front door | First-time human reader |
-| [`HARNESS.md`](HARNESS.md) | Project-level governance entrypoint — active modules, governance artifacts, source-of-truth pointers | Anyone auditing what governance is actually active on this repo |
-| [`AGENTS.md`](AGENTS.md) | Cross-agent operating manual — trust tiers, scope, stop conditions, first-session workflow | Any AI tool (Cursor, Copilot, Codex, OpenClaw, Gemini, etc.) |
-| [`CLAUDE.md`](CLAUDE.md) | Claude Code load-order shim | Claude Code specifically; it points at the three files above in order |
-| [`TOOLS.md`](TOOLS.md) | Environment-specific tool registry for MCP developer tools | Agents using Linear, Slack, or other MCP tools; loaded on demand |
+That declares which governance modules are active. The validator chain reads it, the companion rules fire on PR diffs, and AI agents (Claude Code, Cursor, Copilot, Codex, Gemini, OpenClaw) load the harness's rules into context at session start.
 
 ---
 
@@ -100,7 +59,107 @@ harness provides:
 
 ---
 
+## Who This Is For
+
+- **Solo founder vibecoding an MVP** — you want guardrails so your AI agents don't merge themselves into a corner. Adopt the smallest composition (`brownfield-lite` or `interview-driven-discovery`), wire one CI job, and grow from there.
+- **Senior dev adding discipline to a growing project** — you want module governance you can opt into incrementally without rewriting your repo. Pick the composition closest to your stack, run the validators, and tune `disabledValidations` until you're ready to enable each one.
+- **AI agent (Claude Code, Cursor, Copilot, OpenClaw, Gemini)** — read [`AGENTS.md`](AGENTS.md) first; it states the trust tier model, what you can and cannot do, when to stop, and the first-session workflow.
+
+---
+
+## Adoption paths
+
+Pick the one that fits your situation:
+
+- **New project, stack chosen?** [`platform/workflow/bootstrap-quickstart.md`](platform/workflow/bootstrap-quickstart.md)
+- **Just an idea?** [`platform/workflow/discovery-to-composition.md`](platform/workflow/discovery-to-composition.md)
+- **Existing codebase?** [`platform/workflow/brownfield-onboarding.md`](platform/workflow/brownfield-onboarding.md)
+- **Web3 project?** [`platform/workflow/bootstrap-web3-quickstart.md`](platform/workflow/bootstrap-web3-quickstart.md)
+- **Already adopted, need to update or audit?** [`platform/workflow/maintenance-operations.md`](platform/workflow/maintenance-operations.md)
+- **Want the recommended consumption pattern?** [`platform/workflow/submodule-integration.md`](platform/workflow/submodule-integration.md) — mount auto-harness as a git submodule for automatic upstream updates
+
+---
+
+**Maintainer:** Nate DiNiro · <UncleNate@gmail.com>
+**Contributing:** see [CONTRIBUTING.md](CONTRIBUTING.md) · **Security:** see [SECURITY.md](SECURITY.md) · **Conduct:** see [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
+
+<details>
+<summary>Full table of contents — 17 sections; expand for navigation</summary>
+
+- [What It Does](#what-it-does)
+- [Who This Is For](#who-this-is-for)
+- [Adoption paths](#adoption-paths)
+- [Entry Points at the Repo Root](#entry-points-at-the-repo-root)
+- [How It Works](#how-it-works)
+- [Concepts](#concepts) — Trust Tier Model, Module System, Companion Rules
+- [Starter Compositions](#starter-compositions)
+- [Operator Workflows](#operator-workflows) — Adoption, Day-to-Day, Maintenance & Operations
+- [Agent Skills](#agent-skills)
+- [Validators](#validators)
+- [Templates](#templates)
+- [Getting Started](#getting-started)
+- [Integrating into Your Repo](#integrating-into-your-repo)
+- [Platform Structure](#platform-structure)
+- [Design Principles](#design-principles)
+- [Contributing](#contributing)
+- [License](#license)
+- [Reference](#reference)
+
+</details>
+
+---
+
+## Entry Points at the Repo Root
+
+Five files share the repo root. Each has a distinct job — read the one that matches your role first, then read the others as needed.
+
+| File | Role | Best for |
+| ---- | ---- | -------- |
+| [`README.md`](README.md) | Repo and GitBook front door | First-time human reader |
+| [`HARNESS.md`](HARNESS.md) | Project-level governance entrypoint — active modules, governance artifacts, source-of-truth pointers | Anyone auditing what governance is actually active on this repo |
+| [`AGENTS.md`](AGENTS.md) | Cross-agent operating manual — trust tiers, scope, stop conditions, first-session workflow | Any AI tool (Cursor, Copilot, Codex, OpenClaw, Gemini, etc.) |
+| [`CLAUDE.md`](CLAUDE.md) | Claude Code load-order shim | Claude Code specifically; it points at the three files above in order |
+| [`TOOLS.md`](TOOLS.md) | Environment-specific tool registry for MCP developer tools | Agents using Linear, Slack, or other MCP tools; loaded on demand |
+
+---
+
 ## How It Works
+
+The harness is composed of four cooperating layers — a manifest declaring active modules, the modules' own contracts, the validators that enforce those contracts at PR time, and the consumer-facing surfaces (skills, templates, workflows) that support the contract:
+
+```mermaid
+flowchart TD
+    Manifest["<b>harness.manifest.yaml</b><br/>project-local activation"]
+
+    subgraph CATALOG["Active Catalog (per project)"]
+        Manifest --> Modules["<b>Modules</b><br/>core · profiles · agents"]
+    end
+
+    subgraph CONTRACT["Per-Module Contract (module.yaml)"]
+        Modules --> Required["<b>requiredArtifacts</b><br/>files that must exist"]
+        Modules --> Companions["<b>companionRules</b><br/>trigger paths → required satisfiers"]
+        Modules --> Sensitive["<b>sensitivePaths</b><br/>extra review weight"]
+    end
+
+    subgraph ENFORCE["Enforcement (CI)"]
+        Validators["<b>Validators</b><br/>8 scripts"]
+        Validators -.reads.-> Manifest
+        Validators -.reads.-> Companions
+        Validators --> CIGate["<b>CI gates merge</b>"]
+    end
+
+    subgraph SURFACE["Consumer-Facing Surfaces"]
+        Skills["Skills"]
+        Templates["Templates"]
+        Workflows["Workflows"]
+    end
+
+    Modules -.supports.-> Skills
+    Modules -.scaffolds via.-> Templates
+    Modules -.documented in.-> Workflows
+```
+
+For the full set of architecture diagrams (eleven in total — covering trust tier flow, companion rule firing, the OPP/PRD/ADR lifecycle, and more) see [`docs/architecture/diagrams.md`](docs/architecture/diagrams.md).
 
 ### 1. Declare your modules
 

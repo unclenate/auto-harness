@@ -72,6 +72,9 @@ originating opportunity records.
 | [0005](requirements/PRD-0005-consumer-header-hygiene.md) | Consumer Header Hygiene | Accepted | [OPP-0005](opportunities/OPP-0005-consumer-header-hygiene.md) |
 | [0006](requirements/PRD-0006-trust-tier-enforcement.md) | Trust-Tier Enforcement | Proposed | [OPP-0006](opportunities/OPP-0006-trust-tier-enforcement.md) |
 | [0007](requirements/PRD-0007-canonical-position-artifact.md) | Canonical-Position Artifact | Proposed | [OPP-0007](opportunities/OPP-0007-canonical-position-artifact.md) |
+| [0008](requirements/PRD-0008-agent-skill-pack-architecture.md) | Agent Skill-Pack Architecture | Accepted | [OPP-0018](opportunities/OPP-0018-architecture-eval-gated-skill-pack.md) |
+| [0009](requirements/PRD-0009-eval-gated-testing-module.md) | Eval-Gated Testing Module | Accepted | [OPP-0019](opportunities/OPP-0019-eval-gated-testing-posture.md) |
+| [0010](requirements/PRD-0010-self-hosted-oss-delivery.md) | Self-Hosted OSS Delivery | Accepted | [OPP-0021](opportunities/OPP-0021-delivery-self-hosted-oss.md) |
 
 ---
 
@@ -101,10 +104,10 @@ clustered backlog with framing.
 | [0015](opportunities/OPP-0015-regulated-compliance-test-kits.md) | Regulated Compliance + External Test Kits | proposed |
 | [0016](opportunities/OPP-0016-specialist-healthcare-review-skills.md) | Specialist Healthcare Review Skills | proposed |
 | [0017](opportunities/OPP-0017-legacy-coexistence-template-family.md) | Legacy Coexistence Template Family | proposed |
-| [0018](opportunities/OPP-0018-architecture-eval-gated-skill-pack.md) | Authored Eval-Gated Agent Skill-Pack (Tula) | proposed |
-| [0019](opportunities/OPP-0019-eval-gated-testing-posture.md) | Binary-Eval Testing Posture (Tula) | proposed |
+| [0018](opportunities/OPP-0018-architecture-eval-gated-skill-pack.md) | Authored Eval-Gated Agent Skill-Pack (Tula) | accepted |
+| [0019](opportunities/OPP-0019-eval-gated-testing-posture.md) | Binary-Eval Testing Posture (Tula) | accepted |
 | [0020](opportunities/OPP-0020-evaluation-tooling-in-harness-toolchain.md) | Evaluation & Safety Tooling in Toolchain (Tula) | proposed |
-| [0021](opportunities/OPP-0021-delivery-self-hosted-oss.md) | Delivery — Self-Hosted OSS (Tula) | proposed |
+| [0021](opportunities/OPP-0021-delivery-self-hosted-oss.md) | Delivery — Self-Hosted OSS (Tula) | accepted |
 | [0022](opportunities/OPP-0022-patient-facing-health-agent-safety.md) | Patient-Facing Health-Agent Safety (Tula) | proposed |
 
 ---

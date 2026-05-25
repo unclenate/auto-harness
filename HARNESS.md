@@ -6,6 +6,11 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # HARNESS.md
 
+> **New to auto-harness?** Start with the [repository README](README.md) for the
+> value proposition, hero graphic, and adoption paths. This file is the
+> *self-governance entrypoint* — it describes what governance is active on
+> this repository, not how to adopt auto-harness for your own project.
+
 ## Development Harness Framework — Self-Governance Entrypoint
 
 This repository IS the modular governance platform. It governs itself using its own

@@ -104,6 +104,7 @@ Interaction and deployment patterns.
 * [Event Driven](platform/profiles/architectures/event-driven/README.md)
 * [Agentic UI](platform/profiles/architectures/agentic-ui/README.md) — conversational-primary or MCP-host-shell products where the agent surface is the dominant topology
 * [MCP Server](platform/profiles/architectures/mcp-server/README.md) — projects that ship their own MCP server (npm/pip package, hosted endpoint, internal service)
+* [Agent Skill Pack](platform/profiles/architectures/agent-skill-pack/README.md) — products whose unit of delivery is an authored, eval-gated skill pack loaded by an agent runtime (OpenClaw / ClawHub, Claude Code, Cursor)
 
 ### Data
 
@@ -122,6 +123,7 @@ Lifecycle and operational posture overlays.
 * [Prototype](platform/profiles/delivery/prototype/README.md)
 * [Production SaaS](platform/profiles/delivery/production-saas/README.md)
 * [Internal Platform](platform/profiles/delivery/internal-platform/README.md)
+* [Self-Hosted OSS](platform/profiles/delivery/self-hosted-oss/README.md) — published OSS shipped as a self-hosted deployment the user operates (between prototype and production-saas)
 
 ### Management
 
@@ -133,6 +135,7 @@ Product, project, and program governance overlays.
 * [Project Standard](platform/profiles/management/project-standard/README.md)
 * [Program Lite](platform/profiles/management/program-lite/README.md)
 * [Testing Standard](platform/profiles/management/testing-standard/README.md)
+* [Eval-Gated Testing](platform/profiles/management/eval-gated-testing/README.md) — quality gated on binary-graded evals rather than coverage (sibling to Testing Standard)
 * [Knowledge Capture](platform/profiles/management/knowledge-capture/README.md)
 * [Opportunity Capture](platform/profiles/management/opportunity-capture/README.md)
 
@@ -352,6 +355,15 @@ A complete sample project with all governance artifacts filled in.
 * [Test Strategy](platform/templates/testing/test-strategy.md)
 * [Coverage Thresholds](platform/templates/testing/coverage-thresholds.md)
 * [Test Plan](platform/templates/testing/test-plan.md)
+* [Eval Strategy](platform/templates/testing/eval-strategy.md)
+
+### Skills
+
+* [Skill Authoring Conventions](platform/templates/skills/authoring-conventions.md)
+
+### Deployment
+
+* [Self-Hosting Guide](platform/templates/deployment/self-hosting-guide.md)
 
 ### Governance
 
@@ -454,6 +466,9 @@ Specifications for substantive new capabilities, paired with their originating o
 * [PRD-0005: Consumer Header Hygiene](docs/requirements/PRD-0005-consumer-header-hygiene.md)
 * [PRD-0006: Trust-Tier Enforcement](docs/requirements/PRD-0006-trust-tier-enforcement.md)
 * [PRD-0007: Canonical-Position Artifact](docs/requirements/PRD-0007-canonical-position-artifact.md)
+* [PRD-0008: Agent Skill-Pack Architecture](docs/requirements/PRD-0008-agent-skill-pack-architecture.md)
+* [PRD-0009: Eval-Gated Testing Module](docs/requirements/PRD-0009-eval-gated-testing-module.md)
+* [PRD-0010: Self-Hosted OSS Delivery](docs/requirements/PRD-0010-self-hosted-oss-delivery.md)
 
 ### Opportunity Records (this project)
 

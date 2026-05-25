@@ -183,13 +183,13 @@ packs) described Tula fine; the miss is concentrated in how an agent-native
 product is built, gated, and shipped — plus the patient-side of healthcare,
 which OpenEMR's operator-side family did not see.*
 
-- [OPP-0018](OPP-0018-architecture-eval-gated-skill-pack.md) *(proposed 2026-05-24)* —
+- [OPP-0018](OPP-0018-architecture-eval-gated-skill-pack.md) *(accepted 2026-05-25; PRD-0008; v0.5.2)* —
   Authored, eval-gated **agent skill-pack** as a delivery topology
   (`architectures/agent-skill-pack` + thin `domains/openclaw`). The unit of
   product is a conventioned skill collection deployed to an agent runtime —
   neither an app, a service, an in-product copilot, nor an MCP server.
   Lineage: `jmandel/health-skillz` (SMART co-creator publishing agent skills).
-- [OPP-0019](OPP-0019-eval-gated-testing-posture.md) *(proposed 2026-05-24)* —
+- [OPP-0019](OPP-0019-eval-gated-testing-posture.md) *(accepted 2026-05-25; PRD-0009; v0.5.2)* —
   **Binary-eval quality gate** as a testing posture (consumer-facing).
   `testing-standard` is percentage-coverage shaped; this adds grader
   thresholds, an eval task taxonomy (basic/edge/should-not-trigger/override),
@@ -199,7 +199,7 @@ which OpenEMR's operator-side family did not see.*
   GAIA / UK-AISI Inspect). Inbound complement to OPP-0001: auto-harness adds
   a *behavioral* gate alongside its structural validators. Maintainer-signaled
   direction (Waza as component, not just awareness).
-- [OPP-0021](OPP-0021-delivery-self-hosted-oss.md) *(proposed 2026-05-24)* —
+- [OPP-0021](OPP-0021-delivery-self-hosted-oss.md) *(accepted 2026-05-25; PRD-0010; v0.5.2)* —
   **`delivery/self-hosted-oss`** posture for published OSS that ships as a
   single-user self-hosted reference deployment — between `prototype` (undersells)
   and `production-saas` (oversells with hosted-ops artifacts).

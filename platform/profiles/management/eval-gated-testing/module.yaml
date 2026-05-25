@@ -1,0 +1,54 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+id: eval-gated-testing
+type: management
+version: 1.0.0
+summary: "Testing overlay for projects whose primary quality gate is binary-graded evaluation of model/agent outputs rather than line/branch coverage. Sibling to management/testing-standard (which is percentage-coverage shaped): a project may activate either or both. Governs the eval strategy, grader-threshold definitions, the eval task taxonomy (basic / edge / should-not-trigger / domain-override), the synthetic-fixture discipline, and the spec-gate-in-CI contract. Tool-neutral — the strategy names the runner (e.g. Microsoft Waza, GAIA, UK-AISI Inspect); see the (separate) harness eval-tooling toolchain work for invoking those runners from the harness."
+dependsOn:
+  - kernel/base
+conflictsWith: []
+requiredArtifacts:
+  - docs/testing/eval-strategy.md
+optionalArtifacts:
+  - docs/testing/grader-thresholds.md
+sensitivePaths:
+  - description: Eval suites and grader configuration — changes here move the quality gate
+    patterns:
+      - ^evals/
+      - ^docs/testing/eval-strategy\.md$
+      - ^docs/testing/grader-thresholds\.md$
+      - eval\.yaml$
+      - \.waza\.
+companionRules:
+  - description: Grader-threshold or eval-strategy changes require a change-log entry, an ADR, or a PRD — eval thresholds are quality commitments, and lowering them silently weakens the merge gate
+    triggerPaths:
+      - ^docs/testing/eval-strategy\.md$
+      - ^docs/testing/grader-thresholds\.md$
+    requiredAny:
+      - ^docs/project/change-log\.md$
+      - ^docs/adr/ADR-
+      - ^docs/requirements/PRD-
+    humanReview: |
+      Reviewers verify that threshold changes are intentional and justified, that
+      graders are meaningful rather than trivially-passable (a `not_empty` grader
+      that any stub satisfies is a placeholder, not a gate), and that a lowered
+      pass-threshold or removed anti-trigger case is accompanied by a stated
+      rationale. Agents must not reduce a declared eval threshold without human
+      approval.
+validators:
+  - validate-required-artifacts
+  - validate-companions
+reviewGates:
+  - The eval strategy must name the grader set, the pass thresholds, and the task taxonomy in use (basic-usage, edge-case, should-not-trigger, and any domain-override classes), and state which are enforced in CI versus advisory.
+  - Eval fixtures must be synthetic. Reviewers verify no real user data, PHI, credentials, or production records appear in fixtures — a binary-eval gate that leaks real data into version control is a worse failure than a missing test.
+  - Graders must be meaningful, not merely present. A threshold met only by trivial output (non-empty, under-budget) is not a quality gate; reviewers verify graders assert task adherence, not liveness.
+  - LLM-output evals are non-deterministic. The strategy must state a flake policy (pass-rate over N runs, temperature pinning) so a green gate is a reliable signal rather than a lucky sample.
+  - Coverage thresholds (management/testing-standard) must be met before a production-grade delivery milestone is considered complete — eval gates complement, not replace, structural test coverage where both apply.
+agentAdapters:
+  - platform/agents/base
+compiledFragments:
+  - platform/profiles/management/eval-gated-testing/README.md
+recommendedSkills:
+  # --- Agent Skills format (SKILL.md directories) ---
+  - harness-governance   # trust tiers and companion rules (source: platform/skills/)
+  - harness-testing      # test strategy patterns; the eval-gate posture is a sibling to coverage discipline

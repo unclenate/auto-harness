@@ -1,0 +1,62 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+id: agent-skill-pack
+type: architecture
+version: 1.0.0
+summary: "Architecture overlay for products whose unit of delivery is an authored agent skill pack — a collection of conventioned skills (SKILL.md + progressive-disclosure references + deterministic scripts) authored to a spec, gated by evals, and deployed to an agent runtime (OpenClaw / ClawHub, Claude Code, Cursor, agentskills.io). Distinct from architectures/agentic-ui (in-product agent UIs) and architectures/mcp-server (a server exposing a tool surface): here the skills ARE the product, loaded by a runtime the consumer does not own. Vendor-neutral — the overview names the runtime, the skill-loading model, and the workspace/permission boundary; agents/openclaw carries OpenClaw-specific workspace-file specifics when that runtime is the target."
+dependsOn:
+  - kernel/base
+conflictsWith: []
+requiredArtifacts:
+  - docs/architecture/overview.md
+optionalArtifacts:
+  - docs/skills/authoring-conventions.md
+  - docs/skills/skill-pack-manifest.md
+sensitivePaths:
+  - description: Authored skill sources — the SKILL.md spec, references, and deterministic scripts that ship to the runtime
+    patterns:
+      - ^skills/
+      - ^prompts/
+      - SKILL\.md$
+  - description: Skill-pack deploy and packaging surface — how skills reach the runtime workspace
+    patterns:
+      - ^scripts/deploy-skills
+      - ^scripts/.*deploy.*skill
+      - skillpack\.
+companionRules:
+  - description: A new or changed skill source must be accompanied by a matching eval, an authoring-conventions update, or an ADR — an unevaluated skill is an ungoverned capability loaded into the agent runtime
+    triggerPaths:
+      - ^skills/.+/SKILL\.md$
+      - ^skills/.+/scripts/
+      - ^prompts/
+    requiredAny:
+      - ^evals/
+      - ^docs/skills/authoring-conventions\.md$
+      - ^docs/adr/ADR-
+    humanReview: |
+      Reviewers verify that a new agent-callable skill ships with an eval that
+      exercises it (at minimum a should-not-trigger anti-case and a basic-usage
+      case), that the skill is scope-contained (one skill, one job) and
+      least-permission (writes only to its own workspace cache), and that no
+      personal/PHI data is embedded in the skill source (reference-don't-embed).
+      A skill added without a matching eval is the skill-pack analog of merging
+      code with no test for a privileged path.
+validators:
+  - validate-required-artifacts
+  - validate-companions
+reviewGates:
+  - Each skill must be scope-contained (one skill, one job) and least-permission (writes confined to its own declared workspace cache). Reviewers verify the permission boundary, not just file presence.
+  - Personal or sensitive data must be referenced, not embedded. A skill that hard-codes a user's identity, provider list, or any PHI is a portability and privacy failure regardless of how the skill behaves.
+  - The skill-loading model (which runtime loads the pack, from where, under what trust tier) must be named in docs/architecture/overview.md. A skill pack whose runtime location and permission surface are undocumented cannot be reviewed for blast radius.
+  - Human review is required when a skill gains a new side-effecting action (network write, message send, file write outside its cache). Expanding a skill's effect surface is not a refactor.
+agentAdapters:
+  - platform/agents/base
+compiledFragments:
+  - platform/profiles/architectures/agent-skill-pack/README.md
+recommendedSkills:
+  # --- Agent Skills format (SKILL.md directories) ---
+  # Install to .agents/skills/ or .claude/skills/; source: platform/skills/
+  - harness-governance         # trust tiers, companion rules, lifecycle controls
+  - harness-testing            # pair with management/eval-gated-testing — the eval gate that protects the pack
+  # When the pack ALSO ships an in-product agent UI, pair with:
+  # harness-agentic-interfaces — prompt-injection, action-approval, renderer-contract discipline

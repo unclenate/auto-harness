@@ -1,0 +1,64 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+id: self-hosted-oss
+type: delivery
+version: 1.0.0
+summary: "Delivery posture for published open-source software that ships as a self-hosted deployment the end user operates — between delivery/prototype (undersells: live software, real data, a security model, a release cadence) and delivery/production-saas (oversells: mandates hosted-infrastructure ops artifacts that do not exist when every user self-hosts). The operator is the user, not the team; artifacts are oriented to a distributable-the-user-runs (self-hosting guide, inherited security posture, release/versioning intent), not a service-the-team-operates. Like delivery/internal-platform it declares no hard conflicts, but a project should carry exactly one delivery posture; see README for the single-posture expectation."
+dependsOn:
+  - kernel/base
+conflictsWith: []
+requiredArtifacts:
+  - docs/deployment/self-hosting-guide.md
+optionalArtifacts:
+  - docs/security/risk-register.md
+  - docs/product/release-intent.md
+  - docs/ops/runbook-index.md
+sensitivePaths:
+  - description: Self-host install, deploy, and operator-facing automation the downstream user runs
+    patterns:
+      - ^scripts/install
+      - ^scripts/.*deploy
+      - ^scripts/.*backup
+      - ^install/
+      - ^deploy/
+      - ^Dockerfile
+      - ^docker-compose
+  - description: Release/versioning surface for the distributable artifact
+    patterns:
+      - ^docs/product/release-intent\.md$
+      - ^CHANGELOG
+companionRules:
+  - description: Changes to self-host install/deploy automation require an update to the self-hosting guide or the release intent — the operator inherits whatever the install path does, so an undocumented install change is a silent change to every downstream deployment
+    triggerPaths:
+      - ^scripts/install
+      - ^scripts/.*deploy
+      - ^scripts/.*backup
+      - ^install/
+      - ^deploy/
+      - ^Dockerfile
+      - ^docker-compose
+    requiredAny:
+      - ^docs/deployment/self-hosting-guide\.md$
+      - ^docs/product/release-intent\.md$
+      - ^docs/adr/ADR-
+    humanReview: |
+      Reviewers verify that a change to the install/deploy path is reflected in
+      the self-hosting guide (the operator's contract) and that any change
+      affecting the operator's security posture (default credentials, exposed
+      ports, data locations, backup behavior) is called out — the operator
+      inherits the security posture the project ships, so silent changes to it
+      are governance failures even though no hosted service is involved.
+validators:
+  - validate-required-artifacts
+  - validate-companions
+reviewGates:
+  - The self-hosting guide must state the minimum viable deployment, the data locations the operator is responsible for, and the security posture the operator inherits (what the project secures by default and what the operator must secure themselves).
+  - A self-hosted-oss project that handles real or sensitive data (criticality >= medium) is strongly expected to carry docs/security/risk-register.md even though it is optional here — the operator cannot assess residual risk the project never documented.
+  - This posture is not a substitute for a hosted-service posture. A project that ALSO offers a hosted edition should model that edition as a separate manifest with delivery/production-saas, not by stacking postures in one manifest.
+  - Prototype mode's waiver of operational burden does not apply here; self-hosted-oss is published software with downstream operators, so secret-handling and supply-chain rules are in force.
+agentAdapters:
+  - platform/agents/base
+compiledFragments:
+  - platform/profiles/delivery/self-hosted-oss/README.md
+recommendedSkills:
+  - harness-governance   # trust tiers and companion rules (source: platform/skills/)

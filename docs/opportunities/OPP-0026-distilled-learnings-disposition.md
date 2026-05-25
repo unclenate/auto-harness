@@ -54,7 +54,7 @@ cosmetic. The investigation that produced this OPP (mid-bundle,
 - **Option B — Revive.** Add a *forcing* trigger that schedules curation
   sessions. Candidates: (i) time-based — a companion rule that fires
   every quarter (e.g., "the `Last Updated` date in distilled-learnings.md
-  must be within 90 days of HEAD's commit date when ADR-* or OPP-*
+  must be within 90 days of HEAD's commit date when `ADR-*` or `OPP-*`
   files are modified"); (ii) count-based — fires when
   shared-observations.md grows by N entries since the last
   distilled-learnings update; (iii) audit-based — every quality audit

@@ -268,6 +268,19 @@ Jump to: [Discovery](#discovery) | [Product](#product) | [Project](#project) |
 | Test strategy | `management/testing-standard` | `templates/testing/test-strategy.md` |
 | Coverage thresholds | `management/testing-standard` | `templates/testing/coverage-thresholds.md` |
 | Test plan | `management/testing-standard` (optional) | `templates/testing/test-plan.md` |
+| Eval strategy | `management/eval-gated-testing` | `templates/testing/eval-strategy.md` |
+
+### Skills
+
+| Template | Required By Module | Path |
+| -------- | ------------------ | ---- |
+| Skill authoring conventions | `architectures/agent-skill-pack` (optional) | `templates/skills/authoring-conventions.md` |
+
+### Deployment
+
+| Template | Required By Module | Path |
+| -------- | ------------------ | ---- |
+| Self-hosting guide | `delivery/self-hosted-oss` | `templates/deployment/self-hosting-guide.md` |
 
 ### Governance
 

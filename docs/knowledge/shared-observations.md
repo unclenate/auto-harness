@@ -1604,3 +1604,36 @@ here until distillation.
   is the unobserved-yet dimension.
 - **Severity:** process
 - **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-25 (OPP-0032 filing; satisfies the cycle-end distillation rule fired by the OPP-0032 file creation, with substantive connection — the observation is *about the promotion-gate that produced the OPP*, not cargo-cult padding)
+
+### A validator's self-tests inherit the dogfood's structural assumptions — test the consumer layout explicitly
+
+- **Context:** Implementing OPP-0023 (PRD-0012) to make `validate-doc-references`
+  consumer-aware. The fix was a **single guard removal** — the Ruby was already
+  consumer-safe (Pass 1 no-ops via an empty `platform/**/*.md` glob; Pass 2
+  scans the project root regardless). The only reason submodule consumers failed
+  was the `<root>/platform`-must-exist bash guard, and the only reason the test
+  suite never caught it was that every existing doc-references fixture — and the
+  dogfood — *has* a `platform/` tree. The pre-existing `test_missing_platform_dir_aborts`
+  actively asserted the buggy contract (missing `platform/` → exit 2).
+- **Observation:** A validator's self-tests inherit the dogfood's structural
+  assumptions. `validate-doc-references` had thorough tests, but every one ran
+  against a `platform/`-bearing fixture, so the consumer layout (no top-level
+  `platform/`) was untested and the guard's over-strictness was invisible — the
+  behavior was "correct" against the only shape the tests exercised. This is the
+  *test-fixture* analog of the catalog observation that "the self-dogfood says
+  nothing about the dimensions it doesn't exercise": here the unexercised
+  dimension is the **consumer's directory layout**, and a test even encoded the
+  wrong behavior as correct.
+- **Implication:** (1) Every validator in the *consumer* chain should carry a
+  consumer-shaped self-test fixture (no `platform/`), not only harness-shaped
+  ones; PRD-0012 adds `consumer-no-platform-{valid,broken}`. (2) Audit the other
+  consumer-chain validators for the same dogfood-only-fixture blind spot. (3)
+  Pairs with OPP-0025 (consumer-side integration smoke test) — the same
+  "test the consumer layout, not just the dogfood" theme at two levels: unit
+  fixture (here) and fresh-clone (OPP-0025). (4) A test that encodes current
+  behavior can lock in a bug; when a fix changes a contract, expect to *replace*
+  a test, and treat "why did this test assert that?" as a smell worth chasing.
+- **Confidence:** high — directly observed; the one-line fix plus the
+  bug-asserting test it replaced are the evidence.
+- **Severity:** governance-relevant
+- **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-25 (OPP-0023 / PRD-0012 implementation)

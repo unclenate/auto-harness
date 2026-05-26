@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0023 — Make `validate-doc-references` consumer-aware (it hard-fails for submodule consumers)
 
-**Status:** proposed
+**Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-05-25
-**Last Updated:** 2026-05-25
+**Last Updated:** 2026-05-25 *(accepted; PRD-0012 drafted + implemented same-PR)*
 **Confidence:** high
 
 ---
@@ -89,11 +89,21 @@ template + guide so consumers get link validation without a spurious exit `2`.
 
 ## Disposition
 
-<!-- Empty: status is proposed -->
+**Accepted 2026-05-25.** Promoted straight to implementation in one PR
+(maintainer-directed). The fix shape resolved to **consumer-aware validator**
+(remove the `platform/`-must-exist guard) rather than remove-from-template: the
+Ruby was already consumer-safe (Pass 1 no-ops via empty glob; Pass 2 scans
+consumer docs), so the only change was deleting the bash guard. Exit `2` is now
+reserved for a missing `<project-root>`; "nothing to scan" is a clean `0`. The
+old `test_missing_platform_dir_aborts` test encoded the buggy contract and was
+replaced with four tests (incl. two no-`platform/` consumer fixtures). The CI
+template + guide were aligned and the ripgrep install hardened (bundled, same
+files). See PRD-0012 for resolved design questions.
 
 ## Promotion
 
-<!-- Empty: not yet accepted -->
+- See [`docs/requirements/PRD-0012-doc-references-consumer-aware.md`](../requirements/PRD-0012-doc-references-consumer-aware.md)
+- Implementation: `platform/validators/validate-doc-references.sh` (guard removed) + self-test fixtures `consumer-no-platform-{valid,broken}`
 
 ## Related
 

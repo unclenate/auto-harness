@@ -477,6 +477,7 @@ Specifications for substantive new capabilities, paired with their originating o
 * [PRD-0009: Eval-Gated Testing Module](docs/requirements/PRD-0009-eval-gated-testing-module.md)
 * [PRD-0010: Self-Hosted OSS Delivery](docs/requirements/PRD-0010-self-hosted-oss-delivery.md)
 * [PRD-0011: Sunset distilled-learnings.md](docs/requirements/PRD-0011-distilled-learnings-disposition.md)
+* [PRD-0012: validate-doc-references Consumer-Aware Scan](docs/requirements/PRD-0012-doc-references-consumer-aware.md)
 
 ### Opportunity Records (this project)
 

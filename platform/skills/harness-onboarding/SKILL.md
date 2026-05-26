@@ -447,12 +447,15 @@ No required artifacts for `document-store` or `object-storage`.
 | `delivery/production-saas` | Real users, external dependencies, or data that matters; production or pre-production | `delivery/prototype` |
 | `delivery/internal-platform` | Internal shared tooling with no external user-facing surface | — |
 | `delivery/self-hosted-oss` | Published OSS shipped as a self-hosted deployment the user operates (not a hosted service, not throwaway); between prototype and production-saas | — |
+| `delivery/managed-fleet` | Team operates configuration managing a live host fleet / hosting estate; production blast radius but no external app/distributable | `delivery/prototype` |
 
 Required artifacts for `delivery/production-saas`: `docs/ops/environment-inventory.md`, `docs/ops/release-checklist.md`, `docs/ops/rollback-checklist.md`, `docs/security/risk-register.md`
 
 Required artifact for `delivery/self-hosted-oss`: `docs/deployment/self-hosting-guide.md` (risk register optional; expected at criticality ≥ medium).
 
-No required artifacts for `delivery/prototype` or `delivery/internal-platform`.
+Required artifacts for `delivery/managed-fleet`: `docs/ops/fleet-inventory.md`, `docs/ops/change-control.md`, `docs/ops/config-rollback.md` (risk register optional; expected at criticality ≥ medium).
+
+No required artifacts for `delivery/prototype`. Required artifacts for `delivery/internal-platform`: `docs/project/dependency-log.md`, `docs/project/milestones.md`.
 
 ---
 

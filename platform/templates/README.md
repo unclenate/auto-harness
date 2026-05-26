@@ -314,6 +314,9 @@ duplicating inline. Absorbed from governance patterns observed in adsclaw.
 | Rollback checklist | `delivery/production-saas` | `templates/ops/rollback-checklist.md` |
 | Runbook (individual) | Populated from runbook index | `templates/ops/runbook-template.md` |
 | Fallback matrix | `delivery/production-saas` (optional) | `templates/ops/fallback-matrix.md` |
+| Fleet inventory | `delivery/managed-fleet` | `templates/ops/fleet-inventory.md` |
+| Change control | `delivery/managed-fleet` | `templates/ops/change-control.md` |
+| Config rollback | `delivery/managed-fleet` | `templates/ops/config-rollback.md` |
 
 ### Database
 

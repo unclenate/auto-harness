@@ -211,6 +211,7 @@ modules. Use it to populate `harness.manifest.yaml`.
 | MVP or production product? (§7.4) | `delivery/production-saas` |
 | Internal shared tooling? (§7.1, §7.4) | `delivery/internal-platform` |
 | Published OSS the user self-hosts (not a hosted service)? (§7.4) | `delivery/self-hosted-oss` |
+| Operates a live fleet / hosting estate (config applied to hosts you run)? (§7.4) | `delivery/managed-fleet` |
 | Authored agent skill pack deployed to a runtime — the skills are the product? (§8.3) | `architectures/agent-skill-pack` |
 | Quality gated on binary-graded evals rather than coverage? (§8.3) | `management/eval-gated-testing` |
 | Multi-team or multi-workstream? (§7.1) | `management/program-lite` |

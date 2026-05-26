@@ -129,6 +129,7 @@ Lifecycle and operational posture overlays.
 * [Production SaaS](platform/profiles/delivery/production-saas/README.md)
 * [Internal Platform](platform/profiles/delivery/internal-platform/README.md)
 * [Self-Hosted OSS](platform/profiles/delivery/self-hosted-oss/README.md) — published OSS shipped as a self-hosted deployment the user operates (between prototype and production-saas)
+* [Managed Fleet](platform/profiles/delivery/managed-fleet/README.md) — teams that operate configuration managing a live host fleet (between internal-platform and production-saas)
 
 ### Management
 

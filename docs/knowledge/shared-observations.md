@@ -2,7 +2,7 @@
 
 **Structure:** Structured Template (see README.md § Observation Structure; locked by ADR-0002)
 **Write Policy:** heartbeat-only (see README.md § Write Policy; adjustable)
-**Last Updated:** 2026-05-25 *(OPP-0032 filing: appended candidate-stub-promotion-gate observation paired with the session-cycle-orchestration OPP that the candidate stub just produced; the observation is about the promotion gate itself firing correctly on its first occasion)*
+**Last Updated:** 2026-05-25 *(PRD-0013 drafting: appended deferred-implementations-discipline observation paired with the PRD that explicitly defers per-rule machinery to follow-up OPPs; second observed instance of the discipline after PRD-0011's Option B rejection — third instance would lift to operating-principles candidate)*
 
 Append-only structured observations from project participants (agents
 and humans). Read this file on each heartbeat. Observations accumulate
@@ -1637,3 +1637,49 @@ here until distillation.
   bug-asserting test it replaced are the evidence.
 - **Severity:** governance-relevant
 - **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-25 (OPP-0023 / PRD-0012 implementation)
+
+### Deferring rule implementations from the taxonomy PRD preserves the per-rule OPP→PRD discipline
+
+- **Context:** PRD-0013 drafting, 2026-05-25. The natural shape of a
+  "session-cycle orchestration and review-trigger taxonomy" PRD is to
+  *include implementations of the new rules the taxonomy names*. The
+  audit section identifies multiple declared-but-unfired reviews
+  (operating-principles promotion-candidate scan, second-pass
+  brownfield onboarding, knowledge-tree back-pressure audit,
+  candidate-stub-with-promotion-criterion gate, etc.); each could be
+  drafted as a new companion rule in the same PRD. The cheap move is
+  to ship "taxonomy + four new rules" in one PR.
+- **Observation:** PRD-0013 explicitly rejects the cheap move. Each
+  new companion rule warrants its own OPP→PRD cycle because the *design
+  work* of deciding "which review wants which trigger primitive" is a
+  different change class than the *implementation work* of writing a
+  rule's regex, satisfier set, and humanReview text. Operating-principle
+  § 7 (*Align File Boundaries with Change-Class Boundaries*) is the
+  load-bearing argument. The session has now exercised this discipline
+  twice in one window: PRD-0011 explicitly rejected Option B (add a
+  forcing trigger to operating-principles) to preserve the
+  evidence-driven cadence; PRD-0013 explicitly defers per-rule
+  machinery to preserve the OPP→PRD-per-rule cadence. Different domains,
+  same discipline. The pattern: **when a PRD's natural scope would
+  bundle design work with implementation work, split it.** v1 ships
+  *what the system should do and why* (design); follow-up PRDs ship
+  *how each component does its part* (implementation). The cost is one
+  extra PR per implementation; the benefit is each implementation gets
+  full design-pressure review on its own terms.
+- **Implication:** The pattern *PRD-with-deferred-implementations* is
+  now observed twice (PRD-0011 sunset rejecting Option B; PRD-0013
+  taxonomy deferring per-rule machinery). A third instance in a future
+  session would lift this to high-confidence evidence and make it a
+  strong candidate for operating-principles § 9 — possibly co-located
+  with the candidate-stub-with-promotion-criterion technique under a
+  unifying heading like *"Split design from implementation; bundle by
+  change-class, not by topical adjacency."* The PRD template
+  (`platform/templates/product/prd.md`) could eventually surface this
+  explicitly with a "Implementation Deferral" section that prompts the
+  author to enumerate which implementations are deferred and why —
+  defer that template change until the third instance accumulates.
+- **Confidence:** medium-high — two direct instances in one session
+  with explicit reasoning in each PRD's Non-Goals section. Third
+  instance from a future session would be the lift to high.
+- **Severity:** process
+- **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-25 (PRD-0013 drafting; satisfies the cycle-end distillation rule fired by the OPP-0032 status flip and the PRD-0013 file creation; substantive connection — the observation captures the *design discipline that produced the PRD's scope shape*, not a tangential note)

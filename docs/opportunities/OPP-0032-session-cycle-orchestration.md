@@ -6,11 +6,11 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0032 — Session-Cycle Orchestration and Review-Trigger Taxonomy
 
-**Status:** proposed
+**Status:** exploring
 **Owner:** @unclenate
 **Created:** 2026-05-25
-**Last Updated:** 2026-05-25
-**Confidence:** medium-high *(promoted from candidate-stub in `candidates.md` after a second concrete instance accumulated)*
+**Last Updated:** 2026-05-25 *(promoted from candidate-stub in `candidates.md` after a second concrete instance accumulated. Same-day flip `proposed` → `exploring` per the established maintainer-priority cadence; [PRD-0013](../requirements/PRD-0013-session-cycle-orchestration.md) drafted committing to the workflow-doc-only v1 scope.)*
+**Confidence:** medium-high *(diagnosis); high (on the workflow-doc-only v1 scope; per-rule companion-rule decisions deferred to follow-up OPPs/PRDs)*
 
 ---
 
@@ -200,15 +200,35 @@ companion rules for currently-unfired reviews.
 
 ## Disposition
 
-<!--
-Empty while Status: proposed.
--->
+**2026-05-25 — `proposed` → `exploring`.** Same-day promotion per the
+established maintainer-priority cadence (OPP-0004/0005/0006/0007/0026
+pattern). Direction committed: **workflow-doc-only v1 scope.** The
+taxonomy itself is the v1 deliverable; per-rule companion-rule
+decisions are explicitly deferred to follow-up OPPs/PRDs. Rejection
+rationale captured in PRD-0013's Out of Scope section: shipping
+taxonomy + multiple new companion rules in one PR conflates *design
+work* (deciding which review wants which primitive) with
+*implementation work* (writing the regex, the satisfier set, the
+human-review text). The OPP→PRD→implementation cadence the project
+relies on works *per discrete change-class*; bundling rule
+implementations with the taxonomy that motivates them blurs the
+boundary.
+
+[PRD-0013 — Session-Cycle Orchestration and Review-Trigger Taxonomy](../requirements/PRD-0013-session-cycle-orchestration.md)
+drafted as the paired design, covering 9 must-have FRs: new workflow
+doc, taxonomy section, audit of currently-declared-but-unfired
+reviews, per-review trigger-class classification, positive-template
+cross-reference, evidence cross-references, explicit deferrals of
+per-rule machinery, recommended sequencing of follow-up OPPs.
+
+Acceptance criteria for OPP-0032 → `accepted`: PRD-0013 Accepted +
+FR-001..FR-009 merged + at least one of the named follow-up reviews
+graduates to a filed OPP/PRD pair within the next 30 days (validates
+that the taxonomy is *load-bearing* and not just descriptive prose).
 
 ## Promotion
 
-<!--
-Empty until accepted. Then a link to PRD-NNNN.
--->
+See [`docs/requirements/PRD-0013-session-cycle-orchestration.md`](../requirements/PRD-0013-session-cycle-orchestration.md).
 
 ## Related
 

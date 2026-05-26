@@ -85,9 +85,9 @@ back-pressure between observation accumulation and synthesis. The
 automations exist; the *cadence that consumes their output* is
 underspecified.
 
-- [OPP-0032](OPP-0032-session-cycle-orchestration.md) *(proposed
-  2026-05-25; promoted from candidate-stub after a second concrete
-  instance accumulated)* — Define a taxonomy of session-boundary
+- [OPP-0032](OPP-0032-session-cycle-orchestration.md) *(exploring
+  2026-05-25; PRD-0013 in flight, drafted same-day; promoted from
+  candidate-stub after a second concrete instance accumulated)* — Define a taxonomy of session-boundary
   review checkpoints and name which automation fires at each. Two
   confirmed instances motivated the promotion: the distilled-learnings
   dormancy resolved by OPP-0026/ADR-0014/PRD-0011 (a declared

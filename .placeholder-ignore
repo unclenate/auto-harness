@@ -9,6 +9,10 @@ CONTRIBUTING.md
 # Implementation plans legitimately contain template content showing
 # file bodies to be created — the [[PLACEHOLDER_NAME]] tokens are illustrative.
 docs/superpowers/plans/**
+# Design specs (brainstorming output) are the sibling of plans: they show
+# template bodies and discuss the [[PLACEHOLDER_NAME]] convention as spec text,
+# not as unfilled tokens. Same rationale as the plans exemption above.
+docs/superpowers/specs/**
 # PRD-0005 specifies the token names a future implementation will introduce
 # into templates — token mentions in this PRD are spec text, not unfilled
 # tokens. Same rationale as the platform/** exemption above. Re-evaluate

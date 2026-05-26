@@ -469,15 +469,49 @@ class TestValidateDocReferences < Minitest::Test
     assert_match(/✓/, out)
   end
 
-  def test_missing_platform_dir_aborts
-    # Missing platform/ directory is a usage error (the script has nothing to
-    # scan and was pointed at the wrong root), not a validation failure — so
-    # exit 2, not 1, per the three-state contract.
+  def test_missing_project_root_aborts
+    # A genuinely missing <project-root> is the only remaining usage error
+    # (exit 2). PRD-0012 (OPP-0023) removed the platform/-must-exist guard: a
+    # submodule consumer has no top-level platform/, and that is a valid layout,
+    # not misuse.
+    nonexistent = File.join(Dir.tmpdir, "validate-doc-refs-nope-#{Process.pid}")
+    _out, err, code = run_validator("validate-doc-references.sh", nonexistent)
+    assert_equal 2, code, "missing project root must exit 2 (usage error)"
+    assert_match(/does not exist/i, err)
+  end
+
+  def test_empty_dir_has_nothing_to_scan_and_passes
+    # No platform/ and no markdown at all → nothing to scan → clean exit 0
+    # (NOT exit 2). "Nothing to validate" is success, not a usage error.
     Dir.mktmpdir do |tmpdir|
-      _out, err, code = run_validator("validate-doc-references.sh", tmpdir)
-      assert_equal 2, code, "missing platform/ dir must exit 2 (usage error), not 1"
-      assert_match(/does not exist/i, err)
+      out, err, code = run_validator("validate-doc-references.sh", tmpdir)
+      assert_equal 0, code, "empty dir (nothing to scan) must exit 0. stderr: #{err}"
+      assert_match(/✓/, out)
     end
+  end
+
+  def test_consumer_without_platform_dir_valid_passes
+    # OPP-0023 / PRD-0012: a submodule consumer (no top-level platform/) whose
+    # own docs all resolve must validate green — Pass 2 scans the consumer's
+    # *.md regardless of whether a platform/ tree exists.
+    out, err, code = run_validator(
+      "validate-doc-references.sh",
+      fixture_project("consumer-no-platform-valid")
+    )
+    assert_equal 0, code,
+                 "Consumer with no platform/ and valid links must exit 0. stderr: #{err}\nstdout: #{out}"
+    assert_match(/✓/, out)
+  end
+
+  def test_consumer_without_platform_dir_broken_is_flagged
+    # The consumer scan must actually catch a broken link in consumer docs —
+    # exit 1 (not exit 2), proving Pass 2 ran against the consumer's own tree.
+    _out, err, code = run_validator(
+      "validate-doc-references.sh",
+      fixture_project("consumer-no-platform-broken")
+    )
+    assert_equal 1, code, "broken link in a no-platform consumer must exit 1, not 2"
+    assert_match(/does-not-exist\.md/, err, "broken consumer path must appear in stderr")
   end
 
   def test_runs_clean_against_harness_repo

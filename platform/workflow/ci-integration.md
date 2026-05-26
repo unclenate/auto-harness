@@ -23,6 +23,7 @@ happen automatically on every pull request.
 | `validate-companions.sh` | Sensitive path changes have required companion updates | PR only (needs git diff) |
 | `validate-placeholders.sh` | No unfilled `[[PLACEHOLDER_NAME]]` tokens remain | Every PR and push |
 | `validate-agent-pack.sh` | Agent entrypoints (AGENTS.md, CLAUDE.md, settings) present | Every PR and push |
+| `validate-doc-references.sh` | Markdown links resolve on disk and render safely (scans consumer docs; a top-level `platform/` is optional) | Every PR and push |
 
 All validators require Ruby 3.0+. `validate-placeholders.sh` additionally requires `ripgrep` (`rg`).
 
@@ -65,7 +66,7 @@ jobs:
           ruby-version: "3.3"
 
       - name: Install ripgrep
-        run: sudo apt-get install -y ripgrep
+        run: sudo apt-get update && sudo apt-get install -y ripgrep
 
       - name: Validate manifest structure
         run: bash $PLATFORM_ROOT/validators/validate-manifest.sh $MANIFEST
@@ -89,6 +90,9 @@ jobs:
 
       - name: Validate agent pack
         run: bash $PLATFORM_ROOT/validators/validate-agent-pack.sh $MANIFEST $PROJECT_ROOT
+
+      - name: Validate doc references
+        run: bash $PLATFORM_ROOT/validators/validate-doc-references.sh $PROJECT_ROOT
 ```
 
 ---
@@ -180,7 +184,7 @@ for reproducibility.
 
 ```yaml
 - name: Install ripgrep
-  run: sudo apt-get install -y ripgrep
+  run: sudo apt-get update && sudo apt-get install -y ripgrep
 ```
 
 On `macos-latest`, ripgrep is pre-installed.
@@ -212,7 +216,7 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: "3.3"
-      - run: sudo apt-get install -y ripgrep
+      - run: sudo apt-get update && sudo apt-get install -y ripgrep
       - run: bash platform/validators/validate-manifest.sh harness.manifest.yaml
       - run: bash platform/validators/validate-module-graph.sh harness.manifest.yaml
       - run: bash platform/validators/validate-required-artifacts.sh harness.manifest.yaml .
@@ -354,7 +358,7 @@ add a job to run the harness test suite:
         with:
           ruby-version: "3.3"
       - name: Install ripgrep
-        run: sudo apt-get install -y ripgrep
+        run: sudo apt-get update && sudo apt-get install -y ripgrep
 
       - name: Unit tests (registry logic)
         run: |

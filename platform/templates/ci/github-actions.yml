@@ -46,7 +46,7 @@ jobs:
           ruby-version: "3.3"
 
       - name: Install ripgrep
-        run: sudo apt-get install -y ripgrep
+        run: sudo apt-get update && sudo apt-get install -y ripgrep
 
       - name: Validate manifest structure
         run: bash .harness/platform/validators/validate-manifest.sh harness.manifest.yaml

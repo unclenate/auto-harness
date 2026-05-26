@@ -133,7 +133,7 @@ underspecified.
   plus a small bootstrap helper that fills tokens project-wide. Real
   legal correctness issue, not cosmetic.
 
-- [OPP-0023](OPP-0023-doc-references-consumer-scan.md) *(proposed 2026-05-25)* —
+- [OPP-0023](OPP-0023-doc-references-consumer-scan.md) *(accepted 2026-05-25; PRD-0012; v0.5.3)* —
   `validate-doc-references.sh` hard-fails (exit 2) for **submodule consumers**:
   it requires a `<root>/platform/` tree and never reaches its general
   markdown-link-resolution pass on consumer docs. The consumer CI template

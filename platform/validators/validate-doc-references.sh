@@ -89,10 +89,13 @@ if [[ ! -d "${PROJECT_ROOT}" ]]; then
   exit 2
 fi
 
-if [[ ! -d "${PROJECT_ROOT}/platform" ]]; then
-  echo "✗ ${PROJECT_ROOT}/platform does not exist — nothing to scan." >&2
-  exit 2
-fi
+# A <project-root>/platform/ tree is OPTIONAL. The harness's own repo has one
+# (Pass 1 below dogfoods it); consumer projects mount the platform under a
+# submodule (e.g. .harness/) and have no top-level platform/. Pass 1 globs
+# platform/**/*.md and naturally no-ops when the directory is absent; Pass 2
+# scans the consumer's own *.md regardless. "Nothing to scan" resolves to a
+# clean exit 0. Exit 2 is reserved for a genuinely missing <project-root>
+# (checked above) — not for the routine submodule-consumer layout.
 
 ruby -I"${SCRIPT_DIR}/lib" - "${PROJECT_ROOT}" <<'RUBY'
 require "harness_registry"

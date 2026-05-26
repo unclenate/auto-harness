@@ -77,6 +77,7 @@ originating opportunity records.
 | [0009](requirements/PRD-0009-eval-gated-testing-module.md) | Eval-Gated Testing Module | Accepted | [OPP-0019](opportunities/OPP-0019-eval-gated-testing-posture.md) |
 | [0010](requirements/PRD-0010-self-hosted-oss-delivery.md) | Self-Hosted OSS Delivery | Accepted | [OPP-0021](opportunities/OPP-0021-delivery-self-hosted-oss.md) |
 | [0011](requirements/PRD-0011-distilled-learnings-disposition.md) | Sunset `distilled-learnings.md` | Accepted | [OPP-0026](opportunities/OPP-0026-distilled-learnings-disposition.md) |
+| [0012](requirements/PRD-0012-doc-references-consumer-aware.md) | `validate-doc-references` Consumer-Aware Scan | Accepted | [OPP-0023](opportunities/OPP-0023-doc-references-consumer-scan.md) |
 
 ---
 

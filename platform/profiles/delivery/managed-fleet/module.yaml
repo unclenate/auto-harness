@@ -1,0 +1,56 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+id: managed-fleet
+type: delivery
+version: 1.0.0
+summary: >
+  Delivery posture for a team that OPERATES configuration managing a live fleet
+  of hosts (or hosting estate) — real production blast radius, but no external
+  app or distributable of its own. Sits between internal-platform (too lean: no
+  operational artifacts) and production-saas (assumes a served product whose
+  release/rollback you own, not host config you apply). Carry exactly one
+  delivery posture; see README for the single-posture expectation.
+dependsOn:
+  - kernel/base
+conflictsWith:
+  - prototype
+requiredArtifacts:
+  - docs/ops/fleet-inventory.md
+  - docs/ops/change-control.md
+  - docs/ops/config-rollback.md
+optionalArtifacts:
+  - docs/architecture/overview.md
+  - docs/security/risk-register.md
+sensitivePaths:
+  - description: Fleet topology — which hosts exist and what role each plays
+    patterns:
+      - '^inventory/.*/hosts\.ya?ml$'
+      - '^inventory/.*/hosts\.ini$'
+      - '^host_vars/'
+companionRules:
+  - description: >
+      Fleet-topology changes (adding/removing hosts, changing a host's role)
+      must update the fleet inventory or be recorded in change-control — the
+      live fleet's shape is changing, not just a role's internals.
+    triggerPaths:
+      - '^inventory/.*/hosts\.ya?ml$'
+      - '^inventory/.*/hosts\.ini$'
+      - '^host_vars/'
+    requiredAny:
+      - '^docs/ops/fleet-inventory\.md$'
+      - '^docs/ops/change-control\.md$'
+      - '^docs/adr/ADR-'
+    humanReview: >
+      Reviewers verify the topology change is reflected in the fleet record and
+      has a stated maintenance window and rollback path.
+validators:
+  - validate-required-artifacts
+  - validate-companions
+reviewGates:
+  - A change to the live fleet's topology requires a named maintenance window and a stated rollback path.
+  - Applying configuration to production hosts is a human-directed action; agents may prepare changes (dry-run, diff) but must not apply them.
+  - A managed-fleet project handling real or client data (criticality >= medium) is strongly expected to carry docs/security/risk-register.md even though it is optional here.
+agentAdapters:
+  - platform/agents/base
+compiledFragments:
+  - platform/profiles/delivery/managed-fleet/README.md

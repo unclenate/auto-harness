@@ -6,11 +6,11 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0029 — Agent Observability with OpenTelemetry Semantic Conventions (`architectures/agent-observability`)
 
-**Status:** proposed
+**Status:** exploring
 **Owner:** @unclenate
 **Created:** 2026-05-25
-**Last Updated:** 2026-05-25
-**Confidence:** medium-high
+**Last Updated:** 2026-05-26 *(promoted `proposed` → `exploring` same-day per the established maintainer-priority cadence. [PRD-0014](../requirements/PRD-0014-agent-observability.md) drafted committing to a workflow-doc + trace-contract-template v1 scope; companion-rule machinery deferred to a follow-up OPP/PRD pair per the deferred-implementations discipline named in PRD-0013's paired observation.)*
+**Confidence:** medium-high *(diagnosis); high (on the v1 scope; OTel semantic conventions are stable; healthcare-specific routing models are GA)*
 
 ---
 
@@ -138,12 +138,36 @@ fourth defense-in-depth pattern).
 
 ## Disposition
 
-<!--
-Empty while Status: proposed. Satellite of OPP-0027.
--->
+**2026-05-26 — `proposed` → `exploring`.** Promoted as the first
+satellite of the OPP-0027 anchor cluster, per the cluster's recommended
+sequencing in the original OPP-0027 filing PR: *"OPP-0029 (observability)
+— most concrete, fewest open questions, immediate Tula utility"*.
+
+Direction committed: **workflow-doc + trace-contract-template v1 scope.**
+Ship the new module `architectures/agent-observability` with two
+required artifacts (`docs/observability/trace-contract.md`, `docs/
+observability/exporters.md`), the matching templates, and the
+catalog-counts assertion bumps. Defer companion-rule machinery (the
+"action-code change requires trace-contract update" rule) to a
+follow-up OPP/PRD pair, per the *deferred-implementations* discipline
+named in PRD-0013's paired observation. v1 establishes the *contract*;
+v2 enforces it.
+
+[PRD-0014 — Agent Observability with OpenTelemetry Semantic Conventions](../requirements/PRD-0014-agent-observability.md)
+drafted as the paired design covering 11 must-have FRs (module
+creation; trace-contract template; exporters template; SUMMARY +
+docs/README + harness-onboarding SKILL updates; catalog-counts bumps;
+cross-references) and 3 should-have FRs (Mermaid trace-flow diagram
+in `diagrams.md`; one-line `harness-governance` SKILL reference;
+optional `recommendedSkills` entry).
+
+Acceptance criteria for OPP-0029 → `accepted`: PRD-0014 Accepted +
+FR-001..FR-011 merged + all 8 validators green + at least one
+consumer (Tula likely; any project with `agents/openclaw` active is
+a candidate) demonstrates trace emission against the contract within
+30 days (validates the contract is *load-bearing* and not just
+descriptive prose).
 
 ## Promotion
 
-<!--
-Empty until accepted. Anchor: OPP-0027.
--->
+See [`docs/requirements/PRD-0014-agent-observability.md`](../requirements/PRD-0014-agent-observability.md).

@@ -2,7 +2,7 @@
 
 **Structure:** Structured Template (see README.md § Observation Structure; locked by ADR-0002)
 **Write Policy:** heartbeat-only (see README.md § Write Policy; adjustable)
-**Last Updated:** 2026-05-25 *(Phase 2 of ADR-0013: appended the rationale-expansion-without-rule-change observation paired with the seven-file expansion of the kernel doctrine, trust-model, and module-types reference. Surfaces a three-way taxonomy — reorder / rationale-add / rule-change — for classifying audit findings, observed three times this session.)*
+**Last Updated:** 2026-05-26 *(PRD-0014 drafting: appended the third-instance-of-deferred-implementations observation, building on the rationale-expansion-without-rule-change observation from Phase 2 of ADR-0013. The discipline now has three firings in one session, lifting it to operating-principle candidate. Two ripe follow-up moves: § 9 promotion + PRD template "Implementation Deferral" section.)*
 
 Append-only structured observations from project participants (agents
 and humans). Read this file on each heartbeat. Observations accumulate
@@ -1736,3 +1736,54 @@ here until distillation.
   lines to ~130, in one coherent pass).
 - **Severity:** process
 - **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-25 (Phase 2 of ADR-0013 — vocabulary + trust-model + doctrine rationale; satisfies the cycle-end distillation rule fired by the touched modules and ADR-referencing changes)
+
+### Third instance of deferred-implementations discipline confirms the pattern is generalizable
+
+- **Context:** PRD-0014 (Agent Observability with OpenTelemetry Semantic
+  Conventions) drafting, 2026-05-26. The PRD explicitly defers the
+  trace-contract-update companion rule to a v2 follow-up OPP/PRD pair,
+  citing PRD-0013's paired observation as the discipline-source: *"v1
+  establishes the contract; v2 enforces it."* This is the **third
+  observed instance** of the deferred-implementations pattern this
+  session.
+- **Observation:** The pattern *PRD-with-deferred-implementations* has
+  now fired three times: (1) PRD-0011 sunset rejecting Option B (no
+  synthetic trigger added to operating-principles); (2) PRD-0013
+  taxonomy deferring per-rule machinery; (3) PRD-0014 deferring the
+  trace-contract-update companion rule to v2. Three instances in one
+  session is the established bar for lifting from medium-high to high
+  confidence and from observation to operating-principle candidate.
+  The pattern as a candidate § 9 for `docs/operating-principles.md`:
+  *"Split design from implementation. When a PRD's natural scope
+  would bundle design work (deciding what should happen) with
+  implementation work (writing the rule that enforces it), prefer
+  shipping the design at v1 and deferring the implementation to a
+  follow-up OPP/PRD pair. The cost is one extra PR per implementation;
+  the benefit is each implementation gets full design-pressure review
+  on its own terms — and the v1 contract is validated against real
+  consumer adoption before machinery locks it in."*
+- **Implication:** Two concrete next moves: (1) **promote to
+  operating-principles § 9** in a dedicated PR (the discipline-
+  codification PR named in the deferred-implementations observation
+  itself); the PR is small (one section addition) and the discipline
+  is now well-supported with three instances. (2) **update the PRD
+  template** (`platform/templates/product/prd.md`) with an
+  "Implementation Deferral" section that prompts the author to
+  enumerate which implementations are deferred and why — also
+  deferred from PRD-0013 (which suggested the template change but
+  deferred to the third instance). The third instance is here; both
+  moves are now ripe. Filing both as follow-up OPPs (likely the same
+  OPP given the topical adjacency, with the operating-principle
+  promotion as the v1 deliverable and the template change as v2)
+  is the natural next discipline-codification work.
+- **Confidence:** high — three direct instances in one session with
+  explicit citation chain (PRD-0011 → PRD-0013 → PRD-0014). The
+  pattern's generalizability is proven across three distinct domains
+  (sunset disposition; taxonomy doc; new module declaration). The
+  candidate-stub-with-promotion-criterion technique (named in a
+  separate observation) is the second pattern this session has now
+  observed firing three times across three different topical
+  domains; both are operating-principle candidates worth promoting
+  in the same follow-up PR.
+- **Severity:** process
+- **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-26 (PRD-0014 drafting; satisfies the cycle-end distillation rule fired by the OPP-0029 status flip and the PRD-0014 file creation; substantive connection — the observation captures the third firing of the *deferred-implementations* discipline this PR exercises, lifting it to operating-principle candidate)

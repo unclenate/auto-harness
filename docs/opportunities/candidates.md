@@ -321,8 +321,8 @@ generalizes the two-pass discipline.
   Orchestrate) the project commits to landing in. New
   `architectures/`-family deployment-target dimension distinct from
   `delivery/` and `agents/`.
-- **[OPP-0029](OPP-0029-agent-observability.md)** *(proposed
-  2026-05-25; satellite of OPP-0027)* — `architectures/agent-observability`
+- **[OPP-0029](OPP-0029-agent-observability.md)** *(exploring
+  2026-05-26; PRD-0014 in flight, drafted same-day; satellite of OPP-0027)* — `architectures/agent-observability`
   — OpenTelemetry-shaped multi-agent semantic conventions (Microsoft +
   Cisco Outshift). Required artifacts: `docs/observability/trace-contract.md`,
   plus `docs/observability/exporters.md`. Companion rule: action-code

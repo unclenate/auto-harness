@@ -479,6 +479,7 @@ Specifications for substantive new capabilities, paired with their originating o
 * [PRD-0011: Sunset distilled-learnings.md](docs/requirements/PRD-0011-distilled-learnings-disposition.md)
 * [PRD-0012: validate-doc-references Consumer-Aware Scan](docs/requirements/PRD-0012-doc-references-consumer-aware.md)
 * [PRD-0013: Session-Cycle Orchestration and Review-Trigger Taxonomy](docs/requirements/PRD-0013-session-cycle-orchestration.md)
+* [PRD-0014: Agent Observability with OpenTelemetry Semantic Conventions](docs/requirements/PRD-0014-agent-observability.md)
 
 ### Opportunity Records (this project)
 

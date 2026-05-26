@@ -2,7 +2,7 @@
 
 **Structure:** Structured Template (see README.md § Observation Structure; locked by ADR-0002)
 **Write Policy:** heartbeat-only (see README.md § Write Policy; adjustable)
-**Last Updated:** 2026-05-25 *(Tula second-pass cluster filing: appended layered-brownfield-discovery observation paired with OPP-0027 anchor + OPP-0028..0031 satellites + augmentations to OPP-0015/0019/0021; brings total session observations to twelve across declaration-without-enforcement, sunset-PRD discipline, and layered-brownfield-discovery patterns)*
+**Last Updated:** 2026-05-25 *(OPP-0032 filing: appended candidate-stub-promotion-gate observation paired with the session-cycle-orchestration OPP that the candidate stub just produced; the observation is about the promotion gate itself firing correctly on its first occasion)*
 
 Append-only structured observations from project participants (agents
 and humans). Read this file on each heartbeat. Observations accumulate
@@ -1549,3 +1549,58 @@ here until distillation.
   layer gaps on a second pass that the first pass misses.
 - **Severity:** process
 - **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-25 (Tula second-pass profiling against the project README, after the catalog had digested OPP-0018..0022; paired with OPP-0027 anchor and satellites OPP-0028..0031, plus augmentations to OPP-0015, OPP-0019, OPP-0021)
+
+### The candidate-stub-to-OPP promotion gate worked end-to-end on first firing
+
+- **Context:** OPP-0032 filing, 2026-05-25. The session-cycle
+  orchestration candidate had been held as a stub in `candidates.md`
+  with an explicit promotion-criterion declared in the stub itself:
+  *"Promoted from candidate-stub to OPP when a second concrete instance
+  of 'declared review without a trigger' surfaces independently — same
+  evidence-pattern that lifted brownfield-onboarding-as-discovery from
+  observation to OPP cluster."* Two instances accumulated within hours
+  of one another in the same session (distilled-learnings dormancy via
+  OPP-0026; Tula two-pass discovery via OPP-0027..0031 and the
+  layered-brownfield observation). The promotion gate fired exactly as
+  declared.
+- **Observation:** This is the first observed instance of the
+  *candidate-stub-with-explicit-promotion-criterion* pattern firing
+  end-to-end in this project. The discipline pattern is: (1) when a
+  concern surfaces but the evidence is single-instance, capture it as
+  a *candidate-stub* in `candidates.md` (the organizational index, no
+  full OPP file); (2) declare an *explicit promotion criterion* in
+  the stub itself (e.g., "promoted when a second concrete instance
+  surfaces independently"); (3) when the criterion fires, *promote*
+  the stub to a full OPP file with the accumulated evidence cited.
+  The discipline avoids the two failure modes that plague candidate
+  capture: *premature OPP filing* (one instance gets a full OPP, then
+  no second instance ever validates the concern) and *forgotten
+  insights* (single-instance concerns never recorded, lost to
+  session memory). The promotion-criterion is the load-bearing part —
+  without it, a candidate-stub is just an undated note; with it, the
+  stub becomes a self-firing record that activates when its own
+  evidence-bar clears. The pattern is structurally similar to the
+  *cycle-end-distillation rule fires on triggers, requires satisfiers*
+  pattern, but at a slower cadence — candidate-stubs gate on
+  *cross-session evidence accumulation*, while cycle-end rules gate
+  on *per-PR trigger paths*.
+- **Implication:** The candidate-stub-with-explicit-promotion-criterion
+  pattern is worth elevating as a documented technique in
+  `platform/templates/opportunity/candidates.md` (the template, not the
+  in-tree index). A new section in the template could codify: *"For
+  insights single-instance enough to record but not yet substantial
+  enough to file as a full OPP, capture as a candidate-stub with an
+  explicit promotion criterion. Suggested criteria: 'second concrete
+  instance surfaces independently' (cross-session evidence), 'audit
+  surfaces the same gap class' (audit-driven evidence), 'consumer
+  project hits this' (field evidence)."* This is a possible
+  operating-principles candidate after a second observed
+  promotion-gate firing — same gate-promotion discipline applied to
+  operating-principles itself.
+- **Confidence:** medium — one direct instance of the promotion-gate
+  firing correctly, with concrete evidence (the OPP-0032 file now
+  exists with the two cited instances). Second instance would lift to
+  high; the candidate-stub pattern's *staying power* across sessions
+  is the unobserved-yet dimension.
+- **Severity:** process
+- **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-25 (OPP-0032 filing; satisfies the cycle-end distillation rule fired by the OPP-0032 file creation, with substantive connection — the observation is *about the promotion-gate that produced the OPP*, not cargo-cult padding)

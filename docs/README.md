@@ -119,6 +119,7 @@ clustered backlog with framing.
 | [0029](opportunities/OPP-0029-agent-observability.md) | Agent Observability with OpenTelemetry Semantic Conventions | proposed |
 | [0030](opportunities/OPP-0030-intelligent-model-routing.md) | Intelligent Model Routing as Architectural Primitive | proposed |
 | [0031](opportunities/OPP-0031-agent-defense-in-depth.md) | Agent Defense-in-Depth (Microsoft's Four Patterns) | proposed |
+| [0032](opportunities/OPP-0032-session-cycle-orchestration.md) | Session-Cycle Orchestration and Review-Trigger Taxonomy | proposed |
 
 ---
 

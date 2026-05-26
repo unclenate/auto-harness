@@ -514,3 +514,4 @@ Forward-looking pre-PRD candidates managed by the `opportunity-capture` module.
 * [OPP-0029: Agent Observability with OpenTelemetry Semantic Conventions](docs/opportunities/OPP-0029-agent-observability.md)
 * [OPP-0030: Intelligent Model Routing](docs/opportunities/OPP-0030-intelligent-model-routing.md)
 * [OPP-0031: Agent Defense-in-Depth (Microsoft's Four Patterns)](docs/opportunities/OPP-0031-agent-defense-in-depth.md)
+* [OPP-0032: Session-Cycle Orchestration and Review-Trigger Taxonomy](docs/opportunities/OPP-0032-session-cycle-orchestration.md)

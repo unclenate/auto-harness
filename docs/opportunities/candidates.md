@@ -73,44 +73,36 @@ this index exists only to group, cluster, or annotate them for human readers.
 
 ### Session-cycle orchestration & review-trigger taxonomy
 
-This cluster captures a deeper concern surfaced by the OPP-0026
-investigation: the harness has accumulated powerful automations
-(companion rules, distillation triggers, Stop-event hooks, validator
-chains, audit-trail rules) but **no defined "optimal session shape"
-with review checkpoints that systematically fire them.** A session
-might add ten shared-observations, ship a PRD, and merge — but never
-run the curation review that distilled-learnings was designed to
-receive, never check whether operating-principles needs a new section,
-never audit the back-pressure between observation accumulation and
-synthesis. The automations exist; the *cadence that consumes their
-output* is underspecified. This is the trigger-side counterpart to the
-audit-driven pattern the project has already named ("audits surface
-what continuous discipline missed").
+This cluster captures a deeper concern: the harness has accumulated
+powerful enforcement machinery (companion rules, distillation
+triggers, Stop-event hooks, validator chains, audit-trail rules) but
+**no defined "optimal session shape" with review checkpoints that
+systematically fire them.** A session might add ten shared-observations,
+ship a PRD, and merge — but never run the curation review that
+operating-principles benefits from, never check whether second-pass
+brownfield framing would surface new gaps, never audit the
+back-pressure between observation accumulation and synthesis. The
+automations exist; the *cadence that consumes their output* is
+underspecified.
 
-- **Candidate (not yet an OPP — awaiting second instance):**
-  *Session-cycle orchestration / review-trigger taxonomy.* Frame the
-  ideal session shape end-to-end — from session start (load skills,
-  observe state) through work (companion rules, hooks, validators)
-  through session close (cycle-end distillation, observation review,
-  promotion-candidate scan, curation back-pressure check). Identify
-  which automations are *already firing* at which checkpoints and
-  which are *declared but unfired*. Produce a taxonomy of review
-  triggers (PR-boundary, session-boundary, time-boundary,
-  count-boundary, audit-boundary) and assign each declared review to
-  exactly one trigger class. Likely outputs: an additions to
-  `cycle-end-distillation.md` covering the full session arc (not just
-  cycle end); a possible new workflow doc `session-shape.md`; possibly
-  new companion rules for currently-unfired reviews; possibly
-  retirement of declared reviews that have no defensible trigger
-  (Option A of OPP-0026 is one instance of this). Promoted from
-  candidate-stub to OPP when a second concrete instance of
-  "declared review without a trigger" surfaces independently —
-  same evidence-pattern that lifted brownfield-onboarding-as-discovery
-  from observation to OPP cluster. **Origin:** maintainer framing
-  during the OPP-0026 investigation, 2026-05-25:
-  *"It may warrant further investigation because it seems that there's
-  an as yet undefined optimal set of process steps for a session, and
-  we are missing reviews that could be triggering these powerful
+- [OPP-0032](OPP-0032-session-cycle-orchestration.md) *(proposed
+  2026-05-25; promoted from candidate-stub after a second concrete
+  instance accumulated)* — Define a taxonomy of session-boundary
+  review checkpoints and name which automation fires at each. Two
+  confirmed instances motivated the promotion: the distilled-learnings
+  dormancy resolved by OPP-0026/ADR-0014/PRD-0011 (a declared
+  "dedicated review session" that no automation fired in 40 days);
+  the Tula two-pass discovery captured in OPP-0027..0031 plus its
+  paired observation (a declared "orthogonal-framing second pass"
+  that no automation scheduled — only happened because the maintainer
+  re-read the README). v1 scope-bias: workflow-doc only (a new
+  `platform/workflow/session-shape.md` peer to
+  `cycle-end-distillation.md`) covering the full taxonomy plus the
+  audit of currently-declared-but-unfired reviews; per-rule
+  PRD passes for any new companion rules the taxonomy recommends.
+  Anchored on the maintainer's framing: *"there's an as yet
+  undefined optimal set of process steps for a session, and we are
+  missing reviews that could be triggering these powerful
   automations we've designed."*
 
 ### Consumer onboarding & project hygiene

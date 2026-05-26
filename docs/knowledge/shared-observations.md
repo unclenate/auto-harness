@@ -2,7 +2,7 @@
 
 **Structure:** Structured Template (see README.md § Observation Structure; locked by ADR-0002)
 **Write Policy:** heartbeat-only (see README.md § Write Policy; adjustable)
-**Last Updated:** 2026-05-25 *(PRD-0013 drafting: appended deferred-implementations-discipline observation paired with the PRD that explicitly defers per-rule machinery to follow-up OPPs; second observed instance of the discipline after PRD-0011's Option B rejection — third instance would lift to operating-principles candidate)*
+**Last Updated:** 2026-05-25 *(Phase 2 of ADR-0013: appended the rationale-expansion-without-rule-change observation paired with the seven-file expansion of the kernel doctrine, trust-model, and module-types reference. Surfaces a three-way taxonomy — reorder / rationale-add / rule-change — for classifying audit findings, observed three times this session.)*
 
 Append-only structured observations from project participants (agents
 and humans). Read this file on each heartbeat. Observations accumulate
@@ -1683,3 +1683,56 @@ here until distillation.
   instance from a future session would be the lift to high.
 - **Severity:** process
 - **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-25 (PRD-0013 drafting; satisfies the cycle-end distillation rule fired by the OPP-0032 status flip and the PRD-0013 file creation; substantive connection — the observation captures the *design discipline that produced the PRD's scope shape*, not a tangential note)
+
+### Doctrine documents expanded with rationale prose — *why six*, *why this boundary*, *why these stages* — without changing any rule
+
+- **Context:** Phase 2 of ADR-0013 implementation, 2026-05-25. The
+  documentation audit (M-d) had flagged the kernel doctrine docs
+  (`doctrine.md`, `audit-model.md`, `enforcement-model.md`,
+  `lifecycle-controls.md`) and the trust-model spec (H-a) as bare bullet
+  lists — *rules without rationale*. The Phase 2 PR expanded each from
+  ~25 lines to a substantive doc covering not just *what the rule is*
+  but *why it exists*, *what failure mode it prevents*, and *what
+  alternative was rejected*. Critically: **no rule was changed.** The
+  trust-model still has six tiers; the doctrine still names the same
+  six principles; the enforcement model still distinguishes the same
+  five categories. The expansion was *purely additive* — the original
+  rules sit at the top of each section, with the rationale below.
+- **Observation:** Adding rationale prose to load-bearing kernel docs
+  is a substantively different change class than changing the rules
+  themselves. The audit findings M-d and H-a are *audience-fit* concerns
+  ("readers can't tell why this rule matters") rather than
+  *correctness* concerns ("this rule is wrong"). Recognizing the
+  distinction lets Phase 2 land as a single coherent PR (six files,
+  ~700 net new lines of prose, zero rule changes) without triggering
+  any of the heavier governance machinery that would fire if rules
+  *were* changing (no ADR for a rule change; no companion-rule update;
+  no module.yaml edit). This is the **documentation-as-audience-fit-work**
+  pattern: when the audit identifies an audience-fit gap, the fix is
+  expansion-without-modification, and the change class is *narrative
+  documentation*, not *governance contract change*. The trust-model
+  document is a particularly clean instance: 26 lines of spec became
+  ~150 lines of spec + rationale + enforcement-today honesty, all
+  while preserving the six-tier table and the kernel rules verbatim.
+- **Implication:** This is a generalizable technique for the remaining
+  ADR-0013 phases (3 and 4) and for any future audit-driven doc work:
+  *if the finding is audience-fit, the fix is rationale-expansion-without-
+  rule-change*; *if the finding is correctness, the fix is a rule
+  change with the heavier machinery that demands*. The distinction is
+  worth surfacing in the audit template itself — adding a "Finding
+  class: audience-fit / correctness / drift" line to each finding would
+  let future audits be explicit about which change-mode they're
+  pointing at. The session has now exercised this discipline three
+  times: Phase 1 (README rebuild — reorder, not rewrite, per the prior
+  "Documentation reorder costs almost nothing" observation), and
+  Phase 2 (this work — rationale, not rule change). The reorder /
+  rationale-add / rule-change taxonomy is the audit-finding-class
+  taxonomy worth codifying.
+- **Confidence:** medium-high — three instances this session
+  (README rebuild = reorder; Phase 2 doctrine = rationale; the OPP-0026
+  / PRD-0011 disposition = rule change with full ADR machinery). The
+  three-way split is sound and the technique has worked at scale (the
+  largest doctrine doc expanded was lifecycle-controls.md, from 30
+  lines to ~130, in one coherent pass).
+- **Severity:** process
+- **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-25 (Phase 2 of ADR-0013 — vocabulary + trust-model + doctrine rationale; satisfies the cycle-end distillation rule fired by the touched modules and ADR-referencing changes)

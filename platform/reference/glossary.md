@@ -49,6 +49,27 @@ provides. Eight families exist: **core**, **stacks**, **architectures**, **data*
 **delivery**, **management**, **domains**, **agents**. See
 [Module Types](../core/registry/module-types.md) for definitions.
 
+### Overlay
+
+A module from the **management** family (or, more loosely, any module that *adds
+discipline on top* of an existing governance contract without changing the underlying
+stack or architecture). Examples: `management/knowledge-capture` adds knowledge
+surfaces; `management/eval-gated-testing` adds binary-eval gating; `management/
+opportunity-capture` adds the OPP pipeline. Overlays are activated by listing them in
+`harness.manifest.yaml` alongside the stack and architecture modules they layer onto.
+Distinguishing feature: an overlay can be added or removed mid-project without
+re-architecting; a stack or architecture cannot.
+
+### Kernel
+
+The non-optional governance foundation at `platform/core/kernel/`. Every project
+inherits the kernel's doctrine, trust-tier model, lifecycle controls, enforcement
+model, audit model, operational-readiness contract, and canonical-records policy.
+Unlike profile modules (which are opt-in via the manifest), kernel content applies
+universally — it is the contract that makes "this is a harnessed project" mean
+anything. See [`platform/core/kernel/base/README.md`](../core/kernel/base/README.md)
+for the kernel overview and the doctrine documents linked from it.
+
 ### module.yaml
 
 The machine-readable contract inside every module directory. It declares the module's
@@ -134,6 +155,61 @@ alternatives considered, and consequences. Stored at `docs/adr/ADR-NNNN-slug.md`
 A numbered record (`PRD-NNNN`) capturing a product decision, its rationale, user stories,
 functional requirements, and alternatives considered — the product counterpart to ADRs.
 Stored at `docs/requirements/PRD-NNNN-slug.md`.
+
+---
+
+## Lifecycle and Bootstrap
+
+### install.sh
+
+The bootstrap script at `platform/bootstrap/install.sh`. Run via
+`bash .harness/platform/bootstrap/install.sh` from a consumer project root, it
+**(a)** observes which AI platforms are present (Cursor, Copilot, OpenClaw, etc.) and
+records them in a `PLATFORMS OBSERVED` summary; **(b)** generates or refreshes the
+governance entrypoint files (`HARNESS.md`, `CLAUDE.md`, `AGENTS.md`, `harness.manifest.yaml`)
+with consumer-appropriate content; **(c)** wires `.agents/skills/` and `.claude/skills/`
+symlinks into the submodule for recommended skills; **(d)** prints a suggested CI
+workflow. The script is **brownfield-safe**: it never overwrites foreign-platform
+files (the `.cursorrules`, `.windsurfrules`, etc. it detected); it merges into a
+`<!-- harness-managed-section -->` block in `AGENTS.md` rather than overwriting the
+file; and supports `--dry-run` to surface what would change without modifying anything.
+See [`platform/workflow/submodule-integration.md`](../workflow/submodule-integration.md)
+for the recommended invocation flow.
+
+### Lite Manifest
+
+A `harness.manifest.yaml` with the `overrides.disabledValidations` block populated to
+temporarily turn off `required-artifacts` and (sometimes) other validators while a
+brownfield project gradually adopts the harness. Distinguished from a full manifest
+by what it *intentionally defers* — required artifacts the consumer hasn't backfilled
+yet. The harness-onboarding skill produces lite manifests for non-trivial brownfield
+projects; the consumer team incrementally enables validators as the artifacts land.
+See [`platform/workflow/brownfield-onboarding.md`](../workflow/brownfield-onboarding.md).
+
+### Bootstrap Complete
+
+A defined lifecycle stage indicating that a project's harness is *mechanically wired*
+and the foundational validator chain runs green. The criteria, per
+[`platform/workflow/bootstrap-quickstart.md`](../workflow/bootstrap-quickstart.md)
+*Harness Bootstrap Complete*: (1) `validate-manifest.sh` exits 0; (2)
+`validate-module-graph.sh` exits 0; (3) `validate-required-artifacts.sh` exits 0
+(or is intentionally disabled for a discovery-phase manifest); (4)
+`validate-placeholders.sh` exits 0; (5) CI workflow is wired and green on the
+first PR. *Bootstrap Complete* says nothing about whether the project's content is
+correct — only that the harness's mechanical contract is satisfied. The next stage
+is **Harness Ready**.
+
+### Harness Ready
+
+A defined lifecycle stage indicating that a project is **fully governed by the
+harness**, not merely mechanically wired to it. Beyond *Bootstrap Complete*, a
+*Harness Ready* project: has all required artifacts present (no `disabledValidations`);
+has the full validator chain green including companion rules, doc references, and
+catalog counts; declares no temporary opt-outs; runs the validator suite in CI on
+every PR. *Harness Ready* is what consumer projects are expected to reach within the
+first few weeks of adoption; *Bootstrap Complete* is what they reach at install
+time. See [`platform/core/kernel/base/lifecycle-controls.md`](../core/kernel/base/lifecycle-controls.md)
+for the full lifecycle.
 
 ---
 

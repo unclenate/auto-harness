@@ -509,3 +509,8 @@ Forward-looking pre-PRD candidates managed by the `opportunity-capture` module.
 * [OPP-0023: `validate-doc-references` Consumer-Aware Scan](docs/opportunities/OPP-0023-doc-references-consumer-scan.md)
 * [OPP-0025: Consumer-Side Integration Smoke Test](docs/opportunities/OPP-0025-consumer-integration-smoke-test.md)
 * [OPP-0026: `distilled-learnings.md` Disposition](docs/opportunities/OPP-0026-distilled-learnings-disposition.md)
+* [OPP-0027: Frontier-Agent Posture (Cluster Anchor)](docs/opportunities/OPP-0027-frontier-agent-posture.md)
+* [OPP-0028: Enterprise AI Foundry Target Awareness](docs/opportunities/OPP-0028-ai-foundry-target.md)
+* [OPP-0029: Agent Observability with OpenTelemetry Semantic Conventions](docs/opportunities/OPP-0029-agent-observability.md)
+* [OPP-0030: Intelligent Model Routing](docs/opportunities/OPP-0030-intelligent-model-routing.md)
+* [OPP-0031: Agent Defense-in-Depth (Microsoft's Four Patterns)](docs/opportunities/OPP-0031-agent-defense-in-depth.md)

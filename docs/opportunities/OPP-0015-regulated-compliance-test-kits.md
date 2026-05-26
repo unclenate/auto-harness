@@ -9,7 +9,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 **Status:** proposed
 **Owner:** @unclenate
 **Created:** 2026-05-24
-**Last Updated:** 2026-05-24
+**Last Updated:** 2026-05-25 *(scope augmented during Tula second-pass: extend the v1 surface to cover EU AI Act compliance test-kit integration and BAA-tier LLM gateway governance as two named sub-shapes of the same pattern)*
 **Confidence:** medium-high
 
 ---
@@ -159,6 +159,52 @@ three-part contribution:
   "PR-time conformance check" from "scheduled certification dress
   rehearsal" and codify that distinction in the integration
   artifact.
+
+## Augmentations — Tula second-pass profiling (2026-05-25)
+
+The Tula second-pass surfaced two additional sub-shapes of the
+external-compliance-test-kit pattern that v1 should explicitly cover:
+
+**(B1) BAA-tier LLM gateway governance.** Tula and Aria target
+"BAA-eligible endpoints" (HIPAA Business Associate Agreement),
+"multi-tenant identity, RBAC, BAA-tier LLM gateways." This is a
+*compliance-gateway* primitive distinct from generic API-key
+management: the gateway enforces which models the project is
+permitted to route to under its BAA, logs every call for audit, and
+participates in the foundry-side governance integrations Tula cites
+(Microsoft Purview, Defender, Entra). Treat as a sub-shape of the
+external-compliance-test-kit pattern: the BAA gateway is owned by
+the foundry vendor (or a dedicated gateway service); the project
+integrates against it the same way it integrates against Inferno —
+declared in `docs/security/compliance-integrations.md` with a
+specific configuration the validator can sanity-check.
+
+**(B2) EU AI Act compliance test-kit integration.** Tula cites
+Microsoft Foundry pairing continuous evaluation with [governance
+integrations](https://devblogs.microsoft.com/foundry/achieve-end-to-end-observability-in-azure-ai-foundry/)
+for **Microsoft Purview Compliance Manager**, **Credo AI**, and
+**Saidot** to align evaluation plans with frameworks like the EU AI
+Act. These are externally-owned test/audit kits in the same shape
+as Inferno (HIPAA/ONC): vendor-owned, runnable on a schedule,
+producing a conformance report. v1 should explicitly name AI Act
+alongside ONC/HIPAA/PCI/FedRAMP in the regulatory-coverage examples.
+
+Both sub-shapes preserve the original *external-owned, project-
+integrated, schedule-invoked* pattern; neither requires a new
+top-level module. PRD-pass should confirm both fit naturally into
+v1's required artifacts (likely as named entries in
+`docs/security/compliance-integrations.md` with sub-templates for
+the BAA-gateway-config and the AI-Act-evaluation-mapping shapes).
+
+This augmentation pairs with the Tula second-pass anchor
+[OPP-0027](OPP-0027-frontier-agent-posture.md) and its satellites —
+specifically [OPP-0030](OPP-0030-intelligent-model-routing.md), whose
+routing-table artifact is the natural place to declare BAA-tier
+routing preferences. Composition: a healthcare project with
+frontier-agent posture adopts OPP-0030 (declares routing table),
+OPP-0015 (declares BAA-gateway + AI-Act integrations), and
+OPP-0013/0016 (healthcare-specific). All four artifacts together
+form the regulated-AI deployment posture.
 
 ## Disposition
 

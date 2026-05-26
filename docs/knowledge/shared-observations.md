@@ -2,7 +2,7 @@
 
 **Structure:** Structured Template (see README.md § Observation Structure; locked by ADR-0002)
 **Write Policy:** heartbeat-only (see README.md § Write Policy; adjustable)
-**Last Updated:** 2026-05-25 *(Phase 0.5 hotfix bundle + OPP-0026 promotion: three new observations on declaration-without-enforcement patterns — cross-repo silent failures paired with OPP-0025, the intra-repo sibling paired with OPP-0026, and a third on sunset-PRD discipline appended during the OPP-0026 → exploring promotion that CI's cycle-end rule forced into being)*
+**Last Updated:** 2026-05-25 *(Tula second-pass cluster filing: appended layered-brownfield-discovery observation paired with OPP-0027 anchor + OPP-0028..0031 satellites + augmentations to OPP-0015/0019/0021; brings total session observations to twelve across declaration-without-enforcement, sunset-PRD discipline, and layered-brownfield-discovery patterns)*
 
 Append-only structured observations from project participants (agents
 and humans). Read this file on each heartbeat. Observations accumulate
@@ -1483,3 +1483,69 @@ here until distillation.
   satisfier set shrank exactly as designed).
 - **Severity:** governance-relevant
 - **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-25 (PRD-0011 implementation; satisfies the cycle-end distillation rule fired by the implementation PR's ADR-0014 + module.yaml + OPP-0026 acceptance edits; also satisfies the PRD-0011 acceptance criterion requiring a paired observation confirming the sunset)
+
+### Brownfield catalog gaps surface in layers — the first profile pass catches product-shape gaps; a second pass catches platform-layer gaps
+
+- **Context:** Tula second-pass profiling against the
+  [Tula README](https://github.com/unclenate/tula/blob/main/README.md)
+  on 2026-05-25, after the catalog had digested the first-pass
+  filings (OPP-0018..0022 + augmentations to OPP-0013/0016). The
+  first pass produced five OPPs covering *product shape* — eval-gated
+  skill-pack architecture, binary-eval testing posture, self-hosted-
+  OSS delivery, evaluation tooling in toolchain, patient-facing
+  health-agent safety — and the operator-vs-patient-side
+  augmentation of the healthcare family. The second pass produced
+  five *new* OPPs (the OPP-0027 anchor + four satellites OPP-0028..0031)
+  covering *enterprise-AI-platform layering* — foundry targeting,
+  agent observability, intelligent model routing, defense-in-depth
+  for autonomous agents — plus three augmentations (OPP-0015 with
+  BAA-LLM-gateway and AI Act, OPP-0019 with three-stage eval
+  lifecycle, OPP-0021 with optional `OPEN_CORE.md`). The two passes
+  surfaced *disjoint* gap sets — the first pass did not see the
+  second-pass cluster because the first pass was answering "what
+  product shape is this?", not "what enterprise-AI-platform
+  infrastructure does this commit to?"
+- **Observation:** Brownfield catalog-gap discovery is *layered*,
+  not flat. A single onboarding pass surfaces the gap class the pass
+  is *looking for*; gap classes orthogonal to that framing remain
+  invisible until a deliberate second pass against a different
+  framing question. The first Tula pass framing was "what's the
+  product shape and what safety constraints apply?" — that framing
+  caught the delivery-topology gap (OPP-0021) and the healthcare-
+  safety gap (OPP-0022) but did not catch the foundry-target gap
+  (OPP-0028) or the observability gap (OPP-0029) because those
+  weren't in the first frame. The second pass framing was "what
+  enterprise-AI-platform infrastructure is this project built to
+  participate in?" — that framing caught the cluster the first pass
+  missed. This generalizes: each onboarding pass should declare its
+  *framing question* explicitly; subsequent passes against the same
+  project should pick a *different* framing question to surface
+  orthogonal gaps. The discipline: don't assume one pass exhausts a
+  brownfield project's catalog-implications; budget multiple passes
+  with deliberately-different framings.
+- **Implication:** Two operational moves follow. (1) `harness-
+  onboarding` SKILL should explicitly prompt for the *framing
+  question* the pass is answering, capture it in the gap analysis,
+  and recommend at least one orthogonal-framing second pass for
+  non-trivial consumers — especially agent-native ones, which span
+  product-shape, regulated-AI-deployment, and enterprise-AI-platform
+  dimensions simultaneously. (2) Future brownfield onboardings
+  should be scheduled as *two-pass* by default: first pass on
+  product/delivery/safety shapes, second pass on platform/observability/
+  routing/defense-in-depth shapes. The first pass produces fast
+  catalog growth (zero-required-artifact OPPs); the second pass
+  produces deeper architecture-aware modules. PRD-pass for any
+  future onboarding-skill enhancement should explicitly bake in the
+  two-pass cadence. This is also a strong second instance for the
+  *session-cycle orchestration candidate* in
+  `docs/opportunities/candidates.md` — the missing review there is
+  *"second-pass onboarding against a different framing question"*.
+- **Confidence:** medium-high — one strong instance (this Tula
+  second-pass directly produced five new OPPs and three substantial
+  augmentations the first pass missed). The structural argument is
+  sound, but a second instance against a different consumer project
+  would lift to high. The pattern's specific prediction: any
+  brownfield agent-native project will surface enterprise-AI-platform-
+  layer gaps on a second pass that the first pass misses.
+- **Severity:** process
+- **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-25 (Tula second-pass profiling against the project README, after the catalog had digested OPP-0018..0022; paired with OPP-0027 anchor and satellites OPP-0028..0031, plus augmentations to OPP-0015, OPP-0019, OPP-0021)

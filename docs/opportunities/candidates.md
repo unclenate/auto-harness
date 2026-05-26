@@ -301,6 +301,70 @@ which OpenEMR's operator-side family did not see.*
   role-distinct second healthcare consumer (patient-authorized SMART client vs
   OpenEMR's server/provider-launch), plus the US-bias guardrail.
 
+#### From Tula second-pass — enterprise-AI-platform layering (2026-05-25)
+
+Second-pass profiling of the Tula README against a different framing
+question ("what enterprise-AI-platform infrastructure does this commit
+to?") surfaced a cluster of gaps the first pass missed. Filed as an
+anchor + four satellites following the OPP-0007 anchor-satellite
+pattern; three existing OPPs gained substantive augmentations. The
+paired observation *"Brownfield catalog gaps surface in layers — the
+first profile pass catches product-shape gaps; a second pass catches
+platform-layer gaps"* in `shared-observations.md` (2026-05-25)
+generalizes the two-pass discipline.
+
+- **[OPP-0027](OPP-0027-frontier-agent-posture.md)** *(proposed
+  2026-05-25; anchor)* — `management/frontier-agent-posture` overlay
+  declaring a project commits to enterprise-AI-platform standards
+  from skill #1: foundry-targeting, OTel-shaped observability,
+  intelligent model routing, defense-in-depth-for-autonomous-agents.
+  Lightweight umbrella; substantive machinery lives in the four
+  satellites below. Second instance of the anchor-satellite filing
+  pattern after OPP-0007.
+- **[OPP-0028](OPP-0028-ai-foundry-target.md)** *(proposed 2026-05-25;
+  satellite of OPP-0027)* — `architectures/ai-foundry-target` —
+  enumerated `foundries:` field naming which enterprise AI foundries
+  (Microsoft / Azure AI Foundry, NVIDIA AI Foundry, Palantir Foundry /
+  AIP, AWS Bedrock Agents, Google Vertex Agents, IBM watsonx
+  Orchestrate) the project commits to landing in. New
+  `architectures/`-family deployment-target dimension distinct from
+  `delivery/` and `agents/`.
+- **[OPP-0029](OPP-0029-agent-observability.md)** *(proposed
+  2026-05-25; satellite of OPP-0027)* — `architectures/agent-observability`
+  — OpenTelemetry-shaped multi-agent semantic conventions (Microsoft +
+  Cisco Outshift). Required artifacts: `docs/observability/trace-contract.md`,
+  plus `docs/observability/exporters.md`. Companion rule: action-code
+  changes require trace-contract updates if a new span shape is
+  introduced. Composes with OPP-0028 (foundries consume the shape)
+  and OPP-0030 (model-selection spans).
+- **[OPP-0030](OPP-0030-intelligent-model-routing.md)** *(proposed
+  2026-05-25; satellite of OPP-0027)* — `architectures/intelligent-model-routing`
+  — deployment-context-aware multi-provider routing as a first-class
+  architectural primitive. Required artifact: `docs/architecture/model-routing.md`
+  with the routing table, decision criteria, providers, and
+  foundry-routing seams. Healthcare-specific routing (MedGemma 4B/27B,
+  MedASR, MedImageInsight, CXRReportGen) named in the suggested-providers
+  list but not required.
+- **[OPP-0031](OPP-0031-agent-defense-in-depth.md)** *(proposed
+  2026-05-25; satellite of OPP-0027)* — `architectures/agent-defense-in-depth`
+  — Microsoft's four mutually-reinforcing patterns: agents-as-microservices,
+  least-permissions, deterministic human-in-the-loop, agent-identity.
+  Required artifacts: `docs/security/agent-defense-in-depth.md` +
+  `docs/security/append-only-action-log.md`. Generalizes OPP-0022's
+  healthcare-specific safety to the umbrella four-pattern model.
+- *Augmentations (not new OPPs):*
+  [OPP-0015](OPP-0015-regulated-compliance-test-kits.md) gains
+  *(B1)* BAA-tier LLM gateway governance and *(B2)* EU AI Act
+  compliance test-kit integration (Microsoft Purview, Credo AI, Saidot)
+  as two named sub-shapes of the external-test-kit pattern.
+  [OPP-0019](OPP-0019-eval-gated-testing-posture.md) gains the
+  *three-stage eval lifecycle* dimension (dev → CI → production-traffic);
+  v1's CI-stage coverage is the floor, with production-traffic stage
+  a v2 OPP candidate. [OPP-0021](OPP-0021-delivery-self-hosted-oss.md)
+  gains an optional `OPEN_CORE.md` template for self-hosted-OSS
+  projects with a proprietary commercial extension (Tula/Aria split
+  as the reference instance).
+
 ### Canonical direction & strategic alignment
 
 - [OPP-0007](OPP-0007-canonical-position-artifact.md) *(exploring;

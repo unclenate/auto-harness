@@ -9,7 +9,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 **Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-05-24
-**Last Updated:** 2026-05-25 *(accepted; PRD-0010 drafted + module scaffolded; v0.5.2 batch)*
+**Last Updated:** 2026-05-25 *(accepted; PRD-0010 drafted + module scaffolded; v0.5.2 batch. Augmented 2026-05-25 during Tula second-pass: add optional `OPEN_CORE.md` template for self-hosted-OSS projects with a proprietary commercial extension.)*
 **Confidence:** medium-high
 
 ---
@@ -110,6 +110,51 @@ review-gated by criticality). See PRD-0010 for resolved design questions.
 
 - See [`docs/requirements/PRD-0010-self-hosted-oss-delivery.md`](../requirements/PRD-0010-self-hosted-oss-delivery.md)
 - Module: `platform/profiles/delivery/self-hosted-oss/`
+
+## Augmentation — open-core formal scope-split (Tula second-pass, 2026-05-25)
+
+Tula ships a first-class artifact named `OPEN_CORE.md` that
+documents the precise boundary between the open-source project
+(Tula) and its proprietary commercial extension (Aria):
+
+> "Tula is complete and useful on its own. Aria consumes Tula skills
+> as a versioned dependency and adds the enterprise infrastructure
+> required for healthcare organizations, including patient identity,
+> ingest routing, dashboards, LLM gateway governance, audit,
+> compliance, and operational controls. The detailed scope split is
+> documented in `OPEN_CORE.md`."
+
+The open-core split is a *recurring pattern* in the self-hosted-OSS
+delivery space: Nextcloud Hub vs. Nextcloud Enterprise, Gitea vs.
+Forgejo's commercial offerings, Sentry's BSL split, etc. Projects
+that ship both an open-source core and a commercial extension
+benefit from having the scope-split documented as a first-class
+artifact rather than buried in marketing.
+
+Add an **optional** `OPEN_CORE.md` template to the
+`delivery/self-hosted-oss` module:
+
+- `platform/templates/delivery/open-core.md` — template scaffolding
+  the scope-split sections: open-license vs. proprietary scope,
+  versioning relationship, dependency contract, contribution
+  boundaries, trademark/IP separation, commercial-extension
+  framing.
+
+The artifact is **optional** in the module — projects without a
+proprietary commercial extension don't need it. Projects with one
+benefit from having a single canonical document a potential
+contributor or commercial customer can read to understand the
+boundary. PRD-pass should weigh whether to also expose a
+companion-rule that fires when `OPEN_CORE.md` is edited (audit
+trail — open-core scope splits are governance-relevant by nature).
+
+This augmentation composes with the Tula second-pass cluster anchor
+[OPP-0027](OPP-0027-frontier-agent-posture.md) only loosely —
+open-core is a *delivery* concern, not a *frontier-agent posture*
+concern. Captured here as an OPP-0021 augmentation rather than a
+standalone OPP because the artifact is small, the integration is
+local, and the precedent (optional template attached to an existing
+module) is established.
 
 ## Related
 

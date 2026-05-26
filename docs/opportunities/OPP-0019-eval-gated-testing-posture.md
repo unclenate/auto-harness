@@ -9,7 +9,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 **Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-05-24
-**Last Updated:** 2026-05-25 *(accepted; PRD-0009 drafted + module scaffolded; v0.5.2 batch)*
+**Last Updated:** 2026-05-25 *(accepted; PRD-0009 drafted + module scaffolded; v0.5.2 batch. Augmented 2026-05-25 during Tula second-pass: the eval lifecycle has three stages — dev → CI → production-traffic — and v1's CI-stage coverage is the current floor; v2 candidate work captures the other two stages.)*
 **Confidence:** high
 
 ---
@@ -108,6 +108,46 @@ work in PRD-0009. See PRD-0009 for resolved design questions.
 - See [`docs/requirements/PRD-0009-eval-gated-testing-module.md`](../requirements/PRD-0009-eval-gated-testing-module.md)
 - Module: `platform/profiles/management/eval-gated-testing/`
 
+## Augmentation — three-stage eval lifecycle (Tula second-pass, 2026-05-25)
+
+The Tula second-pass surfaced an additional dimension v1 doesn't
+explicitly capture: the eval lifecycle has **three stages**, not just
+one. Tula's README § *"Continuous evaluations"*:
+
+> "Tula's suite is shaped to publish into that same [Microsoft
+> Foundry agent evaluator] lifecycle (**dev to CI to production
+> traffic**)."
+
+The three stages serve different purposes:
+
+1. **Dev-stage evals** — developer runs `waza run` locally; LLM
+   actually executes; results are gitignored. Tight feedback loop;
+   no gate.
+2. **CI-stage evals** — Waza spec gate runs on every PR; binary
+   pass/fail; merge-blocking. **This is what v1 of OPP-0019 ships.**
+3. **Production-traffic evals** — same eval suite runs against
+   production traffic continuously; outcomes published; drift
+   detection on the binary pass-rate over time. Foundry Observability
+   GA enables this surface (Foundry agent evaluators are designed to
+   run against live production telemetry).
+
+v1's CI-stage coverage is the right floor — it's the merge gate,
+which is the most load-bearing of the three. The dev-stage is
+"build it yourself" today (no harness primitive needed; the eval
+suite *is* the dev-stage harness). The production-traffic stage is
+a v2 OPP candidate: capture how an eval suite *publishes into a
+production-traffic eval lifecycle* once the harness has a consumer
+exercising it. PRD-pass for any future v2 should reference Tula's
+[Foundry agent evaluators](https://learn.microsoft.com/en-us/azure/foundry/concepts/evaluation-evaluators/agent-evaluators)
+citation as the upstream design source.
+
+This augmentation composes with the Tula second-pass anchor
+[OPP-0027](OPP-0027-frontier-agent-posture.md) — production-traffic
+eval is one of the substantive primitives of frontier-agent posture.
+Treated here (not as a separate satellite OPP) because the lifecycle
+*shape* is best owned by the eval-posture module itself, even if v1
+covers only one stage.
+
 ## Related
 
 - Gap analysis source: consumer project (`tula`) at
@@ -117,4 +157,5 @@ work in PRD-0009. See PRD-0009 for resolved design questions.
   (harness-side eval tooling)
 - Adjacent (different gate pattern): [OPP-0015](OPP-0015-regulated-compliance-test-kits.md)
   (external regulator conformance kits)
+- Tula second-pass cluster anchor: [OPP-0027](OPP-0027-frontier-agent-posture.md) (production-traffic eval is part of the frontier-agent posture; the v2 candidate work composes here)
 - Existing module extended: `platform/profiles/management/testing-standard/module.yaml`

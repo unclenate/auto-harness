@@ -25,7 +25,16 @@
     "platform/validators/test/fixtures/**",
     "platform/templates/docs/**",
     "platform/bootstrap/test/fixtures/**",
-    ".remember/**"
+    ".remember/**",
+    "docs/superpowers/plans/**",
+    "docs/superpowers/specs/**"
+    // docs/superpowers/{plans,specs} are informal working artifacts (session
+    // implementation plans and design specs that quote template bodies), not
+    // published docs held to the doc-quality bar. They are already excluded
+    // from the placeholder scan via .placeholder-ignore (specs added in
+    // commit 2fd8bda); this mirrors that policy for markdownlint so the two
+    // exclusion surfaces stay aligned.
+    //
     // (The pre-ADR-0014 exclusions for docs/knowledge/distilled-learnings.md
     //  and platform/templates/knowledge/distilled-learnings.md were lifted
     //  on 2026-05-25 when the audit-trail companion rule that gated those

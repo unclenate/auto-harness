@@ -77,6 +77,36 @@ and its rationale in the metadata above.
 
 ---
 
+## Candidate-Stub Technique (OPTIONAL)
+
+For an insight that is worth recording but is still single-instance — too thin
+to justify a full `OPP-NNNN-slug.md` record, yet too valuable to lose to
+session memory — capture it as a **candidate stub** with an **explicit
+promotion criterion**:
+
+1. **Stub it.** Add a one-line entry under a cluster heading in `candidates.md`
+   (the organizational index), not a full OPP file. The stub is an index line,
+   so it lives in `candidates.md` — *this technique* (the how-to) is policy and
+   lives here in `README.md`; the stub itself does not.
+2. **Declare the promotion criterion in the stub.** State the evidence bar that
+   should lift it to a full OPP, e.g.:
+   - *"second concrete instance surfaces independently"* (cross-session evidence)
+   - *"an audit surfaces the same gap class"* (audit-driven evidence)
+   - *"a consumer project hits this"* (field evidence)
+3. **Promote when the criterion fires.** When the bar clears, spawn the full
+   `OPP-NNNN-slug.md` file and cite the accumulated evidence in its
+   Origin / Evidence section.
+
+The promotion criterion is the load-bearing part — without it, a stub is an
+undated note; with it, the stub is a self-firing record that activates when its
+own evidence-bar clears. This avoids the two failure modes of candidate
+capture: *premature OPP filing* (one instance gets a full OPP that no second
+instance ever validates) and *forgotten insights* (single-instance concerns
+never recorded). The technique gates on **evidence accumulation**, the same
+discipline the lifecycle applies to candidates more broadly.
+
+---
+
 ## Status Definitions and Transition Requirements
 
 | Status | What it means | Required when transitioning into this state |

@@ -2,7 +2,7 @@
 
 **Structure:** Structured Template (see README.md § Observation Structure; locked by ADR-0002)
 **Write Policy:** heartbeat-only (see README.md § Write Policy; adjustable)
-**Last Updated:** 2026-05-26 *(PRD-0014 drafting: appended the third-instance-of-deferred-implementations observation, building on the rationale-expansion-without-rule-change observation from Phase 2 of ADR-0013. The discipline now has three firings in one session, lifting it to operating-principle candidate. Two ripe follow-up moves: § 9 promotion + PRD template "Implementation Deferral" section.)*
+**Last Updated:** 2026-05-26 *(PRD-0014 drafting: appended the third-instance-of-deferred-implementations observation, building on the rationale-expansion-without-rule-change observation from Phase 2 of ADR-0013. The discipline now has three firings in one session, lifting it to operating-principle candidate. Two ripe follow-up moves: § 9 promotion + PRD template "Implementation Deferral" section. **Both landed 2026-05-26** in the discipline-codification PR, which also documented the one-firing candidate-stub-with-promotion-criterion technique in the opportunity README template — see the dated update notes on the relevant observations below.)*
 
 Append-only structured observations from project participants (agents
 and humans). Read this file on each heartbeat. Observations accumulate
@@ -1597,6 +1597,18 @@ here until distillation.
   operating-principles candidate after a second observed
   promotion-gate firing — same gate-promotion discipline applied to
   operating-principles itself.
+  - **Update 2026-05-26:** Documented as a technique in the
+    discipline-codification PR — but in the opportunity **README
+    template** (`platform/templates/opportunity/README.md`), not the
+    candidates.md template this implication originally named. The
+    correction: the technique is *how-to-capture* guidance (policy),
+    and the candidates.md charter (ADR-0012, operating-principle § 7)
+    reserves that file for *organizational* index content while policy
+    lives in `README.md`. The stub itself is an index line (lives in
+    candidates.md); the *technique* documenting it is policy (lives in
+    the README). Operating-principle promotion remains correctly gated
+    on a **second** promotion-gate firing — it was *not* promoted now,
+    preserving the very candidate-stub discipline it describes.
 - **Confidence:** medium — one direct instance of the promotion-gate
   firing correctly, with concrete evidence (the OPP-0032 file now
   exists with the two cited instances). Second instance would lift to
@@ -1678,6 +1690,13 @@ here until distillation.
   explicitly with a "Implementation Deferral" section that prompts the
   author to enumerate which implementations are deferred and why —
   defer that template change until the third instance accumulates.
+  - **Update 2026-05-26:** The third instance arrived (PRD-0014) and
+    both the § 9 promotion and the PRD-template "Implementation
+    Deferral" section landed the same day. The § 9 heading shipped as
+    *"Split Design from Implementation"* (not co-located with the
+    candidate-stub technique — that pattern is at one firing and got
+    lighter-weight template documentation instead). See the
+    third-instance observation below for the landing detail.
 - **Confidence:** medium-high — two direct instances in one session
   with explicit reasoning in each PRD's Non-Goals section. Third
   instance from a future session would be the lift to high.
@@ -1776,6 +1795,17 @@ here until distillation.
   OPP given the topical adjacency, with the operating-principle
   promotion as the v1 deliverable and the template change as v2)
   is the natural next discipline-codification work.
+  - **Update 2026-05-26:** Both moves landed in a single
+    discipline-codification PR (not filed as a follow-up OPP — the
+    work was small, self-contained, and directly supported by the
+    three documented instances, so it shipped as a direct codification
+    of an already-evidenced discipline). `docs/operating-principles.md`
+    § 9 *Split Design from Implementation* now codifies the discipline
+    with all three instances cited; `platform/templates/product/prd.md`
+    gained an *Implementation Deferral* section. The candidate-stub
+    technique (one firing) was documented as guidance in the
+    opportunity README *template* rather than promoted to an
+    operating-principle — see that observation's own update note.
 - **Confidence:** high — three direct instances in one session with
   explicit citation chain (PRD-0011 → PRD-0013 → PRD-0014). The
   pattern's generalizability is proven across three distinct domains

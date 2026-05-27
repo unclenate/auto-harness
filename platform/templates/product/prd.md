@@ -69,6 +69,25 @@ allow scope to creep back in:
 |---------|----------------|-----------------|
 | | | After [[MILESTONE_1]] |
 
+## Implementation Deferral
+
+*(When applicable — fill when this PRD designs a contract, taxonomy, or module
+whose enforcement machinery is intentionally split into a follow-up. Leave empty
+when v1 ships both the design and its enforcement.)*
+
+Per operating principle § 9 (*Split Design from Implementation*), a PRD whose
+natural scope would bundle design work with the machinery that enforces it
+should ship the design at v1 and defer the enforcement to a follow-up OPP/PRD
+pair. A deferred implementation that is not written down is indistinguishable
+from a forgotten one — enumerate each one, what it is deferred to, and why.
+
+| Deferred implementation | Deferred to | Why deferred |
+|-------------------------|-------------|--------------|
+| [[DEFERRED_IMPL]] | [[DEFERRED_TO]] | [[DEFERRAL_REASON]] |
+
+What v1 *does* commit to (the contract that must hold before any enforcement is
+built): [[V1_CONTRACT]].
+
 ## Technical Constraints
 
 - [[TECHNICAL_CONSTRAINT]]

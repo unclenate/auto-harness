@@ -7,7 +7,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 # Operating Principles — Development Harness Framework
 
 > Owner: @unclenate
-> Last updated: 2026-05-25 *(now the project's curated longitudinal destination per ADR-0014; previously § 8 added on 2026-05-22)*
+> Last updated: 2026-05-26 *(§ 9 "Split Design from Implementation" added — promoted from the three-instance deferred-implementations observation in shared-observations.md; previously the curated longitudinal destination role was established 2026-05-25 per ADR-0014)*
 
 These principles govern how the harness platform itself is built and evolved.
 They are derived from the kernel doctrine and adapted to this project's context.
@@ -216,3 +216,56 @@ expected. The fix was slashes. The caveat is a corollary of this section,
 not an exception to it — Markdown remains the right choice; the table
 sub-syntax just has a trap worth naming so future authors don't re-pay the
 review cycles.
+
+---
+
+## 9. Split Design from Implementation
+
+When a PRD's natural scope would bundle *design work* (deciding what the
+system should do and why) with *implementation work* (writing the rule,
+regex, validator, or module that enforces it), prefer shipping the design at
+v1 and deferring the implementation to a follow-up OPP/PRD pair.
+
+- **Design and implementation are different change classes**, and operating
+  principle § 7 (*Align File Boundaries with Change-Class Boundaries*) is the
+  load-bearing argument: the design work of deciding "which review wants which
+  trigger primitive" or "what contract should this module declare" is reviewed
+  on different terms than the implementation work of writing a rule's regex,
+  satisfier set, and `humanReview` text. Bundling them lets the lighter half
+  ride on the heavier half's review and starves each of its own design
+  pressure.
+- **v1 ships the contract; a follow-up ships the enforcement.** The v1 PRD
+  establishes *what should happen and why*; follow-up PRDs ship *how each
+  component does its part*. This lets the v1 contract be validated against
+  real consumer adoption before enforcement machinery locks it in — a contract
+  that no consumer exercises is cheaper to revise than one already wrapped in
+  companion rules and validators.
+- **The cost is one extra PR per implementation; the benefit is that each
+  implementation gets full design-pressure review on its own terms.** When the
+  cheap move is "ship taxonomy plus four new rules in one PR," the disciplined
+  move is usually to ship the taxonomy and defer the rules — unless the rules
+  are trivial and the taxonomy is meaningless without them.
+- **Record the deferral explicitly.** A deferred implementation that is not
+  written down is indistinguishable from a forgotten one. State in the v1 PRD's
+  Non-Goals or a dedicated *Implementation Deferral* section which
+  implementations are deferred, to what follow-up, and why (see the PRD
+  template's *Implementation Deferral* section).
+
+**First applied** across three instances in one session (2026-05-26),
+documented in `docs/knowledge/shared-observations.md`:
+
+- **[PRD-0011](requirements/PRD-0011-distilled-learnings-disposition.md)** —
+  the distilled-learnings sunset explicitly rejected Option B (adding a
+  synthetic forcing trigger to operating-principles) to preserve the
+  evidence-driven promotion cadence. Design without new enforcement.
+- **[PRD-0013](requirements/PRD-0013-session-cycle-orchestration.md)** — the
+  session-cycle taxonomy ships the workflow doc and defers the per-rule
+  companion-rule machinery to per-rule OPP→PRD cycles.
+- **[PRD-0014](requirements/PRD-0014-agent-observability.md)** — the agent-
+  observability module ships the trace-contract *contract* and templates and
+  defers the trace-contract-update companion rule to a v2 OPP/PRD pair.
+
+**When drafting a PRD, ask:** *does this PRD's natural scope bundle "what
+should happen" with "the machinery that enforces it"?* If yes, ship the design
+and defer the enforcement — unless the enforcement is trivial or the design is
+inert without it. Name every deferral so it is a record, not a gap.

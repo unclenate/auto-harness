@@ -11,6 +11,67 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## Wave 5.2 Implementation — `validate-skill-content.sh` + adversarial corpus
+
+Implements PRD-0015 — Skill Content Safety Validator. Closes Wave 5.2
+of execution-roadmap §8 and safety-security-sweep §3 red-team vectors
+V1, V2, V4 (partial), V6. Cited under [ADR-0017](../adr/ADR-0017-safety-hardening-roadmap.md).
+
+**What shipped:** 13th validator (`validate-skill-content.sh`) — a
+Bash + Ruby content scanner. Across active modules, scans `module.yaml`
+description-class fields (`description`, `summary`, `reviewGates[]`,
+`companionRules[].humanReview`), SKILL.md bodies referenced via
+`recommendedSkills[]`, and markdown files referenced via
+`compiledFragments[]`. Hard-fails on any unexempted match against the
+v1 denylist (10 patterns covering P01–P10 per PRD-0015 Technical
+Constraints). `.skill-content-ignore` exemption file (line-regex
+format mirroring `.knowledge-redaction-ignore`). 3-state exit per
+established convention.
+
+**Adversarial-corpus seed at `platform/validators/test/fixtures/adversarial/`** —
+10 single-line fixtures, one per v1 denylist pattern, with README
+documenting the append-only discipline. Test suite (7 cases) asserts:
+every pattern ID has a fixture; every fixture fires via `--scan-file`;
+clean input via `--scan-file` passes; missing path / missing argument
+both exit 2; missing manifest exits 2; dogfood pass against harness's
+own active-module surface.
+
+**Predict-clean prediction held.** PRD-0015 predicted the harness's
+own authored prose passes the v1 denylist. Outcome: **51 sources
+scanned, zero hits** — the prediction held verbatim. Third
+predict-clean validator in a row (Wave 5.3, Wave 5.5 via WARN posture,
+Wave 5.2 via strict BLOCK posture). The convergence trajectory
+continues: Wave 1 → 6, Wave 5.1 → 4, Wave 5.3 → 0, Wave 5.5 → 0,
+Wave 5.2 impl → 0.
+
+**Implementation Reconciliation — `--scan-file` mode addition.** The
+implementation added a small `--scan-file <path>` mode to the
+validator that wasn't in PRD-0015's Must-Have FRs. This is a **test
+seam** (additive ergonomic, not contract change): the §10 Claim
+Classification block in PRD-0015 still holds verbatim; the seven
+Must-Have FRs all hold; only the implementation surface gained a
+direct-content-test mode that the platform-root-fixed validator
+pattern needed for fixture-firing tests. A substantive distillation
+observation (`[[test-seams-are-not-section-10-deviations]]`) in
+`shared-observations.md` carves this category out as a recognized
+programming-discipline distinction that future PRs shouldn't flag as
+drift. **PR-level minor field-name reconciliation:** PRD-0015 FR-001
+referenced "skills list" but the actual module.yaml field is
+`recommendedSkills`; the implementation uses the correct field name
+matching kernel/base/module.yaml's existing usage.
+
+**Companion-rule analysis.** Kernel/base rule fires (this PR touches
+`.github/workflows/harness.yml` + `AGENTS.md`) — satisfied by this
+change-log entry. Knowledge-capture cycle-end fires on
+kernel/base/module.yaml validators-list edit — satisfied by the
+substantive distillation observation in `shared-observations.md`.
+
+| Date | Change | Closes | ADR |
+| ---- | ------ | ------ | --- |
+| 2026-05-28 | Shipped `validate-skill-content.sh` (13th validator). v1 denylist scanner (10 patterns: prompt-injection + tier-bypass + role-prompt headers + zero-width chars + bidi marks). `.skill-content-ignore` exemption file. 10-fixture adversarial corpus with README. 7-case test class. `--scan-file` test-seam mode added during implementation. Wired into harness CI, consumer CI templates (GitHub + GitLab), `AGENTS.md`, `harness-governance/SKILL.md` (chain + signature notes), `validators/README.md` (table + recipe), root `README.md` (table + mermaid + prose count). Bumped catalog count 12 → 13 across 5 documented sites. Predict-clean absorption confirmed: 51 sources scanned, zero hits. | Wave 5.2 of execution-roadmap §8; PRD-0015 / OPP-0033; safety-security-sweep §3 V1/V2/V4-partial/V6 | ADR-0017 (multi-PR shelter); PRD-0015 (design contract) |
+
+---
+
 ## Wave 5.2 PRD — Skill Content Safety Validator (PRD-0015, design-only)
 
 Files PRD-0015 to specify the v1 design contract for

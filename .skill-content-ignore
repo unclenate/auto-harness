@@ -1,0 +1,34 @@
+# .skill-content-ignore — exemption file for validate-skill-content.sh
+#
+# Each non-comment, non-blank line is a Ruby regex tested against lines
+# in scanned authored prose (per PRD-0015 FR-001 scanned-fields set).
+# If any pattern matches the offending line, the hit is exempted.
+#
+# Discipline (per OPP-0033 Risk 2): pedagogical contexts — e.g., the
+# harness-mcp skill citing MCP security patterns, or a future skill
+# discussing prompt-injection defense — may legitimately mention
+# denylist phrasings. Exempt those LINES specifically; don't exempt
+# whole files unless that's the actual review judgment.
+#
+# The exemption file should NOT become "a growing pile of ignored
+# consumer mentions." Reviewer pushback on growing exemption files is
+# part of the discipline. v1 ships empty; entries are added on
+# evidence-of-need, not pre-emptively.
+#
+# Format: same as .doc-reference-ignore, .placeholder-ignore,
+# .knowledge-redaction-ignore — one regex per line, # comments allowed.
+#
+# --- v1 seed exemptions (PRD-0015 FR-007 pedagogical-context carve-out) ---
+#
+# The harness-governance skill's signature-notes section describes the
+# validator's denylist patterns in prose for human readers. These mentions
+# are pedagogical / documentary, not injection vectors — the SKILL.md is
+# explaining what the validator catches so reviewers know how to read its
+# stderr. Per PRD-0015 FR-007 + OPP-0033 Risk 2, these lines are exempted.
+#
+# Specifically: the skill's section on validate-skill-content.sh quotes
+# the canonical injection phrases ("ignore previous instructions", "skip
+# the validator", "always operates at Tier") inside prose paragraphs.
+prompt-injection patterns like
+tier-bypass phrasings like
+canonical injection phrases

@@ -38,6 +38,7 @@ validate:
     - bash .harness/platform/validators/validate-doc-references.sh .
     - bash .harness/platform/validators/validate-trust-tier.sh harness.manifest.yaml .
     - bash .harness/platform/validators/validate-sensitive-paths.sh harness.manifest.yaml .
+    - bash .harness/platform/validators/validate-skill-content.sh harness.manifest.yaml .
     - bash .harness/platform/validators/validate-knowledge-redaction.sh . "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME"
     - |
       if [ "$CI_PIPELINE_SOURCE" = "merge_request_event" ]; then

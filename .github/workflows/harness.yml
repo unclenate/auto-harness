@@ -63,6 +63,12 @@ jobs:
       - name: Validate sensitive paths
         run: bash platform/validators/validate-sensitive-paths.sh harness.manifest.yaml .
 
+      - name: Validate skill content
+        # BLOCK posture (predict-clean absorption per PRD-0015 FR-003).
+        # Scans authored prose in active modules against denylist of
+        # prompt-injection / tier-bypass patterns (sweep §3 V1/V2/V4/V6).
+        run: bash platform/validators/validate-skill-content.sh harness.manifest.yaml .
+
       - name: Validate knowledge redaction
         # WARN posture: surfaces consumer-name hits in new knowledge-file lines
         # but does not fail the PR. Reviewers eyeball warnings in the log.

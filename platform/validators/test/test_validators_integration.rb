@@ -860,6 +860,7 @@ VALIDATOR_SCRIPTS = %w[
   validate-trust-tier.sh
   validate-sensitive-paths.sh
   validate-knowledge-redaction.sh
+  validate-skill-content.sh
 ].freeze
 
 class TestValidatorHelpFlag < Minitest::Test
@@ -1378,5 +1379,100 @@ class TestValidateKnowledgeRedaction < Minitest::Test
     # if the current feature branch has hits.
     assert_equal 0, code,
                  "Harness's own state must pass under WARN posture. stderr: #{err}\nstdout: #{out}"
+  end
+end
+
+# ---------------------------------------------------------------------------
+# validate-skill-content.sh
+#
+# Wave 5.2 of the 2026-05-27 audit roadmap (PRD-0015 / OPP-0033 / ADR-0017).
+# Scans authored prose in active modules (module.yaml description/summary/
+# reviewGates/companionRules.humanReview + SKILL.md bodies via recommendedSkills
+# + compiledFragments markdown) against a v1 denylist of prompt-injection and
+# tier-bypass patterns. Default posture: BLOCK (predict-clean absorption).
+# Closes safety-security-sweep §3 vectors V1, V2, V4 (partial), V6.
+# ---------------------------------------------------------------------------
+class TestValidateSkillContent < Minitest::Test
+  HARNESS_ROOT = File.expand_path("..", PLATFORM_DIR)
+  ADVERSARIAL_DIR = File.join(
+    PLATFORM_DIR, "validators", "test", "fixtures", "adversarial"
+  )
+
+  # The v1 denylist's pattern IDs — every one must have a fixture file
+  # with a matching prefix (PRD-0015 FR-005 append-only discipline).
+  V1_PATTERN_IDS = %w[P01 P02 P03 P04 P05 P06 P07 P08 P09 P10].freeze
+
+  # NOTE: Same platform-root-resolution constraint as validate-trust-tier.sh
+  # and validate-sensitive-paths.sh (the script computes PLATFORM_ROOT from
+  # its own location; synthetic-module fixture tests would require a
+  # platform-root-override that's out of v1 scope). Fixture-firing tests
+  # use --scan-file mode for direct content scanning instead.
+
+  def test_runs_clean_against_harness_repo
+    # Dogfood: against the harness's own active-module surface, the v1
+    # denylist must not match any authored prose. This is PRD-0015's
+    # predict-clean prediction; the test enforces it.
+    manifest = File.join(HARNESS_ROOT, "harness.manifest.yaml")
+    out, err, code = run_validator("validate-skill-content.sh", manifest, HARNESS_ROOT)
+    assert_equal 0, code,
+                 "Harness's own authored prose must pass v1 denylist. stderr: #{err}\nstdout: #{out}"
+    assert_match(/✓/, out)
+    assert_match(/sources scanned/, out,
+                 "validator must report how many sources it scanned")
+  end
+
+  def test_every_v1_pattern_id_has_a_fixture
+    # FR-005 append-only discipline: every denylist pattern ID must have
+    # at least one fixture file in the adversarial corpus.
+    V1_PATTERN_IDS.each do |pid|
+      matches = Dir.glob(File.join(ADVERSARIAL_DIR, "#{pid.downcase}-*.txt"))
+      refute_empty matches,
+                   "Pattern #{pid} has no fixture in #{ADVERSARIAL_DIR}/"
+    end
+  end
+
+  def test_every_fixture_fires_via_scan_file_mode
+    # FR-005: each adversarial fixture must trigger at least one denylist
+    # match. --scan-file mode bypasses the active-module gating so we can
+    # test fixture content directly. The pattern ID in the fixture
+    # filename (p01-..., p02-...) must appear in the validator's stderr.
+    Dir.glob(File.join(ADVERSARIAL_DIR, "p*-*.txt")).sort.each do |fixture|
+      pid = File.basename(fixture)[0, 3].upcase  # "p01" -> "P01"
+      _out, err, code = run_validator("validate-skill-content.sh", "--scan-file", fixture)
+      assert_equal 1, code,
+                   "Fixture #{File.basename(fixture)} must fire (exit 1). stderr: #{err}"
+      assert_match(/#{pid}/, err,
+                   "Validator stderr must name pattern ID #{pid}. stderr: #{err}")
+    end
+  end
+
+  def test_scan_file_clean_input_passes
+    # A clean file (e.g., the validator's own LICENSE-MIT) should pass
+    # the --scan-file scan with exit 0.
+    license = File.join(HARNESS_ROOT, "LICENSE-MIT")
+    skip "LICENSE-MIT not present" unless File.exist?(license)
+    out, err, code = run_validator("validate-skill-content.sh", "--scan-file", license)
+    assert_equal 0, code, "LICENSE-MIT must pass clean scan. stderr: #{err}"
+    assert_match(/Scan-file mode: clean/, out)
+  end
+
+  def test_scan_file_missing_path_exits_2
+    nonexistent = File.join(Dir.tmpdir, "skill-content-nope-#{Process.pid}.txt")
+    _out, err, code = run_validator("validate-skill-content.sh", "--scan-file", nonexistent)
+    assert_equal 2, code, "missing scan-file target must exit 2"
+    assert_match(/not found|No such file/i, err)
+  end
+
+  def test_scan_file_requires_argument
+    _out, err, code = run_validator("validate-skill-content.sh", "--scan-file")
+    assert_equal 2, code, "--scan-file without argument must exit 2"
+    assert_match(/requires a file path/i, err)
+  end
+
+  def test_missing_manifest_aborts_with_exit_2
+    nonexistent = File.join(Dir.tmpdir, "validate-skill-content-nope-#{Process.pid}.yaml")
+    _out, err, code = run_validator("validate-skill-content.sh", nonexistent)
+    assert_equal 2, code, "missing manifest must exit 2 (usage error)"
+    assert_match(/not found|No such file/i, err)
   end
 end

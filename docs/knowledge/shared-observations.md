@@ -2337,3 +2337,69 @@ here until distillation.
   signal — unclear.
 - **Severity:** architectural
 - **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-28 (PRD-0015 filing + OPP-0033 status flip; satisfies the cycle-end distillation rule fired by both the PRD creation in `docs/requirements/` and the OPP edit in `docs/opportunities/`; substantive connection — the observation captures the *design-time application* of §10 that PRD-0015 demonstrates; the prior [[claim-vs-enforcement-classification]] meta-pattern observations all addressed audit-time applications; PRD-0015's §10 block is the first instance of design-time application, completing the principle's generalization from audit to design)
+
+### Test-seam API additions are a class of implementation-time additions that should NOT count as §10 design-vs-implementation deviations — they don't change which claims are enforced, only how enforcement can be tested
+
+- **Context:** Wave 5.2 implementation (`validate-skill-content.sh`)
+  was authored from PRD-0015's seven Must-Have FRs. During
+  implementation, the FR-005 acceptance criterion ("the test suite
+  iterates fixtures, scans each with `validate-skill-content.sh`, and
+  asserts exit 1") collided with a known architectural constraint:
+  the validator computes `PLATFORM_ROOT` from its own script location,
+  making synthetic-module fixture tests require a platform-root-
+  override that's out of v1 scope (the same constraint Wave 5.1 and
+  Wave 5.3 hit). The implementation pass resolved this by adding a
+  small `--scan-file <path>` mode to the validator — a direct content
+  scanner that bypasses the active-module gating. The PRD did not
+  anticipate this surface; the implementation added it.
+- **Observation:** The `--scan-file` addition is **not** a §10
+  design-vs-implementation deviation in the Wave 5.1 sense (where
+  PRD-0006's FR-002/003/005 had latent contradictions that
+  mechanization forced to resolve). It is a **test seam** — an
+  additive ergonomic feature that doesn't change which load-bearing
+  claims the validator enforces. The §10 Claim Classification block
+  in PRD-0015 still holds verbatim (C-V1 / C-V2 / C-V4 partial / C-V6
+  all converted to Enforced; Half-enforced fallback for C-V4
+  unchanged; Out-of-scope set unchanged). The seven Must-Have FRs all
+  hold. Only the implementation surface gained a small additional
+  command-line mode that simplifies fixture testing and ad-hoc
+  adversarial-corpus exercise. **Test seams are a recognized
+  programming-discipline category, not a contract change.** Naming
+  this distinction up front prevents future "did the implementation
+  deviate from the PRD?" reviews from flagging additive ergonomics as
+  drift.
+- **Implication:** Three concrete moves; one already actionable.
+  **First**, the Implementation Reconciliation pattern from Wave 5.1
+  should explicitly carve out a **"Test seams and ergonomic additions
+  are not deviations"** clause. Implementing PRs may add such
+  features without triggering a §10 reconciliation; the change-log
+  entry should still name the addition for audit purposes (which this
+  PR does), but the addition does not count against PRD-implementation
+  congruence. **Second**, future PRDs for structural enforcers should
+  consider adding a `--scan-file` (or equivalent direct-content-test)
+  mode as a Must-Have FR up front, since (a) every prior wave hit the
+  same platform-root constraint, and (b) the test seam is small and
+  useful. The pattern is now thrice-evidenced (trust-tier, sensitive-
+  paths, skill-content all had the constraint; skill-content is the
+  first to solve it with a direct mode). **Third**, the predict-clean
+  absorption mechanism (per `feedback-validator-absorption-mechanisms`)
+  is now thrice-confirmed across distinct posture choices: Wave 5.3
+  (predict-clean strict via OPP-0034), Wave 5.5 (predict-clean via
+  WARN-posture-as-graceful-coverage per OPP-0036), Wave 5.2
+  (predict-clean strict via BLOCK-posture per PRD-0015). 51 sources
+  scanned with zero hits on first run = the prediction held.
+- **Confidence:** medium-high. One strong instance (this PR's
+  `--scan-file` addition is concrete and traceable). The
+  generalizability rests on the same constraint having surfaced
+  three times — the platform-root-fixed validator pattern is now
+  well-evidenced, and a test seam is the natural resolution. The
+  Implementation Reconciliation carve-out is a small documentation
+  discipline change; needs at least one more PR's worth of evidence
+  before promotion to operating-principle status. Open question: is
+  there a *category* of design-time additions that, like test seams,
+  are additive-and-ergonomic-only and don't count as §10 deviations?
+  Hypothesis: yes — at least `--verbose`/`--quiet` mode additions and
+  `--help`-text expansions also fit this category. Watch the next
+  Wave 5 implementation PR for additional instances.
+- **Severity:** programming-discipline
+- **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-28 (Wave 5.2 implementation; satisfies the cycle-end distillation rule fired by the kernel/base/module.yaml validators-list edit; substantive connection — the observation names a new programming-discipline distinction (test seams as additive non-deviations) that the prior [[§10-prd-claim-classification-block]] observation did not address; together they form a pair: the prior observation formalizes the design-time classification surface, this observation carves out what additions don't disturb that surface)

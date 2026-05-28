@@ -367,11 +367,12 @@ roadmap (5.1 → 5.3 → 5.5 → 5.2 → 5.4 per ADR-0017's amortized-risk
 ordering). All four OPPs use the §9 design-then-enforce pattern: ship
 the contract at v1; defer per-rule extensions to v2 if scope bloats.
 
-- [OPP-0033](OPP-0033-validate-skill-content.md) *(proposed
-  2026-05-27)* — Content-safety validator (`validate-skill-content.sh`)
-  scanning SKILL.md and `module.yaml` text fields against a deny-list
-  of prompt-injection and tier-bypass patterns. Closes red-team attack
-  vectors V1, V2, V4, V6 from safety-security-sweep §3. Wave 5.2.
+- [OPP-0033](OPP-0033-validate-skill-content.md) *(exploring
+  2026-05-28; PRD-0015 filed)* — Content-safety validator
+  (`validate-skill-content.sh`) scanning SKILL.md and `module.yaml`
+  text fields against a deny-list of prompt-injection and tier-bypass
+  patterns. Closes red-team attack vectors V1, V2, V4, V6 from
+  safety-security-sweep §3. Wave 5.2.
 - [OPP-0034](OPP-0034-validate-sensitive-paths.md) *(proposed
   2026-05-27)* — Sensitive-paths overlap validator (`validate-
   sensitive-paths.sh`) asserting every declared `sensitivePaths`

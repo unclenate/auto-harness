@@ -2274,3 +2274,66 @@ here until distillation.
   implementation PR and the next promotion cycle.
 - **Severity:** architectural
 - **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-28 (OPP-0037 filing; satisfies the cycle-end distillation rule fired by the OPP-0037 creation in `docs/opportunities/`; substantive connection — the observation captures the *promotion-workflow shape* that emerges from combining §9's design-only-OPP discipline with the half-day-direct-implementation pattern, neither of which prior observations addressed in combination; the Wave 5.5 [[posture-design-as-third-mechanism]] observation is the explicit antecedent — its closing implication recommended filing this promotion OPP; this observation is that filing's documented self-witness)
+
+### §10 PRD Claim Classification block is a load-bearing PRD structural addition — PRD-0015 demonstrates the discipline at design-pass time, not just at audit-pass time
+
+- **Context:** PRD-0015 (Skill Content Safety Validator) was filed on
+  2026-05-28 to specify Wave 5.2 of ADR-0017 (the
+  `validate-skill-content.sh` validator). It is the FIRST PRD
+  authored after §10 ("Classify Claims Before Enforcing Them") was
+  codified to operating-principles. The PRD's body includes a
+  **dedicated `## §10 Claim Classification` block** between Non-Goals
+  and Target Audience, naming each load-bearing claim being converted
+  from Asserted-only to Enforced (C-V1, C-V2, C-V4, C-V6) plus the
+  claims explicitly NOT converted (V3, V5, V7–V10) plus the
+  Half-enforced fall-back (C-V4 partial).
+- **Observation:** §10's classification mechanism, originally framed
+  as an *audit-time* discipline (Wave 2b safety sweep enumerated 19
+  claims and triaged them; the framework's Wave 5 roadmap was the
+  output), generalizes cleanly to *design-time*: every new structural
+  enforcer's PRD can include a §10 Claim Classification block that
+  forces the PRD author to enumerate exactly which Asserted-only
+  claims this enforcer converts, which it leaves unconverted, and
+  which it half-converts. **The classification block IS the PRD's
+  contract with the safety-debt ledger.** A PRD that doesn't enumerate
+  its claim-conversions allows scope creep: the implementing PR can
+  silently expand or contract what was supposedly "specified" without
+  visible deviation. The §10 block makes that contract explicit and
+  reviewable.
+- **Implication:** Three concrete moves; one already actionable. **First**,
+  the **PRD template at `platform/templates/product/prd.md` should
+  gain an optional `## §10 Claim Classification` section** with
+  guidance: "When this PRD ships a structural enforcer (validator,
+  schema rule, lint check), enumerate each load-bearing claim being
+  converted from Asserted-only to Enforced. Use the three-bucket
+  framing per §10. Claims explicitly NOT converted are themselves
+  load-bearing — name them so the next PRD knows what's still
+  Asserted-only." Filed as follow-up; not in PRD-0015's same-PR
+  scope. **Second**, **future PRD reviews should check** that the
+  §10 block's claim list matches the PRD's FRs — every claim
+  converted should map to at least one FR, every FR should map back
+  to at least one claim. This is a self-consistency invariant the
+  reviewer can mechanically check. **Third**, the
+  Implementation Reconciliation pattern from Wave 5.1 should explicitly
+  flag *§10 classification deviations* — if the implementing PR finds
+  it converted a claim the PRD didn't name (or failed to convert one
+  the PRD claimed), that's a §10 reconciliation, not a routine
+  reconciliation. Promote that distinction in the implementing PR's
+  change-log.
+- **Confidence:** medium. One strong instance (PRD-0015's §10 block
+  is concrete, traceable to four named claims, and forced explicit
+  Non-Goal enumeration that the OPP-0033 evidence section did not).
+  Generalizability to all structural-enforcer PRDs rests on §10's own
+  generalizability — already validated across four instances of the
+  meta-pattern. But the *design-time* application (vs §10's prior
+  audit-time applications) is novel; needs at least one more PRD to
+  confirm the block doesn't degenerate into a perfunctory checklist
+  field. Watch the next Wave 5.4 PRD (or whatever PRD comes next) for
+  whether the §10 block stays substantive or becomes ceremonial.
+  Open question: should the §10 block also appear in ADRs that
+  decide enforcement-roadmap priority order (like ADR-0017 itself)?
+  ADR-0017 implicitly classifies via its Wave order; making it
+  explicit via a §10 block might be redundant or might add reviewer
+  signal — unclear.
+- **Severity:** architectural
+- **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-28 (PRD-0015 filing + OPP-0033 status flip; satisfies the cycle-end distillation rule fired by both the PRD creation in `docs/requirements/` and the OPP edit in `docs/opportunities/`; substantive connection — the observation captures the *design-time application* of §10 that PRD-0015 demonstrates; the prior [[claim-vs-enforcement-classification]] meta-pattern observations all addressed audit-time applications; PRD-0015's §10 block is the first instance of design-time application, completing the principle's generalization from audit to design)

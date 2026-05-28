@@ -11,6 +11,57 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## §10 — Classify Claims Before Enforcing Them (operating-principles promotion)
+
+Implements [OPP-0037](../opportunities/OPP-0037-classify-before-enforcing-as-operating-principle.md)
+by adding a new §10 to `docs/operating-principles.md`. Promotes the
+[[claim-vs-enforcement-classification]] meta-pattern from the
+four-instance observation chain in `shared-observations.md` to durable
+project doctrine. Mirrors §9's "First applied" structure with the four
+cited instances (refresh-2 audit, Wave 2b safety sweep, Wave 5.1
+mechanizing-doctrine, Wave 5.5 posture-design).
+
+**What shipped:**
+
+- §10 added to `docs/operating-principles.md` after §9, with five
+  explanatory bullets (the three buckets, the classification-is-audit
+  framing, the reusability claim), a "First applied" paragraph
+  citing the four instances, and a closing prompt mirroring §9's
+  prompt shape.
+- OPP-0037 status flipped `proposed` → `exploring` in the same
+  commit per the OPP's own Risk 6 bias. Disposition + Promotion
+  fields populated with implementation outcome. `docs/README.md`
+  OPP table and `docs/opportunities/candidates.md` updated to
+  reflect the status change.
+- File header updated to record the §10 promotion event with
+  cross-reference to the §9 precedent.
+
+**No PRD pass — per OPP-0037 Risk 6 + `feedback-opp-to-implementation-no-prd`.**
+Third consecutive Wave-shaped PR shipping under this discipline (Wave 5.3,
+Wave 5.5, now §10 impl). The OPP-0037 design contract was load-bearing
+end-to-end; six Open Questions all resolved per stated Bias positions; no
+PRD intermediate needed.
+
+**Knowledge-capture cycle-end satisfied in-commit by the §10 edit
+itself.** The OPP-0037 status flip + Disposition population are
+knowledge-capture triggers; per PRD-0004 the satisfier set is
+"shared-observations OR operating-principles entry." The §10 promotion
+IS the operating-principles entry — same commit, no separate
+distillation observation needed. The prior PR #79 already wrote the
+workflow-shape observation in shared-observations; the §10 edit
+*materializes* what that observation predicted would land here.
+
+**Companion rules.** The kernel/base rule does NOT fire (this PR
+touches no HARNESS / AGENTS / CLAUDE / `.github/CODEOWNERS` /
+`.github/workflows/` / `scripts/` surface). Only knowledge-capture
+cycle-end fires — satisfied by the operating-principles edit.
+
+| Date | Change | Closes | ADR |
+| ---- | ------ | ------ | --- |
+| 2026-05-28 | Added §10 "Classify Claims Before Enforcing Them" to `docs/operating-principles.md`. Flipped OPP-0037 status `proposed` → `exploring`; populated Disposition + Promotion. Propagated status change to `docs/README.md` OPP table + `docs/opportunities/candidates.md`. Updated file header to record §10 promotion event. | OPP-0037 (design contract); §9 three-instance bar promotion precedent | n/a — operating-principle codification; OPP-0037 is the design contract |
+
+---
+
 ## OPP-0037 — Classify-Before-Enforcing as Operating Principle (design-only)
 
 Files OPP-0037 to promote the [[claim-vs-enforcement-classification]]

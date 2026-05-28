@@ -16,6 +16,34 @@ force.
 
 ---
 
+## 2026-05-28 — §10 shipped (operating-principles promotion)
+
+**§10 "Classify Claims Before Enforcing Them" added to
+`docs/operating-principles.md`.** Implements OPP-0037 — promotes the
+[[claim-vs-enforcement-classification]] meta-pattern from
+shared-observations to durable doctrine. Four cited instances
+mirror §9's "First applied" structure.
+
+**OPP-0037 status flipped `proposed` → `exploring` in same commit
+per OPP's Risk 6 bias.** Disposition + Promotion populated.
+
+**Drift checks now in force:** ADRs, PRDs, OPPs, and new
+operating-principle entries authored after this point should
+explicitly classify their load-bearing claims (Enforced /
+Half-enforced / Asserted-only) during design. Wave 5.2 and 5.4 PRDs
+should cite §10 explicitly and use its vocabulary. Refresh-3 (or
+the next periodic doctrine audit) should run the §10 classification
+across the framework's current claim surface and refresh the
+Asserted-only follow-up queue.
+
+**No new validator.** §10 is honor-code doctrine; the classification
+is a reading-and-cataloguing discipline that fires during audit /
+PRD-drafting work, not at CI time. No `validate-classification.sh`
+shipped or planned — mechanizing the classification would surface
+the §9 bundling anti-pattern the framework already warns against.
+
+---
+
 ## 2026-05-28 — OPP-0037 filed (design-only)
 
 **OPP-0037 — Classify-Before-Enforcing as Operating Principle.** Filed

@@ -6,7 +6,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0037 — Classify-Before-Enforcing as Operating Principle
 
-**Status:** proposed
+**Status:** exploring
 **Owner:** @unclenate
 **Created:** 2026-05-28
 **Last Updated:** 2026-05-28
@@ -186,12 +186,32 @@ own claims."
 
 ## Disposition
 
-<!-- Empty while Status: proposed. -->
+Status flipped from `proposed` to `exploring` on 2026-05-28 in the same
+commit that ships the implementation (the §10 edit in
+`docs/operating-principles.md`). Per
+`feedback-opp-to-implementation-no-prd`, no PRD intermediate — the OPP
+captured the full design contract; the implementation PR cites the OPP
+directly. Risk 6's bias ("leave status at `proposed` until the
+implementation PR opens, at which point the implementation PR cites
+this OPP and the OPP flips to `exploring` in the same commit") is
+exercised literally.
+
+The implementation outcome:
+
+- §10 added to `docs/operating-principles.md` mirroring §9's "First
+  applied" structure with the four cited instances.
+- The promotion-workflow shape (§ 9 design-only OPP + half-day
+  implementation per the no-PRD-for-half-day-OPP pattern) is the
+  documented carrier for future operating-principle codifications.
+- All six Open Questions resolved per their stated Bias positions
+  (new top-level §10 — not §9 satellite; cadence claim inside §10
+  body — no companion rule; auto-harness self-application named
+  explicitly; generalizability paragraph included; honor-code only —
+  no validator; status flipped same-commit per Risk 6 bias).
 
 ## Promotion
 
-<!--
-Empty until accepted. The implementation PR will populate this with
-a pointer to the commit that adds the new §10 section in
-`docs/operating-principles.md`.
--->
+This OPP carries no PRD. The implementation that "promotes" the
+meta-pattern is the §10 section added to
+`docs/operating-principles.md` — see the change-log entry covering
+this PR for the implementation rationale.

@@ -404,7 +404,7 @@ ships the design contract as an OPP; the implementation (the
 the §9 split-design-from-implementation discipline.
 
 - [OPP-0037](OPP-0037-classify-before-enforcing-as-operating-principle.md)
-  *(proposed 2026-05-28)* — Promote claim-vs-enforcement classification
+  *(exploring 2026-05-28)* — Promote claim-vs-enforcement classification
   to a new §10 operating principle. Four documented instances
   (refresh-2 audit, Wave 2b safety sweep, Wave 5.1 mechanizing-doctrine,
   Wave 5.5 posture-design) exceed the §9 three-instance bar by one.

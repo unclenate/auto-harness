@@ -53,7 +53,7 @@ harness provides:
 - **Artifact requirements** — the files that must exist for a module to be considered active
   and governed (problem statement, ADRs, risk register, release checklist, etc.)
 - **Sensitive path governance** — patterns that trigger elevated human review when changed
-- **Validator chain** — twelve shell scripts you run locally or in CI that enforce all of the above
+- **Validator chain** — thirteen shell scripts you run locally or in CI that enforce all of the above
 - **Agent adapters** — `CLAUDE.md`, `AGENTS.md`, and `.claude/settings.json` shims that load
   the governance rules into agent context at session start
 
@@ -142,7 +142,7 @@ flowchart TD
     end
 
     subgraph ENFORCE["Enforcement (CI)"]
-        Validators["<b>Validators</b><br/>12 scripts"]
+        Validators["<b>Validators</b><br/>13 scripts"]
         Validators -.reads.-> Manifest
         Validators -.reads.-> Companions
         Validators --> CIGate["<b>CI gates merge</b>"]
@@ -405,7 +405,7 @@ cp -r platform/skills/harness-governance .claude/skills/
 
 ## Validators
 
-Twelve validators, each targeting a specific governance layer:
+Thirteen validators, each targeting a specific governance layer:
 
 | Validator | What It Checks |
 | --------- | -------------- |
@@ -420,6 +420,7 @@ Twelve validators, each targeting a specific governance layer:
 | `validate-list-completeness.sh` | Every ADR / PRD / OPP / composition / template subdirectory / profile module on disk is referenced by its canonical index file — closes the list-completeness drift class |
 | `validate-trust-tier.sh` | Each active module's declared trust tier (0–5) is coherent with its inferred tier (from `sensitivePaths`); agent `maxTier` ceilings respect the active manifest's highest non-agent tier — closes safety claims 10–11 (no self-elevation; tier-ceiling fixed) |
 | `validate-sensitive-paths.sh` | Every declared `sensitivePaths` regex is overlapped by at least one `companionRules.triggerPaths` regex on some active module — closes safety claim 12 (sensitive-paths from Asserted-only to Enforced) |
+| `validate-skill-content.sh` | Scans authored prose in active modules (description / summary / reviewGates / humanReview + SKILL.md bodies + compiledFragments markdown) against a denylist of prompt-injection and tier-bypass patterns (default BLOCK; `.skill-content-ignore` for exemptions) — closes safety-security-sweep §3 vectors V1/V2/V4-partial/V6 |
 | `validate-knowledge-redaction.sh` | Surfaces consumer-name hits in new lines added to `docs/knowledge/shared-observations.md` and `docs/operating-principles.md` (default WARN; `--block` for hard fail) — closes the §8 cross-pollination + §9 upstream-propagation pathways |
 
 All validators are pure shell + Ruby (no external service calls). Ruby 3.0+ and ripgrep

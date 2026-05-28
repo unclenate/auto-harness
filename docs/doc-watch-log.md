@@ -16,6 +16,43 @@ force.
 
 ---
 
+## 2026-05-28 — Wave 5.2 shipped (validate-skill-content.sh)
+
+**Wave 5.2 — PRD-0015 Skill Content Safety Validator.** Shipped the
+13th validator (`validate-skill-content.sh`) per PRD-0015 spec.
+Closes safety-security-sweep §3 red-team vectors V1/V2/V4-partial/V6.
+
+**BLOCK posture from PR 1.** Predict-clean absorption mechanism per
+PRD-0015 FR-003. **51 sources scanned, zero hits on first run** —
+the prediction held verbatim. Third predict-clean validator in a row
+(Wave 5.3, Wave 5.5 via WARN posture, Wave 5.2 via strict BLOCK).
+Convergence trajectory: Wave 1 → 6 fix-ups, Wave 5.1 → 4, Wave 5.3
+→ 0, Wave 5.5 → 0, Wave 5.2 impl → 0.
+
+**Implementation Reconciliation: --scan-file mode addition.** The
+implementation added a small `--scan-file <path>` test-seam mode
+that wasn't in PRD-0015's Must-Have FRs. Per the new shared-
+observations entry `[[test-seams-are-not-section-10-deviations]]`,
+test seams are additive ergonomic features, not contract changes —
+the §10 Claim Classification block in PRD-0015 still holds verbatim,
+and the seven Must-Have FRs all hold. Future structural-enforcer
+PRDs should consider adding `--scan-file` as a Must-Have FR up
+front; the pattern is now thrice-evidenced.
+
+**Drift checks now in force:** any new module added to the active
+catalog must declare authored-prose fields that pass the v1 denylist
+scan, or add a justified `.skill-content-ignore` entry. The next
+Wave 5 candidate is **Wave 5.4** (`management/security-static-analysis`
+module per OPP-0035 / ADR-0017) — largest remaining safety item;
+likely 1–2 weeks and needs PRD pass.
+
+**Wave 5 status:** 5.1 ✅ (PR #76), 5.3 ✅ (PR #77), 5.5 ✅ (PR #78),
+5.2 ✅ (PR #82 — this PR's implementation), 5.4 pending. Five of
+seven Asserted-only safety items now closed (claims 10/11 via 5.1;
+claim 12 via 5.3; §8+§9 via 5.5; V1/V2/V4-partial/V6 via 5.2).
+
+---
+
 ## 2026-05-28 — Wave 5.2 PRD filed (PRD-0015, design-only)
 
 **PRD-0015 — Skill Content Safety Validator.** Filed to specify the

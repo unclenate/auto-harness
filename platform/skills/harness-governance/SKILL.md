@@ -103,6 +103,7 @@ bash $PLATFORM/validators/validate-catalog-counts.sh     .
 bash $PLATFORM/validators/validate-list-completeness.sh  .
 bash $PLATFORM/validators/validate-trust-tier.sh         harness.manifest.yaml .
 bash $PLATFORM/validators/validate-sensitive-paths.sh    harness.manifest.yaml .
+bash $PLATFORM/validators/validate-skill-content.sh      harness.manifest.yaml .
 bash $PLATFORM/validators/validate-knowledge-redaction.sh .                    main
 bash $PLATFORM/validators/validate-companions.sh         harness.manifest.yaml . main
 ```
@@ -167,6 +168,24 @@ A few signature notes worth highlighting:
   coverage by any active module's companion rule suffices. Closes
   safety-security-sweep §2 claim 12 (Asserted-only → Enforced). Per
   OPP-0034 / ADR-0017 Wave 5.3.
+- **`validate-skill-content.sh`** takes
+  `[--verbose] [<manifest>] [<project-root>]` (defaults: `./harness.manifest.yaml`
+  and `dirname(manifest)`). Across active modules, scans authored prose in
+  `module.yaml` description-class fields (`description`, `summary`,
+  `reviewGates[]`, `companionRules[].humanReview`), SKILL.md bodies
+  referenced via `recommendedSkills[]`, and markdown files referenced via
+  `compiledFragments[]`. Hard-fails on any unexempted denylist match
+  (prompt-injection patterns like "ignore previous instructions" or
+  "skip the validator", tier-bypass phrasings like "always operates at
+  Tier", role-prompt headers `^System:`/`^User:`/`^Assistant:`,
+  zero-width characters U+200B/200C/200D/FEFF, Unicode bidi marks
+  U+202A–202E/U+2066–2069). Lines matching `.skill-content-ignore` regex
+  patterns are exempted. **Default posture: BLOCK** (predict-clean
+  absorption per PRD-0015 FR-003). An auxiliary `--scan-file <path>` mode
+  scans an arbitrary file's content against the denylist without
+  enumerating active modules — useful for ad-hoc adversarial-corpus
+  checks. Per PRD-0015 / OPP-0033 / ADR-0017 Wave 5.2. Closes
+  safety-security-sweep §3 vectors V1, V2, V4 (partial), V6.
 - **`validate-companions.sh`** is PR-diff-based and takes a third
   positional arg `<base-branch>` (default `main`). It is intended for
   CI; running it locally on a clean branch with no diff against base

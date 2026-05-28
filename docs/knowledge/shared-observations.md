@@ -1882,3 +1882,89 @@ here until distillation.
   instances" generalization.
 - **Severity:** architectural
 - **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-27 (ADR-0016 drafting; satisfies the cycle-end distillation rule fired by the ADR-0016 file creation + ADR-0013 status update; substantive connection — the observation captures the architectural learning that *prompted* ADR-0016's §9 deferral entry for the validator extension, rather than an unrelated observation appended to satisfy the rule)
+
+### Claim-vs-enforcement classification is a generalizable framework-audit mechanism — the classification *is* the next-phase roadmap
+
+- **Context:** Wave 2b of the 2026-05-27 audit roadmap (this PR)
+  shipped ADR-0017 (Safety Hardening Roadmap) plus four OPPs (0033
+  content-safety, 0034 sensitive-paths, 0035 SAST module, 0036
+  knowledge-redaction) anchoring the framework's safety-debt pay-down
+  schedule. Authoring the ADR forced a close reading of the safety
+  sweep's Part-I §2 ("Formal Verification — Claim-vs-Enforcement
+  Map"), which enumerated **19 load-bearing claims the framework
+  makes about agent behavior or governance contract integrity** and
+  classified each as **Enforced**, **Half-enforced**, or
+  **Asserted-only**. Result: 9 Enforced, 3 Half-enforced, 7
+  Asserted-only — with six of seven Asserted-only items being exactly
+  the surface that matters most (claims 10–13, 15, 16:
+  no-self-elevation, tier-ceiling-fixed, sensitive-paths,
+  kernel-doctrine override, second-human-Harness-Ready,
+  design-vs-implementation split). The sweep's recommendation
+  structure flowed directly from the table — each Asserted-only item
+  mapped to a specific closure path (a PRD, an OPP, or a §16-priority
+  validator). ADR-0017 transcribed that table's structure into
+  Wave 5's priority order without re-deriving it.
+- **Observation:** The claim-vs-enforcement classification is a
+  **generalizable framework-audit mechanism**, not a one-time
+  analytical frame specific to auto-harness's 2026-05-27 audit. Any
+  framework that exists to enforce something — governance harnesses,
+  policy engines, contract checkers, compliance scaffolding — can run
+  the same procedure: enumerate load-bearing claims (from doctrine,
+  README marketing, operating-principles, public docs), classify each
+  as Enforced (a validator catches it), Half-enforced (partially
+  structurally checked), or Asserted-only (claimed in prose, not
+  checked anywhere in code). **The output of that classification IS
+  the next-phase roadmap.** The Asserted-only cluster is the safety
+  debt. The Half-enforced cluster is the upgrade-path candidate set.
+  The Enforced cluster is what the framework can currently defend.
+  This is the **second flavor** of the structural-only-enforcement
+  observation chain. The Wave 2a observation
+  [[structural-enforcement-is-layered]] named that *within a single
+  validator's scope, canonical surfaces can be uncovered* (Wave 1's
+  validator covered six surfaces but missed `SUMMARY.md` for 5 of 6
+  entity types). This Wave 2b observation names that *across the
+  framework's overall enforcement surface, claims can be uncovered*
+  (the seven Asserted-only items). Two flavors of the same meta-
+  pattern at different scales — both with the same remedy: enumerate
+  canonical surfaces, convert Asserted to Enforced via targeted
+  validators, accept that the enumeration is itself the enforcement
+  work.
+- **Implication:** Three concrete moves; each generalizable beyond
+  this PR. **First**, run the claim-vs-enforcement classification as
+  a periodic re-evaluation — safety-security-sweep §13 #3 names this
+  as "Doctrine-vs-enforcement re-evaluation — on-change, capped at
+  quarterly," triggered by any ADR touching doctrine. The
+  classification IS the audit; running it routinely catches new
+  Asserted-only claims as they accumulate (every new
+  ADR/PRD/operating-principle is a potential new claim).
+  **Second**, adopt the documentation convention safety-security-
+  sweep §7 Recommendation 2 names: "any guardrail claim that is
+  honor-code carries an inline marker like `(asserted; not
+  machine-enforced — see PRD-NNNN)` until enforcement lands." This
+  makes the gap visible at the point of claim, not buried in an
+  audit. The marker is itself forward-citation discipline — every
+  honor-code claim names its closure OPP/PRD. **Third**, generalize
+  beyond this framework: the audit mechanism is reusable by any
+  consumer building their own enforcement layer. Auto-harness ships
+  the governance contract; consumers can use the same audit shape
+  against their own enforcement surfaces. This is the
+  auto-harness-as-meta-framework story made operational.
+- **Confidence:** medium-high. One strong instance (the safety
+  sweep's table directly generated Wave 5's priority order,
+  demonstrating actionability) plus prior partial instances (refresh-
+  2's list-completeness audit was a claim-vs-enforcement
+  classification at narrower scope; the catalog-counts validator was
+  authored from exactly this kind of audit observation; the Wave 2a
+  observation [[structural-enforcement-is-layered]] is the within-
+  validator flavor). Three or more instances total across the
+  project's history fits the §9 "three-instance generalizability"
+  bar. **Promotion candidate to operating principle** — provisional
+  working title: *"Classify-before-enforcing: every load-bearing
+  claim is Enforced, Half-enforced, or Asserted-only; ship the
+  classification before shipping the validators; the classification
+  is the next-phase roadmap."* Recommend filing as a follow-up OPP
+  when a fourth instance surfaces, per the §9 codification pattern
+  (the deferred-implementations operating-principle promotion
+  required three instances + a fourth instance witness in PRD-0014).
+- **Severity:** architectural
+- **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-27 (ADR-0017 drafting + 4 new OPPs; satisfies the cycle-end distillation rule fired by the ADR-0017 file creation + 4 new OPP creations; substantive connection — the observation captures the audit-mechanism learning that *grounds* ADR-0017's entire priority-setting frame; the prior Wave 2a observation [[structural-enforcement-is-layered]] is the explicit antecedent this observation builds on)

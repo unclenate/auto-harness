@@ -357,6 +357,43 @@ generalizes the two-pass discipline.
   projects with a proprietary commercial extension (Tula/Aria split
   as the reference instance).
 
+### Safety hardening — closing structural-only enforcement gaps (2026-05-27)
+
+Filed alongside [ADR-0017](../adr/ADR-0017-safety-hardening-roadmap.md)
+(Safety Hardening Roadmap). Each OPP closes one Asserted-only claim or
+attack-vector cluster from `documentation-audit-2026-05-27/
+safety-security-sweep.md`. Sequenced for Wave 5 of the execution
+roadmap (5.1 → 5.3 → 5.5 → 5.2 → 5.4 per ADR-0017's amortized-risk
+ordering). All four OPPs use the §9 design-then-enforce pattern: ship
+the contract at v1; defer per-rule extensions to v2 if scope bloats.
+
+- [OPP-0033](OPP-0033-validate-skill-content.md) *(proposed
+  2026-05-27)* — Content-safety validator (`validate-skill-content.sh`)
+  scanning SKILL.md and `module.yaml` text fields against a deny-list
+  of prompt-injection and tier-bypass patterns. Closes red-team attack
+  vectors V1, V2, V4, V6 from safety-security-sweep §3. Wave 5.2.
+- [OPP-0034](OPP-0034-validate-sensitive-paths.md) *(proposed
+  2026-05-27)* — Sensitive-paths overlap validator (`validate-
+  sensitive-paths.sh`) asserting every declared `sensitivePaths`
+  pattern is overlapped by at least one `companionRules.triggerPaths`
+  regex. Closes safety-security-sweep §2 claim 12 (Asserted-only →
+  Enforced). Smallest of the four (half-day). Wave 5.3.
+- [OPP-0035](OPP-0035-security-static-analysis.md) *(proposed
+  2026-05-27)* — Security static analysis module
+  (`management/security-static-analysis`) overlaying per-stack SAST
+  configs + `validate-sast-coverage.sh`. Addresses safety-security-
+  sweep §11 — *the largest mission-relative gap in the entire safety
+  sweep* (the harness governs AI code generation but has zero
+  machinery inspecting agent-generated code). Filed explicitly as a
+  child OPP under [OPP-0020](OPP-0020-evaluation-tooling-in-harness-toolchain.md).
+  Wave 5.4.
+- [OPP-0036](OPP-0036-validate-knowledge-redaction.md) *(proposed
+  2026-05-27)* — Knowledge-redaction validator
+  (`validate-knowledge-redaction.sh`) + CODEOWNERS rule on
+  `docs/knowledge/` and `docs/operating-principles.md`. Closes
+  safety-security-sweep §8 cross-pollination findings and §9 reverse-
+  direction prompt-leakage pathways 1–4. Wave 5.5.
+
 ### Canonical direction & strategic alignment
 
 - [OPP-0007](OPP-0007-canonical-position-artifact.md) *(exploring;

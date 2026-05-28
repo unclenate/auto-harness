@@ -465,6 +465,7 @@ Open-source-cut metadata: license, contribution flow, community standards, and t
 * [ADR-0014: Sunset distilled-learnings.md](docs/adr/ADR-0014-sunset-distilled-learnings.md)
 * [ADR-0015: Add delivery/managed-fleet Posture](docs/adr/ADR-0015-managed-fleet-delivery-posture.md)
 * [ADR-0016: Documentation IA — Phase 3–4 Target Structure](docs/adr/ADR-0016-documentation-ia-phase-3-4-target-structure.md)
+* [ADR-0017: Safety Hardening Roadmap](docs/adr/ADR-0017-safety-hardening-roadmap.md)
 
 ### Product Requirements Documents (this project)
 
@@ -522,3 +523,7 @@ Forward-looking pre-PRD candidates managed by the `opportunity-capture` module.
 * [OPP-0030: Intelligent Model Routing](docs/opportunities/OPP-0030-intelligent-model-routing.md)
 * [OPP-0031: Agent Defense-in-Depth (Microsoft's Four Patterns)](docs/opportunities/OPP-0031-agent-defense-in-depth.md)
 * [OPP-0032: Session-Cycle Orchestration and Review-Trigger Taxonomy](docs/opportunities/OPP-0032-session-cycle-orchestration.md)
+* [OPP-0033: Content-Safety Validator](docs/opportunities/OPP-0033-validate-skill-content.md) — `validate-skill-content.sh` (Wave 5.2; closes red-team V1/V2/V4/V6)
+* [OPP-0034: Sensitive-Paths Overlap Validator](docs/opportunities/OPP-0034-validate-sensitive-paths.md) — `validate-sensitive-paths.sh` (Wave 5.3; closes Asserted-only claim 12)
+* [OPP-0035: Security Static Analysis Module](docs/opportunities/OPP-0035-security-static-analysis.md) — `management/security-static-analysis`, child of OPP-0020 (Wave 5.4; closes underhanded-code blind spot)
+* [OPP-0036: Knowledge-Redaction Validator + CODEOWNERS](docs/opportunities/OPP-0036-validate-knowledge-redaction.md) — `validate-knowledge-redaction.sh` (Wave 5.5; closes cross-pollination + reverse-leakage pathways)

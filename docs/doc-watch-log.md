@@ -16,6 +16,42 @@ force.
 
 ---
 
+## 2026-05-27 — Wave 2b closed
+
+**Wave 2b — ADR-0017 (Safety Hardening Roadmap) + 4 new OPPs.** Authored
+the safety-roadmap decision record adopting the five-priority order from
+`safety-security-sweep.md` §16. Filed 4 new OPPs (0033 content-safety,
+0034 sensitive-paths overlap, 0035 SAST module, 0036 knowledge-redaction)
+as the §16 "OPP queue." Sequenced Wave 5 implementation 5.1 → 5.3 → 5.5
+→ 5.2 → 5.4 for amortized risk per ADR-0017's architectural commitments.
+
+Second ADR-level application of operating principle §9 (Split Design
+from Implementation), following ADR-0016. The pattern is now codified
+across two ADRs in one sprint: the multi-PR ADR records the design
+contract (priority order + OPP queue), individual Wave-5/6 PRs ship the
+enforcement.
+
+Catalog propagation per Wave 1 validator: ADR-0017 row + 4 OPP rows in
+`docs/README.md` (enforced); 4 entries in `candidates.md` under new
+"Safety hardening" cluster (validator-enforced). Manual SUMMARY.md
+drift close (continuing the Wave 2a interim pattern until Wave 6's
+validator extension): ADR-0017 + 4 OPPs added to SUMMARY.md ADR + OPP
+sections.
+
+**Together Wave 2a + Wave 2b unblock the multi-PR Waves 5 and 6.**
+Both ADRs are now in place as companion-rule shelter. Wave 5 (safety
+hardening, 2–3 weeks, cited under ADR-0017) and Wave 6 (IA migration,
+3–4 weeks, cited under ADR-0016) are parallel-safe and can proceed
+independently.
+
+**Next wave per roadmap §6:** Wave 3 (visual program) or Wave 4 (content
+polish) — both parallel-safe with Wave 0 (which still has CI-config
+items gated on direct human action). Both are smaller, multi-sub-PR
+content tracks. Alternatively, begin Wave 5.1 (PRD-0006 trust-tier
+enforcement, already drafted) as the first Wave 5 implementation PR.
+
+---
+
 ## 2026-05-27 — Wave 2a closed
 
 **Wave 2a — ADR-0016 (Documentation IA Phase 3–4 Target Structure).** Authored

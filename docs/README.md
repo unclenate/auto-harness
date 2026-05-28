@@ -58,6 +58,7 @@ Accepted; supersession is recorded by status flip + a new ADR.
 | [0014](adr/ADR-0014-sunset-distilled-learnings.md) | Sunset `distilled-learnings.md` | Accepted |
 | [0015](adr/ADR-0015-managed-fleet-delivery-posture.md) | Add `delivery/managed-fleet` Posture | Accepted |
 | [0016](adr/ADR-0016-documentation-ia-phase-3-4-target-structure.md) | Documentation IA — Phase 3–4 Target Structure | Accepted |
+| [0017](adr/ADR-0017-safety-hardening-roadmap.md) | Safety Hardening Roadmap | Accepted |
 
 ---
 
@@ -125,6 +126,10 @@ clustered backlog with framing.
 | [0030](opportunities/OPP-0030-intelligent-model-routing.md) | Intelligent Model Routing as Architectural Primitive | proposed |
 | [0031](opportunities/OPP-0031-agent-defense-in-depth.md) | Agent Defense-in-Depth (Microsoft's Four Patterns) | proposed |
 | [0032](opportunities/OPP-0032-session-cycle-orchestration.md) | Session-Cycle Orchestration and Review-Trigger Taxonomy | exploring |
+| [0033](opportunities/OPP-0033-validate-skill-content.md) | Content-Safety Validator (`validate-skill-content.sh`) | proposed |
+| [0034](opportunities/OPP-0034-validate-sensitive-paths.md) | Sensitive-Paths Overlap Validator (`validate-sensitive-paths.sh`) | proposed |
+| [0035](opportunities/OPP-0035-security-static-analysis.md) | Security Static Analysis Module (`management/security-static-analysis`) | proposed |
+| [0036](opportunities/OPP-0036-validate-knowledge-redaction.md) | Knowledge-Redaction Validator + CODEOWNERS | proposed |
 
 ---
 

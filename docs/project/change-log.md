@@ -11,6 +11,42 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## Wave 2b — Safety Hardening Roadmap (`ADR-0017` + 4 new OPPs)
+
+Records the safety-roadmap decision the 2026-05-27 safety & security
+sweep recommended: adopt the five-priority order from
+`safety-security-sweep.md` § 16 ("If you do only five things") as the
+framework's safety hardening track, with one additional priority
+(knowledge-redaction) surfacing from § 8/§ 9 cross-pollination and
+reverse-leakage findings. Authored as multi-PR companion-rule shelter
+for Wave 5 (safety hardening) — mirroring the role ADR-0013 played for
+documentation Phases 0–2 and ADR-0016 plays for Wave 6 IA migration.
+
+Uses operating principle § 9 ("Split Design from Implementation") as the
+second ADR-level application (first was ADR-0016): ships the priority
+order + OPP queue at v1; defers per-OPP PRDs, validators, and module
+construction to Wave 5 PRs sequenced 5.1 → 5.3 → 5.5 → 5.2 → 5.4 for
+amortized-risk pattern establishment.
+
+Files four new OPPs alongside the ADR (the "OPP queue" the safety sweep
+named): OPP-0033 (`validate-skill-content.sh` content scanner; closes
+red-team V1/V2/V4/V6), OPP-0034 (`validate-sensitive-paths.sh` overlap
+check; closes claim 12), OPP-0035 (`management/security-static-analysis`
+module; closes the §11 underhanded-code blind spot — largest mission-
+relative gap in the entire sweep; filed as child of OPP-0020), OPP-0036
+(`validate-knowledge-redaction.sh` + CODEOWNERS on `docs/knowledge/`;
+closes §8 cross-pollination + §9 reverse-leakage pathways 1–4). Manual
+catalog-row work: ADR-0017 row + 4 OPP rows in `docs/README.md` (Wave 1
+validator-enforced); 4 OPP entries in `candidates.md` under a new
+"Safety hardening" cluster; ADR-0017 + 4 OPPs in `SUMMARY.md` (per the
+deferred SUMMARY.md validator-extension noted in ADR-0016).
+
+| Date | Change | Closes | ADR |
+| ---- | ------ | ------ | --- |
+| 2026-05-27 | Authored ADR-0017 (Safety Hardening Roadmap) recording the §16 five-priority order + sequencing for Wave 5 implementation. Filed 4 new OPPs (0033, 0034, 0035, 0036) as the OPP queue. Updated catalogs: `docs/README.md` (ADR-0017 row + 4 OPP rows; validator-enforced), `candidates.md` (new "Safety hardening" cluster with 4 entries), `SUMMARY.md` (ADR-0017 + 4 OPPs manually added per Wave 6-deferred validator extension). | Wave 2b of execution-roadmap §5; safety-security-sweep.md §16 priority order | ADR-0017 |
+
+---
+
 ## Wave 2a — Documentation IA Phase 3–4 Decision (`ADR-0016`)
 
 Records the structural decision the IA Restructure Proposal

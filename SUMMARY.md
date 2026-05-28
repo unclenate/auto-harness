@@ -486,6 +486,7 @@ Specifications for substantive new capabilities, paired with their originating o
 * [PRD-0013: Session-Cycle Orchestration and Review-Trigger Taxonomy](docs/requirements/PRD-0013-session-cycle-orchestration.md)
 * [PRD-0014: Agent Observability with OpenTelemetry Semantic Conventions](docs/requirements/PRD-0014-agent-observability.md)
 * [PRD-0015: Skill Content Safety Validator](docs/requirements/PRD-0015-validate-skill-content.md) — `validate-skill-content.sh` design contract (Wave 5.2; closes red-team V1/V2/V4-partial/V6)
+* [PRD-0016: Security Static Analysis Module](docs/requirements/PRD-0016-security-static-analysis-module.md) — `management/security-static-analysis` design contract (Wave 5.4; opt-in posture for SAST coverage)
 
 ### Opportunity Records (this project)
 

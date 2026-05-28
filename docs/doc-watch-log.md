@@ -16,6 +16,47 @@ force.
 
 ---
 
+## 2026-05-28 — Wave 5.4 PRD-0016 shipped (design-only)
+
+**Wave 5.4 — PRD-0016 Security Static Analysis Module (design pass).**
+Filed PRD-0016 as the design pass for OPP-0035 — the
+`management/security-static-analysis` opt-in overlay. Design-only PR
+per operating principle §9; the implementing PR (Wave 5.4 impl) ships
+the module scaffolding + required-artifact template +
+`validate-sast-coverage.sh` + standard catalog propagation.
+
+**Second PRD authored under §10.** §10 Claim Classification block
+included per the PR #81 precedent — and PRD-0016 is the first PRD to
+ship an explicitly **Half-enforced** claim categorization (C-SAST-S1:
+opt-in module + consumer-CI cooperation for end-to-end enforcement).
+The §10 vocabulary lets the PRD declare partial coverage honestly
+rather than overclaim or silently elide it.
+
+**OPP-0035 status flipped `proposed` → `exploring`** in the same
+commit per OPP-0037 / §10 precedent. The OPP gains an explicit
+"Promotion candidate" line citing PRD-0016.
+
+**Predict-clean absorption mechanism stated** at design pass — fourth
+predict-clean Wave in a row (Wave 5.3 strict BLOCK, Wave 5.5 WARN,
+Wave 5.2 strict BLOCK, Wave 5.4 stated). The harness's own CI run is
+the validator's module-inactive path (no active
+`management/security-static-analysis` overlay equals no-op pass).
+
+**Test-seam pattern adopted at design time** per
+`feedback-validator-test-seam-pattern` (Should-Have FR-S03). First
+PRD to adopt the test-seam pattern proactively at design pass time
+rather than discovering it during implementation. Confirms the
+memory's "watch the next PRD for proactive adoption" hypothesis.
+
+**Roadmap delta:** Wave 5.4 design pass closes; the implementing PR
+is next. Sixth Asserted-only safety item (sweep §11) gains a Half-
+enforced closure path after Wave 5.4 impl ships. Remaining genuine
+residual gaps after the sprint: §3 V3 (supply-chain) + §3 V5
+(consumer-runtime tampering). Three other remaining items (claim 13,
+15, 18) are out-of-genre or by-design honor-code.
+
+---
+
 ## 2026-05-28 — Wave 5.2 shipped (validate-skill-content.sh)
 
 **Wave 5.2 — PRD-0015 Skill Content Safety Validator.** Shipped the

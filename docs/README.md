@@ -84,6 +84,7 @@ originating opportunity records.
 | [0013](requirements/PRD-0013-session-cycle-orchestration.md) | Session-Cycle Orchestration and Review-Trigger Taxonomy | Proposed | [OPP-0032](opportunities/OPP-0032-session-cycle-orchestration.md) |
 | [0014](requirements/PRD-0014-agent-observability.md) | Agent Observability with OpenTelemetry Semantic Conventions | Proposed | [OPP-0029](opportunities/OPP-0029-agent-observability.md) |
 | [0015](requirements/PRD-0015-validate-skill-content.md) | Skill Content Safety Validator (`validate-skill-content.sh`) | Proposed | [OPP-0033](opportunities/OPP-0033-validate-skill-content.md) |
+| [0016](requirements/PRD-0016-security-static-analysis-module.md) | Security Static Analysis Module (`management/security-static-analysis`) | Proposed | [OPP-0035](opportunities/OPP-0035-security-static-analysis.md) |
 
 ---
 

@@ -11,6 +11,86 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## Wave 5.4 PRD — Security Static Analysis Module (PRD-0016, design-only)
+
+Filed PRD-0016 as the design pass for OPP-0035 — the
+`management/security-static-analysis` opt-in overlay module per Wave 5.4
+of execution-roadmap §8 and ADR-0017 §16 priority 5. **Design-only PR
+per operating principle §9 (Split Design from Implementation).** The
+implementing PR (Wave 5.4 impl) will ship the module scaffolding +
+required-artifact template + `validate-sast-coverage.sh` + the standard
+catalog-propagation set.
+
+**Why a PRD pass (not a half-day-no-PRD direct ship):** Wave 5.4 fails
+the half-day-no-PRD preconditions per `feedback-opp-to-implementation-no-prd`.
+OPP-0035 has unresolved design decisions exceeding half-day scope —
+tool-selection-per-stack semantics (Q1 Bias resolved here as "list 2–3
+per stack with explicit pick-one guidance"), required-artifact structure
+(Q2 Bias resolved as YAML frontmatter declaring `tool:`/`scanPaths:`/
+`severityThreshold:`), companion-rule trigger-paths defaults (Q3 Bias
+held at `src/`/`lib/`/`app/`), v1a/v1b scope-reduction option (Risk 6
+resolved here as "full v1 ships module + validator; SAST-report-content
+inspection and CI-workflow cross-validation are v2"). PRD-0015's
+precedent two PRs ago (PR #81) is the immediate model.
+
+**§10 Claim Classification block included** per the PR #81 precedent.
+This is the second PRD authored under §10. C-SAST-S1 is the first
+*explicitly-Half-enforced* claim categorization the project has shipped
+— the opt-in module shape requires consumer-CI cooperation for
+end-to-end enforcement, and §10 gives a vocabulary for naming that
+partial state honestly rather than overclaiming.
+
+**OPP-0035 status flipped `proposed` → `exploring`** in the same
+commit per OPP-0037 / §10 precedent. The OPP gains an explicit
+"Promotion candidate" line citing PRD-0016.
+
+**Module precedent followed:** `management/eval-gated-testing`
+(PRD-0009) is the immediate sibling-shape precedent for opt-in
+management overlays. The PRD names this directly so reviewers don't
+have to triangulate the module archetype.
+
+**Scope reduction option (OPP-0035 Risk 6) resolved.** The v1a/v1b
+split the OPP invited (artifact-and-companion-rule v1a, +CI integration
+v1b) is collapsed here: v1 ships **both** the module *and* the
+validator script. ADR-0017 line 150 explicitly names both. The
+deferred items (SAST-report content inspection, CI workflow
+cross-validation, tool-version pinning) are v2 candidates with
+documented bias positions but no commitment.
+
+**Predict-clean absorption mechanism** per
+`feedback-validator-absorption-mechanisms`: the harness's own CI run
+exercises the validator's *module-inactive path* (the harness does
+not activate `management/security-static-analysis`). Zero harness-side
+fix-up items predicted. Fourth predict-clean Wave in a row (Wave 5.3,
+Wave 5.5, Wave 5.2, Wave 5.4 PRD's stated mechanism).
+
+**Test-seam pattern adopted proactively** per
+`feedback-validator-test-seam-pattern`. FR-S03 names `--scan-file
+<path>` as a Should-Have, citing the thrice-evidenced platform-root-fixed
+validator constraint. The Wave 5.2 implementation reconciliation
+recommended this; PRD-0016 incorporates it at design pass time.
+
+**Companion-rule satisfier:** this entry IS the knowledge-capture cycle
+satisfier for the OPP-0035 module.yaml-class edit (status flip +
+Promotion candidate annotation) and for the PRD addition itself per
+PRD-0004. A paired distillation observation in
+`docs/knowledge/shared-observations.md` names a fresh design-pressure
+distinction surfaced by PRD-0016 — *the first new opt-in module of
+the Wave 5 sprint* (prior Waves added validators against existing
+modules; Wave 5.4 adds a new module + validator pair).
+
+**Roadmap delta:** Wave 5.4 design pass closes; the implementing PR
+is next. Sixth Asserted-only safety item from the sweep §2 will
+remain Half-enforced after Wave 5.4 impl (C-SAST-S1: opt-in posture,
+consumer-CI honors), leaving §3 V3 (supply-chain) + §3 V5 (consumer-
+runtime tampering) + claim 13 (kernel-doctrine override) + claim 15
+(second-human Harness Ready) + claim 18 (stripped-context module
+text) as remaining Asserted-only items after the sprint. Three of
+those are out-of-genre or by-design honor-code; only V3 + V5 are
+genuine residual gaps.
+
+---
+
 ## Wave 5.2 Implementation — `validate-skill-content.sh` + adversarial corpus
 
 Implements PRD-0015 — Skill Content Safety Validator. Closes Wave 5.2

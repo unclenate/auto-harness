@@ -6,11 +6,13 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0035 — Security Static Analysis Module (`management/security-static-analysis`)
 
-**Status:** proposed
+**Status:** exploring
 **Owner:** @unclenate
 **Created:** 2026-05-27
-**Last Updated:** 2026-05-27
+**Last Updated:** 2026-05-28
 **Confidence:** medium
+
+**Promotion candidate:** [PRD-0016](../requirements/PRD-0016-security-static-analysis-module.md) — design pass (2026-05-28).
 
 ---
 

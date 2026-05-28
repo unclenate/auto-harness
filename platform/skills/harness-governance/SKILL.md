@@ -103,6 +103,7 @@ bash $PLATFORM/validators/validate-catalog-counts.sh     .
 bash $PLATFORM/validators/validate-list-completeness.sh  .
 bash $PLATFORM/validators/validate-trust-tier.sh         harness.manifest.yaml .
 bash $PLATFORM/validators/validate-sensitive-paths.sh    harness.manifest.yaml .
+bash $PLATFORM/validators/validate-knowledge-redaction.sh .                    main
 bash $PLATFORM/validators/validate-companions.sh         harness.manifest.yaml . main
 ```
 
@@ -142,6 +143,20 @@ A few signature notes worth highlighting:
 - **`validate-list-completeness.sh`** takes only `[<project-root>]`.
   Asserts every ADR / PRD / OPP / composition / template subdirectory /
   profile module on disk has its canonical index row.
+- **`validate-knowledge-redaction.sh`** takes
+  `[--block] [<project-root>] [<base-branch>]` (defaults: cwd and `main`).
+  Diff-based scan of new lines added to
+  `docs/knowledge/shared-observations.md` and
+  `docs/operating-principles.md` against a built-in denylist of
+  consumer-name patterns (Tula, OpenEMR, YouBase, municipal-brain,
+  toast-mcp). Lines matching `.knowledge-redaction-ignore` regex
+  patterns are exempted. **Default posture: WARN** — surfaces hits on
+  stderr but exits 0 (reviewers eyeball in CI logs). `--block` flag
+  escalates hits to exit 1. Per OPP-0036 / ADR-0017 Wave 5.5. When run
+  outside a git working tree or against a base branch that doesn't
+  exist locally (shallow CI checkout, dogfood from a non-PR context),
+  the validator exits 0 cleanly with an informational message rather
+  than failing.
 - **`validate-sensitive-paths.sh`** takes `[<manifest>] [<project-root>]`
   (defaults: `./harness.manifest.yaml` and `dirname(manifest)`). Across
   all active modules, asserts every `sensitivePaths` regex pattern is

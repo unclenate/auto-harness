@@ -38,6 +38,7 @@ below).
 | `validate-list-completeness.sh` | `[<project-root>]` | For every ADR / PRD / OPP / composition / template subdirectory / profile module on disk, asserts the matching row exists in its canonical index file (docs/README.md, candidates.md, compositions/README.md, templates/README.md, SUMMARY.md) — closes the list-completeness drift class |
 | `validate-trust-tier.sh` | `[<manifest>] [<project-root>]` | For each active module, validates the optional `tier.declared` field (range 0–5; rationale required for ≥3); computes the inferred tier from `sensitivePaths` regex patterns against representative production-shape sample paths (highest match wins); asserts declared ≥ inferred. For agent modules, validates `maxTier` and asserts it ≥ the max active non-agent tier. Cross-cutting: declared tier 5 requires `project.criticality` ∈ {high, critical}, unless `project.maturity == platform`. PRD-0006 / ADR-0017 Wave 5.1 |
 | `validate-sensitive-paths.sh` | `[<manifest>] [<project-root>]` | Across all active modules, asserts every `sensitivePaths` regex pattern is overlapped by at least one `companionRules.triggerPaths` regex on some active module. Uses a pragmatic 3-tier overlap check (literal equality, trigger contains sensitive as substring, or sensitive contains trigger as substring). Cross-module overlap is allowed. Closes the doc-code-alignment gap where `sensitivePaths` was sold-as-policy but never-checked-in-code (safety-security-sweep §2 claim 12 → Enforced). OPP-0034 / ADR-0017 Wave 5.3 |
+| `validate-knowledge-redaction.sh` | `[--block] [<project-root>] [<base-branch>]` | Diff-based scan of new lines added to `docs/knowledge/shared-observations.md` and `docs/operating-principles.md` against a built-in denylist of consumer-name patterns (Tula, OpenEMR, YouBase, municipal-brain, toast-mcp). Lines matching `.knowledge-redaction-ignore` patterns are exempted. **Default posture: WARN** — surfaces hits on stderr but exits 0 (reviewers eyeball in CI logs). `--block` escalates hits to exit 1 (v2 posture per OPP-0036). Closes safety-security-sweep §8 (cross-pollination) + §9 (upstream-propagation pathways). OPP-0036 / ADR-0017 Wave 5.5 |
 
 ### `--help` / `-h`
 
@@ -80,6 +81,7 @@ bash platform/validators/validate-catalog-counts.sh .
 bash platform/validators/validate-list-completeness.sh .
 bash platform/validators/validate-trust-tier.sh harness.manifest.yaml .
 bash platform/validators/validate-sensitive-paths.sh harness.manifest.yaml .
+bash platform/validators/validate-knowledge-redaction.sh . main
 # Companion rules — only meaningful when comparing branches:
 bash platform/validators/validate-companions.sh harness.manifest.yaml . main
 ```

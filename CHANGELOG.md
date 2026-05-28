@@ -20,6 +20,24 @@ they update their submodule pin. For the *internal* per-decision audit trail
 
 ### Added
 
+- **`validate-knowledge-redaction.sh`** (Wave 5.5 / OPP-0036 /
+  ADR-0017) — 12th validator. Diff-based scan of new lines added to
+  `docs/knowledge/shared-observations.md` and
+  `docs/operating-principles.md` against a built-in denylist of
+  consumer-name patterns (Tula, OpenEMR, YouBase, municipal-brain,
+  toast-mcp). Lines matching `.knowledge-redaction-ignore` regex
+  patterns are exempt. **Default posture: WARN** (exit 0 with surfaced
+  hits on stderr; reviewers eyeball in CI logs). `--block` flag
+  escalates hits to exit 1 (v2 posture per OPP-0036). Wired into CI
+  (PR-only step), consumer CI templates, AGENTS.md run-order, harness-
+  governance SKILL.md, validators/README.md script table, and
+  kernel/base validators list. Closes safety-security-sweep §8 cross-
+  pollination + §9 upstream-propagation pathways 1–4.
+- **`.github/CODEOWNERS`** — added explicit ownership lines for
+  `/docs/knowledge/` and `/docs/operating-principles.md` (Wave 5.5
+  companion change). Routes review of consumer-evidence-bearing
+  doctrine through the maintainer so cross-pollination from one
+  consumer to framework doctrine is explicitly approved.
 - **`validate-sensitive-paths.sh`** (Wave 5.3 / OPP-0034 / ADR-0017) —
   11th validator. Across all active modules, asserts every declared
   `sensitivePaths` regex pattern is overlapped by at least one

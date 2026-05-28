@@ -63,6 +63,14 @@ jobs:
       - name: Validate sensitive paths
         run: bash platform/validators/validate-sensitive-paths.sh harness.manifest.yaml .
 
+      - name: Validate knowledge redaction
+        # WARN posture: surfaces consumer-name hits in new knowledge-file lines
+        # but does not fail the PR. Reviewers eyeball warnings in the log.
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: bash platform/validators/validate-knowledge-redaction.sh . "$BASE_REF"
+
       - name: Validate companion rules
         if: github.event_name == 'pull_request'
         env:

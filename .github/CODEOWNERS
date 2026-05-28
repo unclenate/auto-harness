@@ -19,3 +19,10 @@
 
 # CI + GitHub configuration
 /.github/               @unclenate
+
+# Durable knowledge surfaces — upstream-propagation guard per OPP-0036 /
+# ADR-0017 Wave 5.5. Routes review of consumer-evidence-bearing doctrine
+# through the maintainer so cross-pollination from one consumer to
+# framework doctrine is explicitly approved.
+/docs/knowledge/        @unclenate
+/docs/operating-principles.md   @unclenate

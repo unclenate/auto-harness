@@ -859,6 +859,7 @@ VALIDATOR_SCRIPTS = %w[
   validate-list-completeness.sh
   validate-trust-tier.sh
   validate-sensitive-paths.sh
+  validate-knowledge-redaction.sh
 ].freeze
 
 class TestValidatorHelpFlag < Minitest::Test
@@ -1211,5 +1212,171 @@ class TestValidateSensitivePaths < Minitest::Test
     _out, err, code = run_validator("validate-sensitive-paths.sh", nonexistent)
     assert_equal 2, code, "missing manifest must exit 2 (usage error)"
     assert_match(/not found|No such file/i, err)
+  end
+end
+
+# ---------------------------------------------------------------------------
+# validate-knowledge-redaction.sh
+#
+# Wave 5.5 of the 2026-05-27 audit roadmap (OPP-0036 / ADR-0017). Diff-based
+# scan of new lines added to `docs/knowledge/shared-observations.md` and
+# `docs/operating-principles.md` against a consumer-name denylist. Default
+# posture: WARN (exit 0 with surfaced hits). `--block` flag escalates to
+# exit 1. Closes safety-security-sweep §8 cross-pollination + §9 upstream-
+# propagation pathways.
+# ---------------------------------------------------------------------------
+class TestValidateKnowledgeRedaction < Minitest::Test
+  HARNESS_ROOT = File.expand_path("..", PLATFORM_DIR)
+
+  # Build a minimal git repo under tmp/, drop in a watched file, make a
+  # baseline commit, then optionally add a new line and commit again.
+  # Returns the tmp path so callers can run the validator against it.
+  # Yields the path; FileUtils takes care of cleanup.
+  def with_git_fixture(watched_file:, baseline:, new_line: nil)
+    Dir.mktmpdir do |tmp|
+      Dir.chdir(tmp) do
+        system("git init -q -b main")
+        system("git config user.email test@example.com")
+        system("git config user.name Test")
+
+        FileUtils.mkdir_p(File.dirname(watched_file))
+        File.write(watched_file, baseline)
+        system("git add -A")
+        system("git commit -q -m baseline")
+
+        system("git checkout -q -b feature")
+        if new_line
+          File.open(watched_file, "a") { |f| f.puts(new_line) }
+          system("git add -A")
+          system("git commit -q -m change")
+        end
+
+        yield tmp
+      end
+    end
+  end
+
+  def test_no_new_lines_passes
+    # When the feature branch has no new lines added to either watched
+    # file, the validator exits clean. This is the standard
+    # "implementation PR with no doctrine change" shape.
+    with_git_fixture(
+      watched_file: "docs/knowledge/shared-observations.md",
+      baseline: "# Existing\n\n- baseline observation about Tula.\n",
+      new_line: nil,
+    ) do |tmp|
+      out, _err, code = run_validator("validate-knowledge-redaction.sh", tmp, "main")
+      assert_equal 0, code, "no new lines must exit 0"
+      assert_match(/✓/, out)
+    end
+  end
+
+  def test_new_line_with_consumer_name_warns_but_exits_zero
+    # Default WARN posture: surfaces the hit on stderr but exits 0.
+    with_git_fixture(
+      watched_file: "docs/knowledge/shared-observations.md",
+      baseline: "# Existing\n",
+      new_line: "- New observation about Tula's safety patterns.",
+    ) do |tmp|
+      out, err, code = run_validator("validate-knowledge-redaction.sh", tmp, "main")
+      assert_equal 0, code, "WARN posture must exit 0 even with hits. stderr: #{err}"
+      assert_match(/consumer-name 'Tula'/, err)
+      assert_match(/WARN posture/, err)
+      refute_match(/✓/, out, "WARN-with-hits should not print the success marker"
+                  ) if out.length > 0
+    end
+  end
+
+  def test_new_line_with_consumer_name_blocks_with_flag
+    # --block escalates to exit 1.
+    with_git_fixture(
+      watched_file: "docs/knowledge/shared-observations.md",
+      baseline: "# Existing\n",
+      new_line: "- New observation citing OpenEMR PHI patterns.",
+    ) do |tmp|
+      _out, err, code = run_validator("validate-knowledge-redaction.sh", "--block", tmp, "main")
+      assert_equal 1, code, "--block must exit 1 on hits"
+      assert_match(/consumer-name 'OpenEMR'/, err)
+      assert_match(/--block enabled/, err)
+    end
+  end
+
+  def test_exemption_via_knowledge_redaction_ignore
+    # A line matching a regex in .knowledge-redaction-ignore is exempted.
+    with_git_fixture(
+      watched_file: "docs/knowledge/shared-observations.md",
+      baseline: "# Existing\n",
+      new_line: "- This is an explicitly-approved Tula citation in doctrine.",
+    ) do |tmp|
+      # Need to write the ignore file AFTER baseline, BEFORE the feature
+      # commit — but the helper already committed. Mutate + recommit.
+      File.write(File.join(tmp, ".knowledge-redaction-ignore"),
+                 "# Approved consumer citations\nexplicitly-approved Tula citation\n")
+      system("git add -A && git commit -q -m exempt")
+
+      out, err, code = run_validator("validate-knowledge-redaction.sh", "--block", tmp, "main")
+      assert_equal 0, code, "exempted line must pass even with --block. stderr: #{err}"
+      assert_match(/✓/, out)
+    end
+  end
+
+  def test_non_watched_file_change_is_ignored
+    # A line in some other file (not shared-observations.md / operating-
+    # principles.md) is not scanned, even if it contains a consumer name.
+    with_git_fixture(
+      watched_file: "docs/some-other-file.md",
+      baseline: "# Other\n",
+      new_line: "- Discusses Tula in detail.",
+    ) do |tmp|
+      out, _err, code = run_validator("validate-knowledge-redaction.sh", tmp, "main")
+      assert_equal 0, code, "non-watched-file change must exit 0"
+      assert_match(/✓/, out)
+    end
+  end
+
+  def test_base_branch_not_present_exits_zero_with_info
+    # In shallow CI checkouts the base branch may not be locally resolvable.
+    # The validator should exit clean rather than fail.
+    Dir.mktmpdir do |tmp|
+      Dir.chdir(tmp) do
+        system("git init -q -b main")
+        system("git config user.email test@example.com")
+        system("git config user.name Test")
+        File.write("README.md", "init\n")
+        system("git add -A && git commit -q -m init")
+        # Run with a base ref that doesn't exist.
+        out, _err, code = run_validator("validate-knowledge-redaction.sh", tmp, "nonexistent-ref")
+        assert_equal 0, code, "missing base ref must exit 0 with info"
+        assert_match(/Base branch nonexistent-ref not present|skipping/, out)
+      end
+    end
+  end
+
+  def test_missing_project_root_aborts_with_exit_2
+    nonexistent = File.join(Dir.tmpdir, "validate-knowledge-redaction-nope-#{Process.pid}")
+    _out, err, code = run_validator("validate-knowledge-redaction.sh", nonexistent)
+    assert_equal 2, code, "missing project root must exit 2 (usage error)"
+    assert_match(/not a directory/i, err)
+  end
+
+  def test_runs_clean_against_harness_repo
+    # Dogfood: against the harness's own current state, with main as
+    # base, the validator should NOT fail. This is the "no fixing
+    # commit needed" prediction OPP-0036 implicit acceptance criteria
+    # (since the OPP shipped WARN posture; the harness's existing
+    # 50+ consumer citations are historical, not new lines added in
+    # any single PR).
+    #
+    # Important nuance: on the harness's own checkout, `git diff
+    # main...HEAD` evaluates to whatever the current branch has added
+    # since main. When run from `main` itself, the diff is empty. When
+    # run from a feature branch that adds a substantive Wave 5.5
+    # observation (which may legitimately cite consumer names), the
+    # WARN posture lets it pass with stderr surface.
+    out, err, code = run_validator("validate-knowledge-redaction.sh", HARNESS_ROOT, "main")
+    # The dogfood must always exit 0 under default WARN posture, even
+    # if the current feature branch has hits.
+    assert_equal 0, code,
+                 "Harness's own state must pass under WARN posture. stderr: #{err}\nstdout: #{out}"
   end
 end

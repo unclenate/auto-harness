@@ -11,6 +11,57 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## Wave 5.5 — Knowledge-Redaction + CODEOWNERS (`validate-knowledge-redaction.sh`, OPP-0036)
+
+Implements OPP-0036 — Knowledge-Redaction Validator + CODEOWNERS guard.
+Closes Wave 5.5 of execution-roadmap §8 and the cross-pollination /
+upstream-propagation findings from safety-security-sweep §8 + §9 (the
+four reverse-direction propagation pathways the framework's
+cycle-end-distillation rule creates by design). Cited under
+[ADR-0017](../adr/ADR-0017-safety-hardening-roadmap.md).
+
+**What shipped:** 12th validator (`validate-knowledge-redaction.sh`) —
+diff-based scan of new lines added to
+`docs/knowledge/shared-observations.md` and
+`docs/operating-principles.md` against a built-in denylist of
+consumer-name patterns (Tula, OpenEMR, YouBase, municipal-brain,
+toast-mcp). `.knowledge-redaction-ignore` file exempts specific lines.
+**Default posture: WARN** (surfaces hits on stderr but exits 0;
+reviewers eyeball in CI logs). `--block` flag escalates to hard fail
+(v2 posture per OPP-0036). Plus CODEOWNERS entries for
+`/docs/knowledge/` and `/docs/operating-principles.md` routing review
+through the maintainer.
+
+**No fixing commit needed (second wave in a row).** Per OPP-0036
+design, the WARN posture means the validator never fails CI on first
+run; the 50+ historical consumer-citations in shared-observations.md
+are *existing lines* (not new), so diff-based scanning doesn't flag
+them. This is the convergence-signal pattern documented in the Wave
+5.3 distillation observation continuing to hold — but with a different
+mechanism than Wave 5.3's "OPP prediction confirmed" route. Wave 5.5
+trades convergence for *posture-design discipline*: the validator's
+warn-not-block default lets the framework absorb the discipline
+gradually rather than break-on-existing-state.
+
+**No PRD pass.** Per the `feedback-opp-to-implementation-no-prd`
+pattern established in Wave 5.3, OPP-0036's half-day scope and
+resolved Open Questions made the OPP itself the design contract. The
+implementing PR cites OPP-0036 + ADR-0017; this change-log entry
+records the no-PRD rationale.
+
+**CI wiring carries a `pull_request` gate.** Unlike trust-tier and
+sensitive-paths (which always run), knowledge-redaction only runs on
+PR events because it requires a base ref to diff against. On
+push-to-main events the validator would exit 0 cleanly with an
+info message — but skipping the CI step entirely on non-PR events is
+cleaner and faster.
+
+| Date | Change | Closes | ADR |
+| ---- | ------ | ------ | --- |
+| 2026-05-28 | Shipped `validate-knowledge-redaction.sh` (12th validator). Diff-based denylist scan; WARN posture by default; `--block` flag for v2. `.knowledge-redaction-ignore` exemption file. Added explicit CODEOWNERS rules for `/docs/knowledge/` and `/docs/operating-principles.md`. Wired into harness CI (PR-only step), consumer CI templates, `AGENTS.md`, `harness-governance/SKILL.md`, `validators/README.md`, root `README.md` validators table, `kernel/base/module.yaml` validators list. Bumped catalog count 11 → 12 across 7 documented sites. 7-case integration test class with inline-mktmpdir git fixtures. | Wave 5.5 of execution-roadmap §8; OPP-0036; safety-security-sweep §8 (cross-pollination) + §9 (upstream-propagation pathways 1–4) | ADR-0017 (multi-PR shelter); OPP-0036 (design contract — no PRD pass; half-day scope per OPP, mirroring Wave 5.3 precedent) |
+
+---
+
 ## Wave 5.3 — Sensitive-Paths Coverage (`validate-sensitive-paths.sh`, OPP-0034)
 
 Implements OPP-0034 — Sensitive-Paths Overlap Validator. Closes Wave 5.3

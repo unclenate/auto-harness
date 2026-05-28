@@ -57,6 +57,7 @@ validators:
   - validate-catalog-counts
   - validate-trust-tier
   - validate-sensitive-paths
+  - validate-knowledge-redaction
 reviewGates:
   - Human review is mandatory for governance entrypoint changes.
   - Validator success never replaces ownership review for protected governance files.

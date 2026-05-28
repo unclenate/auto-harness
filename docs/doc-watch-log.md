@@ -16,6 +16,54 @@ force.
 
 ---
 
+## 2026-05-28 — Wave 5.5 closed
+
+**Wave 5.5 — OPP-0036 Knowledge-Redaction + CODEOWNERS.** Shipped the
+12th validator (`validate-knowledge-redaction.sh`) plus CODEOWNERS
+entries for `/docs/knowledge/` and `/docs/operating-principles.md`.
+Closes safety-security-sweep §8 cross-pollination + §9 upstream-
+propagation pathways (the four reverse-direction propagation paths
+the cycle-end-distillation rule creates by design).
+
+**WARN posture** is the v1 default — surfaces consumer-name hits in
+new diff lines without failing CI. Reviewers eyeball in CI logs.
+`--block` flag escalates to hard fail (v2 posture). The design
+intentionally defers the corpus-stabilization decision: once
+"legitimate citations" are well-understood, flip to default-block.
+
+**Two consecutive waves shipped without a fixing commit.** Wave 5.3
+established the no-fixing-commit precedent through OPP-0034 risk
+prediction; Wave 5.5 extends it through WARN-posture design that
+sidesteps existing-state break. Different mechanism, same outcome.
+The convergence-signal trajectory now reads 6 → 4 → 0 → 0 fix-up
+items per wave.
+
+**Mid-sprint pattern crystallizing.** The `feedback-opp-to-
+implementation-no-prd` workflow established in Wave 5.3 and repeated
+in Wave 5.5 is now a documented project pattern: half-day-scoped OPPs
+ship directly under the OPP design contract; PRD pass is skipped with
+explicit rationale in the change-log.
+
+**4 of 7 Asserted-only items now closed.** Wave 5.1 closed claims
+10+11; Wave 5.3 closed claim 12; Wave 5.5 closes the §8+§9
+cross-pollination cluster (adjacent to claim 13 but distinct). Three
+remain in the original cluster: claim 13 (kernel-doctrine override),
+15 (second-human Harness Ready), 16 (design-vs-implementation
+split — has its own §9 codification path), 18 (module text in stripped
+contexts — by-design honor-code).
+
+**Next wave per ADR-0017 Wave 5 sequencing (5.1 → 5.3 → 5.5 → 5.2 →
+5.4):** Wave 5.2 — `validate-skill-content.sh` (OPP-0033). Needs
+adversarial-corpus test fixtures per OPP-0033 description. Larger
+scope than 5.3/5.5 — likely 1–2 day implementation requiring PRD pass.
+After 5.2: Wave 5.4 (SAST module, largest remaining Wave 5 item, 1–2
+weeks).
+
+Alternatively: pivot to Wave 3 / Wave 4 / Wave 6.1 for parallel-safe
+work.
+
+---
+
 ## 2026-05-28 — Wave 5.3 closed
 
 **Wave 5.3 — OPP-0034 Sensitive-Paths Coverage.** Shipped the 11th

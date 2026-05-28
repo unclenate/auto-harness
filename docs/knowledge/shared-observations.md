@@ -2126,3 +2126,84 @@ here until distillation.
   decreasing).
 - **Severity:** architectural
 - **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-28 (Wave 5.3 OPP-0034 implementation; satisfies the cycle-end distillation rule fired by the kernel/base/module.yaml validators-list edit; substantive connection — the observation captures the *convergence-signal* trajectory across the Wave 1 → 5.1 → 5.3 sequence which the prior [[claim-vs-enforcement-classification]] observations did not yet have enough data to articulate; the Wave 5.1 [[mechanizing-doctrine-surfaces-inconsistencies]] observation is the explicit antecedent — together the two observations form a complementary pair: implementation-driven discovery in 5.1 and prediction-confirmation in 5.3, both flavors of the §9 design-then-test pattern)
+
+### Posture design is a third enforcement-absorption mechanism — fix-on-impl vs predict-clean vs warn-defer
+
+- **Context:** Wave 5.5 (this PR) shipped
+  `validate-knowledge-redaction.sh` — the 12th validator, closing
+  safety-security-sweep §8 cross-pollination + §9 upstream-propagation
+  pathways per OPP-0036 and ADR-0017. Unlike Waves 1 and 5.1 (which
+  fixed pre-existing drift) and Wave 5.3 (which had no pre-existing
+  drift to fix), Wave 5.5 ships against a knowledge surface with
+  **50+ pre-existing consumer-name citations** in
+  `shared-observations.md` alone. Naively, the validator would flag
+  all 50+ on first run, breaking the framework's own state. But
+  OPP-0036's design anticipated this: WARN posture (default exit 0;
+  hits surface on stderr; `--block` flag for v2) lets the discipline
+  absorb gradually without breaking existing state. The validator's
+  diff-based scan (new-lines-only) means historical citations are
+  invisible until they are re-touched. CI passes; reviewers eyeball
+  warnings; the corpus stabilizes over time; eventually `--block`
+  flips to default.
+- **Observation:** Structural enforcement that lands against a
+  framework with **pre-existing state has three design-time options**
+  for handling the absorption tension. Each is a distinct mechanism;
+  picking the right one depends on the cost of fixing existing state
+  vs the cost of letting accumulation continue. **Mechanism 1: fix-on-
+  implementation.** Wave 1 (list-completeness) and Wave 5.1 (trust-
+  tier) both required fixing items as part of the implementing PR.
+  Cost: time to find + fix; risk of scope creep. Benefit: clean state
+  on day one. **Mechanism 2: predict-clean.** Wave 5.3 (sensitive-
+  paths) shipped against state predicted (by OPP-0034 Risk 3) to be
+  already-coherent; the prediction held. Cost: requires accurate
+  upstream prediction. Benefit: zero fix-up; cleanest possible
+  implementation. **Mechanism 3: posture-defer-via-warn.** Wave 5.5
+  (knowledge-redaction) ships warning-only by default; existing state
+  is technically out-of-policy but doesn't break; corpus stabilizes
+  over time; a future v2 PR flips to default-block once "legitimate
+  citations" are well-understood. Cost: enforcement debt persists
+  longer; requires v2 follow-up commitment. Benefit: absorbs
+  discipline without breaking existing state; reviewer-friendly
+  during transition. The choice between mechanisms is **a first-class
+  design decision** for any structural-enforcement OPP, not an
+  implementation detail. OPP authors should explicitly call out which
+  mechanism the implementation will use, with rationale.
+- **Implication:** Three concrete moves; two prospective. **First**,
+  the **[[claim-vs-enforcement-classification]] meta-pattern now has
+  four documented instances** (refresh-2 audit, Wave 2b safety sweep,
+  Wave 5.1 implementation-driven discovery, Wave 5.5 posture-design
+  reflection). **The §9 three-instance bar is now exceeded;
+  promotion to operating principle is overdue.** Recommend filing a
+  new OPP (working title: "Classify-before-enforcing as operating
+  principle") with the four instances cited and the provisional
+  principle wording from the Wave 2b observation. This is the
+  fourth-instance witness PRD-0014 needed for §9's own promotion —
+  the pattern is empirically generalizable. **Second**, the **three
+  absorption mechanisms** named above (fix-on-impl, predict-clean,
+  warn-defer) are themselves a contribution to the OPP-authoring
+  template. Future structural-enforcement OPPs should include an
+  "Absorption mechanism" field naming which of the three the v1
+  implementation will use, with rationale. Add to the OPP template
+  in `platform/templates/opportunity/opp-template.md` as a follow-up.
+  **Third**, the **warn-then-block evolution path** (Wave 5.5's v1 →
+  v2) is itself a reusable discipline: any enforcement layer can
+  ship in warn posture, gather field data on legitimate
+  exceptions / corpus shape, then flip to block once the exception
+  set stabilizes. This is a *runtime-design analog* of the §9
+  design-vs-implementation pattern. Could be codified as a §9
+  satellite.
+- **Confidence:** medium-high. Four instances of the meta-pattern;
+  three distinct absorption mechanisms observed; one sprint's worth
+  of trajectory data. The promotion-to-operating-principle move is
+  overdue (the §9 three-instance bar has been exceeded for at least
+  one full session). The "three absorption mechanisms" framing is
+  novel — it generalizes the convergence-signal observation by
+  adding a third category (posture-defer) that the prior observation
+  hadn't yet articulated. Open question: are there *other* absorption
+  mechanisms beyond the three named? Hypothesis: yes — at least
+  "incremental scope reduction" (validator covers a subset of the
+  full surface in v1; expands per-release) is a fourth mechanism
+  observed in `validate-doc-references.sh` v1→v2 evolution. Worth
+  watching for additional instances during Waves 5.2 and 5.4.
+- **Severity:** architectural
+- **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-28 (Wave 5.5 OPP-0036 implementation; satisfies the cycle-end distillation rule fired by the kernel/base/module.yaml validators-list edit; substantive connection — the observation captures the *posture-design-as-third-mechanism* insight that emerged from authoring the WARN-posture validator, which the prior [[successive-enforcement-waves-diminishing-fix-up-size]] observation didn't yet have data to articulate; together with the Wave 5.1 and 5.3 observations this completes a three-mechanism framing for the enforcement-absorption tension; meanwhile the [[claim-vs-enforcement-classification]] meta-pattern's fourth-instance count makes operating-principle promotion overdue per §9 three-instance bar)

@@ -394,6 +394,22 @@ the contract at v1; defer per-rule extensions to v2 if scope bloats.
   safety-security-sweep §8 cross-pollination findings and §9 reverse-
   direction prompt-leakage pathways 1–4. Wave 5.5.
 
+### Doctrine codification — operating-principle promotions (2026-05-28)
+
+Promotions of meta-patterns from `docs/knowledge/shared-observations.md`
+into `docs/operating-principles.md`, gated by the §9 three-instance
+generalizability bar (the bar §9 itself was promoted under). Each entry
+ships the design contract as an OPP; the implementation (the
+`operating-principles.md` section edit) follows in a separate PR per
+the §9 split-design-from-implementation discipline.
+
+- [OPP-0037](OPP-0037-classify-before-enforcing-as-operating-principle.md)
+  *(proposed 2026-05-28)* — Promote claim-vs-enforcement classification
+  to a new §10 operating principle. Four documented instances
+  (refresh-2 audit, Wave 2b safety sweep, Wave 5.1 mechanizing-doctrine,
+  Wave 5.5 posture-design) exceed the §9 three-instance bar by one.
+  Design-only OPP; implementation PR adds the §10 section.
+
 ### Canonical direction & strategic alignment
 
 - [OPP-0007](OPP-0007-canonical-position-artifact.md) *(exploring;

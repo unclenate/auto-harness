@@ -527,3 +527,4 @@ Forward-looking pre-PRD candidates managed by the `opportunity-capture` module.
 * [OPP-0034: Sensitive-Paths Overlap Validator](docs/opportunities/OPP-0034-validate-sensitive-paths.md) — `validate-sensitive-paths.sh` (Wave 5.3; closes Asserted-only claim 12)
 * [OPP-0035: Security Static Analysis Module](docs/opportunities/OPP-0035-security-static-analysis.md) — `management/security-static-analysis`, child of OPP-0020 (Wave 5.4; closes underhanded-code blind spot)
 * [OPP-0036: Knowledge-Redaction Validator + CODEOWNERS](docs/opportunities/OPP-0036-validate-knowledge-redaction.md) — `validate-knowledge-redaction.sh` (Wave 5.5; closes cross-pollination + reverse-leakage pathways)
+* [OPP-0037: Classify-Before-Enforcing as Operating Principle](docs/opportunities/OPP-0037-classify-before-enforcing-as-operating-principle.md) — Doctrine codification; promotes the four-instance meta-pattern to §10 (design-only; implementation follow-up per §9)

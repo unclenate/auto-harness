@@ -6,7 +6,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # ADR-0013: Documentation Information Architecture — Front-Door Restructure and Visual Program
 
-**Status:** Accepted
+**Status:** Accepted (Phases 0–2 shipped; Phases 3–4 superseded by [ADR-0016](ADR-0016-documentation-ia-phase-3-4-target-structure.md))
 **Date:** 2026-05-25
 **Author:** @unclenate
 **Reviewers:** @unclenate

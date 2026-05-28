@@ -11,6 +11,32 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## Wave 2a — Documentation IA Phase 3–4 Decision (`ADR-0016`)
+
+Records the structural decision the IA Restructure Proposal
+(`documentation-audit-2026-05-27/ia-restructure-proposal.md`) recommended:
+adopt the 9-section target tree (down from 15 top-level sections; max depth
+3, down from 4) as the documentation IA going forward. Supersedes Phases
+3–4 of ADR-0013 (Phases 0–2 stand as historical record of what shipped).
+Authored as multi-PR companion-rule shelter for the Wave 6 IA migration —
+mirroring the role ADR-0013 played for Phases 0–2.
+
+Uses operating principle § 9 ("Split Design from Implementation"): ships
+the design contract at v1 and explicitly enumerates five deferred
+implementation items, each routed to its target Wave. The most consequential
+deferral: extending `validate-list-completeness.sh` SUMMARY.md coverage
+from modules-only (Wave 1's contract) to also assert ADRs/PRDs/OPPs/
+compositions/template subdirectories, deferred to Wave 6 to avoid locking in
+a SUMMARY shape that the IA migration reshapes wholesale. In the interim,
+manually closes the empirical SUMMARY.md ADR drift surfaced by maintainer PR
+#73 (ADR-0015 was missing; ADR-0016 added in the same PR).
+
+| Date | Change | Closes | ADR |
+| ---- | ------ | ------ | --- |
+| 2026-05-27 | Authored ADR-0016 (Documentation IA Phase 3–4 Target Structure). Updated ADR-0013 status to note Phases 3–4 supersession. Added ADR-0016 row to `docs/README.md` ADR table (Wave 1 validator-enforced). Manually added ADR-0015 + ADR-0016 to `SUMMARY.md` ADR section to close the empirical SUMMARY drift PR #73 surfaced; validator extension itself deferred to Wave 6 per ADR-0016's Implementation Deferral. | Wave 2a of execution-roadmap §5; refresh-2 § 6 IA Restructure entry | ADR-0016 |
+
+---
+
 ## Wave 1 — Structural Enforcement (`validate-list-completeness.sh`)
 
 Closes the cross-cutting "list-completeness drift" class named in the 2026-05-27

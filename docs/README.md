@@ -54,9 +54,10 @@ Accepted; supersession is recorded by status flip + a new ADR.
 | [0010](adr/ADR-0010-cheap-satisfiers-for-routine-governance.md) | Cheap Satisfiers for Routine Governance | Accepted |
 | [0011](adr/ADR-0011-markdownlint-policy.md) | Markdownlint Policy | Accepted |
 | [0012](adr/ADR-0012-opportunity-capture-index-split.md) | Opportunity Capture — Index Split | Accepted |
-| [0013](adr/ADR-0013-documentation-information-architecture.md) | Documentation Information Architecture | Accepted |
+| [0013](adr/ADR-0013-documentation-information-architecture.md) | Documentation Information Architecture | Accepted (Phases 3–4 superseded by ADR-0016) |
 | [0014](adr/ADR-0014-sunset-distilled-learnings.md) | Sunset `distilled-learnings.md` | Accepted |
 | [0015](adr/ADR-0015-managed-fleet-delivery-posture.md) | Add `delivery/managed-fleet` Posture | Accepted |
+| [0016](adr/ADR-0016-documentation-ia-phase-3-4-target-structure.md) | Documentation IA — Phase 3–4 Target Structure | Accepted |
 
 ---
 

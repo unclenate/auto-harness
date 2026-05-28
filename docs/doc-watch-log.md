@@ -16,6 +16,31 @@ force.
 
 ---
 
+## 2026-05-27 — Wave 2a closed
+
+**Wave 2a — ADR-0016 (Documentation IA Phase 3–4 Target Structure).** Authored
+the structural-IA decision record: adopt the 9-section target tree from
+`ia-restructure-proposal.md`, supersede Phases 3–4 of ADR-0013, give Wave 6
+the multi-PR companion-rule shelter ADR-0013 gave Phases 0–2. Uses operating
+principle § 9 (Split Design from Implementation) — design at v1, five
+implementation items explicitly deferred to Wave 6.
+
+Drift handled in passing: PR #73 surfaced that `SUMMARY.md` is a canonical
+list-completeness surface for ADRs (and the other entity types), but the
+Wave 1 validator only checks `SUMMARY.md` for modules. ADR-0015 was missing.
+Per the maintainer decision documented in `feedback_maintainer_parallel_prs.md`
+memory, the validator extension itself is deferred to Wave 6 (which reshapes
+`SUMMARY.md`'s structure wholesale); ADR-0015 + ADR-0016 manually added to
+`SUMMARY.md` ADR section in this PR. Wave 1 validator continues to enforce
+the `docs/README.md` ADR row automatically (caught + satisfied).
+
+**Next wave per roadmap §5:** Wave 2b — ADR-0017 (Safety Hardening Roadmap).
+Parallel-safe with this Wave 2a; the two ADRs do not block each other.
+Together they unlock the multi-PR Waves 5 (safety hardening, cited under
+ADR-0017) and 6 (IA migration, cited under ADR-0016).
+
+---
+
 ## 2026-05-27 — Wave 1 closed
 
 **Wave 1 — The unblock.** Shipped `validate-list-completeness.sh` (six checks

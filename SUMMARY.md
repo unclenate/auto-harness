@@ -461,8 +461,10 @@ Open-source-cut metadata: license, contribution flow, community standards, and t
 * [ADR-0010: Cheap Satisfiers for Routine Governance](docs/adr/ADR-0010-cheap-satisfiers-for-routine-governance.md)
 * [ADR-0011: Markdownlint Policy](docs/adr/ADR-0011-markdownlint-policy.md)
 * [ADR-0012: Opportunity Capture — Index Split](docs/adr/ADR-0012-opportunity-capture-index-split.md)
-* [ADR-0013: Documentation Information Architecture](docs/adr/ADR-0013-documentation-information-architecture.md)
+* [ADR-0013: Documentation Information Architecture](docs/adr/ADR-0013-documentation-information-architecture.md) — *Phases 3–4 superseded by ADR-0016*
 * [ADR-0014: Sunset distilled-learnings.md](docs/adr/ADR-0014-sunset-distilled-learnings.md)
+* [ADR-0015: Add delivery/managed-fleet Posture](docs/adr/ADR-0015-managed-fleet-delivery-posture.md)
+* [ADR-0016: Documentation IA — Phase 3–4 Target Structure](docs/adr/ADR-0016-documentation-ia-phase-3-4-target-structure.md)
 
 ### Product Requirements Documents (this project)
 

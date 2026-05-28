@@ -18,8 +18,8 @@ force.
 
 ## 2026-05-27 — Wave 5.1 closed
 
-**Wave 5.1 — PRD-0006 Trust-Tier Enforcement.** Implemented per PRD-0006
-+ ADR-0017. Closes safety-security-sweep §2 Asserted-only claims 10–11
+**Wave 5.1 — PRD-0006 Trust-Tier Enforcement.** Implemented per
+PRD-0006 and ADR-0017. Closes safety-security-sweep §2 Asserted-only claims 10–11
 (no self-elevation; tier-ceiling fixed) — the framework's centerpiece
 safety contract now converts honor-code to PR-boundary code-check.
 

@@ -130,6 +130,7 @@ clustered backlog with framing.
 | [0034](opportunities/OPP-0034-validate-sensitive-paths.md) | Sensitive-Paths Overlap Validator (`validate-sensitive-paths.sh`) | proposed |
 | [0035](opportunities/OPP-0035-security-static-analysis.md) | Security Static Analysis Module (`management/security-static-analysis`) | proposed |
 | [0036](opportunities/OPP-0036-validate-knowledge-redaction.md) | Knowledge-Redaction Validator + CODEOWNERS | proposed |
+| [0037](opportunities/OPP-0037-classify-before-enforcing-as-operating-principle.md) | Classify-Before-Enforcing as Operating Principle | proposed |
 
 ---
 

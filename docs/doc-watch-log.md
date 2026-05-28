@@ -16,6 +16,27 @@ force.
 
 ---
 
+## 2026-05-28 — OPP-0037 filed (design-only)
+
+**OPP-0037 — Classify-Before-Enforcing as Operating Principle.** Filed
+to promote the [[claim-vs-enforcement-classification]] meta-pattern to
+a new §10 operating principle. Four documented instances exceed the §9
+three-instance bar by one.
+
+**Design-only per §9.** The OPP captures the design contract; the
+implementation (the §10 edit in `docs/operating-principles.md`) ships
+in a follow-up PR. First exercise of §9 against a doctrine
+*promotion*, not a new doctrine surface.
+
+**Drift checks now in force:** the §10 promotion implementation PR
+should land before Wave 5.2 or 5.4 begin, so those PRDs can cite §10
+explicitly and use its classify-before-enforcing vocabulary. If
+Wave 5.2/5.4 ship before §10 lands, expect re-articulation drift in
+their distillation observations (the meta-pattern will be cited under
+its observation slug instead of its principle number).
+
+---
+
 ## 2026-05-28 — Wave 5.5 closed
 
 **Wave 5.5 — OPP-0036 Knowledge-Redaction + CODEOWNERS.** Shipped the

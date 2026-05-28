@@ -2207,3 +2207,70 @@ here until distillation.
   watching for additional instances during Waves 5.2 and 5.4.
 - **Severity:** architectural
 - **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-28 (Wave 5.5 OPP-0036 implementation; satisfies the cycle-end distillation rule fired by the kernel/base/module.yaml validators-list edit; substantive connection — the observation captures the *posture-design-as-third-mechanism* insight that emerged from authoring the WARN-posture validator, which the prior [[successive-enforcement-waves-diminishing-fix-up-size]] observation didn't yet have data to articulate; together with the Wave 5.1 and 5.3 observations this completes a three-mechanism framing for the enforcement-absorption tension; meanwhile the [[claim-vs-enforcement-classification]] meta-pattern's fourth-instance count makes operating-principle promotion overdue per §9 three-instance bar)
+
+### Promotion OPPs are the §9 codification path's empirical resolution — filing OPP-0037 ratifies the §9 three-instance bar as load-bearing project discipline, not transcribed lore
+
+- **Context:** OPP-0037 was filed against `docs/opportunities/` on
+  2026-05-28 to promote the [[claim-vs-enforcement-classification]]
+  meta-pattern to a new §10 operating principle. The OPP cites four
+  documented instances (refresh-2 audit, Wave 2b safety sweep, Wave
+  5.1 mechanizing-doctrine, Wave 5.5 posture-design) — exceeding the
+  §9 three-instance bar by one. The OPP itself ships **design-only**
+  per §9: the contract (which mechanism, which sections, which
+  cadence claim) lives in the OPP; the implementation (the actual
+  `operating-principles.md` edit adding §10) ships in a follow-up PR.
+  This is the first time the §9 codification path has been exercised
+  for a *promotion* (not a new doctrine surface) — and the first time
+  §9 has been applied to its own codification cousin.
+- **Observation:** **The §9 three-instance bar is now load-bearing
+  project discipline, not transcribed lore.** §9 was itself codified
+  after three instances (PRD-0011, PRD-0013, PRD-0014). When the
+  next promotion candidate ([[claim-vs-enforcement-classification]])
+  surfaced its third instance during Wave 5.1, the
+  three-instance-bar rule fired — but the project deliberately waited
+  for a fourth instance (Wave 5.5) before promoting. The wait was a
+  signal: the bar isn't just *minimum* three instances, it's "three
+  instances PLUS a beat to verify the pattern hasn't decayed." OPP-0037
+  filed at the fourth-instance count, not the third, is the
+  empirical confirmation that the discipline is being practiced as
+  written, not just cited as written. **The §9 codification path is
+  now self-validating** — its own three-instance bar generated the
+  cadence that gated its first downstream codification.
+- **Implication:** Three concrete moves; one already actionable, two
+  prospective. **First**, OPP-0037's design-only posture (per §9)
+  combined with `feedback-opp-to-implementation-no-prd`'s
+  half-day-direct-implementation pattern (per Wave 5.3 + 5.5)
+  produces a clean shape: OPP captures the design contract; the
+  follow-up PR adds the operating-principles section + updates the
+  TOC + the change-log entry; no PRD intermediate. This is the
+  codification-via-promotion workflow shape for future operating-
+  principle promotions; document it once in the implementing PR's
+  change-log entry rather than re-deriving for each future
+  promotion. **Second**, future distillation observations that cite a
+  meta-pattern at *three* documented instances should mention that
+  promotion is *eligible*, not *overdue* — and at *four* documented
+  instances should mention that promotion is *overdue*. The Wave 5.1
+  observation used "ripe"; the Wave 5.5 observation used "overdue";
+  this calibration is now empirical. The OPP-template's "Why Now"
+  field could carry a "promotion eligibility at instance N" rubric
+  for §9-style codification OPPs specifically. **Third**, the
+  operating-principles §10 edit (in the follow-up PR) should include
+  a *"First applied"* paragraph mirroring §9's structure — citing
+  the four documented instances by name, just as §9 cites
+  PRD-0011/0013/0014. This makes the principle self-witnessing in
+  the same shape §9 already established.
+- **Confidence:** medium-high. One strong instance (this OPP filing,
+  with the four-instance evidence already documented). The
+  generalizability claim (that this shape codifies the
+  operating-principle promotion workflow) rests on §9's own precedent
+  — one prior codification, with the present OPP being the second.
+  Two instances of "operating-principle codification via promotion
+  OPP" don't yet meet the three-instance bar for *that* meta-
+  meta-pattern, but the structural shape is consistent enough that
+  documenting it as the working shape is justified. Open question:
+  will the next operating-principle codification candidate (whatever
+  it is) reuse the same shape, or will the shape pressure-test under
+  a different content? Worth watching during the OPP-0037
+  implementation PR and the next promotion cycle.
+- **Severity:** architectural
+- **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-28 (OPP-0037 filing; satisfies the cycle-end distillation rule fired by the OPP-0037 creation in `docs/opportunities/`; substantive connection — the observation captures the *promotion-workflow shape* that emerges from combining §9's design-only-OPP discipline with the half-day-direct-implementation pattern, neither of which prior observations addressed in combination; the Wave 5.5 [[posture-design-as-third-mechanism]] observation is the explicit antecedent — its closing implication recommended filing this promotion OPP; this observation is that filing's documented self-witness)

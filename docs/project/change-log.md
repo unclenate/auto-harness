@@ -11,6 +11,46 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## OPP-0037 — Classify-Before-Enforcing as Operating Principle (design-only)
+
+Files OPP-0037 to promote the [[claim-vs-enforcement-classification]]
+meta-pattern from `docs/knowledge/shared-observations.md` to a new §10
+operating principle. Four documented instances (refresh-2 audit, Wave
+2b safety sweep, Wave 5.1 mechanizing-doctrine, Wave 5.5
+posture-design) exceed the §9 three-instance bar by one. Not anchored
+under ADR-0017 — this is doctrine codification, not a Wave 5 safety
+item.
+
+**Design-only per §9.** The OPP captures the design contract (the
+provisional principle wording, the section placement choice, the
+cadence claim, the auto-harness self-application framing). The
+implementation — the actual edit adding §10 to
+`docs/operating-principles.md` — ships in a follow-up PR. This is the
+first time §9's design-vs-implementation split has been applied to a
+*promotion* (not a new doctrine surface) and the first time §9 has
+been applied to its own codification cousin.
+
+**No PRD pass.** Per `feedback-opp-to-implementation-no-prd`, the
+OPP's half-day scope and resolved Open Questions (six, all with
+explicit Bias answers) make it eligible for direct implementation
+without a PRD intermediate. The implementation PR will cite OPP-0037
+as the design contract.
+
+**Substantive observation appended.** The OPP creation triggers the
+knowledge-capture cycle-end rule. The new
+`shared-observations.md` entry captures the *promotion-workflow shape*
+that emerges from combining §9 design-only with the
+half-day-direct-implementation pattern — neither of which prior
+observations addressed in combination. The entry self-witnesses that
+the §9 three-instance bar is now load-bearing project discipline, not
+transcribed lore.
+
+| Date | Change | Closes | ADR |
+| ---- | ------ | ------ | --- |
+| 2026-05-28 | Filed OPP-0037 (design-only) promoting [[claim-vs-enforcement-classification]] to a new §10 operating principle. Propagated to `docs/README.md` OPP table, `SUMMARY.md`, `docs/opportunities/candidates.md` (new "Doctrine codification" cluster). Substantive observation appended to `shared-observations.md` capturing the promotion-workflow shape (§9 design-only + `feedback-opp-to-implementation-no-prd`). | §9 three-instance bar exceeded (four instances documented); Wave 5.5 distillation's closing recommendation to file the promotion OPP | n/a — doctrine codification, not anchored under ADR-0017; the implementation PR will cite OPP-0037 directly |
+
+---
+
 ## Wave 5.5 — Knowledge-Redaction + CODEOWNERS (`validate-knowledge-redaction.sh`, OPP-0036)
 
 Implements OPP-0036 — Knowledge-Redaction Validator + CODEOWNERS guard.

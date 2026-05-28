@@ -1882,4 +1882,3 @@ here until distillation.
   instances" generalization.
 - **Severity:** architectural
 - **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-27 (ADR-0016 drafting; satisfies the cycle-end distillation rule fired by the ADR-0016 file creation + ADR-0013 status update; substantive connection — the observation captures the architectural learning that *prompted* ADR-0016's §9 deferral entry for the validator extension, rather than an unrelated observation appended to satisfy the rule)
-

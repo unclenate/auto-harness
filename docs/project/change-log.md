@@ -28,8 +28,8 @@ deferral: extending `validate-list-completeness.sh` SUMMARY.md coverage
 from modules-only (Wave 1's contract) to also assert ADRs/PRDs/OPPs/
 compositions/template subdirectories, deferred to Wave 6 to avoid locking in
 a SUMMARY shape that the IA migration reshapes wholesale. In the interim,
-manually closes the empirical SUMMARY.md ADR drift surfaced by maintainer PR
-#73 (ADR-0015 was missing; ADR-0016 added in the same PR).
+manually closes the empirical SUMMARY.md ADR drift surfaced by maintainer
+PR #73 (ADR-0015 was missing; ADR-0016 added in the same PR).
 
 | Date | Change | Closes | ADR |
 | ---- | ------ | ------ | --- |

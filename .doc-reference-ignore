@@ -47,3 +47,15 @@
 # Follow-up: link to a representative ADR (e.g. ADR-0010) or author
 # docs/adr/README.md as a canonical landing page for the ADR series.
 ^docs/adr$
+
+# documentation-audit-2026-05-27/ — the 2026-05-27 audit deliverable folder
+# (refresh-2.md, ia-restructure-proposal.md, safety-security-sweep.md,
+# execution-roadmap.md, cli-execution-prompt.md). Currently untracked in
+# git (it will land in a future housekeeping PR alongside .placeholder-
+# ignore + .markdownlint-cli2.jsonc exclusions, per the Wave 1 closing
+# session report's "drift surfaced in passing" note). ADR-0016 and the
+# change-log / doc-watch-log / shared-observations entries cite the audit
+# deliverables as their context source; these are forward-references to
+# files planned-to-commit. Remove this entry once the audit folder lands
+# in the repo.
+^documentation-audit-2026-05-27/

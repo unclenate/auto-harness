@@ -1817,3 +1817,69 @@ here until distillation.
   in the same follow-up PR.
 - **Severity:** process
 - **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-26 (PRD-0014 drafting; satisfies the cycle-end distillation rule fired by the OPP-0029 status flip and the PRD-0014 file creation; substantive connection — the observation captures the third firing of the *deferred-implementations* discipline this PR exercises, lifting it to operating-principle candidate)
+
+### Structural enforcement is itself layered — shipping a structural enforcer requires a canonical-surface audit
+
+- **Context:** Wave 1 of the 2026-05-27 audit roadmap shipped
+  `validate-list-completeness.sh` (PR #72, merged 2026-05-27 21:06
+  US/Pacific), closing the "list-completeness drift" defect class
+  refresh-2 §4 named as the single highest-leverage outstanding item.
+  The validator's six checks were scoped against the contract spelled
+  out in execution-roadmap §4 — which named `docs/README.md`,
+  `candidates.md`, `compositions/README.md`, root `README.md`,
+  `templates/README.md`, and (for modules only) `SUMMARY.md` as the
+  canonical index surfaces. Within ~30 minutes of merge, maintainer
+  PR #73 added `mcp-server-typescript-oss` composition and explicitly
+  cited the new validator in its body — but added a `SUMMARY.md` row
+  for the composition that the validator did not check for. The
+  maintainer was *manually compensating* for a coverage gap I had not
+  realized existed. Tracing the gap: `SUMMARY.md` has dedicated
+  canonical sections for *all six* entity types the validator covers
+  (ADRs, PRDs, OPPs, compositions, template subdirectories, modules)
+  — not just modules. And `SUMMARY.md`'s ADR section was already
+  missing ADR-0015 at that point, reproducing the exact defect Wave 1
+  was supposed to close, in a sibling surface, within 24 hours of
+  Wave 1's land. Refresh-2's "48-hour reproduction cadence" empirically
+  demonstrated *again*, now against the structural fix itself.
+- **Observation:** The original "structural enforcement is the missing
+  layer" thesis (refresh-2 + safety sweep + IA proposal cross-cutting
+  insight) is correct but incomplete. When you ship a structural
+  enforcer, the next-order question is: *which canonical surfaces does
+  this enforcer cover, and are there any canonical surfaces it doesn't?*
+  Uncovered canonical surfaces become the next drift opportunity, with
+  the same recurrence cadence as before — except now harder to notice,
+  because the closed defect class creates a false sense of completion.
+  The validator scoping I shipped followed the audit's contract literally;
+  it did not audit whether the contract enumerated all canonical surfaces
+  that exist in practice. PR #73 surfaced that gap in hours, not weeks,
+  via maintainer parallel work — which is itself part of the discipline.
+- **Implication:** Three concrete near-term moves; each generalizable
+  beyond this one validator. **First**, when shipping a structural
+  enforcer in future, the design step needs an explicit "canonical
+  surface inventory" — enumerate every index surface for the entity
+  class on disk, then audit the validator's check table against that
+  inventory. The roadmap contract is a *minimum* surface set, not the
+  complete one. **Second**, the §9 *Split Design from Implementation*
+  pattern is the right response when a canonical-surface gap is
+  discovered after design ship: ADR-0016 records the validator-extension
+  decision and defers the implementation to Wave 6 (which reshapes
+  `SUMMARY.md` wholesale). The pattern proves general beyond PRDs —
+  ADR-0016 is the first ADR-level use of §9. **Third**, treat
+  maintainer parallel-PR work as a structural canary for validator
+  scope. If the maintainer is manually adding rows the validator
+  doesn't check, the validator's contract is incomplete; this is more
+  reliable signal than waiting for a future audit cycle to surface
+  the gap.
+- **Confidence:** medium-high — one strong instance (Wave 1 →
+  PR #73 → ADR-0016) with explicit empirical drift (ADR-0015 missing
+  from `SUMMARY.md`) and a clean architectural framing that generalizes
+  to "every future structural enforcer." Second instance pending —
+  Wave 6's IA migration will produce the validator extension; if the
+  extension surfaces *another* uncovered canonical surface, the pattern
+  is confirmed as recurring. The Wave 1 → Wave 2a cycle alone is one
+  data point; promotion to operating-principle candidate would benefit
+  from the Wave 6 follow-through to count as the §9-style "three
+  instances" generalization.
+- **Severity:** architectural
+- **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-27 (ADR-0016 drafting; satisfies the cycle-end distillation rule fired by the ADR-0016 file creation + ADR-0013 status update; substantive connection — the observation captures the architectural learning that *prompted* ADR-0016's §9 deferral entry for the validator extension, rather than an unrelated observation appended to satisfy the rule)
+

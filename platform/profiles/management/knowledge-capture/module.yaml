@@ -4,6 +4,8 @@ id: knowledge-capture
 type: management
 version: 1.2.0
 summary: "Shared knowledge capture module. Provides docs/knowledge/ as a durable, reviewable, project-level surface where agent and human observations accumulate and are surfaced for promotion into operating-principles. v1.2.0 sunsets docs/knowledge/distilled-learnings.md (ADR-0014, PRD-0011): the file is no longer a required artifact, its audit-trail rule is removed, and the cycle-end distillation satisfier set shrinks from three destinations to two (shared-observations.md, operating-principles.md). Rationale: 40 days of zero inbound flow, operating-principles absorbed the curated-synthesis charter in practice (§§ 7-8), and operating-principle § 7 argues against two destinations whose change-classes have collapsed. v1.1.0 added the cycle-end distillation-trigger companion rule (PRD-0004): distillation-worthy work (new ADR, new OPP, OPP proposed flip, new module manifest, harness manifest change) requires a paired entry in at least one knowledge destination."
+tier:
+  declared: 2
 dependsOn:
   - kernel/base
   - project-standard

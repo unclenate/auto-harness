@@ -137,19 +137,38 @@ prompt-injected, it might attempt actions outside its trust tier.
 
 **Mitigations in place:**
 
-- The trust tier doctrine documents what each tier may do (limited)
+- The trust tier doctrine documents what each tier may do
 - The PR template explicitly requires human checkbox for Tier 4 / 5
   operations
 - Companion rules at the file-system level catch many shapes of
   unauthorized change (e.g., modifying a sensitive path without the
   required satisfier)
+- **`validate-trust-tier.sh` (Wave 5.1 / PRD-0006 / ADR-0017)** —
+  machine-checks at PR boundary: every active module's `tier.declared`
+  is range-validated and rationale-checked; inferred tier is computed
+  from `sensitivePaths` regex patterns against production-shape sample
+  paths; `declared >= inferred` is asserted (no under-declaration);
+  agent-pack `maxTier` is asserted ≥ highest active non-agent tier
+  (catches under-capacity agent paired with higher-tier workload);
+  cross-cutting check: tier-5 work on non-platform-maturity project
+  requires criticality high/critical. See `trust-model.md` § Enforcement
+  Today for the full enforcement-vs-honor-code split.
 
-**Acknowledged gaps (audit finding 2026-05-23):**
+**Acknowledged gaps (post-Wave-5.1, deferred to PRD-0006 v2+):**
 
-- **No machine-checked trust-tier enforcement.** The tiers are
-  doctrine without machinery. An agent that *chooses* to perform a
-  Tier 4 action is caught only by the maintainer reviewing the PR.
-  Closing this gap is highest-priority Wave 3 work.
+- **No session-level enforcement.** The validator runs at PR
+  boundary; it doesn't catch an agent attempting a Tier-4 action
+  *during* authoring. Real-time enforcement requires AI-client-specific
+  hooks (Claude Code hooks, Cursor allowlist sync, Copilot config
+  validation) that aren't uniformly available across the supported
+  agent surface.
+- **No transitive tier propagation.** Tier inference is per-module;
+  a high-tier dependency does not auto-lift dependents' tier.
+- **No cross-client allowlist reconciliation.** The agent-pack
+  `maxTier` declaration is intent; whether the actual AI-client
+  configuration honors that intent is not cross-checked.
+- **Required `tier` field deferred.** v1 schema is opt-in to preserve
+  backward compatibility; a future MAJOR release may require it.
 - Skills and agent packs are loaded by clients; the harness can't
   guarantee the client honors them.
 

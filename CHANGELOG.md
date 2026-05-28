@@ -18,7 +18,40 @@ they update their submodule pin. For the *internal* per-decision audit trail
 
 ## [Unreleased]
 
-(empty — the next change to land here will populate the next release)
+### Added
+
+- **`validate-trust-tier.sh`** (Wave 5.1 / PRD-0006 / ADR-0017) — 10th
+  validator. Asserts each active module's optional `tier.declared` field
+  (range 0–5; rationale required for ≥3) is coherent with the inferred
+  tier (computed from `sensitivePaths` regexes against representative
+  production-shape sample paths); agent-pack `maxTier` ≥ highest active
+  non-agent tier; cross-cutting criticality check (relaxed for
+  `maturity: platform`). Wired into CI validators job + consumer CI
+  templates + harness-governance SKILL.md.
+- **`tier` and `maxTier` schema fields on `module.yaml`** — additive,
+  optional. `tier.declared` (0–5) declares the highest tier of work a
+  module governs; `tier.rationale` required for declared ≥3. Agent
+  modules additionally declare `maxTier` (capability ceiling).
+
+### Changed
+
+- **Active modules carry explicit tier declarations** (dogfood). Kernel
+  declared tier 5 with rationale (governs CI workflows + governance
+  entrypoints). Management modules tier 2; delivery/internal-platform
+  tier 0; agents declared tier 2 + `maxTier: 5`. The declared kernel
+  tier reflects PRD-0006 FR-003's strict "declared >= inferred" rule;
+  it is a reinterpretation of FR-005's "Tier 0" descriptor (which
+  describes the doctrine surface, not the governance ceiling). See
+  `docs/project/change-log.md` Wave 5.1 entry for the full
+  reconciliation rationale.
+- **Trust-model documentation** (`platform/core/kernel/base/trust-model.md`)
+  — "Enforcement Today" section restructured from "Honor Code" to
+  "Partial Machine Enforcement (v1)" with an explicit what-is-now-
+  enforced vs what-remains-honor-code split.
+- **Threat-model A5 (Compromised AI agent)** updated: the
+  `validate-trust-tier.sh` mitigation moves from acknowledged-gap to
+  mitigations-in-place; v2+ enforcement gaps (session-level, transitive,
+  cross-client allowlist) documented honestly.
 
 ---
 

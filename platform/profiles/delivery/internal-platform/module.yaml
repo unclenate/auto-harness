@@ -4,6 +4,8 @@ id: internal-platform
 type: delivery
 version: 1.0.0
 summary: Internal platform posture for reusable shared systems with stronger ownership and dependency tracking than a prototype.
+tier:
+  declared: 0
 dependsOn:
   - kernel/base
 conflictsWith: []

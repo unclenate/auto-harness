@@ -1968,3 +1968,86 @@ here until distillation.
   required three instances + a fourth instance witness in PRD-0014).
 - **Severity:** architectural
 - **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-27 (ADR-0017 drafting + 4 new OPPs; satisfies the cycle-end distillation rule fired by the ADR-0017 file creation + 4 new OPP creations; substantive connection — the observation captures the audit-mechanism learning that *grounds* ADR-0017's entire priority-setting frame; the prior Wave 2a observation [[structural-enforcement-is-layered]] is the explicit antecedent this observation builds on)
+
+### Mechanizing doctrine surfaces PRD-internal inconsistencies that the design pass elided — third [[claim-vs-enforcement-classification]] instance (empirical, not transcribed)
+
+- **Context:** Wave 5.1 (PRD-0006 implementation) shipped
+  `validate-trust-tier.sh` — the 10th validator, closing the framework's
+  centerpiece safety claims (no self-elevation; tier-ceiling fixed) per
+  ADR-0017. The implementation pass surfaced an inconsistency between
+  two FRs of the same PRD that the design pass had not anticipated.
+  PRD-0006 FR-003 specifies strict "declared >= inferred" enforcement.
+  PRD-0006 FR-002 specifies an inference table where `^.github/workflows/`
+  → tier 4 and `^platform/core/kernel/` → tier 5. PRD-0006 FR-005
+  specifies dogfood declarations including "kernel/base — Tier 0 (read-
+  only doctrine)." The kernel's `sensitivePaths` declare `^.github/
+  workflows/` (and `^scripts/`), which under the FR-002 inference table
+  yield inferred tier 5. Under FR-003's strict rule, declared 0 < inferred
+  5 fails. The PRD is internally inconsistent for the kernel module.
+  The implementation pass surfaced two further cascading inconsistencies:
+  if kernel declared tier 5 to satisfy strict, then per FR-003 step 2
+  (agent-pack maxTier ≥ active floor) every active agent must have
+  maxTier ≥ 5 — but FR-005 specified agents at maxTier 3/4. And the
+  cross-cutting "tier 5 requires criticality high/critical" check from
+  FR-003 step 3 fails on the harness's own manifest (criticality medium,
+  maturity platform). The PRD's FR-005 declarations form a self-
+  consistent set under a *permissive* reading of FR-003 ("inference is
+  advisory floor; under-declaration warns"); under the *strict* reading
+  the cascade requires three deviations (kernel = 5, agents maxTier
+  bumped to 5, criticality check relaxed for maturity = platform). The
+  maintainer chose strict via in-session AskUserQuestion, accepting the
+  cascade.
+- **Observation:** Mechanizing doctrine — converting an Asserted-only
+  claim to an Enforced one — **surfaces PRD-internal inconsistencies
+  that the design pass elided.** PRD-0006 was drafted carefully: 7 FRs,
+  acceptance criteria, risk section, open questions resolved. The design
+  pass nevertheless missed that FR-002 + FR-003 + FR-005 cannot
+  simultaneously hold for the kernel module under either strict or
+  permissive reading of FR-003 without modification. The inconsistency
+  only becomes visible during implementation — when the validator
+  actually runs against the harness's own state and produces violations.
+  Honor-code prose can carry inconsistency indefinitely because no code
+  ever checks it; mechanization is the first time the inconsistency is
+  forced to resolve. **This is the third empirical confirmation of the
+  [[claim-vs-enforcement-classification]] meta-pattern** — but unlike
+  the prior two instances (refresh-2's list-completeness audit, the
+  safety sweep's claim-vs-enforcement table), this one wasn't an audit
+  *transcribing* an Asserted-only state; it was an *implementation*
+  forcing resolution of an Asserted-only contradiction. Two flavors of
+  the same meta-pattern: audit-driven discovery (the sweep) vs
+  implementation-driven discovery (this PR). Both are valid; the
+  implementation-driven mode is sharper because the contradiction is no
+  longer optional to resolve.
+- **Implication:** Three concrete moves; one already actionable, two
+  prospective. **First**, the §9 "Split Design from Implementation"
+  operating principle should be amended (or its companion practice
+  noted): the implementation pass IS itself an audit pass for the
+  preceding design. Each implementation PR should include an
+  "Implementation Reconciliation" section in the change-log entry
+  enumerating any deviations from the PRD it implements, with rationale.
+  Wave 5.1's change-log entry establishes the format. **Second**, the
+  [[claim-vs-enforcement-classification]] observation now has three
+  documented instances: refresh-2 (audit), Wave 2b safety sweep (audit),
+  Wave 5.1 (implementation-driven). The pattern is ripe for
+  operating-principle promotion per the §9 three-instance bar. Filing a
+  new OPP for "Classify-before-enforcing as an operating principle" is
+  the natural next codification step. **Third**, every future PRD that
+  ships before its implementation (which is most PRDs, per the
+  §9 design-then-implementation pattern) should explicitly note in its
+  Open Questions section: "Inconsistencies between FRs may surface
+  during mechanization — the implementing PR carries the resolution
+  authority." This is a small documentation discipline change that
+  pre-clears the friction the Wave 5.1 reconciliation exercised.
+- **Confidence:** high. Three confirmed instances of
+  [[claim-vs-enforcement-classification]] now exist (two audit-driven,
+  one implementation-driven). The implementation-driven mode is the
+  most rigorous instance — it forced actual code-checked resolution,
+  not just an analytical classification. Promotion to operating
+  principle is justified by the §9 three-instance bar. The provisional
+  title from the Wave 2b observation ("Classify-before-enforcing: every
+  load-bearing claim is Enforced, Half-enforced, or Asserted-only; ship
+  the classification before shipping the validators; the classification
+  is the next-phase roadmap") stands; promotion via follow-up OPP is
+  warranted.
+- **Severity:** architectural
+- **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-27 (Wave 5.1 PRD-0006 implementation; satisfies the cycle-end distillation rule fired by the validate-trust-tier.sh creation + 8 module.yaml edits + kernel.base sensitive-paths edit; substantive connection — the observation captures the *implementation-driven* discovery of the PRD-internal inconsistency that the Wave 5.1 reconciliation resolved, and which prior audit-driven [[claim-vs-enforcement-classification]] instances did not reach; the prior [[claim-vs-enforcement-classification]] observation from Wave 2b is the explicit antecedent — this is its third instance and the most rigorous confirmation)

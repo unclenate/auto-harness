@@ -4,6 +4,8 @@ id: project-standard
 type: management
 version: 1.0.0
 summary: Project management overlay for scope, dependencies, milestones, owners, change tracking, and completion criteria.
+tier:
+  declared: 2
 dependsOn:
   - kernel/base
 conflictsWith: []

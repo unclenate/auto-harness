@@ -66,6 +66,9 @@ jobs:
       - name: Validate doc references
         run: bash .harness/platform/validators/validate-doc-references.sh .
 
+      - name: Validate trust tier
+        run: bash .harness/platform/validators/validate-trust-tier.sh harness.manifest.yaml .
+
       - name: Validate companion rules
         # PR-diff-based; only meaningful on pull_request events.
         if: github.event_name == 'pull_request'

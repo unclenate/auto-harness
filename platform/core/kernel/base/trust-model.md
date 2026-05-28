@@ -123,31 +123,83 @@ invariance is what makes the model load-bearing: every agent
 interaction speaks the same vocabulary about what kind of action is
 underway.
 
-## Enforcement Today: Honor Code
+## Enforcement Today: Partial Machine Enforcement (v1)
 
-As of v0.5.x, the trust-tier model is **doctrinally normative but not
-machine-enforced**. Agent packs cite the tier model in their `AGENTS.md`
-content; PR templates ask the human contributor to declare which tier
-their changes operate at; reviewers verify the declaration. There is no
-validator today that asserts a PR's diff matches the tier its author
-declared, and no kernel mechanism prevents an agent from silently
-crossing a tier boundary.
+As of Wave 5.1 (PRD-0006 / ADR-0017), the trust-tier model is
+**partially machine-enforced** at the PR-boundary layer. The
+`validate-trust-tier.sh` validator runs on every PR and checks:
 
-This is a known gap. [OPP-0006](../../../../docs/opportunities/OPP-0006-trust-tier-enforcement.md)
+**What's now enforced (machine-checked):**
+
+- **Tier declaration shape.** Every active module's optional
+  `tier.declared` field is validated against the 0–5 range. Tier ≥3
+  declarations require a `tier.rationale` string (substantive tier
+  needs justification).
+- **No under-declaration.** For each module, an *inferred tier* is
+  computed by testing the module's `sensitivePaths` regex patterns
+  against representative production-shape sample paths (see PRD-0006
+  FR-002). Highest match wins. The validator asserts
+  `declared >= inferred` — a module cannot declare a lower tier than
+  the paths it governs would imply.
+- **Agent-pack ceiling.** Each active agent module's `maxTier` is
+  validated against the highest declared/inferred tier of any active
+  non-agent module. An agent pack whose max-tier ceiling is below the
+  active manifest's highest non-agent tier fails (an under-capacity
+  agent paired with a higher-tier workload is a misconfiguration).
+- **Cross-cutting criticality.** When any active module declares
+  tier 5, `project.criticality` must be in {high, critical} —
+  *unless* `project.maturity == platform`. Platform-maturity projects
+  (governance frameworks like auto-harness itself) are inherently
+  high-rigor regardless of declared criticality.
+- **Validator suite presence in CI.** The `validate-trust-tier.sh`
+  step in `.github/workflows/harness.yml` ensures every PR exercises
+  the above checks before merge.
+
+**What remains honor-code (asserted, not machine-checked):**
+
+- **Session-level enforcement.** The validator runs at PR boundary;
+  it does not catch an agent attempting a Tier-4 action *during*
+  authoring. Real-time session enforcement requires AI-client-specific
+  hooks (Claude Code hooks, Cursor allowlist sync, Copilot config
+  validation) that aren't uniformly available — deferred to PRD-0006
+  v2+.
+- **Tier-tagged commits.** No per-commit tier metadata; the
+  declaration is module-level, not commit-level. A PR with five
+  commits spans a single declared tier; whether each individual commit
+  fit within that tier is human-reviewed, not machine-checked.
+- **Transitive tier propagation.** Tier inference is per-module;
+  it does not propagate through the `dependsOn` graph. If module A
+  is tier 4 and module B depends on A, B's tier is checked
+  independently. Deferred to PRD-0006 v2+.
+- **Cross-client allowlist reconciliation.** The agent-pack `maxTier`
+  declaration is intent; whether the actual AI-client configuration
+  (e.g., Claude Code `settings.json` permissions) honors that intent
+  is not cross-checked. Deferred to PRD-0006 v2+.
+- **Required `tier` field.** The schema field is optional in v1 to
+  preserve backward compatibility. A future MAJOR release may require
+  it once all in-tree and known-consumer modules carry explicit
+  declarations.
+
+**Implementation reconciliation:** PRD-0006 FR-005's descriptor
+"kernel/base — Tier 0 (read-only doctrine)" was reinterpreted during
+Wave 5.1 implementation. The kernel module's content IS read-only
+doctrine, but its `tier.declared` reflects *the highest tier of work
+it governs* (5, because its `sensitivePaths` cover `.github/workflows/`
+and `scripts/`). Tier 0 describes the inspection surface; tier 5
+describes the enforcement surface. The validator's strict
+`declared >= inferred` rule makes the latter the authoritative
+declaration. This deviation from FR-005's literal text is documented
+in `docs/project/change-log.md` Wave 5.1 entry + the corresponding
+[`shared-observations.md`](../../../../docs/knowledge/shared-observations.md)
+distillation entry.
+
+For the historical context — the gap this enforcement closes —
+[OPP-0006](../../../../docs/opportunities/OPP-0006-trust-tier-enforcement.md)
 and [PRD-0006](../../../../docs/requirements/PRD-0006-trust-tier-enforcement.md)
-specify the v1 machinery to close it: an optional `tier` field on
-`module.yaml`, production-shape inference from `sensitivePaths`, a new
-`validate-trust-tier.sh` validator, and dogfood declarations on the
-harness's own modules. The gap is named explicitly in
-`docs/knowledge/shared-observations.md`'s
-*"Doctrine in prose without enforcement in code is a recurring harness
-gap"* observation; PRD-0006 is the closure.
-
-Until PRD-0006 implementation lands, the model relies on the same
-discipline every other doctrine document relies on: agents that read the
-doctrine, humans that enforce the contract at review time, and the
-audit-trail floor that lets a missed elevation be reconstructed after
-the fact via git history.
+specify the v1 machinery. The gap was named explicitly in
+`docs/knowledge/shared-observations.md`'s *"Doctrine in prose without
+enforcement in code is a recurring harness gap"* observation; this
+implementation is its closure.
 
 ## Related
 

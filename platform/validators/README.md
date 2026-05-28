@@ -36,6 +36,7 @@ below).
 | `validate-doc-references.sh` | `<project-root>` | **v2 (renderer-aware):** every markdown link `[text](target)` with a relative target resolves on disk *and* renders safely (no trailing-slash / bare-extensionless GitBook breakage). Skips fenced blocks *and* inline backtick code spans. Preserves v1's `platform/...` bare-path extractor as a second pass. Respects `.doc-reference-ignore` |
 | `validate-catalog-counts.sh` | `[<project-root>]` | Documented catalog-count claims (e.g., "8 validators", "35 modules") match canonical recipe-computed values across every asserted call site (entry-point prose, ASCII art, Mermaid diagrams, back-cover SVG) — closes the count-drift class |
 | `validate-list-completeness.sh` | `[<project-root>]` | For every ADR / PRD / OPP / composition / template subdirectory / profile module on disk, asserts the matching row exists in its canonical index file (docs/README.md, candidates.md, compositions/README.md, templates/README.md, SUMMARY.md) — closes the list-completeness drift class |
+| `validate-trust-tier.sh` | `[<manifest>] [<project-root>]` | For each active module, validates the optional `tier.declared` field (range 0–5; rationale required for ≥3); computes the inferred tier from `sensitivePaths` regex patterns against representative production-shape sample paths (highest match wins); asserts declared ≥ inferred. For agent modules, validates `maxTier` and asserts it ≥ the max active non-agent tier. Cross-cutting: declared tier 5 requires `project.criticality` ∈ {high, critical}, unless `project.maturity == platform`. PRD-0006 / ADR-0017 Wave 5.1 |
 
 ### `--help` / `-h`
 
@@ -76,6 +77,7 @@ bash platform/validators/validate-agent-pack.sh harness.manifest.yaml .
 bash platform/validators/validate-doc-references.sh .
 bash platform/validators/validate-catalog-counts.sh .
 bash platform/validators/validate-list-completeness.sh .
+bash platform/validators/validate-trust-tier.sh harness.manifest.yaml .
 # Companion rules — only meaningful when comparing branches:
 bash platform/validators/validate-companions.sh harness.manifest.yaml . main
 ```

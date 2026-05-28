@@ -857,6 +857,7 @@ VALIDATOR_SCRIPTS = %w[
   validate-doc-references.sh
   validate-catalog-counts.sh
   validate-list-completeness.sh
+  validate-trust-tier.sh
 ].freeze
 
 class TestValidatorHelpFlag < Minitest::Test
@@ -1128,5 +1129,44 @@ class TestValidateListCompleteness < Minitest::Test
     assert_equal 0, code,
                  "Harness's own indexes must be complete. stderr: #{err}\nstdout: #{out}"
     assert_match(/✓/, out)
+  end
+end
+
+# ---------------------------------------------------------------------------
+# validate-trust-tier.sh
+#
+# Wave 5.1 of the 2026-05-27 audit roadmap (PRD-0006 / ADR-0017). Asserts
+# each active module's declared trust-tier is coherent with the inferred
+# tier (computed from sensitivePaths regex against representative sample
+# paths), and that agent-pack maxTier ceilings respect the active
+# manifest's highest non-agent tier.
+#
+# Per PRD-0006 FR-003 Implementation Notes: "the validator runs against the
+# harness's own active modules as its integration test; no separate fixture
+# project needed at v1." The dogfood run is the primary integration test;
+# unit-level rule coverage (declared < inferred, missing rationale, agent
+# maxTier breach, criticality cross-check) is exercised inline in the
+# Ruby helper logic and validated by the dogfood run's outcome shape.
+# Fixture-style isolation tests would require a platform-root-override
+# argument on the script that's out of v1 scope.
+# ---------------------------------------------------------------------------
+class TestValidateTrustTier < Minitest::Test
+  HARNESS_ROOT = File.expand_path("..", PLATFORM_DIR)
+
+  def test_runs_clean_against_harness_repo
+    # Dogfood: the harness's own manifest must validate green. This is the
+    # primary integration test per PRD-0006 FR-003 Implementation Notes.
+    manifest = File.join(HARNESS_ROOT, "harness.manifest.yaml")
+    out, err, code = run_validator("validate-trust-tier.sh", manifest, HARNESS_ROOT)
+    assert_equal 0, code,
+                 "Harness's own tier declarations must be coherent. stderr: #{err}\nstdout: #{out}"
+    assert_match(/✓/, out)
+  end
+
+  def test_missing_manifest_aborts_with_exit_2
+    nonexistent = File.join(Dir.tmpdir, "validate-trust-tier-nope-#{Process.pid}.yaml")
+    _out, err, code = run_validator("validate-trust-tier.sh", nonexistent)
+    assert_equal 2, code, "missing manifest must exit 2 (usage error)"
+    assert_match(/not found|No such file/i, err)
   end
 end

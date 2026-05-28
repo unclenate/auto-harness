@@ -4,6 +4,9 @@ id: kernel/base
 type: core
 version: 1.0.0
 summary: Universal governance kernel for lifecycle controls, auditability, record discipline, and operational readiness.
+tier:
+  declared: 5
+  rationale: "Governs CI workflows (^.github/workflows/), automation scripts (^scripts/), and governance entrypoints. While the kernel's own content is read-only doctrine (effectively tier 0 for inspection), the highest tier of work it governs is 5 (production-shape paths per PRD-0006 FR-002). The declared tier reflects the governance ceiling, not the doctrine surface — see ADR-0017 Wave 5.1 implementation notes."
 dependsOn: []
 conflictsWith: []
 requiredArtifacts:
@@ -52,6 +55,7 @@ validators:
   - validate-placeholders
   - validate-companions
   - validate-catalog-counts
+  - validate-trust-tier
 reviewGates:
   - Human review is mandatory for governance entrypoint changes.
   - Validator success never replaces ownership review for protected governance files.

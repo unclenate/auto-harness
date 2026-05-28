@@ -16,6 +16,44 @@ force.
 
 ---
 
+## 2026-05-27 — Wave 5.1 closed
+
+**Wave 5.1 — PRD-0006 Trust-Tier Enforcement.** Implemented per PRD-0006
++ ADR-0017. Closes safety-security-sweep §2 Asserted-only claims 10–11
+(no self-elevation; tier-ceiling fixed) — the framework's centerpiece
+safety contract now converts honor-code to PR-boundary code-check.
+
+**What shipped:** 10th validator (`validate-trust-tier.sh`); additive
+`tier` + `maxTier` schema fields on `module.yaml`; explicit tier
+declarations on all 9 active modules (dogfood); CI wiring (harness +
+consumer templates); `harness-governance` SKILL.md updates;
+trust-model.md "Partial Machine Enforcement (v1)" section rewrite;
+threat-model A5 mitigation update.
+
+**Implementation reconciliation:** PRD-0006 FR-003 (strict
+"declared >= inferred") conflicted with FR-005 ("kernel/base — Tier 0")
+because kernel's `sensitivePaths` infer tier 5 per the FR-002 table.
+Maintainer direction (in-session AskUserQuestion): adopt strict
+interpretation, reinterpret FR-005's "Tier 0" as describing the
+doctrine surface while declared tier reflects the governance surface.
+Cascading deviations from FR-005: kernel declared 5 + rationale;
+agents bumped maxTier 3/4 → 5; criticality check relaxed for
+`maturity: platform` projects. All captured as a substantive
+distillation observation building on the Wave 2a + 2b observation
+chain (third [[claim-vs-enforcement-classification]] instance —
+empirical, not transcribed — fitting the §9 three-instance
+generalizability bar).
+
+**Next wave per roadmap §8 (Wave 5 sequencing per ADR-0017):**
+Wave 5.3 — `validate-sensitive-paths.sh` (OPP-0034, half-day work,
+smallest of the remaining Wave 5 items). Then 5.5 (knowledge-redaction),
+5.2 (content-safety), 5.4 (SAST module).
+
+Alternatively: Wave 3 / Wave 4 / Wave 6.1 are all parallel-safe with
+Wave 5 progression.
+
+---
+
 ## 2026-05-27 — Wave 2b closed
 
 **Wave 2b — ADR-0017 (Safety Hardening Roadmap) + 4 new OPPs.** Authored

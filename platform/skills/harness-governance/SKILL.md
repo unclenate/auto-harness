@@ -100,6 +100,8 @@ bash $PLATFORM/validators/validate-placeholders.sh       .
 bash $PLATFORM/validators/validate-agent-pack.sh         harness.manifest.yaml .
 bash $PLATFORM/validators/validate-doc-references.sh     .
 bash $PLATFORM/validators/validate-catalog-counts.sh     .
+bash $PLATFORM/validators/validate-list-completeness.sh  .
+bash $PLATFORM/validators/validate-trust-tier.sh         harness.manifest.yaml .
 bash $PLATFORM/validators/validate-companions.sh         harness.manifest.yaml . main
 ```
 
@@ -124,6 +126,21 @@ A few signature notes worth highlighting:
   whose project doesn't have a `platform/` directory of its own can
   point at their `.harness/` submodule mount instead; the validator
   scans whichever root it's given.
+- **`validate-trust-tier.sh`** takes `[<manifest>] [<project-root>]`
+  (defaults: `./harness.manifest.yaml` and `dirname(manifest)`). For
+  each active module, validates the optional `tier.declared` field
+  (0–5; rationale required for ≥3); computes inferred tier from
+  `sensitivePaths` regexes against representative production-shape
+  sample paths; asserts `declared >= inferred`. For agent modules,
+  validates `maxTier` and asserts it ≥ the highest active non-agent
+  tier. Per PRD-0006 / ADR-0017 Wave 5.1. The harness's own kernel
+  declares tier 5 (governs CI workflows + governance entrypoints); the
+  cross-cutting "declared tier 5 requires criticality high/critical"
+  rule is relaxed for `maturity: platform` projects (auto-harness
+  itself).
+- **`validate-list-completeness.sh`** takes only `[<project-root>]`.
+  Asserts every ADR / PRD / OPP / composition / template subdirectory /
+  profile module on disk has its canonical index row.
 - **`validate-companions.sh`** is PR-diff-based and takes a third
   positional arg `<base-branch>` (default `main`). It is intended for
   CI; running it locally on a clean branch with no diff against base

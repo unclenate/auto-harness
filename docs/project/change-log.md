@@ -11,6 +11,43 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## Wave 5.1 — Trust-Tier Enforcement (`validate-trust-tier.sh`, PRD-0006)
+
+Implements PRD-0006 — Trust-Tier Enforcement. Closes Wave 5.1 of
+execution-roadmap §8 and Asserted-only claims 10–11 from
+safety-security-sweep §2 (no self-elevation; tier-ceiling fixed). The
+framework's centerpiece safety contract converts from honor-code to
+PR-boundary code-check. Cited under [ADR-0017](../adr/ADR-0017-safety-hardening-roadmap.md).
+
+**What shipped:** `validate-trust-tier.sh` (10th validator), additive
+schema fields `tier` + `maxTier` on `module.yaml`, dogfood declarations
+on all 9 active modules, CI wiring (harness + consumer CI templates),
+`harness-governance` SKILL.md updates, trust-model.md "Partial Machine
+Enforcement" rewrite, threat-model A5 mitigation update.
+
+**Implementation reconciliation — PRD-0006 FR-003 vs FR-005:** The PRD's
+two FRs were internally inconsistent for the kernel module. FR-003's
+strict "declared >= inferred" rule, combined with the FR-002 inference
+table (`^.github/workflows/` → tier 4, `^platform/core/kernel/` → tier 5),
+makes the kernel's `sensitivePaths` (which include `^.github/workflows/`
+and `^scripts/`) infer tier 5. FR-005's descriptor "kernel/base — Tier 0
+(read-only doctrine)" therefore cannot stand under the strict rule
+without breaking validation. Resolution adopted: kernel declared tier 5
+with rationale, reinterpreting FR-005's "Tier 0" as describing the
+*doctrine surface* (kernel content is read-only) while declared tier
+reflects the *governance surface* (highest tier of work the kernel
+governs). The cascade — agent maxTier values needing to be raised from
+the PRD-named 3/4 to 5 (since kernel = 5 floor), and the criticality
+cross-check needing relaxation for `maturity: platform` projects — was
+all resolved consistently. Captured as a substantive distillation
+observation in `docs/knowledge/shared-observations.md` (this PR).
+
+| Date | Change | Closes | ADR |
+| ---- | ------ | ------ | --- |
+| 2026-05-27 | Shipped `validate-trust-tier.sh` (10th validator). Added optional `tier` + `maxTier` schema fields to `module.yaml`. Declared tiers on all 9 active modules (kernel = 5 + rationale; mgmt = 2; delivery = 0; agents = tier 2 + maxTier 5). Wired into `.github/workflows/harness.yml`, consumer CI templates (`github-actions.yml`, `gitlab-ci.yml`), `AGENTS.md` recommended-run-order, `harness-governance/SKILL.md` validator chain + signature notes, `validators/README.md` script table. Bumped catalog count 9 → 10 across 7 documented sites (`README.md` ×3, `how-to-read.md` ×2, `diagrams.md`, `cover-back.svg`). Trust-model.md "Enforcement Today" section rewritten from "Honor Code" to "Partial Machine Enforcement (v1)" with explicit what-is-enforced / what-remains-honor-code split. Threat-model A5 mitigation updated. Integration test (dogfood pattern per PRD-0006 FR-003 implementation notes). | Wave 5.1 of execution-roadmap §8; PRD-0006; safety-security-sweep §2 claims 10–11 (Asserted-only → Enforced) | ADR-0017 (multi-PR shelter); PRD-0006 (implementation spec) |
+
+---
+
 ## Wave 2b — Safety Hardening Roadmap (`ADR-0017` + 4 new OPPs)
 
 Records the safety-roadmap decision the 2026-05-27 safety & security

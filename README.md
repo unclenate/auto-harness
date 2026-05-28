@@ -53,7 +53,7 @@ harness provides:
 - **Artifact requirements** — the files that must exist for a module to be considered active
   and governed (problem statement, ADRs, risk register, release checklist, etc.)
 - **Sensitive path governance** — patterns that trigger elevated human review when changed
-- **Validator chain** — nine shell scripts you run locally or in CI that enforce all of the above
+- **Validator chain** — ten shell scripts you run locally or in CI that enforce all of the above
 - **Agent adapters** — `CLAUDE.md`, `AGENTS.md`, and `.claude/settings.json` shims that load
   the governance rules into agent context at session start
 
@@ -142,7 +142,7 @@ flowchart TD
     end
 
     subgraph ENFORCE["Enforcement (CI)"]
-        Validators["<b>Validators</b><br/>9 scripts"]
+        Validators["<b>Validators</b><br/>10 scripts"]
         Validators -.reads.-> Manifest
         Validators -.reads.-> Companions
         Validators --> CIGate["<b>CI gates merge</b>"]
@@ -405,7 +405,7 @@ cp -r platform/skills/harness-governance .claude/skills/
 
 ## Validators
 
-Nine validators, each targeting a specific governance layer:
+Ten validators, each targeting a specific governance layer:
 
 | Validator | What It Checks |
 | --------- | -------------- |

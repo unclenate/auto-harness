@@ -4,6 +4,9 @@ id: base
 type: agent
 version: 1.0.0
 summary: Cross-agent operating pack for trust tiers, stop conditions, and audit expectations.
+tier:
+  declared: 2
+maxTier: 5
 dependsOn:
   - kernel/base
 conflictsWith: []

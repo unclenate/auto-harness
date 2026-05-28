@@ -102,6 +102,7 @@ bash $PLATFORM/validators/validate-doc-references.sh     .
 bash $PLATFORM/validators/validate-catalog-counts.sh     .
 bash $PLATFORM/validators/validate-list-completeness.sh  .
 bash $PLATFORM/validators/validate-trust-tier.sh         harness.manifest.yaml .
+bash $PLATFORM/validators/validate-sensitive-paths.sh    harness.manifest.yaml .
 bash $PLATFORM/validators/validate-companions.sh         harness.manifest.yaml . main
 ```
 
@@ -141,6 +142,16 @@ A few signature notes worth highlighting:
 - **`validate-list-completeness.sh`** takes only `[<project-root>]`.
   Asserts every ADR / PRD / OPP / composition / template subdirectory /
   profile module on disk has its canonical index row.
+- **`validate-sensitive-paths.sh`** takes `[<manifest>] [<project-root>]`
+  (defaults: `./harness.manifest.yaml` and `dirname(manifest)`). Across
+  all active modules, asserts every `sensitivePaths` regex pattern is
+  overlapped by at least one `companionRules.triggerPaths` regex on some
+  active module. Uses a pragmatic 3-tier overlap check (literal
+  equality, trigger contains sensitive as substring, or sensitive
+  contains trigger as substring). Cross-module overlap is allowed —
+  coverage by any active module's companion rule suffices. Closes
+  safety-security-sweep §2 claim 12 (Asserted-only → Enforced). Per
+  OPP-0034 / ADR-0017 Wave 5.3.
 - **`validate-companions.sh`** is PR-diff-based and takes a third
   positional arg `<base-branch>` (default `main`). It is intended for
   CI; running it locally on a clean branch with no diff against base

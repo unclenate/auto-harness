@@ -69,6 +69,9 @@ jobs:
       - name: Validate trust tier
         run: bash .harness/platform/validators/validate-trust-tier.sh harness.manifest.yaml .
 
+      - name: Validate sensitive paths
+        run: bash .harness/platform/validators/validate-sensitive-paths.sh harness.manifest.yaml .
+
       - name: Validate companion rules
         # PR-diff-based; only meaningful on pull_request events.
         if: github.event_name == 'pull_request'

@@ -40,7 +40,7 @@
     <text x="380" y="870">across stacks, architectures, data, delivery,</text>
     <text x="380" y="906">management, domains, and agent packs</text>
 
-    <text x="160" y="980" font-weight="600">10 validators</text>
+    <text x="160" y="980" font-weight="600">11 validators</text>
     <text x="380" y="980">enforcing the contract at PR time</text>
 
     <text x="160" y="1054" font-weight="600">7 skills</text>

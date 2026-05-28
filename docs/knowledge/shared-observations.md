@@ -2051,3 +2051,78 @@ here until distillation.
   warranted.
 - **Severity:** architectural
 - **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-27 (Wave 5.1 PRD-0006 implementation; satisfies the cycle-end distillation rule fired by the validate-trust-tier.sh creation + 8 module.yaml edits + kernel.base sensitive-paths edit; substantive connection — the observation captures the *implementation-driven* discovery of the PRD-internal inconsistency that the Wave 5.1 reconciliation resolved, and which prior audit-driven [[claim-vs-enforcement-classification]] instances did not reach; the prior [[claim-vs-enforcement-classification]] observation from Wave 2b is the explicit antecedent — this is its third instance and the most rigorous confirmation)
+
+### Successive structural-enforcement waves produce diminishing fix-up size — convergence signal
+
+- **Context:** Wave 5.3 (this PR) shipped `validate-sensitive-paths.sh`
+  — the 11th validator, closing safety-security-sweep §2 claim 12
+  (sensitivePaths Asserted-only → Enforced) per OPP-0034 and ADR-0017.
+  OPP-0034 Risk 3 explicitly predicted: *"The kernel's existing
+  declarations all pass. v1 should ship with the harness's own tree as
+  the dogfood test ... No fixing commit is needed (unlike Wave 1, which
+  surfaced 6 pre-existing drift items)."* The prediction held. All 11
+  active sensitive-path patterns are covered by some active module's
+  companion-rule triggerPaths on first run. Wave 5.3 is the **first
+  Wave 5 implementation that ships without a fixing commit.** Tracing
+  the trajectory across the sprint: Wave 1 (list-completeness) surfaced
+  6 fixing items (ADR-0015 missing plus 2 compositions plus 3 templates);
+  Wave 5.1 (trust-tier) surfaced 4 cascading PRD-internal
+  inconsistencies (kernel tier 5 reinterpretation, agent maxTier 3/4→5,
+  criticality check relaxation, declared-vs-inferred semantic
+  ambiguity); Wave 5.3 (sensitive-paths) surfaced 0 drift items.
+- **Observation:** Successive structural-enforcement waves on the same
+  framework produce **diminishing fix-up size** — a convergence signal.
+  When a framework's first structural validator lands (Wave 1), it
+  surfaces N drift items (the accumulated gap-set). When subsequent
+  validators land against a framework that has already absorbed earlier
+  validators' enforcement (Waves 5.1, 5.3), they surface fewer pre-
+  existing drift items — because the prior validators have either
+  already caught the drift (catalog rows) or set the discipline
+  conditions that prevent its accumulation (claim-vs-enforcement
+  audit-driven backfill). This is the **inverse** of the standard
+  "complexity grows with feature count" intuition: when the features
+  ARE enforcement layers, additional features REDUCE the rough-edge
+  surface area, because each layer constrains the design space of the
+  next. The trajectory is empirically observable across the sprint:
+  6 → 4 → 0 fix-up-items per wave, with the §9 distillation chain
+  (Wave 2a → 2b → 5.1 → 5.3 observations) tracking the pattern's
+  generalization.
+- **Implication:** Three concrete moves; two prospective. **First**,
+  the pattern is a **diagnostic for framework enforcement maturity**.
+  Run the [[claim-vs-enforcement-classification]] mechanism (per the
+  earlier observation from this chain) periodically; track the
+  Asserted-only count over time as an objective enforcement-maturity
+  metric. A framework whose Asserted-only count is *decreasing* is
+  converging; one whose count is *stable or growing* is accumulating
+  enforcement debt faster than it is paying it down. This metric is
+  trivially computable and surfaces strategic state. **Second**, the
+  pattern suggests **sequencing matters** — the order in which
+  structural validators land affects total fix-up cost. Wave 1 came
+  first by design (the unblock); had Wave 5.1 or Wave 5.3 come first,
+  they would likely have surfaced larger fix-up sets because the
+  supporting enforcement layer (list-completeness) would not yet
+  exist to constrain new ADR/PRD/OPP additions. The roadmap's Wave-1-
+  first sequencing was inadvertently right for reasons beyond the
+  "single highest-leverage item" framing — it was also the *first
+  enforcement layer*, which makes every subsequent layer cheaper.
+  **Third**, this is the **second confirmation that the §9 design-
+  then-implementation pattern converges**: design (the OPP) makes a
+  prediction; implementation tests the prediction; outcome refines
+  the framework's self-model. Wave 5.1 disconfirmed FR-005's literal
+  reading (PRD-internal inconsistency); Wave 5.3 confirmed OPP-0034
+  Risk 3 (no fix-up needed). Both outcomes are valuable; neither
+  would have been visible without the implementation pass.
+- **Confidence:** medium. The trajectory is one sprint long (6 → 4 →
+  0 across three waves). The pattern's generalizability would
+  strengthen with Wave 5.5 (knowledge-redaction; small scope) and
+  Wave 5.4 (SAST module; large scope) as additional data points. If
+  Wave 5.5 also lands with ≤1 fix-up items and Wave 5.4 lands with
+  ≤2 (despite its larger surface area), the convergence claim is
+  well supported. Open question: at what point does fix-up cost
+  stabilize rather than continue to decrease? Hypothesis: at the
+  point where the Asserted-only set is approximately closed, fix-up
+  cost approaches the *new-feature-friction* baseline (small,
+  constant) rather than the *enforcement-debt* mode (larger,
+  decreasing).
+- **Severity:** architectural
+- **Contributed by:** Claude Code (claude-opus-4-7), 2026-05-28 (Wave 5.3 OPP-0034 implementation; satisfies the cycle-end distillation rule fired by the kernel/base/module.yaml validators-list edit; substantive connection — the observation captures the *convergence-signal* trajectory across the Wave 1 → 5.1 → 5.3 sequence which the prior [[claim-vs-enforcement-classification]] observations did not yet have enough data to articulate; the Wave 5.1 [[mechanizing-doctrine-surfaces-inconsistencies]] observation is the explicit antecedent — together the two observations form a complementary pair: implementation-driven discovery in 5.1 and prediction-confirmation in 5.3, both flavors of the §9 design-then-test pattern)

@@ -37,6 +37,7 @@ below).
 | `validate-catalog-counts.sh` | `[<project-root>]` | Documented catalog-count claims (e.g., "8 validators", "35 modules") match canonical recipe-computed values across every asserted call site (entry-point prose, ASCII art, Mermaid diagrams, back-cover SVG) — closes the count-drift class |
 | `validate-list-completeness.sh` | `[<project-root>]` | For every ADR / PRD / OPP / composition / template subdirectory / profile module on disk, asserts the matching row exists in its canonical index file (docs/README.md, candidates.md, compositions/README.md, templates/README.md, SUMMARY.md) — closes the list-completeness drift class |
 | `validate-trust-tier.sh` | `[<manifest>] [<project-root>]` | For each active module, validates the optional `tier.declared` field (range 0–5; rationale required for ≥3); computes the inferred tier from `sensitivePaths` regex patterns against representative production-shape sample paths (highest match wins); asserts declared ≥ inferred. For agent modules, validates `maxTier` and asserts it ≥ the max active non-agent tier. Cross-cutting: declared tier 5 requires `project.criticality` ∈ {high, critical}, unless `project.maturity == platform`. PRD-0006 / ADR-0017 Wave 5.1 |
+| `validate-sensitive-paths.sh` | `[<manifest>] [<project-root>]` | Across all active modules, asserts every `sensitivePaths` regex pattern is overlapped by at least one `companionRules.triggerPaths` regex on some active module. Uses a pragmatic 3-tier overlap check (literal equality, trigger contains sensitive as substring, or sensitive contains trigger as substring). Cross-module overlap is allowed. Closes the doc-code-alignment gap where `sensitivePaths` was sold-as-policy but never-checked-in-code (safety-security-sweep §2 claim 12 → Enforced). OPP-0034 / ADR-0017 Wave 5.3 |
 
 ### `--help` / `-h`
 
@@ -78,6 +79,7 @@ bash platform/validators/validate-doc-references.sh .
 bash platform/validators/validate-catalog-counts.sh .
 bash platform/validators/validate-list-completeness.sh .
 bash platform/validators/validate-trust-tier.sh harness.manifest.yaml .
+bash platform/validators/validate-sensitive-paths.sh harness.manifest.yaml .
 # Companion rules — only meaningful when comparing branches:
 bash platform/validators/validate-companions.sh harness.manifest.yaml . main
 ```

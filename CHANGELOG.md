@@ -20,6 +20,16 @@ they update their submodule pin. For the *internal* per-decision audit trail
 
 ### Added
 
+- **`validate-sensitive-paths.sh`** (Wave 5.3 / OPP-0034 / ADR-0017) —
+  11th validator. Across all active modules, asserts every declared
+  `sensitivePaths` regex pattern is overlapped by at least one
+  `companionRules.triggerPaths` regex on some active module (cross-
+  module coverage allowed). Uses a pragmatic 3-tier overlap check
+  (literal equality, trigger contains sensitive as substring, or
+  sensitive contains trigger as substring). Closes the doc-code-
+  alignment gap where `sensitivePaths` was sold-as-policy but
+  never-checked-in-code. Wired into CI validators job + consumer CI
+  templates + harness-governance SKILL.md.
 - **`validate-trust-tier.sh`** (Wave 5.1 / PRD-0006 / ADR-0017) — 10th
   validator. Asserts each active module's optional `tier.declared` field
   (range 0–5; rationale required for ≥3) is coherent with the inferred

@@ -60,6 +60,9 @@ jobs:
       - name: Validate trust tier
         run: bash platform/validators/validate-trust-tier.sh harness.manifest.yaml .
 
+      - name: Validate sensitive paths
+        run: bash platform/validators/validate-sensitive-paths.sh harness.manifest.yaml .
+
       - name: Validate companion rules
         if: github.event_name == 'pull_request'
         env:

@@ -858,6 +858,7 @@ VALIDATOR_SCRIPTS = %w[
   validate-catalog-counts.sh
   validate-list-completeness.sh
   validate-trust-tier.sh
+  validate-sensitive-paths.sh
 ].freeze
 
 class TestValidatorHelpFlag < Minitest::Test
@@ -1166,6 +1167,48 @@ class TestValidateTrustTier < Minitest::Test
   def test_missing_manifest_aborts_with_exit_2
     nonexistent = File.join(Dir.tmpdir, "validate-trust-tier-nope-#{Process.pid}.yaml")
     _out, err, code = run_validator("validate-trust-tier.sh", nonexistent)
+    assert_equal 2, code, "missing manifest must exit 2 (usage error)"
+    assert_match(/not found|No such file/i, err)
+  end
+end
+
+# ---------------------------------------------------------------------------
+# validate-sensitive-paths.sh
+#
+# Wave 5.3 of the 2026-05-27 audit roadmap (OPP-0034 / ADR-0017). Asserts
+# every declared sensitivePaths regex pattern is overlapped by at least
+# one companionRules.triggerPaths regex on some active module (cross-
+# module coverage allowed). Closes safety-security-sweep §2 claim 12
+# (Asserted-only → Enforced).
+#
+# Per OPP-0034 Risk 3 ("The kernel's existing declarations all pass"),
+# the dogfood run is the primary integration test. Same platform-root-
+# resolution constraint as validate-trust-tier.sh: fixture-style
+# isolation tests would require a platform-root-override that's out of
+# v1 scope.
+# ---------------------------------------------------------------------------
+class TestValidateSensitivePaths < Minitest::Test
+  HARNESS_ROOT = File.expand_path("..", PLATFORM_DIR)
+
+  def test_runs_clean_against_harness_repo
+    # Dogfood: the harness's own manifest must validate green. OPP-0034
+    # explicitly predicted this would pass without a fixing commit; this
+    # test enforces that prediction (and will catch any future drift
+    # where a new sensitivePaths declaration lands without companion-rule
+    # coverage).
+    manifest = File.join(HARNESS_ROOT, "harness.manifest.yaml")
+    out, err, code = run_validator("validate-sensitive-paths.sh", manifest, HARNESS_ROOT)
+    assert_equal 0, code,
+                 "Harness's sensitive paths must all be companion-rule covered. stderr: #{err}\nstdout: #{out}"
+    assert_match(/✓/, out)
+    # Sanity: ensure the validator actually checked something, not just
+    # vacuously passed because no sensitivePaths exist.
+    assert_match(/sensitive-path patterns are companion-rule covered/, out)
+  end
+
+  def test_missing_manifest_aborts_with_exit_2
+    nonexistent = File.join(Dir.tmpdir, "validate-sensitive-paths-nope-#{Process.pid}.yaml")
+    _out, err, code = run_validator("validate-sensitive-paths.sh", nonexistent)
     assert_equal 2, code, "missing manifest must exit 2 (usage error)"
     assert_match(/not found|No such file/i, err)
   end

@@ -16,6 +16,47 @@ force.
 
 ---
 
+## 2026-05-28 — Wave 5.3 closed
+
+**Wave 5.3 — OPP-0034 Sensitive-Paths Coverage.** Shipped the 11th
+validator (`validate-sensitive-paths.sh`). Closes safety-security-sweep
+§2 claim 12 (Asserted-only → Enforced). The framework's
+`sensitivePaths` field — previously documentary metadata read by zero
+validators — is now structurally enforced: every declared pattern must
+be overlapped by at least one companion-rule `triggerPaths` regex on
+some active module.
+
+**No fixing commit needed** (first Wave 5 implementation to ship without
+one). OPP-0034 Risk 3 predicted the harness's own state would pass on
+first run; the prediction held. All 11 active sensitive-path patterns
+are covered. This is its own signal that the framework's structural
+enforcement is converging — the gap-naming work of Wave 1 + 2a + 2b +
+5.1 created the conditions for Wave 5.3 to be a pure
+asserted-to-enforced conversion without remediation work.
+
+Drive-by alignment: Wave 5.1's `validate-trust-tier.sh` was missing
+from the root README validators table. Added in this PR alongside the
+new `validate-sensitive-paths.sh` row.
+
+**Two of seven Asserted-only items now closed** — claims 10 + 11
+(Wave 5.1) + claim 12 (Wave 5.3). Five remain: 13 (kernel-doctrine
+override), 15 (second-human Harness Ready), 16 (design-vs-implementation
+split), 18 (module text in stripped contexts; by-design honor-code).
+Of those, claim 16 has its own §9 codification path (the Wave 2a + 2b +
+5.1 distillation observations already document promotion candidacy).
+
+**Next wave per ADR-0017 Wave 5 sequencing (5.1 → 5.3 → 5.5 → 5.2 →
+5.4):** Wave 5.5 — `validate-knowledge-redaction.sh` + CODEOWNERS on
+`docs/knowledge/` (OPP-0036). Small scope; pairs with the §8/§9 cross-
+pollination + reverse-leakage findings. Then 5.2 (content-safety
+scanner; needs adversarial corpus) and 5.4 (SAST module; 1–2 weeks,
+largest remaining Wave 5 item).
+
+Alternatively: pivot to Wave 3 / Wave 4 / Wave 6.1 for parallel-safe
+work.
+
+---
+
 ## 2026-05-27 — Wave 5.1 closed
 
 **Wave 5.1 — PRD-0006 Trust-Tier Enforcement.** Implemented per

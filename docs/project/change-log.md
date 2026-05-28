@@ -11,6 +11,44 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## Wave 5.3 — Sensitive-Paths Coverage (`validate-sensitive-paths.sh`, OPP-0034)
+
+Implements OPP-0034 — Sensitive-Paths Overlap Validator. Closes Wave 5.3
+of execution-roadmap §8 and Asserted-only claim 12 from safety-security-
+sweep §2. Closes the doc-code-alignment gap §7 flagged: `sensitivePaths`
+was sold-as-policy in README but never-checked-in-code (zero validators
+read the field). Cited under [ADR-0017](../adr/ADR-0017-safety-hardening-roadmap.md).
+
+**What shipped:** 11th validator (`validate-sensitive-paths.sh`) — across
+all active modules, asserts every `sensitivePaths` regex pattern is
+overlapped by at least one `companionRules.triggerPaths` regex on some
+active module. Uses a pragmatic 3-tier overlap check (literal equality
+→ trigger contains sensitive → sensitive contains trigger). Cross-module
+coverage allowed. CI wiring (harness + consumer templates). Catalog
+count bumped 10 → 11 across 7 documented sites. README validators table
+gained two missing rows (`validate-trust-tier.sh` from Wave 5.1 drift +
+`validate-sensitive-paths.sh` new).
+
+**No fixing commit needed.** Per OPP-0034 Risk 3 prediction ("the
+kernel's existing declarations all pass"), the harness's own state
+passes the new check on first run — all 11 active sensitive-path
+patterns are covered by some active module's companion-rule triggerPaths.
+The prediction held; Wave 5.3 is the first Wave 5 implementation that
+ships *without* a fixing commit, confirming the framework's structural
+enforcement is trending toward coherence as more validators land.
+
+**Wave 5.1 README drift fixed incidentally.** While editing the README
+validators table to add the new row, noticed `validate-trust-tier.sh`
+itself was missing from the table — Wave 5.1 docs/README.md was updated
+but the root README.md validators table was not. Closed in this PR as
+drive-by alignment.
+
+| Date | Change | Closes | ADR |
+| ---- | ------ | ------ | --- |
+| 2026-05-28 | Shipped `validate-sensitive-paths.sh` (11th validator). Pragmatic 3-tier overlap check. Wired into `.github/workflows/harness.yml`, consumer CI templates, `AGENTS.md` recommended-run-order, `harness-governance/SKILL.md` validator chain + signature notes, `validators/README.md` script table. Bumped catalog count 10 → 11 across 7 documented sites. README validators table gained two rows (`validate-trust-tier.sh` Wave 5.1 drift + `validate-sensitive-paths.sh` new). Integration test (dogfood pattern). | Wave 5.3 of execution-roadmap §8; OPP-0034; safety-security-sweep §2 claim 12 (Asserted-only → Enforced) | ADR-0017 (multi-PR shelter); OPP-0034 (design contract — no PRD pass; half-day scope per OPP) |
+
+---
+
 ## Wave 5.1 — Trust-Tier Enforcement (`validate-trust-tier.sh`, PRD-0006)
 
 Implements PRD-0006 — Trust-Tier Enforcement. Closes Wave 5.1 of

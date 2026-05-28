@@ -54,6 +54,9 @@ bash platform/validators/validate-module-graph.sh harness.manifest.yaml
 bash platform/validators/validate-required-artifacts.sh harness.manifest.yaml .
 bash platform/validators/validate-placeholders.sh .
 bash platform/validators/validate-agent-pack.sh harness.manifest.yaml .
+bash platform/validators/validate-doc-references.sh .
+bash platform/validators/validate-catalog-counts.sh .
+bash platform/validators/validate-list-completeness.sh .
 bash platform/validators/validate-companions.sh harness.manifest.yaml . main
 ruby -I platform/validators/lib platform/validators/test/test_harness_registry.rb
 ruby -I platform/validators/lib platform/validators/test/test_validators_integration.rb

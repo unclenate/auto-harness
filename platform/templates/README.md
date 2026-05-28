@@ -335,6 +335,46 @@ duplicating inline. Absorbed from governance patterns observed in adsclaw.
 | Web3 ADR | `domains/web3` | `templates/web3/adr-web3.md` |
 | Web3 intake supplement | `domains/web3` | `templates/web3/web3-intake-supplement.md` |
 
+### Agentic Interface
+
+Templates for projects shipping an in-product copilot / generative-UI / conversational-primary
+surface. Copy the files you need into the project's `docs/agentic-interface/` tree.
+
+| Template | Required By Module | Path |
+| -------- | ------------------ | ---- |
+| Agentic interface README | `domains/agentic-interfaces` | `templates/agentic-interface/README.md` |
+| Interface design | `domains/agentic-interfaces` | `templates/agentic-interface/design.md` |
+| Prompt + tool registry | `domains/agentic-interfaces` | `templates/agentic-interface/prompt-tool-registry.md` |
+| Renderer contract | `domains/agentic-interfaces` | `templates/agentic-interface/renderer-contract.md` |
+| Interface risk register | `domains/agentic-interfaces` | `templates/agentic-interface/risk-register.md` |
+
+### MCP
+
+Templates for projects that ship a Model Context Protocol server. Written against the
+**MCP 2025-06-18 spec revision**; pin the revision your server targets in `server-spec.md`.
+
+| Template | Required By Module | Path |
+| -------- | ------------------ | ---- |
+| MCP template family README | `architectures/mcp-server` | `templates/mcp/README.md` |
+| MCP server spec | `architectures/mcp-server` | `templates/mcp/server-spec.md` |
+| Capability schema | `architectures/mcp-server` | `templates/mcp/capability-schema.md` |
+| Tool registry | `architectures/mcp-server` | `templates/mcp/tool-registry.md` |
+| Transport and auth | `architectures/mcp-server` | `templates/mcp/transport-and-auth.md` |
+| Prompt-injection test plan | `architectures/mcp-server` | `templates/mcp/prompt-injection-test-plan.md` |
+| MCP risk register | `architectures/mcp-server` | `templates/mcp/risk-register.md` |
+
+### CI
+
+Ready-to-copy CI configurations that run the auto-harness validator chain on
+consumer projects. Pick the file matching your CI provider; both fill in via
+`bash .harness/platform/bootstrap/set-consumer-headers.sh`.
+
+| Template | Provider | Path |
+| -------- | -------- | ---- |
+| GitHub Actions workflow | GitHub Actions | `templates/ci/github-actions.yml` |
+| GitLab CI pipeline | GitLab CI | `templates/ci/gitlab-ci.yml` |
+| CI template family README | — | `templates/ci/README.md` |
+
 ---
 
 ## Reference

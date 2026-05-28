@@ -11,6 +11,21 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## Wave 1 — Structural Enforcement (`validate-list-completeness.sh`)
+
+Closes the cross-cutting "list-completeness drift" class named in the 2026-05-27
+documentation audit roadmap (`documentation-audit-2026-05-27/execution-roadmap.md` §4).
+The defect: every catalog index (ADR table, OPP table, compositions table,
+template directory map, module-library list) had been hand-maintained, and
+every recent audit found a sibling table missing a row that had landed on disk.
+Refresh-2 §4 recorded the class reproducing within 48 hours of a prior fix.
+
+| Date | Change | Closes | ADR |
+| ---- | ------ | ------ | --- |
+| 2026-05-27 | Shipped `validate-list-completeness.sh` — six checks (ADRs, PRDs, OPPs, compositions, template subdirectories, profile modules) assert every on-disk entity is referenced in its canonical index file; wired into CI validators job; added catalog-counts assertion for the new validator (counts 8→9 across `README.md`, `platform/reference/how-to-read.md`, `docs/architecture/diagrams.md`, `docs/_assets/cover-back.svg`); registered with the `VALIDATOR_SCRIPTS` --help loop. Land-green fixing commit: added ADR-0015 row to `docs/README.md` (closes refresh-2 N1); added 2 missing composition rows to `platform/compositions/README.md` (closes refresh-2 M-h); added 3 missing template-subdir sections (agentic-interface, ci, mcp) to `platform/templates/README.md` directory map (drift class caught by the new validator on first run — earned its keep immediately). Drive-by alignment fixes: added `validate-catalog-counts.sh` row to `platform/validators/README.md` script table; refreshed recommended-run-order blocks in `validators/README.md` and `AGENTS.md` to include catalog-counts + list-completeness. | refresh-2 M-j, N1, M-h | n/a *(governance satisfier: this change-log row + Wave 1 of roadmap)* |
+
+---
+
 ## Log
 
 | Date | Type | Change | Reason | Owner | ADR/PRD |

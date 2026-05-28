@@ -34,6 +34,8 @@ below).
 | `validate-agent-pack.sh` | `<manifest> <project-root>` | Agent modules declare adapters and compiled fragments; all referenced files must exist |
 | `validate-companions.sh` | `<manifest> <project-root> <base-branch>` | PR diff satisfies all active companion rules — including `forbiddenPatterns` hard fails (requires git context) |
 | `validate-doc-references.sh` | `<project-root>` | **v2 (renderer-aware):** every markdown link `[text](target)` with a relative target resolves on disk *and* renders safely (no trailing-slash / bare-extensionless GitBook breakage). Skips fenced blocks *and* inline backtick code spans. Preserves v1's `platform/...` bare-path extractor as a second pass. Respects `.doc-reference-ignore` |
+| `validate-catalog-counts.sh` | `[<project-root>]` | Documented catalog-count claims (e.g., "8 validators", "35 modules") match canonical recipe-computed values across every asserted call site (entry-point prose, ASCII art, Mermaid diagrams, back-cover SVG) — closes the count-drift class |
+| `validate-list-completeness.sh` | `[<project-root>]` | For every ADR / PRD / OPP / composition / template subdirectory / profile module on disk, asserts the matching row exists in its canonical index file (docs/README.md, candidates.md, compositions/README.md, templates/README.md, SUMMARY.md) — closes the list-completeness drift class |
 
 ### `--help` / `-h`
 
@@ -72,6 +74,8 @@ bash platform/validators/validate-required-artifacts.sh harness.manifest.yaml .
 bash platform/validators/validate-placeholders.sh .
 bash platform/validators/validate-agent-pack.sh harness.manifest.yaml .
 bash platform/validators/validate-doc-references.sh .
+bash platform/validators/validate-catalog-counts.sh .
+bash platform/validators/validate-list-completeness.sh .
 # Companion rules — only meaningful when comparing branches:
 bash platform/validators/validate-companions.sh harness.manifest.yaml . main
 ```

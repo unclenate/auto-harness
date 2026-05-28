@@ -53,7 +53,7 @@ harness provides:
 - **Artifact requirements** — the files that must exist for a module to be considered active
   and governed (problem statement, ADRs, risk register, release checklist, etc.)
 - **Sensitive path governance** — patterns that trigger elevated human review when changed
-- **Validator chain** — eight shell scripts you run locally or in CI that enforce all of the above
+- **Validator chain** — nine shell scripts you run locally or in CI that enforce all of the above
 - **Agent adapters** — `CLAUDE.md`, `AGENTS.md`, and `.claude/settings.json` shims that load
   the governance rules into agent context at session start
 
@@ -142,7 +142,7 @@ flowchart TD
     end
 
     subgraph ENFORCE["Enforcement (CI)"]
-        Validators["<b>Validators</b><br/>8 scripts"]
+        Validators["<b>Validators</b><br/>9 scripts"]
         Validators -.reads.-> Manifest
         Validators -.reads.-> Companions
         Validators --> CIGate["<b>CI gates merge</b>"]
@@ -404,7 +404,7 @@ cp -r platform/skills/harness-governance .claude/skills/
 
 ## Validators
 
-Eight validators, each targeting a specific governance layer:
+Nine validators, each targeting a specific governance layer:
 
 | Validator | What It Checks |
 | --------- | -------------- |
@@ -416,6 +416,7 @@ Eight validators, each targeting a specific governance layer:
 | `validate-companions.sh` | PR diff satisfies all active companion rules |
 | `validate-doc-references.sh` | Markdown links to `platform/...` paths resolve on disk — catches stale path strings as the catalog evolves |
 | `validate-catalog-counts.sh` | Documented catalog counts (modules, validators, skills, templates, workflows, diagrams) match canonical recipes — closes the count-drift class |
+| `validate-list-completeness.sh` | Every ADR / PRD / OPP / composition / template subdirectory / profile module on disk is referenced by its canonical index file — closes the list-completeness drift class |
 
 All validators are pure shell + Ruby (no external service calls). Ruby 3.0+ and ripgrep
 are the only runtime requirements.

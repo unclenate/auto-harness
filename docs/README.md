@@ -56,6 +56,7 @@ Accepted; supersession is recorded by status flip + a new ADR.
 | [0012](adr/ADR-0012-opportunity-capture-index-split.md) | Opportunity Capture — Index Split | Accepted |
 | [0013](adr/ADR-0013-documentation-information-architecture.md) | Documentation Information Architecture | Accepted |
 | [0014](adr/ADR-0014-sunset-distilled-learnings.md) | Sunset `distilled-learnings.md` | Accepted |
+| [0015](adr/ADR-0015-managed-fleet-delivery-posture.md) | Add `delivery/managed-fleet` Posture | Accepted |
 
 ---
 

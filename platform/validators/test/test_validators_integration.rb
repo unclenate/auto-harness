@@ -856,6 +856,7 @@ VALIDATOR_SCRIPTS = %w[
   validate-companions.sh
   validate-doc-references.sh
   validate-catalog-counts.sh
+  validate-list-completeness.sh
 ].freeze
 
 class TestValidatorHelpFlag < Minitest::Test
@@ -955,5 +956,177 @@ class TestValidatorUsageErrorExitCodes < Minitest::Test
       assert_equal 2, code, "non-mapping manifest must exit 2 from agent-pack"
       assert_match(/mapping at the top level/i, err)
     end
+  end
+end
+
+# ---------------------------------------------------------------------------
+# validate-list-completeness.sh
+#
+# Wave 1 of the 2026-05-27 audit roadmap (refresh-2.md finding M-j). Asserts
+# that every governance/catalog entity on disk is referenced in its canonical
+# index file. Tests use inline mktmpdir fixtures so each scenario is colocated
+# with its assertion — no static disk fixture per case.
+# ---------------------------------------------------------------------------
+class TestValidateListCompleteness < Minitest::Test
+  # Build a minimal "complete-aligned" project tree at `root`: one entity per
+  # check (ADR, PRD, OPP, composition, template subdirectory, profile module)
+  # with all index rows present.
+  def write_complete_fixture(root)
+    # ADR + PRD + OPP files
+    FileUtils.mkdir_p(File.join(root, "docs/adr"))
+    File.write(File.join(root, "docs/adr/ADR-0001-test.md"), "# ADR-0001\n")
+    FileUtils.mkdir_p(File.join(root, "docs/requirements"))
+    File.write(File.join(root, "docs/requirements/PRD-0001-test.md"), "# PRD-0001\n")
+    FileUtils.mkdir_p(File.join(root, "docs/opportunities"))
+    File.write(File.join(root, "docs/opportunities/OPP-0001-test.md"), "# OPP-0001\n")
+    # candidates.md — either a row or a "retired" footnote satisfies; an
+    # OPP-NNNN token in either form contains the assertion anchor.
+    File.write(File.join(root, "docs/opportunities/candidates.md"),
+               "# Candidates\n\n- OPP-0001 test cluster row\n")
+
+    # docs/README.md — single index for ADR/PRD/OPP tables
+    File.write(File.join(root, "docs/README.md"), <<~MD)
+      # Records
+      | [0001](adr/ADR-0001-test.md) | Test ADR |
+      | [0001](requirements/PRD-0001-test.md) | Test PRD |
+      | [0001](opportunities/OPP-0001-test.md) | Test OPP |
+    MD
+
+    # Composition + dual indexes (compositions/README.md + root README.md)
+    FileUtils.mkdir_p(File.join(root, "platform/compositions"))
+    File.write(File.join(root, "platform/compositions/test-comp.yaml"),
+               "schemaVersion: 1\n")
+    File.write(File.join(root, "platform/compositions/README.md"),
+               "| [test-comp.yaml](test-comp.yaml) | test |\n")
+    File.write(File.join(root, "README.md"),
+               "Compositions: [test-comp.yaml](platform/compositions/test-comp.yaml)\n")
+
+    # Template subdirectory + directory-map row
+    FileUtils.mkdir_p(File.join(root, "platform/templates/widget"))
+    File.write(File.join(root, "platform/templates/widget/template.md"),
+               "# widget\n")
+    File.write(File.join(root, "platform/templates/README.md"),
+               "| Widget | mod | `templates/widget/template.md` |\n")
+
+    # Profile module + SUMMARY.md entry
+    FileUtils.mkdir_p(File.join(root, "platform/profiles/management/test-mod"))
+    File.write(File.join(root, "platform/profiles/management/test-mod/module.yaml"),
+               "id: test-mod\n")
+    File.write(File.join(root, "SUMMARY.md"),
+               "* [Test](platform/profiles/management/test-mod/README.md)\n")
+  end
+
+  def test_complete_fixture_passes
+    Dir.mktmpdir do |tmp|
+      write_complete_fixture(tmp)
+      out, err, code = run_validator("validate-list-completeness.sh", tmp)
+      assert_equal 0, code, "complete fixture must pass. stderr: #{err}\nstdout: #{out}"
+      assert_match(/✓/, out)
+    end
+  end
+
+  def test_adr_missing_from_docs_readme_fails
+    Dir.mktmpdir do |tmp|
+      write_complete_fixture(tmp)
+      # Strip the ADR row from docs/README.md
+      File.write(File.join(tmp, "docs/README.md"), <<~MD)
+        # Records
+        | [0001](requirements/PRD-0001-test.md) | Test PRD |
+        | [0001](opportunities/OPP-0001-test.md) | Test OPP |
+      MD
+      _out, err, code = run_validator("validate-list-completeness.sh", tmp)
+      assert_equal 1, code, "missing ADR row must exit 1"
+      assert_match(/missing ADR row for ADR-0001/, err)
+    end
+  end
+
+  def test_prd_missing_from_docs_readme_fails
+    Dir.mktmpdir do |tmp|
+      write_complete_fixture(tmp)
+      File.write(File.join(tmp, "docs/README.md"), <<~MD)
+        # Records
+        | [0001](adr/ADR-0001-test.md) | Test ADR |
+        | [0001](opportunities/OPP-0001-test.md) | Test OPP |
+      MD
+      _out, err, code = run_validator("validate-list-completeness.sh", tmp)
+      assert_equal 1, code, "missing PRD row must exit 1"
+      assert_match(/missing PRD row for PRD-0001/, err)
+    end
+  end
+
+  def test_opp_missing_from_candidates_fails
+    Dir.mktmpdir do |tmp|
+      write_complete_fixture(tmp)
+      # OPP is in docs/README.md but absent from candidates.md.
+      File.write(File.join(tmp, "docs/opportunities/candidates.md"),
+                 "# Candidates\n\n(empty index)\n")
+      _out, err, code = run_validator("validate-list-completeness.sh", tmp)
+      assert_equal 1, code, "missing OPP candidates row must exit 1"
+      assert_match(/missing OPP candidates row for OPP-0001/, err)
+    end
+  end
+
+  def test_composition_missing_from_compositions_readme_fails
+    Dir.mktmpdir do |tmp|
+      write_complete_fixture(tmp)
+      File.write(File.join(tmp, "platform/compositions/README.md"),
+                 "no rows here\n")
+      _out, err, code = run_validator("validate-list-completeness.sh", tmp)
+      assert_equal 1, code, "missing composition row must exit 1"
+      assert_match(/missing composition.*for test-comp\.yaml/, err)
+    end
+  end
+
+  def test_template_subdirectory_missing_from_templates_readme_fails
+    Dir.mktmpdir do |tmp|
+      write_complete_fixture(tmp)
+      # Wipe the templates README row for the widget subdir
+      File.write(File.join(tmp, "platform/templates/README.md"),
+                 "no directory-map rows\n")
+      _out, err, code = run_validator("validate-list-completeness.sh", tmp)
+      assert_equal 1, code, "missing template subdirectory row must exit 1"
+      assert_match(/missing template subdirectory row for widget/, err)
+    end
+  end
+
+  def test_profile_module_missing_from_summary_fails
+    Dir.mktmpdir do |tmp|
+      write_complete_fixture(tmp)
+      File.write(File.join(tmp, "SUMMARY.md"), "* [Other](other.md)\n")
+      _out, err, code = run_validator("validate-list-completeness.sh", tmp)
+      assert_equal 1, code, "missing module row in SUMMARY.md must exit 1"
+      assert_match(/missing profile module row for profiles\/management\/test-mod/, err)
+    end
+  end
+
+  def test_consumer_without_entity_directories_passes_vacuously
+    # Consumer-safety contract: if a downstream project omits a category
+    # directory entirely (no docs/adr/, no compositions, etc.), the check is
+    # a no-op for that category. Empty tree → zero entities → exit 0.
+    Dir.mktmpdir do |tmp|
+      out, err, code = run_validator("validate-list-completeness.sh", tmp)
+      assert_equal 0, code,
+                   "empty directory must pass (no entities to assert). stderr: #{err}"
+      assert_match(/✓/, out)
+    end
+  end
+
+  def test_missing_project_root_aborts_with_exit_2
+    nonexistent = File.join(Dir.tmpdir, "validate-list-completeness-nope-#{Process.pid}")
+    _out, err, code = run_validator("validate-list-completeness.sh", nonexistent)
+    assert_equal 2, code, "missing project root must exit 2 (usage error)"
+    assert_match(/not a directory/i, err)
+  end
+
+  def test_runs_clean_against_harness_repo
+    # Dogfood: the harness's own repo must validate green. This is the
+    # acceptance test for Wave 1's "land an immediate fixing commit" —
+    # ADR-0015 row, missing composition rows, missing template subdir
+    # entries all repaired in the same PR that introduces the validator.
+    harness_root = File.expand_path("..", PLATFORM_DIR)
+    out, err, code = run_validator("validate-list-completeness.sh", harness_root)
+    assert_equal 0, code,
+                 "Harness's own indexes must be complete. stderr: #{err}\nstdout: #{out}"
+    assert_match(/✓/, out)
   end
 end

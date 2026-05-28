@@ -54,6 +54,9 @@ jobs:
       - name: Validate catalog counts
         run: bash platform/validators/validate-catalog-counts.sh .
 
+      - name: Validate list completeness
+        run: bash platform/validators/validate-list-completeness.sh .
+
       - name: Validate companion rules
         if: github.event_name == 'pull_request'
         env:

@@ -160,6 +160,8 @@ ASSERTIONS=(
   "README.md|Validator chain\*\* — ([a-z]+) shell scripts|validators"
   "README.md|^([A-Z][a-z]+) validators, each targeting|validators"
   "README.md|The harness provides ([a-z]+) skills|skills"
+  # README.md — mermaid Enforcement (CI) box (numeric form)
+  "README.md|Validators</b><br/>([0-9]+) scripts|validators"
 
   # platform/workflow/skills-and-agents.md — skills count
   "platform/workflow/skills-and-agents.md|The harness provides ([a-z]+) skills|skills"

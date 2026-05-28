@@ -319,6 +319,7 @@ Pre-built manifests for common project types. Copy the closest match and adjust:
 | [`web3-risk-analytics.yaml`](platform/compositions/web3-risk-analytics.yaml) | Python | Blockchain-integrated platform |
 | [`agentic-ui-saas.yaml`](platform/compositions/agentic-ui-saas.yaml) | Node / TS | SaaS web-app shipping an in-product agentic interface (copilot or generative UI) |
 | [`mcp-server-typescript.yaml`](platform/compositions/mcp-server-typescript.yaml) | Node / TS | Projects shipping their own MCP server (producer-side: tools, transports, prompt-injection defense) |
+| [`mcp-server-typescript-oss.yaml`](platform/compositions/mcp-server-typescript-oss.yaml) | Node / TS | OSS-released MCP server (producer-side + `delivery/self-hosted-oss` + project-standard + knowledge-capture) |
 
 ```bash
 cp platform/compositions/node-web-saas-postgres.yaml harness.manifest.yaml

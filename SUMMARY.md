@@ -230,6 +230,7 @@ Pre-built manifests for common project types. Copy the closest match to
 * [Web3 Risk Analytics](platform/compositions/web3-risk-analytics.yaml)
 * [Agentic UI SaaS](platform/compositions/agentic-ui-saas.yaml) — Node/TS SaaS shipping an in-product copilot or generative UI
 * [MCP Server (TypeScript)](platform/compositions/mcp-server-typescript.yaml) — projects that produce their own MCP server
+* [MCP Server (TypeScript, OSS)](platform/compositions/mcp-server-typescript-oss.yaml) — OSS-released MCP server with `delivery/self-hosted-oss` + project-standard + knowledge-capture
 
 ### Examples
 

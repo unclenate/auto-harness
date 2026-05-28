@@ -1,0 +1,51 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+# Starter composition for an MCP server in TypeScript that is shipped as
+# an open-source project (npm + GitHub release). Wires the producer-side
+# architecture overlay with a TypeScript stack, the self-hosted-oss
+# delivery posture, project-standard + knowledge-capture management, and
+# both the base and Claude Code agent packs.
+#
+# Distinct from mcp-server-typescript.yaml in three ways:
+#   - delivery/self-hosted-oss instead of delivery/prototype
+#     (npm provenance, GitHub release artifacts, SECURITY.md, version-pin policy)
+#   - management/project-standard + management/knowledge-capture instead of
+#     management/interview-driven (change log, dependency log, distilled
+#     learnings — appropriate for a maintained OSS project rather than a
+#     monolithic hackathon-style intake)
+#   - agents/claude-code in addition to agents/base (since OSS-maintainer
+#     workflow assumes Claude Code adapter discipline)
+#
+# Use mcp-server-typescript.yaml instead when the server is an internal
+# prototype not destined for OSS release; use this composition when the
+# server is a maintained open-source project.
+#
+# See:
+#   - platform/profiles/architectures/mcp-server/README.md
+#   - platform/profiles/delivery/self-hosted-oss/README.md
+#   - platform/workflow/mcp-server-build.md
+#   - docs/adr/ADR-0008-mcp-awareness.md
+schemaVersion: 1
+project:
+  id: example-mcp-server-typescript-oss
+  name: Example MCP Server (TypeScript, OSS)
+  maturity: prototype
+  criticality: low
+modules:
+  core:
+    - kernel/base
+  stacks:
+    - node-typescript
+  architectures:
+    - mcp-server
+  delivery:
+    - self-hosted-oss
+  management:
+    - project-standard
+    - knowledge-capture
+  agents:
+    - base
+    - claude-code
+overrides:
+  requiredArtifacts: []
+  disabledValidations: []

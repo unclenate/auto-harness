@@ -25,8 +25,8 @@ compiles into agent session-start context.
 The framework's authored content — `module.yaml` fields, `SKILL.md`
 bodies, agent-pack READMEs, `compiledFragments` — is loaded into
 downstream AI agent contexts at session start. This makes the framework's
-prose an attack surface. The current defense is human review (CODEOWNERS
-+ maintainer scrutiny). That is necessary but not structurally sufficient
+prose an attack surface. The current defense is human review
+(CODEOWNERS plus maintainer scrutiny). That is necessary but not structurally sufficient
 against a contributor or maintainer mistake; a deny-list validator closes
 the gap at the structural layer.
 

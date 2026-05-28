@@ -6,11 +6,17 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0033 — Content-Safety Validator (`validate-skill-content.sh`)
 
-**Status:** proposed
+**Status:** exploring
 **Owner:** @unclenate
 **Created:** 2026-05-27
-**Last Updated:** 2026-05-27
+**Last Updated:** 2026-05-28
 **Confidence:** medium-high
+
+> **Promoted to PRD-0015 on 2026-05-28.** This OPP captures the
+> opportunity and evidence; [PRD-0015](../requirements/PRD-0015-validate-skill-content.md)
+> captures the v1 design contract (FRs, denylist seed, exemption
+> format, adversarial-corpus fixture plan). The implementing PR ships
+> `validate-skill-content.sh` per the PRD spec.
 
 ---
 

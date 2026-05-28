@@ -11,6 +11,72 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## Wave 5.2 PRD — Skill Content Safety Validator (PRD-0015, design-only)
+
+Files PRD-0015 to specify the v1 design contract for
+`validate-skill-content.sh` — the Wave 5.2 content-safety validator
+under ADR-0017. Promotes OPP-0033 from `proposed` to `exploring` in
+the same commit per the same workflow OPP-0037 used (cross-link via
+the OPP body's PRD-0015 callout).
+
+**Why a PRD pass (not direct implementation per the
+half-day-no-PRD pattern).** Per `feedback-opp-to-implementation-no-prd`:
+the pattern applies to OPPs with **half-day scope + all Open
+Questions resolved with explicit Bias answers**. OPP-0033 fails
+both preconditions: (1) the scope includes a denylist-seed corpus
+design, an exemption-file format decision, and an adversarial-corpus
+fixture plan — all are PRD-level decisions, not half-day
+implementation details; (2) Open Questions 1 (deny-list completeness
+is permanent), 3 (per-file-type scope), and 4 (performance budget)
+need explicit design-time codification, not just biases.
+The PRD codifies them as FRs.
+
+**What shipped:** PRD-0015 (~370 lines) covering: Cross-references
+(OPP-0033, ADR-0017, §9/§10 operating principles, prior PRDs that
+compose), Overview + Goals/Non-Goals, **a `## §10 Claim Classification`
+block** naming each load-bearing claim being converted (C-V1 / C-V2
+/ C-V4 / C-V6) plus claims explicitly NOT converted (V3/V5/V7–V10)
+plus Half-enforced fallback (C-V4 partial), User Stories from four
+personas, **7 Must-Have FRs** (scanned-fields set, denylist patterns,
+BLOCK posture, exemption format, adversarial-corpus suite,
+propagation, dogfood-pass), 2 Should-Have FRs (suggested-fix hint,
+performance budget), 4 Out-of-Scope features with revisit triggers,
+Implementation Deferral table (tier-vocabulary lockfile, runtime
+classification, auto-strip, corpus expansion), Technical Constraints
+(Bash 3.2, shellcheck, 3-state exit) + **v1 seed denylist of 10
+patterns** with explicit source citations, CI/CD Gates, Success
+Metrics, Open Questions (3 implementation-level only — design-level
+all resolved).
+
+**§10 self-application demonstrated at design-time.** This is the
+first PRD authored after §10 codification. The PRD's `## §10 Claim
+Classification` block is the design-time analog of Wave 2b's
+audit-time classification — every load-bearing claim is enumerated
+and triaged before the implementing PR can drift. A distillation
+observation in `shared-observations.md` captures the design-time
+extension of §10 (`[[§10-prd-claim-classification-block]]`) as a
+load-bearing PRD structural addition. Implementation-level follow-up
+named: update `platform/templates/product/prd.md` to add an optional
+§10 Claim Classification section.
+
+**OPP-0033 status flipped `proposed` → `exploring` in same commit**
+following the OPP-0037 precedent (PR #79). The OPP body gained a
+callout box pointing to PRD-0015 as the promotion. `docs/README.md`
+OPP table and `docs/opportunities/candidates.md` updated to reflect
+the status change.
+
+**Companion-rule analysis.** Kernel/base rule does NOT fire (this
+PR touches no HARNESS/AGENTS/CLAUDE/.github/CODEOWNERS/workflows/scripts
+surface). Knowledge-capture cycle-end fires on both the PRD creation
+and the OPP edit — satisfied by the substantive distillation
+observation in `shared-observations.md`.
+
+| Date | Change | Closes | ADR |
+| ---- | ------ | ------ | --- |
+| 2026-05-28 | Filed PRD-0015 (design-only) specifying v1 contract for `validate-skill-content.sh`. Promoted OPP-0033 from `proposed` → `exploring`. Propagated to `docs/README.md` PRD table + OPP status; `SUMMARY.md`; `docs/opportunities/candidates.md`. Substantive observation appended to `shared-observations.md` capturing the design-time §10 application as a load-bearing PRD structural addition. | ADR-0017 Wave 5.2; safety-security-sweep §3 (red-team V1/V2/V4/V6); OPP-0033 (now exploring) | ADR-0017 (multi-PR shelter); PRD-0015 (design contract — the implementing PR cites this PRD) |
+
+---
+
 ## §10 — Classify Claims Before Enforcing Them (operating-principles promotion)
 
 Implements [OPP-0037](../opportunities/OPP-0037-classify-before-enforcing-as-operating-principle.md)

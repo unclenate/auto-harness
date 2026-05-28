@@ -16,6 +16,35 @@ force.
 
 ---
 
+## 2026-05-28 — Wave 5.2 PRD filed (PRD-0015, design-only)
+
+**PRD-0015 — Skill Content Safety Validator.** Filed to specify the
+v1 design contract for `validate-skill-content.sh` (the Wave 5.2
+validator under ADR-0017). Promotes OPP-0033 from `proposed` →
+`exploring`.
+
+**First PRD authored under §10.** PRD-0015's body includes a dedicated
+`## §10 Claim Classification` block naming each load-bearing claim
+being converted (C-V1, C-V2, C-V4, C-V6) plus claims explicitly NOT
+converted plus Half-enforced fallback. This is the design-time
+analog of §10's prior audit-time applications — first instance.
+
+**Drift checks now in force:** the implementing PR for PRD-0015
+must (a) ship the validator + adversarial-corpus fixtures + exemption
+file format per FRs, (b) bump catalog count 12 → 13 at the 7
+documented sites, (c) wire into all standard surfaces (CI, AGENTS.md
+run-order, harness-governance SKILL.md, validators/README.md, root
+README), (d) confirm the predict-clean absorption mechanism holds
+(harness's own authored prose passes the v1 denylist scan from PR 1),
+(e) include an "Implementation Reconciliation" section per the
+Wave 5.1 precedent for any §10 classification deviations.
+
+**Follow-up named:** update `platform/templates/product/prd.md` to
+add an optional `## §10 Claim Classification` section so future
+structural-enforcer PRDs inherit the discipline.
+
+---
+
 ## 2026-05-28 — §10 shipped (operating-principles promotion)
 
 **§10 "Classify Claims Before Enforcing Them" added to

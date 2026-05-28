@@ -7,7 +7,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 # Operating Principles — Development Harness Framework
 
 > Owner: @unclenate
-> Last updated: 2026-05-26 *(§ 9 "Split Design from Implementation" added — promoted from the three-instance deferred-implementations observation in shared-observations.md; previously the curated longitudinal destination role was established 2026-05-25 per ADR-0014)*
+> Last updated: 2026-05-28 *(§ 10 "Classify Claims Before Enforcing Them" added — promoted from the four-instance [[claim-vs-enforcement-classification]] observation chain in shared-observations.md, gated by the same three-instance bar § 9 was promoted under; OPP-0037 captures the design contract. § 9 "Split Design from Implementation" was added 2026-05-26 from the three-instance deferred-implementations observation; the curated longitudinal destination role was established 2026-05-25 per ADR-0014)*
 
 These principles govern how the harness platform itself is built and evolved.
 They are derived from the kernel doctrine and adapted to this project's context.
@@ -269,3 +269,87 @@ documented in `docs/knowledge/shared-observations.md`:
 should happen" with "the machinery that enforces it"?* If yes, ship the design
 and defer the enforcement — unless the enforcement is trivial or the design is
 inert without it. Name every deferral so it is a record, not a gap.
+
+## 10. Classify Claims Before Enforcing Them
+
+Every load-bearing claim the framework makes about its own behavior or
+governance-contract integrity is either **Enforced** (a validator catches
+violations), **Half-enforced** (partially structurally checked), or
+**Asserted-only** (claimed in prose, not checked anywhere in code). Run the
+classification *before* deciding what to enforce next; the output of the
+classification IS the next-phase roadmap.
+
+- **The Asserted-only cluster is the safety debt.** Honor-code prose can
+  carry inconsistency, contradiction, or silent drift indefinitely because
+  no code ever checks it. Enumerating which load-bearing claims fall in
+  the Asserted-only bucket makes the safety debt visible — and visible
+  debt can be sequenced, scoped, and paid down. Hidden debt accumulates.
+- **The Half-enforced cluster is the upgrade-path candidate set.**
+  Partial enforcement is often where the highest-leverage validator
+  improvements live: the structural surface is already understood, the
+  contract already half-codified, and converting Half-enforced to
+  Enforced is usually smaller scope than converting Asserted-only to
+  Enforced. Treat Half-enforced as a triage queue, not as an acceptable
+  end state.
+- **The Enforced cluster is what the framework can currently defend.**
+  This is the load-bearing claim a maintainer can make to a consumer
+  without footnoting "trust us." Knowing exactly which claims sit in
+  this bucket calibrates marketing prose, ADR confidence levels, and
+  consumer-onboarding expectations.
+- **The classification is itself the audit work** — enumerate canonical
+  surfaces (doctrine files, README marketing claims, kernel rules,
+  operating-principles, module declarations), tag each claim, and the
+  classification output drives the next batch of structural-enforcement
+  work. Re-evaluate on-change (any ADR touching doctrine; any new
+  operating-principle entry; any new module added to the active catalog)
+  and at a quarterly cap if no on-change trigger has fired.
+- **The mechanism is reusable.** Any framework that exists to enforce
+  something — governance harnesses, policy engines, contract checkers,
+  compliance scaffolding — can run the same classification procedure
+  against its own claims. Auto-harness ships the governance contract;
+  consumer projects can apply this principle to their own honor-code
+  surfaces.
+
+**First applied** across four instances in the 2026-05-27 / 28 audit
+sprint, documented in `docs/knowledge/shared-observations.md`:
+
+- **Refresh-2 list-completeness audit** — narrow-scope precursor: the
+  audit enumerated canonical-surface lists (ADRs, PRDs, OPPs,
+  compositions, template-subdirs, profile-modules) and classified each
+  catalog as Asserted (humans maintain) vs Enforced (a validator
+  checks). Result: the Wave 1 validator (`validate-list-completeness.sh`)
+  converted six Asserted-only catalogs into Enforced ones in one PR.
+- **Wave 2b safety-security-sweep § 2** — framework-wide articulation:
+  the sweep enumerated 19 load-bearing claims and classified each as
+  Enforced (9), Half-enforced (3), or Asserted-only (7). The seven
+  Asserted-only claims (claims 10–13, 15, 16) mapped directly to
+  Wave 5's priority order in [ADR-0017](adr/ADR-0017-safety-hardening-roadmap.md)
+  — the classification's output IS the roadmap.
+- **Wave 5.1 mechanizing-doctrine discovery** — implementation-driven
+  confirmation: the [PRD-0006](requirements/PRD-0006-trust-tier-enforcement.md)
+  implementation surfaced PRD-internal inconsistencies that the design
+  pass had elided (FR-002 + FR-003 + FR-005 cannot simultaneously hold
+  for the kernel module). Mechanization is the first time prior
+  Asserted-only contradictions are forced to resolve.
+- **Wave 5.5 posture-design reflection** — discovery via design choice:
+  authoring the WARN-posture validator
+  ([OPP-0036](opportunities/OPP-0036-validate-knowledge-redaction.md))
+  surfaced that *which* absorption mechanism (fix-on-impl / predict-clean
+  / warn-defer) the implementing PR uses is downstream of how the claim
+  was classified. The classification choice IS a design decision, not
+  an implementation detail.
+
+[OPP-0037](opportunities/OPP-0037-classify-before-enforcing-as-operating-principle.md)
+is the design contract under which this section was promoted. The OPP
+documents the four instances above, the §9 three-instance bar that
+gated promotion, and the workflow shape (design-only OPP per § 9 +
+half-day implementation per the project's no-PRD-for-half-day-OPP
+pattern).
+
+**When drafting an ADR, PRD, OPP, or new operating-principle entry,
+ask:** *which load-bearing claims am I making, and what's each claim's
+enforcement state?* Tag each as Enforced, Half-enforced, or
+Asserted-only. The Asserted-only set is your follow-up OPP queue; the
+Half-enforced set is your validator upgrade-path queue; the Enforced
+set is what you can defend without footnote. Run this classification
+during design — not after — so the audit work IS the design work.

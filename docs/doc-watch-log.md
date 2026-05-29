@@ -16,6 +16,28 @@ force.
 
 ---
 
+## 2026-05-28 — Wave 4.5 governance-doc banners (partial — opportunities deferred)
+
+**Partially closes Refresh #1 L-a.** Two of three governance-record
+directories (`docs/adr/`, `docs/requirements/`) gained newly authored
+`README.md` files opening with a contributor-surface banner directing
+first-time users to the repository README. Banner shape matches the
+existing `> **New here?**` convention in `HARNESS.md` / `docs/README.md`.
+
+`docs/opportunities/README.md` banner was deferred — the
+`management/opportunity-capture` companion-rule treats any edit to that
+file as a structural-policy change requiring a paired ADR. A
+visitor-orientation banner is neither structural nor candidates.md-eligible,
+which is an over-broad-rule signal the maintainer needs to resolve
+(banner-carve-out ADR, regex tightening, or both). Captured as a
+rule-design-tension follow-up in the change-log.
+
+**Roadmap §7 progress:** 4 fully closed (4.3 / 4.4 / 4.8 / 4.10) + 4.5
+partial. Remaining: opp-side 4.5 follow-up, plus 4.1 / 4.2 / 4.6 (larger
+items) and 4.7 / 4.9 / 4.11 (need Refresh #1 source text).
+
+---
+
 ## 2026-05-28 — Wave 4 content polish batch 1 (4.4 + 4.8 + 4.10)
 
 **First active-mode work after Wave 5 sprint closure.** Three roadmap §7 sub-PRs

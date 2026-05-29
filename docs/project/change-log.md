@@ -11,6 +11,102 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## Wave 5.4 Implementation — `management/security-static-analysis` + `validate-sast-coverage.sh`
+
+Implements PRD-0016 — Security Static Analysis Module. Closes Wave 5.4
+of execution-roadmap §8 and ADR-0017 §16 priority 5. Half-enforces
+safety-security-sweep §11 (*the largest mission-relative gap in the
+entire safety sweep*).
+
+**What shipped:** 14th validator (`validate-sast-coverage.sh`) and
+the first new module of the Wave 5 sprint —
+`platform/profiles/management/security-static-analysis/` with
+`module.yaml` + `README.md`. Required-artifact template at
+`platform/templates/security/sast-coverage.md`. The validator is
+opt-in: when the module is not active in the consumer's manifest, it
+exits 0 with a "module inactive — skipping" message; when active, it
+reads `docs/security/sast-coverage.md`, parses YAML frontmatter, and
+asserts `tool:` is from the recommended set (semgrep, codeql, bandit,
+gosec, eslint-plugin-security, snyk-code), `scanPaths:` is a
+non-empty list, `severityThreshold:` is a non-empty string.
+`--scan-file <path>` test-seam mode per PRD-0016 FR-S03 — adopted at
+design pass time per `feedback-validator-test-seam-pattern`.
+
+**OPP-0035 status flipped `exploring` → `accepted`** in the same
+commit; PRD-0016 status flipped `Proposed` → `Accepted`;
+`docs/README.md` PRD + OPP tables updated; `candidates.md` entry
+updated.
+
+**Predict-clean absorption mechanism confirmed.** The harness does
+not activate the new module; the validator's no-op-pass path is
+what the harness's own CI exercises. **Fourth predict-clean Wave in
+a row** — Wave 5.3 (strict BLOCK), Wave 5.5 (WARN posture +
+diff-based), Wave 5.2 (strict BLOCK with denylist scan), Wave 5.4
+(no-op via opt-in gating). The mechanism is decoupled from the
+posture choice; the gating-as-mechanism shape is a new variant.
+
+**First explicit Half-enforced claim shipped end-to-end.** PRD-0016
+§10 C-SAST-S1 is the first PRD claim classified as Half-enforced.
+The shipped module makes good on the classification: the harness
+validates the contract declaration (sast-coverage.md is well-formed
+with a recommended-set tool, scan paths, threshold); consumer CI
+runs the SAST tool and gates on findings. Neither half alone is
+sufficient; both halves are explicitly named in the design contract,
+the module README, and the validator help text.
+
+**Catalog count bumps:**
+
+- Validators: 13 → 14 across 8 documented sites
+  (`README.md` mermaid + table + word-form prose × 2;
+  `docs/architecture/diagrams.md` mermaid;
+  `platform/reference/how-to-read.md` prose + ASCII diagram;
+  `docs/_assets/cover-back.svg`; plus the kernel `validators:` list,
+  `harness-governance/SKILL.md` chain + signature notes,
+  `validators/README.md` script table + usage example, AGENTS.md
+  run-order, `.github/workflows/harness.yml`,
+  `platform/templates/ci/github-actions.yml`,
+  `platform/templates/ci/gitlab-ci.yml`).
+- Profile modules: 35 → 36 (the new
+  `management/security-static-analysis`). Also surfaces a +1 bump
+  for `modules_all` (44 → 45).
+- Templates: 62 → 63 (the new `templates/security/sast-coverage.md`).
+  A new template subdirectory `templates/security/` was added to
+  `platform/templates/README.md` between the Standards and
+  Architecture-and-Operations sections.
+- `SUMMARY.md` Management catalog gains a row.
+- `harness-onboarding/SKILL.md` Management catalog gains a row.
+- `discovery-to-composition.md` Step 6 rubric gains a row.
+
+**Test coverage:** 6 new tests in `TestValidateSastCoverage` covering
+(a) harness dogfood — module-inactive no-op path, (b) every fixture
+fires per its FIXTURE_EXPECTATIONS contract, (c) unknown-tool surface
+includes the full recommended-set, (d) `--scan-file` missing path
+exit-2, (e) `--scan-file` missing argument exit-2, (f) missing
+manifest exit-2. Plus 2 dynamic help-flag tests via VALIDATOR_SCRIPTS.
+7 fixtures in `platform/validators/test/fixtures/sast-coverage/`:
+valid + 6 failure-mode demonstrations. Total integration test suite:
+129 runs / 511 assertions / 0 failures.
+
+**Companion-rule satisfier:** this entry IS the knowledge-capture
+cycle satisfier for the OPP-0035 + PRD-0016 status flips, the kernel
+`validators:` edit, and the new module.yaml addition per PRD-0004.
+The paired distillation observation in
+`docs/knowledge/shared-observations.md` names a fresh design-pressure
+distinction surfaced by Wave 5.4 — *opt-in-module-activation gating
+as a new absorption-mechanism variant* (the validator's "module
+inactive — skipping" path is structurally distinct from
+predict-clean dogfood scans).
+
+**Roadmap delta:** Wave 5.4 closes; Wave 5 sprint complete. Sixth
+Asserted-only safety item (sweep §11) gains a Half-enforced closure
+path. Remaining items: §3 V3 (supply-chain, out-of-genre), §3 V5
+(consumer-runtime tampering, out-of-genre), claim 13 (kernel-doctrine
+override, by-design honor-code), claim 15 (second-human Harness Ready,
+by-design honor-code), claim 18 (stripped-context module text,
+by-design honor-code). Only V3 + V5 are genuine residual gaps.
+
+---
+
 ## Wave 5.4 PRD — Security Static Analysis Module (PRD-0016, design-only)
 
 Filed PRD-0016 as the design pass for OPP-0035 — the

@@ -214,6 +214,7 @@ modules. Use it to populate `harness.manifest.yaml`.
 | Operates a live fleet / hosting estate (config applied to hosts you run)? (§7.4) | `delivery/managed-fleet` |
 | Authored agent skill pack deployed to a runtime — the skills are the product? (§8.3) | `architectures/agent-skill-pack` |
 | Quality gated on binary-graded evals rather than coverage? (§8.3) | `management/eval-gated-testing` |
+| SAST coverage of agent-generated code as a structural quality gate? (§8.4) | `management/security-static-analysis` |
 | Multi-team or multi-workstream? (§7.1) | `management/program-lite` |
 | Claude Code as agent? (§7.2) | `agents/claude-code` |
 | Other LLM tool? (§7.2) | `agents/generic-llm` |

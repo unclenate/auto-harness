@@ -105,6 +105,7 @@ bash $PLATFORM/validators/validate-trust-tier.sh         harness.manifest.yaml .
 bash $PLATFORM/validators/validate-sensitive-paths.sh    harness.manifest.yaml .
 bash $PLATFORM/validators/validate-skill-content.sh      harness.manifest.yaml .
 bash $PLATFORM/validators/validate-knowledge-redaction.sh .                    main
+bash $PLATFORM/validators/validate-sast-coverage.sh      harness.manifest.yaml .
 bash $PLATFORM/validators/validate-companions.sh         harness.manifest.yaml . main
 ```
 
@@ -186,6 +187,25 @@ A few signature notes worth highlighting:
   enumerating active modules — useful for ad-hoc adversarial-corpus
   checks. Per PRD-0015 / OPP-0033 / ADR-0017 Wave 5.2. Closes
   safety-security-sweep §3 vectors V1, V2, V4 (partial), V6.
+- **`validate-sast-coverage.sh`** takes `[<manifest>] [<project-root>]`
+  (defaults: `./harness.manifest.yaml` and `dirname(manifest)`).
+  Opt-in — when the `management/security-static-analysis` module is
+  not active in the manifest, exits 0 with a "module inactive"
+  message (the harness itself does not activate the module, so the
+  harness's own CI run is a no-op pass — predict-clean absorption per
+  PRD-0016 FR-003). When the module is active, reads
+  `docs/security/sast-coverage.md`, parses the YAML frontmatter
+  between `---` fences, and asserts: `tool:` is from the recommended
+  set (`semgrep` / `codeql` / `bandit` / `gosec` /
+  `eslint-plugin-security` / `snyk-code`), `scanPaths:` has at least
+  one non-empty entry, `severityThreshold:` is a non-empty string.
+  An auxiliary `--scan-file <path>` mode validates an arbitrary
+  sast-coverage-shaped file without manifest gating — useful for
+  fixture tests and ad-hoc validation of a candidate artifact before
+  committing. Per PRD-0016 / OPP-0035 / ADR-0017 Wave 5.4.
+  Half-enforces safety-security-sweep §11 (the largest mission-
+  relative gap in the sweep) — the harness validates the contract;
+  consumer CI honors it for end-to-end enforcement.
 - **`validate-companions.sh`** is PR-diff-based and takes a third
   positional arg `<base-branch>` (default `main`). It is intended for
   CI; running it locally on a clean branch with no diff against base

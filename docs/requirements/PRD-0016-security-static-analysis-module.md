@@ -8,8 +8,8 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 **Version:** 1.0 | **Owner:** @unclenate | **Last Updated:** 2026-05-28 | **Review Cycle:** On-change
 
-**Status:** Proposed
-**Date:** 2026-05-28 (filed)
+**Status:** Accepted *(v1 module + validator shipped; release marker v0.6.0)*
+**Date:** 2026-05-28 (filed) | 2026-05-28 (accepted on Wave 5.4 implementation merge)
 **Author:** @unclenate
 **Reviewers:** @unclenate
 

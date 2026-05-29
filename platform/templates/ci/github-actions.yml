@@ -86,6 +86,13 @@ jobs:
           BASE_REF: ${{ github.base_ref }}
         run: bash .harness/platform/validators/validate-knowledge-redaction.sh . "$BASE_REF"
 
+      - name: Validate SAST coverage
+        # Opt-in: when management/security-static-analysis is not active in
+        # the manifest, the validator exits 0 with a "module inactive" message.
+        # When active, validates docs/security/sast-coverage.md (tool,
+        # scanPaths, severityThreshold). Half-enforces sweep §11.
+        run: bash .harness/platform/validators/validate-sast-coverage.sh harness.manifest.yaml .
+
       - name: Validate companion rules
         # PR-diff-based; only meaningful on pull_request events.
         if: github.event_name == 'pull_request'

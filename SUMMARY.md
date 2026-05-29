@@ -144,6 +144,7 @@ Product, project, and program governance overlays.
 * [Eval-Gated Testing](platform/profiles/management/eval-gated-testing/README.md) — quality gated on binary-graded evals rather than coverage (sibling to Testing Standard)
 * [Knowledge Capture](platform/profiles/management/knowledge-capture/README.md)
 * [Opportunity Capture](platform/profiles/management/opportunity-capture/README.md)
+* [Security Static Analysis](platform/profiles/management/security-static-analysis/README.md) — opt-in SAST coverage posture for agent-generated code (Wave 5.4; PRD-0016)
 
 ### Domains
 

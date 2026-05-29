@@ -6,13 +6,13 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0035 — Security Static Analysis Module (`management/security-static-analysis`)
 
-**Status:** exploring
+**Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-05-27
 **Last Updated:** 2026-05-28
 **Confidence:** medium
 
-**Promotion candidate:** [PRD-0016](../requirements/PRD-0016-security-static-analysis-module.md) — design pass (2026-05-28).
+**Promotion:** [PRD-0016](../requirements/PRD-0016-security-static-analysis-module.md) — design pass (2026-05-28, PR #83) and Wave 5.4 implementation (2026-05-28, this PR). Status moved `exploring` → `accepted` per the opportunity-capture transition matrix when the PRD's Acceptance Criteria are met.
 
 ---
 
@@ -134,3 +134,28 @@ option. Same opt-in shape as `management/eval-gated-testing`
    work. v1 PRD-pass should explicitly carve scope reduction options if
    timeboxing pressure surfaces (e.g., ship the artifact-and-companion-
    rule without the CI integration in a "v1a" and add CI in "v1b").
+
+## Disposition
+
+**2026-05-28** — Wave 5.4 implementation shipped. PRD-0016 (PR #83,
+`3a4f9fc`) was the design pass; this implementation PR (Wave 5.4 impl)
+ships the module scaffolding (`platform/profiles/management/security-static-analysis/`),
+the required-artifact template (`platform/templates/security/sast-coverage.md`),
+and the validator (`platform/validators/validate-sast-coverage.sh`)
+with `--scan-file` test-seam mode per FR-S03. v1a/v1b split per Risk 6
+was collapsed: v1 ships both module *and* validator. The validator
+adopts the predict-clean absorption mechanism — the harness itself
+does not activate the module, so the harness's own CI run is a no-op
+pass.
+
+OPP-0035 closes once the implementation PR merges. Status will move to
+`accepted` in the implementation PR per the opportunity-capture
+transition matrix. PRD-0016 likewise moves `Proposed` → `Accepted` in
+the same commit.
+
+Half-enforces sweep §11 (the largest mission-relative gap in the
+entire safety sweep) per PRD-0016 §10 C-SAST-S1 — the harness validates
+the consumer's SAST contract; consumer CI honors the declared
+threshold for end-to-end enforcement. Documented as Half-enforced
+(deliberate partial coverage) rather than rounded up to Enforced or
+down to Asserted-only.

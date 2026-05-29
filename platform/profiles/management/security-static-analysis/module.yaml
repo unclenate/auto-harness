@@ -1,0 +1,73 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+id: security-static-analysis
+type: management
+version: 1.0.0
+summary: "Opt-in overlay for projects that adopt SAST coverage as a structural quality gate on agent-generated code. The harness validates the consumer's sast-coverage.md declaration (tool from a recommended set; scan paths; severity threshold) and binds source-path changes to a SAST evidence trail via companion rule. Tool-neutral: the artifact names which SAST runner is configured (Semgrep, CodeQL, Bandit, gosec, ESLint security plugins, Snyk Code); the harness does not invoke the tool — running SAST stays in consumer CI per OPP-0020 boundary. Addresses safety-security-sweep section 11 (underhanded code in agent output)."
+dependsOn:
+  - kernel/base
+conflictsWith: []
+requiredArtifacts:
+  - docs/security/sast-coverage.md
+optionalArtifacts:
+  - docs/security/sast-reports/
+sensitivePaths:
+  - description: SAST coverage declaration and tool-configuration files — changes here move the security quality gate
+    patterns:
+      - ^docs/security/sast-coverage\.md$
+      - ^\.semgrep\.ya?ml$
+      - ^\.codeql/
+      - ^\.bandit$
+      - ^bandit\.ya?ml$
+      - ^\.gosec\.ya?ml$
+companionRules:
+  - description: Changes to guarded source paths require either updated SAST coverage declaration or attached SAST evidence — silently extending the source surface without adjusting the SAST contract weakens the security gate
+    triggerPaths:
+      - ^src/
+      - ^lib/
+      - ^app/
+    requiredAny:
+      - ^docs/security/sast-coverage\.md$
+      - ^docs/security/sast-reports/
+      - ^docs/project/change-log\.md$
+    humanReview: |
+      Reviewers verify that source-path changes either (a) fall within
+      the declared scan paths and the most recent SAST run covered them,
+      or (b) extend the scan-path declaration in sast-coverage.md with
+      a stated rationale. Agents must not silently broaden the source
+      surface without an aligned SAST contract update. Verify the
+      declared severity threshold has not been silently lowered.
+  - description: Changes to the SAST coverage declaration or tool configuration require a change-log entry, ADR, or PRD — security thresholds and tool selections are quality commitments
+    triggerPaths:
+      - ^docs/security/sast-coverage\.md$
+      - ^\.semgrep\.ya?ml$
+      - ^\.codeql/
+      - ^\.bandit$
+      - ^bandit\.ya?ml$
+      - ^\.gosec\.ya?ml$
+    requiredAny:
+      - ^docs/project/change-log\.md$
+      - ^docs/adr/ADR-
+      - ^docs/requirements/PRD-
+    humanReview: |
+      Reviewers verify that tool changes are intentional and justified,
+      that the declared severity threshold has not been silently lowered,
+      and that the declared scan paths still cover the project's primary
+      source root. Agents must not lower a declared threshold or remove
+      paths from the SAST scope without human approval.
+validators:
+  - validate-required-artifacts
+  - validate-companions
+  - validate-sast-coverage
+reviewGates:
+  - The sast-coverage.md artifact must name a SAST tool from the recommended set (semgrep, codeql, bandit, gosec, eslint-plugin-security, snyk-code) with a stated rationale for the choice — including license posture (OSS vs commercial) where the tradeoff matters.
+  - The declared scan paths must cover the project's primary source root. Reviewers reject a declaration that asserts SAST coverage while omitting the path where agent-generated code lands.
+  - The declared severity threshold must be documented (which severities fail CI, which warn, which are advisory). Reviewers verify a lowered threshold is accompanied by a stated rationale; agents may not silently weaken the gate.
+  - SAST findings above the declared threshold must fail consumer CI. The harness validates the declaration; the consumer's CI honors it. This module's posture is half-enforced (PRD-0016 section 10 C-SAST-S1) — full enforcement requires the consumer's pipeline cooperation.
+  - When activating this module on an existing project, the first SAST run establishes the baseline. Reviewers verify the baseline is recorded (a sast-reports entry or a change-log note) so subsequent runs can be compared.
+agentAdapters:
+  - platform/agents/base
+compiledFragments:
+  - platform/profiles/management/security-static-analysis/README.md
+recommendedSkills:
+  - harness-governance

@@ -299,6 +299,12 @@ duplicating inline. Absorbed from governance patterns observed in adsclaw.
 | -------- | ----------------- | ------ | ---- |
 | KPI dictionary | Optional | `management/product-lite` | `templates/standards/kpi-dictionary.md` |
 
+### Security
+
+| Template | Required By Module | Path |
+| -------- | ------------------ | ---- |
+| SAST coverage declaration | `management/security-static-analysis` | `templates/security/sast-coverage.md` |
+
 ### Architecture and Operations
 
 | Template | Required By Module | Path |

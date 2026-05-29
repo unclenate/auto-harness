@@ -379,8 +379,8 @@ the contract at v1; defer per-rule extensions to v2 if scope bloats.
   pattern is overlapped by at least one `companionRules.triggerPaths`
   regex. Closes safety-security-sweep §2 claim 12 (Asserted-only →
   Enforced). Smallest of the four (half-day). Wave 5.3.
-- [OPP-0035](OPP-0035-security-static-analysis.md) *(proposed
-  2026-05-27)* — Security static analysis module
+- [OPP-0035](OPP-0035-security-static-analysis.md) *(accepted
+  2026-05-28; promoted via PRD-0016; Wave 5.4 shipped)* — Security static analysis module
   (`management/security-static-analysis`) overlaying per-stack SAST
   configs + `validate-sast-coverage.sh`. Addresses safety-security-
   sweep §11 — *the largest mission-relative gap in the entire safety

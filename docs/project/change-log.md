@@ -11,6 +11,68 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## Wave 4.5 (partial) — Governance-doc banners on adr / requirements (opportunities deferred)
+
+Closes Refresh #1 L-a from execution-roadmap §7 *partially*: the two governance-record
+directories that previously had no `README.md` (`docs/adr/`, `docs/requirements/`) now
+carry "contributor / maintainer surface" banners at the top of newly created
+README files. The third directory (`docs/opportunities/`) is deferred — its
+banner addition surfaced a companion-rule design tension that is the
+maintainer's call to resolve, not an implementation-time fix.
+
+**What shipped:**
+
+- `docs/adr/README.md` — created (the directory previously had no README).
+  Body explains what ADRs are (durable structural-decision records), the
+  authoring contract (template path, sequential numbering, list-completeness
+  catalog entry), and the three-state status flow
+  (Proposed → Accepted → Superseded — no Declined; declined drafts are
+  unwound).
+- `docs/requirements/README.md` — created (the directory previously had no
+  README). Body explains what PRDs are (design contracts bridging OPP →
+  implementation), names the operating-principles §9 (design-first) and §10
+  (claim-classification) conventions in force for new PRDs, and the
+  four-state status flow (Proposed → Accepted → Implemented → Superseded).
+
+**Banner pattern:** Matches the existing `> **New here?**` convention
+already used in `HARNESS.md` and `docs/README.md` — parallel voice and
+link-target so the two newly bannered directories present a consistent "you
+may be in the wrong place" signal. Creating standalone `README.md` files
+(rather than only banner snippets in the catalog) means GitHub's directory
+view at `docs/adr/` and `docs/requirements/` now renders the orientation
+directly when a user navigates into either folder.
+
+**Why `docs/opportunities/` was deferred:** The
+`management/opportunity-capture` companion-rule
+(`platform/profiles/management/opportunity-capture/module.yaml`) treats *any*
+edit to `docs/opportunities/README.md` as a structural change to the
+opportunity-capture *policy* and requires a paired ADR. A visitor-orientation
+banner is neither a structural change (no record-structure / Write Policy /
+status-semantics edit) nor a candidates.md-eligible reorganization
+(no cluster heading or OPP-NNNN line item change). The rule's human-review
+text already acknowledges this case ("If the diff is purely organizational,
+the change belongs in candidates.md") but the regex layer fires on any
+README.md touch. This is an over-broad rule firing against a governance-neutral
+edit, and the carve-out (e.g., a regex that explicitly permits banner / visitor-
+orientation prefatory blocks, or an explicit ADR documenting the carve-out
+shape) is a design decision the maintainer needs to author rather than an
+implementation patch.
+
+The OPP-side banner closure will land in a follow-up once either an ADR
+carves out banner additions, the companion-rule regex tightens to fire only
+on substantive-section changes, or both.
+
+**Out of scope:** No catalog updates needed — list-completeness does not
+enforce SUMMARY.md rows for governance-directory READMEs (only for module
+rows; deferred to Wave 6 per ADR-0016). No new module.yaml changes in this
+PR; the companion-rule design discussion is captured here but not enacted.
+
+Wave 4 status after this PR: 4.5 *partially closed*; full closure pending the
+OPP-side follow-up. PR count: 4 of 11 fully closed (4.3 / 4.4 / 4.8 / 4.10),
+with 4.5 partial covering two of three READMEs.
+
+---
+
 ## Wave 4 Content Polish — Batch 1 (4.4 + 4.8 + 4.10)
 
 Three independent content-polish items from execution-roadmap §7 shipped as a

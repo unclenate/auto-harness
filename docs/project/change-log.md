@@ -11,6 +11,58 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## Wave 4 Content Polish — Batch 1 (4.4 + 4.8 + 4.10)
+
+Three independent content-polish items from execution-roadmap §7 shipped as a
+single bundled PR. First active-mode work item after Wave 5 sprint closure.
+
+**What shipped:**
+
+- **4.4 (Refresh #2 M-i)** — `platform/workflow/bootstrap-quickstart.md`
+  *Bootstrap Complete* criteria extended from 4 validators to the full 14-validator
+  chain plus the CI-wired clause, matching the `AGENTS.md` Build-and-Test run-order
+  exactly. The audit-time scope named four (`companions`, `doc-references`,
+  `catalog-counts`, `list-completeness`); the implementation extends to all 14 so
+  the criteria don't re-drift each time a Wave-5-class validator lands. A new
+  paragraph notes that the chain is the same chain CI runs on every commit and
+  that new validators propagate via the structural-enforcement companion-rule.
+- **4.8 (Refresh #1 L-c)** — Four agent-pack READMEs without an explicit Status
+  declaration (`agents/base/`, `agents/claude-code/`, `agents/generic-llm/`,
+  `agents/openclaw/`) gained `Status: stable as of v0.5.0` lines, parallel in
+  shape and position to the existing R&D-status declarations on the four newer
+  packs (`codex-cli`, `copilot-cli`, `cursor`, `gemini-cli`). Each line names *why*
+  the pack is stable rather than just asserting it — base defines the cross-agent
+  contract; claude-code is the reference adapter; generic-llm has a deliberately
+  minimal surface; openclaw tracks the production OpenClaw agent.
+- **4.10 (Refresh #1 L-f)** — `platform/bootstrap/link-skills.sh --help` no longer
+  prints the SPDX header (copyright/license/part-of lines) before the usage doc.
+  The `print_usage()` heredoc extractor gained a `grep -v` filter that drops
+  SPDX-prefix lines from the extracted block, leaving the help output to start
+  cleanly at the script-description line. The filter is pattern-based rather than
+  line-position-based so future SPDX-header shape changes don't reintroduce drift.
+
+**Why the bundle shape:** roadmap §7 explicitly invites bundling
+("Each item is independent; ship as bandwidth allows"). The three items here
+share a single companion-rule (this change-log entry) and a single CI cycle;
+shipping them separately would triple the overhead with no review benefit. The
+deferred items (4.7 / 4.9 / 4.11) need Refresh #1 finding-text that is no longer
+in-tree and will land in a follow-up once recovered or reasoned-out.
+
+**Out of scope (deferred to follow-up Wave 4 PRs):**
+
+- 4.1 `examples/README.md` refresh (~3 hours)
+- 4.2 module-README standardization (~half day; flagged time-sensitive)
+- 4.5 governance-doc banners (~30 min)
+- 4.6 `validators/README.md` user-first rewrite (~half day)
+- 4.7 `TOOLS.md` review (needs Refresh #1 text)
+- 4.9 change-log 2026-05-24 cell shape (needs Refresh #1 text)
+- 4.11 `AGENTS.md` First-Session step 2 wording (needs Refresh #1 text)
+
+Wave 4 status after this PR: 3 of 11 sub-PRs closed (4.3 closed earlier; this PR
+closes 4.4 + 4.8 + 4.10).
+
+---
+
 ## Wave 5.4 Implementation — `management/security-static-analysis` + `validate-sast-coverage.sh`
 
 Implements PRD-0016 — Security Static Analysis Module. Closes Wave 5.4

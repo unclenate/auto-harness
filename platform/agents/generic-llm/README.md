@@ -10,6 +10,9 @@ This pack is the neutral adapter surface for non-Claude agent tooling — Cursor
 Codeium, custom agents, or any LLM-assisted workflow that isn't Claude Code. It provides
 kernel alignment without assuming any specific tool's entrypoint format.
 
+Status: stable as of v0.5.0. The neutral-adapter contract is deliberately minimal and
+does not depend on tool-specific shape — its surface is not expected to churn.
+
 ---
 
 ## What This Pack Requires

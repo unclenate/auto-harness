@@ -10,6 +10,9 @@ This pack defines the minimum cross-agent contract shared by Claude Code and oth
 Every agent operating in a harness-governed project must satisfy this contract, regardless of
 which specific tool is used.
 
+Status: stable as of v0.5.0. This pack defines the cross-agent contract and is the foundation
+all other agent packs depend on; its shape is not expected to churn.
+
 ---
 
 ## What This Pack Requires

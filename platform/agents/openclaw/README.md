@@ -11,6 +11,9 @@ workspace file requirements. It declares `TOOLS.md` as the environment-specific 
 that OpenClaw reads to understand what MCP integrations and local devices are available, and
 maps each tool to the harness trust tier it operates at.
 
+Status: stable as of v0.5.0. The pack tracks the production OpenClaw agent and is in active
+use; `TOOLS.md` is the canonical environment-tool registry surface.
+
 ---
 
 ## What This Pack Requires

@@ -16,6 +16,30 @@ force.
 
 ---
 
+## 2026-05-28 — Wave 4 content polish batch 1 (4.4 + 4.8 + 4.10)
+
+**First active-mode work after Wave 5 sprint closure.** Three roadmap §7 sub-PRs
+bundled as a single companion-rule cycle.
+
+**What landed:**
+
+- 4.4 `bootstrap-quickstart` *Bootstrap Complete* criteria — extended from 4
+  validators to all 14, matching the `AGENTS.md` Build-and-Test run-order.
+- 4.8 Agent-pack Status lines — four stable packs (`base`, `claude-code`,
+  `generic-llm`, `openclaw`) now carry explicit `Status: stable as of v0.5.0`
+  declarations parallel to the four R&D packs.
+- 4.10 `link-skills.sh --help` no longer prints the SPDX header; pattern-based
+  filter (not line-position) so future SPDX changes don't reintroduce the issue.
+
+**Roadmap §7 progress:** 3 of 11 sub-PRs closed (4.3 was complete pre-sprint;
+this PR closes 4.4 + 4.8 + 4.10).
+
+**Deferred (need Refresh #1 finding-text or are larger):** 4.1 / 4.2 / 4.5 / 4.6
+/ 4.7 / 4.9 / 4.11. Refresh #1 source doc not in tree — items 4.7 / 4.9 / 4.11
+will need either source recovery or independent reasoning before the next batch.
+
+---
+
 ## 2026-05-28 — Wave 5.4 implementation shipped (`management/security-static-analysis`)
 
 **Wave 5.4 — `management/security-static-analysis` module +

@@ -861,6 +861,7 @@ VALIDATOR_SCRIPTS = %w[
   validate-sensitive-paths.sh
   validate-knowledge-redaction.sh
   validate-skill-content.sh
+  validate-sast-coverage.sh
 ].freeze
 
 class TestValidatorHelpFlag < Minitest::Test
@@ -1472,6 +1473,102 @@ class TestValidateSkillContent < Minitest::Test
   def test_missing_manifest_aborts_with_exit_2
     nonexistent = File.join(Dir.tmpdir, "validate-skill-content-nope-#{Process.pid}.yaml")
     _out, err, code = run_validator("validate-skill-content.sh", nonexistent)
+    assert_equal 2, code, "missing manifest must exit 2 (usage error)"
+    assert_match(/not found|No such file/i, err)
+  end
+end
+
+# ---------------------------------------------------------------------------
+# validate-sast-coverage.sh
+#
+# Per PRD-0016, the validator is opt-in: when the
+# management/security-static-analysis module is not in the active set, the
+# validator exits 0 with a "module inactive" message. When the module is
+# active, the validator reads docs/security/sast-coverage.md, parses the
+# YAML frontmatter, and asserts tool (from recommended set), scanPaths
+# (non-empty list), and severityThreshold (non-empty string) are declared.
+#
+# Same platform-root-fixed constraint as the other Wave 5 validators —
+# synthetic-module tests are out of scope for v1; --scan-file mode (PRD-0016
+# FR-S03) is the test seam for fixture-firing coverage.
+# ---------------------------------------------------------------------------
+class TestValidateSastCoverage < Minitest::Test
+  HARNESS_ROOT = File.expand_path("..", PLATFORM_DIR)
+  SAST_FIXTURES_DIR = File.join(
+    PLATFORM_DIR, "validators", "test", "fixtures", "sast-coverage"
+  )
+
+  # Expected exit code per fixture (PRD-0016 FR-003 contract).
+  FIXTURE_EXPECTATIONS = {
+    "valid.md"               => 0,
+    "missing-tool.md"        => 1,
+    "unknown-tool.md"        => 1,
+    "missing-scan-paths.md"  => 1,
+    "empty-scan-paths.md"    => 1,
+    "missing-threshold.md"   => 1,
+    "no-frontmatter.md"      => 1
+  }.freeze
+
+  def test_runs_clean_against_harness_repo
+    # The harness does not activate management/security-static-analysis —
+    # the validator must exit 0 with the "module inactive" message
+    # (predict-clean absorption per PRD-0016 FR-003).
+    manifest = File.join(HARNESS_ROOT, "harness.manifest.yaml")
+    out, err, code = run_validator("validate-sast-coverage.sh", manifest, HARNESS_ROOT)
+    assert_equal 0, code,
+                 "Module-inactive path must exit 0. stderr: #{err}"
+    assert_match(/skipped/, out)
+    assert_match(/not active/, out)
+  end
+
+  def test_every_fixture_has_expected_exit_in_scan_file_mode
+    # FR-003 + FR-S03: --scan-file mode validates an arbitrary
+    # sast-coverage-shaped file. Each fixture exercises one expected
+    # outcome. The fixture set is the contract; adding a new validation
+    # rule means adding a new fixture in the same PR.
+    FIXTURE_EXPECTATIONS.each do |fixture_name, expected_code|
+      fixture = File.join(SAST_FIXTURES_DIR, fixture_name)
+      assert File.exist?(fixture),
+             "Fixture missing: #{fixture}"
+      _out, err, code = run_validator(
+        "validate-sast-coverage.sh", "--scan-file", fixture
+      )
+      assert_equal expected_code, code,
+                   "#{fixture_name} expected exit #{expected_code}, got #{code}. stderr: #{err}"
+    end
+  end
+
+  def test_unknown_tool_surfaces_recommended_set
+    # FR-S01: when an unrecognized tool is declared, the validator must
+    # surface the recommended set so the contributor knows their options.
+    fixture = File.join(SAST_FIXTURES_DIR, "unknown-tool.md")
+    _out, err, _code = run_validator(
+      "validate-sast-coverage.sh", "--scan-file", fixture
+    )
+    %w[semgrep codeql bandit gosec eslint-plugin-security snyk-code].each do |tool|
+      assert_match(/#{Regexp.escape(tool)}/, err,
+                   "Recommended-set surface must include '#{tool}'. stderr: #{err}")
+    end
+  end
+
+  def test_scan_file_missing_path_exits_2
+    nonexistent = File.join(Dir.tmpdir, "sast-coverage-nope-#{Process.pid}.md")
+    _out, err, code = run_validator(
+      "validate-sast-coverage.sh", "--scan-file", nonexistent
+    )
+    assert_equal 2, code, "missing scan-file target must exit 2"
+    assert_match(/not found|No such file/i, err)
+  end
+
+  def test_scan_file_requires_argument
+    _out, err, code = run_validator("validate-sast-coverage.sh", "--scan-file")
+    assert_equal 2, code, "--scan-file without argument must exit 2"
+    assert_match(/requires a file path/i, err)
+  end
+
+  def test_missing_manifest_aborts_with_exit_2
+    nonexistent = File.join(Dir.tmpdir, "validate-sast-coverage-nope-#{Process.pid}.yaml")
+    _out, err, code = run_validator("validate-sast-coverage.sh", nonexistent)
     assert_equal 2, code, "missing manifest must exit 2 (usage error)"
     assert_match(/not found|No such file/i, err)
   end

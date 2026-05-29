@@ -61,6 +61,7 @@ bash platform/validators/validate-trust-tier.sh harness.manifest.yaml .
 bash platform/validators/validate-sensitive-paths.sh harness.manifest.yaml .
 bash platform/validators/validate-skill-content.sh harness.manifest.yaml .
 bash platform/validators/validate-knowledge-redaction.sh . main
+bash platform/validators/validate-sast-coverage.sh harness.manifest.yaml .
 bash platform/validators/validate-companions.sh harness.manifest.yaml . main
 ruby -I platform/validators/lib platform/validators/test/test_harness_registry.rb
 ruby -I platform/validators/lib platform/validators/test/test_validators_integration.rb

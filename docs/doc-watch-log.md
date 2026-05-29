@@ -16,6 +16,49 @@ force.
 
 ---
 
+## 2026-05-28 — Wave 5.4 implementation shipped (`management/security-static-analysis`)
+
+**Wave 5.4 — `management/security-static-analysis` module +
+`validate-sast-coverage.sh`.** Shipped the 14th validator and the
+first new module of the Wave 5 sprint. Module is opt-in: the harness
+itself does not activate it; the validator's no-op-pass path is what
+the harness's CI exercises. When a consumer activates the module,
+the validator asserts `docs/security/sast-coverage.md` is well-formed
+(recommended-set tool / scanPaths / severityThreshold).
+
+**Wave 5 sprint complete.** Six Asserted-only safety items closed
+across Waves 5.1–5.5: claims 10/11 (Wave 5.1), 12 (Wave 5.3),
+§8+§9 (Wave 5.5), §3 V1/V2/V4-partial/V6 (Wave 5.2), §11
+half-enforced (Wave 5.4). Remaining items: §3 V3 + V5 (genuine
+residual gaps; out-of-genre); claims 13/15/18 (by-design
+honor-code).
+
+**First Half-enforced classification shipped end-to-end.** PRD-0016
+§10 C-SAST-S1 was the first explicit Half-enforced PRD claim
+(PR #83); the Wave 5.4 implementation makes good on the
+classification by shipping a contract validator that the harness
+controls and a tool-runner contract that the consumer CI controls.
+Neither half alone is sufficient.
+
+**Fourth consecutive predict-clean Wave.** A new variant of
+predict-clean surfaced: the harness's CI exercises the validator's
+opt-in-gating no-op-pass path, not a dogfood scan. The validator's
+substantive work only fires when a consumer manifest activates the
+module. Distinct mechanism shape from Waves 5.3 / 5.5 / 5.2 — added
+to `feedback-validator-absorption-mechanisms` as a fourth variant.
+
+**Catalog count bumps:** validators 13 → 14 (8 documented sites);
+profile modules 35 → 36; templates 62 → 63 (new `templates/security/`
+subdir); `harness-onboarding/SKILL.md` Management catalog and
+`discovery-to-composition.md` Step 6 rubric both gained rows.
+
+**Roadmap delta:** Wave 5 closes. The 2026-05-27 audit roadmap's
+remaining open lanes are Wave 3 (visual program — 8 sub-PRs) and
+Wave 4 (content polish — 11 sub-PRs). Both are parallel-safe; both
+benefit from the patterns established by Waves 1 + 2 + 5.
+
+---
+
 ## 2026-05-28 — Wave 5.4 PRD-0016 shipped (design-only)
 
 **Wave 5.4 — PRD-0016 Security Static Analysis Module (design pass).**

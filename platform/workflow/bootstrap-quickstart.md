@@ -282,13 +282,28 @@ enforcement and stack-specific checks.
 
 ## Harness Bootstrap Complete
 
-The harness is **Bootstrap Complete** when:
+The harness is **Bootstrap Complete** when the full validator chain exits 0 and CI is wired:
 
 1. `validate-manifest.sh` exits 0
 2. `validate-module-graph.sh` exits 0
 3. `validate-required-artifacts.sh` exits 0 (or is intentionally disabled for discovery phase)
 4. `validate-placeholders.sh` exits 0
-5. CI workflow is wired and green on the first PR
+5. `validate-agent-pack.sh` exits 0
+6. `validate-companions.sh` exits 0
+7. `validate-doc-references.sh` exits 0
+8. `validate-catalog-counts.sh` exits 0
+9. `validate-list-completeness.sh` exits 0
+10. `validate-trust-tier.sh` exits 0
+11. `validate-sensitive-paths.sh` exits 0
+12. `validate-knowledge-redaction.sh` exits 0 (WARN-default; non-blocking unless `--block` flag set)
+13. `validate-skill-content.sh` exits 0
+14. `validate-sast-coverage.sh` exits 0 (no-op unless `management/security-static-analysis` is active)
+15. CI workflow is wired and green on the first PR
+
+The 14-validator chain is the same chain run on every commit in CI — see
+[`AGENTS.md`](../../AGENTS.md) **Build and Test** for the canonical invocation order.
+New validators added to the kernel propagate here automatically as part of the
+structural-enforcement companion-rule.
 
 See `platform/core/kernel/base/lifecycle-controls.md` for the full definition of
 Bootstrap Complete vs. Harness Ready.

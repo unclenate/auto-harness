@@ -40,8 +40,11 @@ SKILL_NAMES=()
 die() { echo "error: $*" >&2; exit 2; }
 
 print_usage() {
-  # Extract the leading comment block as help text.
-  sed -n '2,/^$/{s/^# \{0,1\}//;p;}' "$0" | sed '/^!/d'
+  # Extract the leading comment block as help text, skipping the SPDX header
+  # so --help output starts at the script description.
+  sed -n '2,/^$/{s/^# \{0,1\}//;p;}' "$0" \
+    | grep -v -E '^(Copyright |SPDX-License-Identifier:|Part of auto-harness)' \
+    | sed '/^!/d'
 }
 
 while [[ $# -gt 0 ]]; do

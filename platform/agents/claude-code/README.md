@@ -10,6 +10,9 @@ This pack isolates Claude Code-specific behavior from the cross-agent contract d
 `agents/base`. It manages startup sequence, scope control, permission adapters, and the
 entrypoints Claude Code reads at session start.
 
+Status: stable as of v0.5.0. This is the reference adapter pack — the harness itself is
+authored under it — and is in active production use.
+
 ---
 
 ## What This Pack Requires

@@ -6,6 +6,9 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # Management Overlay: Knowledge Capture
 
+**Depends on:** `kernel/base`, `management/project-standard`.
+**Conflicts with:** None.
+
 This overlay adds a durable, shared, reviewable surface for institutional
 knowledge to any project that adopts it. Agent observations, human insights,
 and distilled learnings accumulate here — governed by the project's own
@@ -147,7 +150,7 @@ Less necessary for:
 
 ---
 
-## References
+## See Also
 
 - Templates: `platform/templates/knowledge/`
 - Related: `management/project-standard/README.md` (revision tracker),

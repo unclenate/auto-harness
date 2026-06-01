@@ -4,7 +4,10 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 -->
 
-# testing-standard
+# Management Overlay: Testing Standard
+
+**Depends on:** `kernel/base`.
+**Conflicts with:** None.
 
 The `testing-standard` management module provides testing governance for projects where
 quality is a delivery requirement. It declares the artifacts an agent (or a human) must
@@ -172,7 +175,7 @@ updated in the same PR.
 
 ---
 
-## Reference
+## See Also
 
 | Resource | Path |
 | -------- | ---- |

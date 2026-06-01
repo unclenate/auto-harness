@@ -6,6 +6,9 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # Management Overlay: Opportunity Capture
 
+**Depends on:** `kernel/base`, `management/project-standard`.
+**Conflicts with:** None.
+
 This overlay adds a durable, reviewable, project-level surface for forward-looking
 candidate records to any project that adopts it. Pre-PRD candidates — product
 opportunities, strategic theses, "things we might pursue" — accumulate as
@@ -142,7 +145,7 @@ Less necessary for:
 
 ---
 
-## References
+## See Also
 
 - Module definition: `platform/profiles/management/opportunity-capture/module.yaml`
 - Templates: `platform/templates/opportunity/`

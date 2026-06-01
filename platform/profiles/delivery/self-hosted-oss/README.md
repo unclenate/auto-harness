@@ -6,6 +6,9 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # Delivery Overlay: Self-Hosted OSS
 
+**Depends on:** `kernel/base`.
+**Conflicts with:** None.
+
 ## What this module adds
 
 This overlay is the delivery posture for **published open-source software
@@ -73,3 +76,11 @@ repositories/manifests.)
 - It does not encode a maturity level. "Self-hosted OSS" is a *delivery*
   shape orthogonal to `maturity` — an OSS tool can be prototype-grade or
   rock-solid; set `maturity` independently.
+
+---
+
+## See Also
+
+- Module definition: [`module.yaml`](module.yaml)
+- Active modules table: [`HARNESS.md`](../../../../HARNESS.md)
+- Spec: [`docs/requirements/PRD-0010-self-hosted-oss-delivery.md`](../../../../docs/requirements/PRD-0010-self-hosted-oss-delivery.md)

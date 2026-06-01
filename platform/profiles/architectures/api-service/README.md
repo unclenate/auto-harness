@@ -6,6 +6,9 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # Architecture Overlay: API Service
 
+**Depends on:** `kernel/base`.
+**Conflicts with:** None.
+
 This overlay governs service-boundary documentation and request-handling surfaces for
 API-first systems — backends consumed by other services, mobile clients, or third parties.
 It does not assume REST, GraphQL, or any specific framework.
@@ -67,3 +70,11 @@ Use the template at `platform/templates/architecture-overview.md`.
 Agents may propose new endpoints, refactor handlers, and modify service logic. Any change that
 alters the external API contract — adds, removes, or changes endpoint behavior — must be
 flagged for human review and accompanied by an ADR or architecture overview update.
+
+---
+
+## See Also
+
+- Module definition: [`module.yaml`](module.yaml)
+- Active modules table: [`HARNESS.md`](../../../../HARNESS.md)
+- Related module: [`architectures/web-app`](../web-app/README.md)

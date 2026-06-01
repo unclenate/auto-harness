@@ -6,6 +6,9 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # Management Overlay: Product Lite
 
+**Depends on:** `kernel/base`.
+**Conflicts with:** None.
+
 This overlay keeps product context alive through the full delivery lifecycle — from problem
 framing through active development. It is designed for small teams and solo builders who
 need real product discipline without enterprise-scale ceremony.
@@ -218,3 +221,12 @@ The original PRD (Product Requirements Document) process from the legacy harness
 restored as a first-class record type via `platform/templates/product/prd.md`. PRDs are now
 integrated into companion rules alongside ADRs, capturing the longitudinal product decision
 record that was previously lost in the modular decomposition.
+
+---
+
+## See Also
+
+- Module definition: [`module.yaml`](module.yaml)
+- Active modules table: [`HARNESS.md`](../../../../HARNESS.md)
+- Templates: `platform/templates/product/`
+- Spec: [`docs/requirements/PRD-0001-restore-prd-support.md`](../../../../docs/requirements/PRD-0001-restore-prd-support.md)

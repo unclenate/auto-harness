@@ -6,6 +6,9 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # Stack Overlay: CoffeeScript
 
+**Depends on:** `kernel/base`, `stacks/node-javascript`.
+**Conflicts with:** None.
+
 This overlay governs legacy CoffeeScript projects compiling `.coffee`
 to JavaScript. It depends on
 [`stacks/node-javascript`](../node-javascript/README.md) because

@@ -6,6 +6,9 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # Management Overlay: Security Static Analysis
 
+**Depends on:** `kernel/base`.
+**Conflicts with:** None.
+
 ## What this module adds
 
 This overlay governs projects that adopt **SAST coverage as a structural
@@ -140,3 +143,12 @@ malformed field and points at the artifact line. Exit semantics:
 - [OPP-0020](../../../../docs/opportunities/OPP-0020-evaluation-tooling-in-harness-toolchain.md) — parent OPP (harness-side eval/safety tool invocation).
 - [ADR-0017](../../../../docs/adr/ADR-0017-safety-hardening-roadmap.md) — Safety Hardening Roadmap (Wave 5.4).
 - `safety-security-sweep.md` §11 — *the largest mission-relative gap in the entire safety sweep*; this module is the named closure path.
+
+---
+
+## See Also
+
+- Module definition: [`module.yaml`](module.yaml)
+- Active modules table: [`HARNESS.md`](../../../../HARNESS.md)
+- Templates: `platform/templates/security/`
+- Spec: [`docs/requirements/PRD-0016-security-static-analysis-module.md`](../../../../docs/requirements/PRD-0016-security-static-analysis-module.md)

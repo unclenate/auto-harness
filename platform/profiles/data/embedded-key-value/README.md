@@ -6,6 +6,9 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # Data Overlay: Embedded Key-Value
 
+**Depends on:** `kernel/base`.
+**Conflicts with:** None.
+
 This overlay governs server-side projects whose data layer is an
 **embedded** key-value store — the database runs in-process as a
 library dependency, not as a separate network service.

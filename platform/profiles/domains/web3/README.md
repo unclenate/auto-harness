@@ -6,6 +6,9 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # Domain Overlay: Web3
 
+**Depends on:** `kernel/base`.
+**Conflicts with:** None.
+
 This overlay governs systems that read from or write to a blockchain — risk analytics platforms,
 token-integrated products, on-chain data consumers, and contract-deploying applications. It
 isolates a set of architectural concerns that have no analog in traditional software and which,
@@ -232,3 +235,13 @@ Beyond the standard trust tier model, agents must observe:
 | `platform/templates/web3/web3-intake-supplement.md` | Extending discovery intake for Web3 projects |
 
 See `platform/compositions/web3-risk-analytics.yaml` for the reference composition.
+
+---
+
+## See Also
+
+- Module definition: [`module.yaml`](module.yaml)
+- Active modules table: [`HARNESS.md`](../../../../HARNESS.md)
+- Skill: [`harness-web3`](../../../skills/harness-web3/SKILL.md)
+- Templates: `platform/templates/web3/`
+- Related module: [`domains/cryptographic-identity`](../cryptographic-identity/README.md)

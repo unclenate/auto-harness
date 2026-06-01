@@ -6,6 +6,9 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # Management Overlay: Project Standard
 
+**Depends on:** `kernel/base`.
+**Conflicts with:** None.
+
 This overlay defines the minimum delivery-planning record for teams that need real coordination
 without heavyweight program governance. It is the baseline for any project with more than one
 contributor or more than a few weeks of active development.
@@ -65,8 +68,7 @@ Named ownership of system components and review responsibility. Recommended once
 | `project-standard` | Delivery planning, milestones, scope, dependencies |
 | `program-lite` | Multi-team coordination — activate only when needed |
 
-All three management modules can coexist and complement each other. `project-standard`
-depends only on `kernel/base` and has no conflicts.
+All three management modules can coexist and complement each other.
 
 ---
 
@@ -87,3 +89,12 @@ Reviewers check that:
 Agents may update the scope plan, milestones, and dependency log as part of planning work.
 The change log must be updated by a human or explicitly directed agent whenever scope,
 requirements, or architectural decisions change — not left as a post-hoc summary.
+
+---
+
+## See Also
+
+- Module definition: [`module.yaml`](module.yaml)
+- Active modules table: [`HARNESS.md`](../../../../HARNESS.md)
+- Templates: `platform/templates/project/`
+- Related modules: [`management/product-lite`](../product-lite/README.md), [`management/program-lite`](../program-lite/README.md)

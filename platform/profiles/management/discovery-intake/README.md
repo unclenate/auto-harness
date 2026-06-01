@@ -6,6 +6,9 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # Management Overlay: Discovery Intake
 
+**Depends on:** `kernel/base`.
+**Conflicts with:** None.
+
 This overlay adds the pre-project discovery phase to the harness. Use it for any project
 that starts without a complete, validated specification — which is most projects.
 
@@ -191,3 +194,12 @@ The following legacy snippets are absorbed by this overlay and the enriched plat
 - Original ADR prompt — intent absorbed into `workflow/discovery-to-composition.md` §7
 
 The original monolith prompt is archived at `legacy/v1-monolith-prompt.txt`.
+
+---
+
+## See Also
+
+- Module definition: [`module.yaml`](module.yaml)
+- Active modules table: [`HARNESS.md`](../../../../HARNESS.md)
+- Templates: `platform/templates/discovery/`
+- Related module: [`management/interview-driven`](../interview-driven/README.md)

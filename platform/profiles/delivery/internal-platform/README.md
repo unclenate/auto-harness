@@ -6,6 +6,9 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # Delivery Overlay: Internal Platform
 
+**Depends on:** `kernel/base`.
+**Conflicts with:** None.
+
 This overlay is for shared systems — internal tooling, shared services, developer platforms,
 data pipelines — where downstream team coordination matters more than external product launch
 ceremony. The consumers are engineers, not end users.
@@ -66,3 +69,11 @@ modules compose normally.
 Agents operating on an internal platform must be aware that changes have downstream impact
 beyond the immediate codebase. Breaking changes to shared interfaces or contracts require
 dependency-log review and consumer notification before deployment.
+
+---
+
+## See Also
+
+- Module definition: [`module.yaml`](module.yaml)
+- Active modules table: [`HARNESS.md`](../../../../HARNESS.md)
+- Related module: [`delivery/production-saas`](../production-saas/README.md)

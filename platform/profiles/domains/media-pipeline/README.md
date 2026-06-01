@@ -6,6 +6,9 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # Domain Overlay: Media Pipeline
 
+**Depends on:** `kernel/base`, `data/object-storage`.
+**Conflicts with:** None.
+
 This overlay activates governance for systems where media assets are ingested, transformed,
 or derived — including computer vision (CV) pipelines, photogrammetry workflows, video/audio
 processing, and any system where the output is a derived artifact computed from raw media input.
@@ -32,9 +35,9 @@ Do not activate this overlay for simple file upload and download. Object storage
 
 ## What This Overlay Governs
 
-**Depends on:** `data/object-storage` — derived artifacts and source media are assumed to
-live in object storage. The object storage module's governance on access policy and naming
-conventions applies here.
+The dependency on `data/object-storage` reflects that derived artifacts and source media
+are assumed to live in object storage. The object storage module's governance on access
+policy and naming conventions applies here.
 
 **Sensitive paths:** `media/`, `pipelines/`, `transforms/`, `photogrammetry/`
 
@@ -100,3 +103,11 @@ When `media/`, `pipelines/`, `transforms/`, or `photogrammetry/` paths change, t
 rule requires an update to architecture or runbook docs. This is not bureaucracy — it is the
 minimum traceability needed to answer "what changed and why did this batch produce different
 output?" after a production incident.
+
+---
+
+## See Also
+
+- Module definition: [`module.yaml`](module.yaml)
+- Active modules table: [`HARNESS.md`](../../../../HARNESS.md)
+- Required dep: [`data/object-storage`](../../data/object-storage/README.md)

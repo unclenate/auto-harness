@@ -6,6 +6,9 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # Architecture Overlay: Event Driven
 
+**Depends on:** `kernel/base`.
+**Conflicts with:** None.
+
 This overlay is for asynchronous systems — message queues, pub/sub, event streams, background
 workers — where contract drift, replay behavior, and operational traceability require explicit
 governance. It does not assume Kafka, SQS, RabbitMQ, or any specific broker.
@@ -71,3 +74,10 @@ The required `docs/architecture/overview.md` should answer:
 Agents may modify consumer logic, add new event types, and refactor publishers. Any change
 that alters an event schema, changes delivery semantics, or modifies retry/dead-letter behavior
 must be accompanied by an architecture overview update or an ADR and flagged for human review.
+
+---
+
+## See Also
+
+- Module definition: [`module.yaml`](module.yaml)
+- Active modules table: [`HARNESS.md`](../../../../HARNESS.md)

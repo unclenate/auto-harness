@@ -6,6 +6,9 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # Delivery Overlay: Prototype
 
+**Depends on:** `kernel/base`.
+**Conflicts with:** `production-saas`, `managed-fleet`.
+
 This overlay keeps documentation and ops expectations intentionally light while preserving
 kernel governance and audit boundaries. Use it for throwaway experiments, early validation,
 and projects where the primary goal is learning — not production operation.
@@ -19,9 +22,9 @@ docs/operating-principles.md). The prototype posture explicitly waives the ops a
 that `production-saas` requires — no environment inventory, no release checklist, no risk
 register.
 
-**Conflicts with `production-saas`.** The two postures cannot coexist. When a project
-graduates from prototype to production, replace `prototype` with `production-saas` in the
-manifest and create the required ops artifacts before accepting real user traffic.
+The two postures cannot coexist — when a project graduates from prototype to production,
+replace `prototype` with `production-saas` in the manifest and create the required ops
+artifacts before accepting real user traffic.
 
 ---
 
@@ -66,3 +69,11 @@ or "MVP validation."
 In prototype posture, agents operate under the same trust tier model as production. Tier 4
 and Tier 5 actions (environment-altering, remote/production) still require human authorization.
 The prototype posture relaxes documentation requirements, not operational safety boundaries.
+
+---
+
+## See Also
+
+- Module definition: [`module.yaml`](module.yaml)
+- Active modules table: [`HARNESS.md`](../../../../HARNESS.md)
+- Related module: [`delivery/production-saas`](../production-saas/README.md)

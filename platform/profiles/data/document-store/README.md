@@ -6,6 +6,9 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # Data Overlay: Document Store
 
+**Depends on:** `kernel/base`.
+**Conflicts with:** None.
+
 This overlay is for document databases — MongoDB, Firestore, DynamoDB, Couchbase — where
 schema flexibility is by design but schema drift still requires governance. The absence of
 enforced schemas makes the discipline more important, not less.
@@ -64,3 +67,11 @@ become the primary record of intentional shape changes.
 Agents may propose document shape changes and index modifications. Any change that alters
 the expected document shape — adds, removes, or renames fields that application code reads —
 must be accompanied by an architecture overview update or an ADR and flagged for human review.
+
+---
+
+## See Also
+
+- Module definition: [`module.yaml`](module.yaml)
+- Active modules table: [`HARNESS.md`](../../../../HARNESS.md)
+- Templates: `platform/templates/database/`

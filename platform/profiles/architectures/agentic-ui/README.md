@@ -6,6 +6,9 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # Architecture Overlay: Agentic UI
 
+**Depends on:** `kernel/base`.
+**Conflicts with:** None.
+
 This overlay covers products where the **agentic surface is the dominant topology decision** —
 the agent runtime, the action surface, and the renderer contract are the load-bearing
 architectural choices, not features layered onto a web-app or api-service topology.
@@ -89,8 +92,6 @@ contract artifacts. They are designed to be active together for this class of pr
 | `data/relational-postgres` | Conversation state, persistent threads, tool-call audit log |
 | `delivery/prototype` | Early agent-loop iteration |
 | `delivery/production-saas` | Agent ships to real users |
-
-Does **not** conflict with any other module.
 
 ---
 

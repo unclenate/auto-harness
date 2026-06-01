@@ -6,6 +6,9 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # Architecture Overlay: Web App
 
+**Depends on:** `kernel/base`.
+**Conflicts with:** None.
+
 This overlay covers browser-facing systems — UI surfaces, request boundaries, and client/server
 trust separation. It does not assume React, Next.js, or any specific hosting vendor. Framework
 and hosting choices belong in stack or domain modules.
@@ -72,3 +75,12 @@ Agents operating under this overlay must treat any change that moves trust logic
 browser as a human review trigger. Agents may propose UI changes, but changes that affect
 authentication flow, session handling, or permission checks require explicit human sign-off
 before applying.
+
+---
+
+## See Also
+
+- Module definition: [`module.yaml`](module.yaml)
+- Active modules table: [`HARNESS.md`](../../../../HARNESS.md)
+- Related module: [`architectures/api-service`](../api-service/README.md)
+- Template: [`platform/templates/architecture-overview.md`](../../../templates/architecture-overview.md)

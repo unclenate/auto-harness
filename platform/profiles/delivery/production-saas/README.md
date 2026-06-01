@@ -6,6 +6,9 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # Delivery Overlay: Production SaaS
 
+**Depends on:** `kernel/base`.
+**Conflicts with:** `prototype`.
+
 This overlay turns operational readiness into required artifacts instead of optional advice.
 Activating it means real users, real data, and real consequences for downtime or data loss.
 The four required ops artifacts enforce this reality before the first production deploy.
@@ -116,3 +119,12 @@ criteria and the transition path.
 Agents may prepare release artifacts, update checklists, and propose infrastructure changes.
 Agents must not apply infrastructure changes, trigger production deployments, or modify
 environment credentials without explicit human authorization (Tier 4/5 actions).
+
+---
+
+## See Also
+
+- Module definition: [`module.yaml`](module.yaml)
+- Active modules table: [`HARNESS.md`](../../../../HARNESS.md)
+- Related module: [`delivery/internal-platform`](../internal-platform/README.md)
+- Templates: `platform/templates/deployment/`

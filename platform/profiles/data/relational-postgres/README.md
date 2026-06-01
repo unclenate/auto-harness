@@ -6,6 +6,9 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # Data Overlay: Relational Postgres
 
+**Depends on:** `kernel/base`.
+**Conflicts with:** None.
+
 This overlay governs migration discipline, compatibility planning, and post-apply verification
 for relational schema changes. It does not assume a specific migration tool — Flyway, Liquibase,
 Alembic, Drizzle, and raw SQL migration files are all supported.
@@ -70,3 +73,12 @@ Every migration that ships to production should be able to answer:
 Agents may generate migration files and review migration SQL. Agents must not apply migrations
 to any non-local database without explicit human authorization. Changes to migration files must
 be accompanied by a migration readiness update or migration record in the same PR.
+
+---
+
+## See Also
+
+- Module definition: [`module.yaml`](module.yaml)
+- Active modules table: [`HARNESS.md`](../../../../HARNESS.md)
+- Related module: [`domains/supabase`](../../domains/supabase/README.md)
+- Templates: `platform/templates/database/`

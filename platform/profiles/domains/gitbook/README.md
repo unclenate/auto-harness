@@ -6,6 +6,9 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # Domain Overlay: GitBook
 
+**Depends on:** `kernel/base`.
+**Conflicts with:** None.
+
 This overlay activates when a project publishes its documentation through GitBook — either
 GitBook's hosted service (gitbook.com) or a self-hosted instance. It ensures the table of
 contents stays current, chapter structure reflects how the team navigates docs, and the
@@ -176,7 +179,7 @@ project's table of contents.
 
 ---
 
-## Reference
+## See Also
 
 | Resource | Path |
 |----------|------|

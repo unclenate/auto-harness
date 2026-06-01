@@ -6,6 +6,9 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # Stack Overlay: Node — Plain JavaScript
 
+**Depends on:** `kernel/base`.
+**Conflicts with:** None.
+
 This overlay governs Node.js projects that do **not** use TypeScript.
 It is the sibling to [`stacks/node-typescript`](../node-typescript/README.md)
 and carries the same machinery (companion rules on

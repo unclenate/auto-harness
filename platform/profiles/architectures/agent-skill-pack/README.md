@@ -6,6 +6,9 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # Architecture Overlay: Agent Skill Pack
 
+**Depends on:** `kernel/base`.
+**Conflicts with:** None.
+
 ## What this module adds
 
 This overlay governs products whose **unit of delivery is an authored agent
@@ -91,3 +94,11 @@ governs.
 - It does not govern an in-product agent UI's prompt-injection or renderer
   surface — that is `domains/agentic-interfaces`. A skill pack that *also*
   ships a UI activates both.
+
+---
+
+## See Also
+
+- Module definition: [`module.yaml`](module.yaml)
+- Active modules table: [`HARNESS.md`](../../../../HARNESS.md)
+- Spec: [`docs/requirements/PRD-0008-agent-skill-pack-architecture.md`](../../../../docs/requirements/PRD-0008-agent-skill-pack-architecture.md)

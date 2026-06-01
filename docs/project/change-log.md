@@ -11,6 +11,62 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## Wave 4.2 — Module README standardization (heading / depends-conflicts / See Also)
+
+Closes Refresh #2 M-b from execution-roadmap §7: every module README under
+`platform/profiles/**/README.md` (36 files) now carries the same three
+structural elements in the same positions — a `# {Family} Overlay: {Name}`
+H1, a fixed-position `**Depends on:** … / **Conflicts with:** …` callout
+immediately beneath it, and a `## See Also` block at the foot.
+
+**ADR-fragment rationale (the decision, not just the diff):** We standardize
+on the `{Family} Overlay: {Name}` H1 pattern and the inline-bold
+depends/conflicts callout because **the prior diversity was unintentional
+drift, not a designed difference.** 35 of 36 READMEs already used the Overlay
+heading; only `testing-standard` diverged (`# testing-standard`), and the
+depends/conflicts disclosure existed inline in a handful of modules
+(media-pipeline, supabase, prototype, production-saas) while the other 32
+disclosed it only in `module.yaml`. Standardizing now — rather than after more
+modules accrete — converges the set while it is still small enough to do in one
+pass. This does not rise to a full ADR: no governance contract, validator
+behavior, or trust-tier semantic changes; it is an editorial-convergence
+decision and belongs in the change-log per the roadmap's explicit guidance for
+this item.
+
+**Canonical shape chosen:**
+
+- **H1:** `# {Family} Overlay: {Name}` — the existing 35/36 majority pattern.
+  Only `testing-standard` was renamed (`# testing-standard` →
+  `# Management Overlay: Testing Standard`).
+- **Callout:** two consecutive bold lines (`**Depends on:** …` then
+  `**Conflicts with:** …`) sourced from each module's `module.yaml`
+  `dependsOn` / `conflictsWith`. Inline-bold was already the de-facto winner
+  among modules that disclosed dependencies in prose; it carries the smallest
+  typographic footprint and reads cleanly for the common
+  `kernel/base` / None case.
+- **See Also:** a per-module curated block (module.yaml, active-modules table,
+  and related modules / skills / templates / ADRs / PRDs as relevant). Modules
+  that already had a `## See Also` or `## References` block kept their curated
+  content — the heading was normalized to `## See Also` where it read
+  `## References`, and `domains/agentic-interfaces` (which had both an
+  industry-references list and a See Also block) had its references heading
+  renamed to `## Industry References` to preserve the distinct semantics.
+
+**Renderer-safety note:** template-directory references in newly authored
+See Also blocks are written as backtick inline code
+(`` `platform/templates/<x>/` ``) rather than markdown links, because
+`validate-doc-references.sh` (renderer-aware) flags `dir/` link targets — a
+bare directory target 404s in GitBook. This matches the convention the
+pre-existing See Also blocks already used.
+
+**Verification:** all 14 validators green; markdownlint clean; every deletion
+in the diff is an intentional heading rename or a de-duplicated inline
+depends/conflicts sentence (the inline disclosures in media-pipeline, supabase,
+prototype, production-saas, agentic-interfaces, agentic-ui, project-standard
+were reflowed into prose so the canonical callout is the single source).
+
+---
+
 ## Wave 4.5 (partial) — Governance-doc banners on adr / requirements (opportunities deferred)
 
 Closes Refresh #1 L-a from execution-roadmap §7 *partially*: the two governance-record

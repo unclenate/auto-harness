@@ -6,6 +6,9 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # Domain Overlay: Cryptographic Identity
 
+**Depends on:** `kernel/base`.
+**Conflicts with:** None.
+
 This overlay governs projects whose surface includes cryptographic
 identity primitives — HD wallets, decentralized identifiers (DIDs),
 self-sovereign identity (SSI), key custody, signature schemes — and

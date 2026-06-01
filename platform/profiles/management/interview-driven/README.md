@@ -6,6 +6,9 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # Management Overlay: Interview-Driven
 
+**Depends on:** `kernel/base`.
+**Conflicts with:** None.
+
 This overlay governs projects whose product and project documentation lives in **monolithic, interview-driven artifacts** rather than the canonical multi-file set produced by `discovery-intake` + `product-lite` + `project-standard`.
 
 It is the right overlay when the team has converged on:

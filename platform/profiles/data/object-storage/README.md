@@ -6,6 +6,9 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # Data Overlay: Object Storage
 
+**Depends on:** `kernel/base`.
+**Conflicts with:** None.
+
 This overlay is for systems that store blobs, media files, derived artifacts, or large binary
 objects — S3, GCS, Azure Blob, Supabase Storage, R2. Object storage has distinct governance
 concerns from structured data: retention, access control, lifecycle rules, and cost.
@@ -56,3 +59,11 @@ Review gate: *"Human review is required when retention or lifecycle policies cha
 Agents may propose bucket layout changes, presigned URL logic, and upload/download handlers.
 Changes to retention policies, lifecycle rules, bucket permissions, or public access settings
 require human review and an architecture overview or ops documentation update in the same PR.
+
+---
+
+## See Also
+
+- Module definition: [`module.yaml`](module.yaml)
+- Active modules table: [`HARNESS.md`](../../../../HARNESS.md)
+- Related module: [`domains/media-pipeline`](../../domains/media-pipeline/README.md)

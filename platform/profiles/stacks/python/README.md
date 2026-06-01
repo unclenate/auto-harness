@@ -6,6 +6,9 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # Stack Overlay: Python
 
+**Depends on:** `kernel/base`.
+**Conflicts with:** None.
+
 This overlay activates Python-specific interpreter, dependency, and CI expectations only when
 composed. It supports multiple packaging approaches (pip, Poetry, uv, conda) without forcing a
 single framework. Framework guidance belongs in architecture or domain overlays.
@@ -82,3 +85,10 @@ harness version may add primary/secondary semantics at the manifest-schema level
 Dependency installation and migration commands are Tier 4 actions. Agents may propose
 dependency changes and update lock files locally, but `pip install`, `poetry install`, or
 `uv sync` against any shared or production environment requires human authorization.
+
+---
+
+## See Also
+
+- Module definition: [`module.yaml`](module.yaml)
+- Active modules table: [`HARNESS.md`](../../../../HARNESS.md)

@@ -6,6 +6,9 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # Management Overlay: Eval-Gated Testing
 
+**Depends on:** `kernel/base`.
+**Conflicts with:** None.
+
 ## What this module adds
 
 This overlay governs projects whose **primary quality gate is binary-graded
@@ -75,3 +78,12 @@ an eval gate from a demo: they assert the system knows when *not* to act.
   separate, harness-side concern, not part of this consumer-facing posture.
 - It does not mandate a specific eval framework. The strategy declares which
   runner is in use; the module is tool-neutral.
+
+---
+
+## See Also
+
+- Module definition: [`module.yaml`](module.yaml)
+- Active modules table: [`HARNESS.md`](../../../../HARNESS.md)
+- Related module: [`management/testing-standard`](../testing-standard/README.md)
+- Spec: [`docs/requirements/PRD-0009-eval-gated-testing-module.md`](../../../../docs/requirements/PRD-0009-eval-gated-testing-module.md)

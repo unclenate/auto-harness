@@ -6,6 +6,9 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # Delivery Overlay: Managed Fleet
 
+**Depends on:** `kernel/base`.
+**Conflicts with:** `prototype`.
+
 This overlay is for teams that **operate** configuration managing a live fleet of hosts —
 infrastructure-as-code repos, configuration-management estates, hosting platforms. The
 team applies config to hosts it runs; it does not ship an app or a distributable to
@@ -72,3 +75,11 @@ Applying configuration to production hosts is a human-directed action. Agents ma
 changes — dry-run (`--check`), diff, staged `--limit` rollout plans — but must not apply to
 live hosts. Topology changes require a fleet-inventory or change-control update in the same
 change.
+
+---
+
+## See Also
+
+- Module definition: [`module.yaml`](module.yaml)
+- Active modules table: [`HARNESS.md`](../../../../HARNESS.md)
+- ADR: [`ADR-0015 — Managed-Fleet Delivery Posture`](../../../../docs/adr/ADR-0015-managed-fleet-delivery-posture.md)

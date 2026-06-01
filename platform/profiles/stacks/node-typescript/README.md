@@ -6,6 +6,9 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # Stack Overlay: Node.js / TypeScript
 
+**Depends on:** `kernel/base`.
+**Conflicts with:** None.
+
 This overlay activates Node.js and TypeScript-specific interpreter, dependency, and CI
 expectations only when composed. It supports multiple package managers (npm, pnpm, yarn)
 without forcing a single choice. Framework guidance belongs in architecture or domain
@@ -132,3 +135,11 @@ harness version may add primary/secondary semantics at the manifest-schema level
 Dependency installation remains a Tier 4 action. Agents may propose dependency changes and
 update lock files locally, but `npm install`, `pnpm add`, or `yarn add` against any shared or
 production environment requires human authorization.
+
+---
+
+## See Also
+
+- Module definition: [`module.yaml`](module.yaml)
+- Active modules table: [`HARNESS.md`](../../../../HARNESS.md)
+- Related module: [`stacks/node-javascript`](../node-javascript/README.md)

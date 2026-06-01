@@ -6,6 +6,9 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # Architecture Overlay: MCP Server
 
+**Depends on:** `kernel/base`.
+**Conflicts with:** None.
+
 This overlay governs projects that **ship a Model Context Protocol (MCP) server** —
 a program that exposes tools, resources, and/or prompts to MCP clients (Claude
 Desktop, ChatGPT, Claude Code, VS Code, Cursor, MCPJam, or any other compliant

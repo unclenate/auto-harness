@@ -6,6 +6,9 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # Domain Overlay: Supabase
 
+**Depends on:** `kernel/base`, `data/relational-postgres`.
+**Conflicts with:** None.
+
 This overlay activates Supabase-specific governance when Supabase is the hosted backend layer —
 providing auth, database, storage, and edge functions as a managed service. It extends
 `data/relational-postgres` with the assumptions that come with a hosted Supabase project: a
@@ -27,9 +30,9 @@ Changes to these paths trigger a companion rule requiring one of:
 This enforces the principle that auth, policy, and hosted-boundary changes are tracked decisions,
 not silent implementation details.
 
-**Depends on:** `data/relational-postgres` — this overlay inherits all migration discipline
-and schema governance from that module. Supabase provides the hosting layer; the database
-governance rules still apply.
+The dependency on `data/relational-postgres` means this overlay inherits all migration
+discipline and schema governance from that module. Supabase provides the hosting layer;
+the database governance rules still apply.
 
 ---
 
@@ -112,3 +115,12 @@ Human review is required for:
 - Any service role key usage pattern change
 
 These are not stylistic decisions — they determine who can access what data.
+
+---
+
+## See Also
+
+- Module definition: [`module.yaml`](module.yaml)
+- Active modules table: [`HARNESS.md`](../../../../HARNESS.md)
+- Required dep: [`data/relational-postgres`](../../data/relational-postgres/README.md)
+- ADR: [`ADR-0003 — Submodule Integration`](../../../../docs/adr/ADR-0003-submodule-integration.md)

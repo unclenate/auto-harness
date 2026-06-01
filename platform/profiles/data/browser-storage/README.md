@@ -6,6 +6,9 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # Data Overlay: Browser Storage
 
+**Depends on:** `kernel/base`.
+**Conflicts with:** None.
+
 This overlay governs projects whose primary data layer is in the
 browser — IndexedDB, localStorage, sessionStorage, or OPFS (Origin
 Private File System).

@@ -6,6 +6,9 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # Domain Overlay: Agentic Interfaces
 
+**Depends on:** `kernel/base`.
+**Conflicts with:** None.
+
 This overlay governs **in-product agentic interfaces** — surfaces where an AI agent is a
 first-class actor inside the product the user is using. It is the right overlay when the
 product includes any of:
@@ -139,8 +142,6 @@ Standard tiers apply, with these domain-local notes:
 | `delivery/prototype` | Early agent-loop iteration |
 | `delivery/production-saas` | Agent ships to real users |
 
-Does **not** conflict with any other module.
-
 ---
 
 ## Agent Behavior
@@ -155,7 +156,7 @@ paths, they must:
 
 ---
 
-## References
+## Industry References
 
 - A2UI v0.8 (Public Preview) — `https://a2ui.org/`, `https://github.com/google/A2UI`
 - CopilotKit + AG-UI Protocol — `https://docs.copilotkit.ai/`, `https://github.com/CopilotKit/CopilotKit`

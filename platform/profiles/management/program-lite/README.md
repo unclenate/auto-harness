@@ -6,6 +6,9 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # Management Overlay: Program Lite
 
+**Depends on:** `kernel/base`, `management/project-standard`.
+**Conflicts with:** None.
+
 This overlay activates only when a project needs multi-workstream or multi-team coordination
 records. Do not activate it for single-team projects — the overhead is real and the benefit
 requires genuine cross-team dependencies to justify it.
@@ -74,3 +77,12 @@ Agents may draft workstream maps, stakeholder reports, and cadence documents. Th
 map and dependency records must reflect real organizational structure — agents should ask for
 confirmation before assuming team ownership or dependency relationships they cannot verify
 from the codebase.
+
+---
+
+## See Also
+
+- Module definition: [`module.yaml`](module.yaml)
+- Active modules table: [`HARNESS.md`](../../../../HARNESS.md)
+- Templates: `platform/templates/program/`
+- Required dep: [`management/project-standard`](../project-standard/README.md)

@@ -9,7 +9,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 **Status:** partially-accepted
 **Owner:** @unclenate
 **Created:** 2026-05-24
-**Last Updated:** 2026-05-24 *(augmented with Tula patient-client SMART-on-FHIR evidence + US-healthcare-bias guardrail; see §TG5 and OPP-0022)*
+**Last Updated:** 2026-06-01 *(partially accepted — fhir + smart-on-fhir promoted to a v1 wedge via PRD-0017; see Disposition)*
 **Confidence:** high
 
 ---
@@ -250,10 +250,10 @@ healthcare apps activate only what they need.
 
 ## Disposition
 
-**Partially accepted 2026-06-01.** The two role-spanning sub-modules —
+**Partially accepted 2026-06-01.** The two cross-consumer sub-modules —
 `domains/healthcare-fhir` and `domains/healthcare-smart-on-fhir` — are promoted to a v1
-wedge (see PRD-0017). The remaining ten sub-modules (hl7v2, ccda, ePrescribing, cdr, cqm,
-phi-encryption, audit-log, direct-messaging, ehi-export, patient-portal) stay `proposed`
+wedge (see PRD-0017). The remaining ten sub-modules (`hl7v2`, `ccda`, `eprescribing`, `cdr`, `cqm`,
+`phi-encryption`, `audit-log`, `direct-messaging`, `ehi-export`, `patient-portal`) stay `proposed`
 pending consumer demand. The patient-facing agent-safety surface remains OPP-0022.
 
 ## Promotion

@@ -20,7 +20,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 ## Conventions every task must follow
 
-- **Attribution:** all SPDX headers use `Nate DiNiro <UncleNate@gmail.com>` (NOT the work email).
+- **Attribution:** SPDX headers in **harness-authored files** (modules' `module.yaml`/`README.md`, PRDs, OPPs, change-log, etc.) use `Nate DiNiro <UncleNate@gmail.com>` (NOT the work email). **Template files** under `platform/templates/**` are the exception — they ship tokenized headers (`Copyright [[YEAR]] [[OWNER_NAME]] <[[OWNER_EMAIL]]>`) so the consumer's bootstrap fills in their own attribution. Use the personal attribution for files this repo authors; use the tokenized form for files a consumer will instantiate.
 - **Module/template files live under `platform/`** → exempt from the placeholder validator (`.placeholder-ignore` has `platform/**`). They use the `[[TOKEN]]` convention freely.
 - **PRD + OPP files live under `docs/`** → NOT exempt. Use the real date `2026-06-01`; never write a bare `YYYY-MM-DD` or unfilled `[[TOKEN]]` in them.
 - **Validator run (planning-folder caveat):** the untracked `documentation-audit-2026-05-27/` folder pollutes `validate-placeholders.sh` and `validate-doc-references.sh`. Before running the suite, stash it: `mv documentation-audit-2026-05-27 /tmp/au-stash && <run> ; mv /tmp/au-stash documentation-audit-2026-05-27`.
@@ -28,12 +28,18 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 ```bash
 mv documentation-audit-2026-05-27 /tmp/au-stash 2>/dev/null
+fail=0
 for v in manifest module-graph required-artifacts placeholders agent-pack companions \
          doc-references catalog-counts list-completeness trust-tier sensitive-paths \
          knowledge-redaction skill-content sast-coverage; do
-  "platform/validators/validate-$v.sh" >/dev/null 2>&1 && echo "$v OK" || echo "$v FAIL"
+  # Capture the validator's own exit code IMMEDIATELY — do NOT read $? after the
+  # restore `mv` below, and do NOT pipe the validator to head/tee (either masks
+  # the real exit code and a failing validator reads as green).
+  "platform/validators/validate-$v.sh" >/dev/null 2>&1; rc=$?
+  [ "$rc" -eq 0 ] && echo "$v OK" || { echo "$v FAIL($rc)"; fail=1; }
 done
 mv /tmp/au-stash documentation-audit-2026-05-27 2>/dev/null
+[ "$fail" -eq 0 ] && echo "ALL GREEN" || { echo "SUITE RED — do not push"; exit 1; }
 ```
 
 - **Git base:** branch off `main` (PR #87 / Wave 4.2 is independent). New module READMEs follow the Wave 4.2 standardized shape (H1 `# Domain Overlay: <Name>`, a `**Depends on:** … / **Conflicts with:** …` callout under the H1, a `## See Also` footer).

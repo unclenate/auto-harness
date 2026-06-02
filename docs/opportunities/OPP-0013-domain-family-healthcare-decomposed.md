@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0013 — Healthcare Domain Family (decomposed `domains/healthcare-*`)
 
-**Status:** proposed
+**Status:** partially-accepted
 **Owner:** @unclenate
 **Created:** 2026-05-24
-**Last Updated:** 2026-05-24 *(augmented with Tula patient-client SMART-on-FHIR evidence + US-healthcare-bias guardrail; see §TG5 and OPP-0022)*
+**Last Updated:** 2026-06-01 *(partially accepted — fhir + smart-on-fhir promoted to a v1 wedge via PRD-0017; see Disposition)*
 **Confidence:** high
 
 ---
@@ -250,11 +250,17 @@ healthcare apps activate only what they need.
 
 ## Disposition
 
-<!-- Empty: status is proposed -->
+**Partially accepted 2026-06-01.** The two cross-consumer sub-modules —
+`domains/healthcare-fhir` and `domains/healthcare-smart-on-fhir` — are promoted to a v1
+wedge (see PRD-0017). The remaining ten sub-modules (`hl7v2`, `ccda`, `eprescribing`, `cdr`, `cqm`,
+`phi-encryption`, `audit-log`, `direct-messaging`, `ehi-export`, `patient-portal`) stay `proposed`
+pending consumer demand. The patient-facing agent-safety surface remains OPP-0022.
 
 ## Promotion
 
-<!-- Empty: not yet accepted -->
+Promoted sub-modules: `domains/healthcare-fhir`, `domains/healthcare-smart-on-fhir`
+(PRD-0017, 2026-06-01). Decomposition pattern + jurisdiction-profile forcing artifact +
+bias guardrail are slated for harvest into an operating-principle in a later pass.
 
 ## Related
 

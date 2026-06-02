@@ -224,7 +224,7 @@ references back to OPP-0008/0009/0010 record the convergence.*
   `engine: postgres | mysql | mariadb | sqlite` sub-field. 95% of
   required artifacts are engine-independent; the rename keeps the
   catalog compact and unblocks MySQL/MariaDB/SQLite consumers.
-- [OPP-0013](OPP-0013-domain-family-healthcare-decomposed.md) *(proposed 2026-05-24)*
+- [OPP-0013](OPP-0013-domain-family-healthcare-decomposed.md) *(partially-accepted 2026-06-01; PRD-0017; fhir + smart-on-fhir promoted)*
   — Decomposed `domains/healthcare-*` family (12 sub-modules) +
   `templates/healthcare/` (8 templates) + `harness-healthcare` skill +
   `healthcare-full-ehr.yaml` convenience composition. Healthcare is

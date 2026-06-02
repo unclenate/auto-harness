@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0013 — Healthcare Domain Family (decomposed `domains/healthcare-*`)
 
-**Status:** partially-accepted
+**Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-05-24
-**Last Updated:** 2026-06-01 *(partially accepted — fhir + smart-on-fhir promoted to a v1 wedge via PRD-0017; see Disposition)*
+**Last Updated:** 2026-06-01 *(accepted — partial promotion: fhir + smart-on-fhir promoted to a v1 wedge via PRD-0017; the other ten sub-modules remain proposed within this OPP; see Disposition)*
 **Confidence:** high
 
 ---
@@ -250,7 +250,7 @@ healthcare apps activate only what they need.
 
 ## Disposition
 
-**Partially accepted 2026-06-01.** The two cross-consumer sub-modules —
+**Accepted 2026-06-01 — partial promotion.** The two cross-consumer sub-modules —
 `domains/healthcare-fhir` and `domains/healthcare-smart-on-fhir` — are promoted to a v1
 wedge (see PRD-0017). The remaining ten sub-modules (`hl7v2`, `ccda`, `eprescribing`, `cdr`, `cqm`,
 `phi-encryption`, `audit-log`, `direct-messaging`, `ehi-export`, `patient-portal`) stay `proposed`

@@ -11,11 +11,24 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## OPP-0013 status normalized to the documented enum (`accepted`) — Copilot review
+
+Copilot review on PR #90 flagged that OPP-0013's `**Status:** partially-accepted` is not a
+member of the documented OPP status enum (`proposed | exploring | accepted | declined |
+superseded`). Normalized the status value to `accepted` (the promotion contract is satisfied
+— PRD-0017 is referenced) and moved the "partial promotion" nuance into Disposition prose,
+across OPP-0013, `candidates.md`, and this change-log. The validator suite did not catch the
+off-enum value because no validator enforces status-enum membership; the lesson is recorded
+in `docs/knowledge/shared-observations.md`. Extending the enum to a real `partially-accepted`
+state would be a separate ADR-gated decision, deliberately not taken here.
+
+---
+
 ## OPP-0013 partial promotion — healthcare FHIR + SMART-on-FHIR wedge
 
-OPP-0013 moves from `proposed` to `partially-accepted`: the FHIR + SMART-on-FHIR
+OPP-0013 moves from `proposed` to `accepted` (partial promotion): the FHIR + SMART-on-FHIR
 sub-modules are promoted to a v1 wedge via PRD-0017. The other ten sub-modules remain
-proposed. Rationale and design context: PRD-0017 +
+proposed within this OPP. Rationale and design context: PRD-0017 +
 docs/superpowers/specs/2026-06-01-deep-industry-domains-healthcare-wedge-design.md.
 
 ---

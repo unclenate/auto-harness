@@ -294,6 +294,20 @@ implementing PR is built):
 - Bash 3.2 + system Ruby (already in CI environment; no new gems or package
   manifests).
 
+## Verification
+
+The wedge is verified, not asserted:
+
+- All 14 validators pass with both modules present on disk (manifest, module-graph
+  dependency resolution of `healthcare-smart-on-fhir → healthcare-fhir`,
+  required-artifacts, companions, catalog-counts, list-completeness, doc-references,
+  and the rest of the chain).
+- A sample composition (`platform/compositions/healthcare-fhir-app.yaml`) activates
+  both modules and validates clean — its dependency closure
+  (`healthcare-smart-on-fhir → healthcare-fhir → kernel/base`) resolves under
+  validate-module-graph.
+- markdownlint passes on all new and changed markdown.
+
 ## Open Questions
 
 - [ ] **Exact sensitive-path regexes** — validated against OpenEMR + Tula

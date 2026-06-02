@@ -110,7 +110,7 @@ clustered backlog with framing.
 | [0010](opportunities/OPP-0010-domain-module-cryptographic-identity.md) | Domain Module — Cryptographic Identity | accepted |
 | [0011](opportunities/OPP-0011-stack-module-php.md) | Stack Module — PHP | proposed |
 | [0012](opportunities/OPP-0012-data-module-relational-sql-engine-generalization.md) | Data Module — Relational SQL Engine Generalization | proposed |
-| [0013](opportunities/OPP-0013-domain-family-healthcare-decomposed.md) | Domain Family — Healthcare Decomposed | proposed |
+| [0013](opportunities/OPP-0013-domain-family-healthcare-decomposed.md) | Domain Family — Healthcare Decomposed | accepted (partial promotion) |
 | [0014](opportunities/OPP-0014-polyglot-companion-services.md) | Polyglot Companion Services | proposed |
 | [0015](opportunities/OPP-0015-regulated-compliance-test-kits.md) | Regulated Compliance + External Test Kits | proposed |
 | [0016](opportunities/OPP-0016-specialist-healthcare-review-skills.md) | Specialist Healthcare Review Skills | proposed |

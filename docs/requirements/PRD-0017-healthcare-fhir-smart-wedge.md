@@ -24,7 +24,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 - **Related OPPs (out of scope for this PRD):**
   - [OPP-0016](../opportunities/OPP-0016-specialist-healthcare-review-skills.md) —
     Specialist healthcare review skills; stays `proposed`.
-  - OPP-0022 — Patient-facing agent-safety overlay; stays `proposed`.
+  - [OPP-0022](../opportunities/OPP-0022-patient-facing-health-agent-safety.md) — Patient-facing agent-safety overlay; stays `proposed`.
 - **Sibling module precedent:**
   - [`domains/supabase`](../../platform/profiles/domains/supabase/module.yaml) —
     the intra-family dependency shape (`smart-on-fhir` depends on `fhir`)
@@ -99,7 +99,7 @@ non-goals allow scope to creep back in:
   cqm, phi-encryption, audit-log, direct-messaging, ehi-export,
   patient-portal). Each is a separate future PRD. This PRD ships the wedge
   only.
-- **OPP-0022 patient-facing agent-safety overlay.** Different governance
+- **[OPP-0022](../opportunities/OPP-0022-patient-facing-health-agent-safety.md) patient-facing agent-safety overlay.** Different governance
   surface (agent behavior under patient data access, not SMART mechanics).
   Stays a separate future module.
 - **OPP-0016 specialist healthcare review skills.** Stays `proposed`.
@@ -184,13 +184,13 @@ this PRD names each load-bearing claim and its enforcement mechanism:
 
 | ID | Requirement | Acceptance Criteria | Notes |
 |----|-------------|---------------------|-------|
-| FR-001 | `domains/healthcare-fhir` module scaffolding | `module.yaml` and `README.md` present at `platform/profiles/domains/healthcare-fhir/`. `module.yaml` declares `type: domain`, `dependsOn: [kernel/base]`, `conflictsWith: []`, `requiredArtifacts: [docs/healthcare/fhir-resource-map.md, docs/healthcare/jurisdiction-profile.md]`, sensitive paths, companion rules, review gate. | First `domains/` type module; mirrors the opt-in management overlay shape for companion rules and review gates. |
+| FR-001 | `domains/healthcare-fhir` module scaffolding | `module.yaml` and `README.md` present at `platform/profiles/domains/healthcare-fhir/`. `module.yaml` declares `type: domain`, `dependsOn: [kernel/base]`, `conflictsWith: []`, `requiredArtifacts: [docs/healthcare/fhir-resource-map.md, docs/healthcare/jurisdiction-profile.md]`, sensitive paths, companion rules, review gate. | First `domains/` type modules in the catalog at time of this PRD; mirrors the opt-in management overlay shape for companion rules and review gates. |
 | FR-002 | `domains/healthcare-smart-on-fhir` module scaffolding | `module.yaml` and `README.md` present at `platform/profiles/domains/healthcare-smart-on-fhir/`. `module.yaml` declares `type: domain`, `dependsOn: [kernel/base, healthcare-fhir]`, `conflictsWith: []`, `requiredArtifacts: [docs/healthcare/smart-scope-map.md]`, sensitive paths, companion rules, review gate. | Intra-family dependency on `healthcare-fhir` must resolve cleanly in `validate-module-graph.sh`. |
 | FR-003 | `platform/templates/healthcare/` with three templates | `fhir-resource-map.md`, `jurisdiction-profile.md` (with bias-guardrail block), and `smart-scope-map.md` (with provider-launch and patient-access sections and trust-model note). All carry tokenized SPDX headers per attribution convention (`UncleNate@gmail.com`, dual-license). | Bias-guardrail text per design spec: "This module makes no jurisdiction the default. Declare yours below. Do not assume US (or any single region) norms, code sets, or legal regimes." |
 | FR-004 | Discoverability propagation | Both modules and a "Healthcare domain family" orientation appear in: `SUMMARY.md` Module Library, `HARNESS.md` Active Modules, `platform/skills/harness-onboarding/SKILL.md` domain catalog, `platform/workflow/discovery-to-composition.md` Step 6 rubric. | Standard companion-rule propagation requirement per `CLAUDE.md`. |
 | FR-005 | Healthcare domain family diagram in `docs/architecture/diagrams.md` | One diagram: `fhir ← smart-on-fhir` dependency, the provider/patient role axis, and the jurisdiction overlay. Authored as a template diagram for any future deep-domain family. | Doubles as the structural reference for the future generalization pass. |
 | FR-006 | Sample composition activating both modules | A file at `platform/compositions/healthcare-fhir-app.yaml` (or an equivalent sample project) activates both `domains/healthcare-fhir` and `domains/healthcare-smart-on-fhir` and validates clean through the full validator suite. | Integration test for the intra-family dependency and required-artifact assertions. |
-| FR-007 | Full 14-validator suite passes | `validate-manifest.sh`, `validate-module-graph.sh`, `validate-required-artifacts.sh`, `validate-placeholders.sh`, `validate-agent-pack.sh`, `validate-companions.sh`, `validate-doc-references.sh`, `validate-catalog-counts.sh`, `validate-list-completeness.sh`, `validate-trust-tier.sh`, `validate-sensitive-paths.sh`, `validate-knowledge-redaction.sh`, `validate-skill-content.sh`, `validate-sast-coverage.sh` all exit 0. No ASSERTIONS bumps needed for the two new modules (confirm during implementation). | Predict-clean absorption: the harness does not activate the new modules, so most validators are no-op pass or unchanged. |
+| FR-007 | Full 14-validator suite passes | `validate-manifest.sh`, `validate-module-graph.sh`, `validate-required-artifacts.sh`, `validate-placeholders.sh`, `validate-agent-pack.sh`, `validate-companions.sh`, `validate-doc-references.sh`, `validate-catalog-counts.sh`, `validate-list-completeness.sh`, `validate-trust-tier.sh`, `validate-sensitive-paths.sh`, `validate-knowledge-redaction.sh`, `validate-skill-content.sh`, `validate-sast-coverage.sh` all exit 0. No ASSERTIONS bumps needed for the two new modules (confirm during implementation). | Predict-clean absorption: the harness does not activate the new modules, so most validators are no-op pass or unchanged. Anticipated ASSERTIONS bump for module counts; the implementing PR must update all documented count sites per the Open Question on validate-catalog-counts.sh. |
 
 ### Should Have
 
@@ -204,7 +204,7 @@ this PRD names each load-bearing claim and its enforcement mechanism:
 | Feature | Reason excluded | When to revisit |
 |---------|----------------|-----------------|
 | FHIR resource structure validation (schema / profile linting) | Runtime FHIR validation is a separate toolchain concern; v1 validates governance declarations, not resource payloads | If a consumer mounts a FHIR profile validator in their CI and wants harness governance of the validator configuration |
-| OPP-0022 patient-facing agent-safety overlay | Different governance surface (agent behavior under patient data, not SMART mechanics); separate future module | When OPP-0022 reaches PRD pass |
+| [OPP-0022](../opportunities/OPP-0022-patient-facing-health-agent-safety.md) patient-facing agent-safety overlay | Different governance surface (agent behavior under patient data, not SMART mechanics); separate future module | When OPP-0022 reaches PRD pass |
 | HL7v2, CCDA, ePrescribing, and the other ten OPP-0013 sub-modules | Out-of-wedge sub-domains; each gets its own PRD when a grounded consumer surfaces the need | Per OPP-0013 decomposition |
 | Abstract "deep domain framework" operating-principle | Authored in a later pass after stress-testing against finance + logistics per the design spec's harvest plan | After the wedge ships and validates; see "Harvest plan" in design context |
 | Specialist healthcare review skills (OPP-0016) | Separate OPP, different scope | When OPP-0016 reaches PRD pass |

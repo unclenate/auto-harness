@@ -11,6 +11,15 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## OPP-0013 partial promotion — healthcare FHIR + SMART-on-FHIR wedge
+
+OPP-0013 moves from `proposed` to `partially-accepted`: the FHIR + SMART-on-FHIR
+sub-modules are promoted to a v1 wedge via PRD-0017. The other ten sub-modules remain
+proposed. Rationale and design context: PRD-0017 +
+docs/superpowers/specs/2026-06-01-deep-industry-domains-healthcare-wedge-design.md.
+
+---
+
 ## Wave 4.2 — Module README standardization (heading / depends-conflicts / See Also)
 
 Closes Refresh #2 M-b from execution-roadmap §7: every module README under

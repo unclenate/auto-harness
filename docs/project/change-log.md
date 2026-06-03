@@ -11,6 +11,23 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## Privacy by Design — Phase 2 implementation (`management/privacy-by-design`)
+
+Implements PRD-0018 / ADR-0018 (Phase 1, merged #97). Adds the default-on
+`management/privacy-by-design` overlay, a module-gated WARN-posture
+`validate-privacy-by-design.sh`, the `platform/templates/privacy/` family (incl.
+the bias-guardrail `privacy-profile.md`), the default-active mechanism
+(install.sh generated manifest + discovery Step 6 + bootstrap-quickstart), init-flow
+education, and CI wiring. Catalog counts: modules 38→39 / 47→48, templates 66→69,
+validators 14→15. The accompanying `shared-observations.md` entry captures the
+cross-vertical-primitive-reuse insight (privacy reusing the deep-domain
+neutral-core + forcing-artifact + bias-guardrail pattern) and satisfies the
+PRD-0004 distillation rule fired by the new module; this change-log entry is the
+audit trail for that knowledge-destination touch. Dogfood deferred: auto-harness
+does not activate the overlay in its own manifest (validator gated → exit 0).
+
+---
+
 ## Healthcare wedge — both domain modules shipped (`healthcare-fhir` + `healthcare-smart-on-fhir`)
 
 Full PRD-0017 healthcare-wedge implementation. Both profile modules landed:

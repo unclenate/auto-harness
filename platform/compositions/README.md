@@ -29,6 +29,7 @@ cp platform/compositions/node-web-saas-postgres.yaml harness.manifest.yaml
 | [python-api-service-postgres.yaml](python-api-service-postgres.yaml) | Python | API service with PostgreSQL |
 | [research-pipeline-python-object-storage.yaml](research-pipeline-python-object-storage.yaml) | Python | Data / ML pipeline |
 | [web3-risk-analytics.yaml](web3-risk-analytics.yaml) | Python | Blockchain-integrated platform |
+| [healthcare-fhir-app.yaml](healthcare-fhir-app.yaml) | Any | FHIR + SMART-on-FHIR application — healthcare data layer + SMART app-launch/scopes, provider-launch + patient-access roles |
 
 ---
 

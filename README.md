@@ -320,6 +320,7 @@ Pre-built manifests for common project types. Copy the closest match and adjust:
 | [`agentic-ui-saas.yaml`](platform/compositions/agentic-ui-saas.yaml) | Node / TS | SaaS web-app shipping an in-product agentic interface (copilot or generative UI) |
 | [`mcp-server-typescript.yaml`](platform/compositions/mcp-server-typescript.yaml) | Node / TS | Projects shipping their own MCP server (producer-side: tools, transports, prompt-injection defense) |
 | [`mcp-server-typescript-oss.yaml`](platform/compositions/mcp-server-typescript-oss.yaml) | Node / TS | OSS-released MCP server (producer-side + `delivery/self-hosted-oss` + project-standard + knowledge-capture) |
+| [`healthcare-fhir-app.yaml`](platform/compositions/healthcare-fhir-app.yaml) | Any | FHIR + SMART-on-FHIR application — healthcare data layer + SMART app-launch/scopes, provider-launch + patient-access roles |
 
 ```bash
 cp platform/compositions/node-web-saas-postgres.yaml harness.manifest.yaml

@@ -1,0 +1,24 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+# Starter composition for a FHIR + SMART-on-FHIR application. Activates the healthcare
+# data layer and the SMART app-launch/scope overlay together. Serves both provider-launch
+# (EHR-side) and patient-access (patient-app) roles via the scope-map artifact.
+# References:
+#   - platform/profiles/domains/healthcare-fhir/README.md
+#   - platform/profiles/domains/healthcare-smart-on-fhir/README.md
+#   - docs/requirements/PRD-0017-healthcare-fhir-smart-wedge.md
+schemaVersion: 1
+project:
+  id: example-healthcare-fhir-app
+  name: Example FHIR + SMART-on-FHIR App
+  maturity: prototype
+  criticality: high
+modules:
+  core:
+    - kernel/base
+  domains:
+    - healthcare-fhir
+    - healthcare-smart-on-fhir
+overrides:
+  requiredArtifacts: []
+  disabledValidations: []

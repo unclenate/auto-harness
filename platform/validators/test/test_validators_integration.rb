@@ -1599,10 +1599,11 @@ class TestValidatePrivacyByDesign < Minitest::Test
 
   # Expected exit code per fixture (PRD-0018 contract).
   FIXTURE_EXPECTATIONS = {
-    "clean-profile.md"        => 0,  # valid regime declared → pass
-    "none-exempt.md"          => 0,  # regime: none + exemption declared → pass
-    "unfilled-profile.md"     => 1,  # empty regime, no exemption → fail
-    "contradiction-profile.md" => 1, # regime: none + personal-data body → fail
+    "clean-profile.md"                => 0,  # valid regime declared → pass
+    "none-exempt.md"                  => 0,  # regime: none + exemption declared → pass
+    "none-exempt-empty-inventory.md"  => 0,  # regime: none + header-only table → pass (no false positive)
+    "unfilled-profile.md"             => 1,  # empty regime, no exemption → fail
+    "contradiction-profile.md"        => 1,  # regime: none + personal-data body rows → fail
   }.freeze
 
   def test_runs_clean_against_harness_repo
@@ -1646,6 +1647,19 @@ class TestValidatePrivacyByDesign < Minitest::Test
     fixture = File.join(PRIVACY_FIXTURES_DIR, "none-exempt.md")
     out, err, code = run_validator("validate-privacy-by-design.sh", "--scan-file", fixture)
     assert_equal 0, code, "none-exempt must pass. stderr: #{err}"
+    assert_match(/✓/, out)
+    assert_match(/regime=none/, out)
+  end
+
+  def test_none_exempt_empty_inventory_passes_no_false_positive
+    # Regression guard: a regime:none profile whose body contains ONLY a
+    # table-header row (no data rows) must NOT be flagged as a contradiction.
+    # FIX 1 — header-only table must not trigger the personal-data check.
+    fixture = File.join(PRIVACY_FIXTURES_DIR, "none-exempt-empty-inventory.md")
+    out, err, code = run_validator("validate-privacy-by-design.sh", "--scan-file", fixture)
+    assert_equal 0, code,
+                 "header-only data-inventory table must not cause a false-positive contradiction. " \
+                 "stderr: #{err}"
     assert_match(/✓/, out)
     assert_match(/regime=none/, out)
   end

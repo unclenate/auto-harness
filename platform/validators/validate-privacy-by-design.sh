@@ -20,7 +20,7 @@
 #   posture); Phase 2 Task 5.
 #
 # Usage:
-#   validate-privacy-by-design.sh [<manifest>] [<project-root>]
+#   validate-privacy-by-design.sh [--block] [<manifest>] [<project-root>]
 #   validate-privacy-by-design.sh --scan-file <path-to-privacy-profile>
 #
 # Behavior:
@@ -81,12 +81,14 @@ validate-privacy-by-design.sh — Enforce the privacy-by-design contract for
 projects activating the management/privacy-by-design overlay.
 
 Usage:
-  validate-privacy-by-design.sh [<manifest>] [<project-root>]
+  validate-privacy-by-design.sh [--block] [<manifest>] [<project-root>]
   validate-privacy-by-design.sh --scan-file <path-to-privacy-profile>
 
 Arguments:
   manifest      Path to harness.manifest.yaml (default: ./harness.manifest.yaml)
   project-root  Path to the project root (default: dirname of manifest)
+  --block       Escalate WARN-layer privacy-risk hits to a non-zero exit;
+                default off.
   --scan-file   Direct-content-test mode: validate an arbitrary
                 privacy-profile-shaped file. Used for fixture-firing
                 tests per PRD-0018.
@@ -201,16 +203,30 @@ if regime == "none"
   end
 
   # ----------------------------------------------------------------
-  # Consistency check — regime: none but personal-data indicators in
-  # the profile body itself (used as the test-seam stand-in for
+  # Consistency check — regime: none but personal-data indicator rows
+  # in the profile body itself (used as the test-seam stand-in for
   # data-inventory.md in --scan-file mode).
+  #
+  # A contradiction requires at least one table data row (not a
+  # separator row and not the first/header row) that matches
+  # PERSONAL_DATA_PATTERN. A table with only a header row (no data
+  # rows) is NOT a contradiction — that is an empty inventory.
   # ----------------------------------------------------------------
   PERSONAL_DATA_PATTERN = /personal[_-]data|data[_-]subject|PII/i.freeze
-  body_hits = body.lines.select { |l| l.match?(PERSONAL_DATA_PATTERN) }
+  DATA_ROW_PATTERN      = /^\|\s*\S/i.freeze
 
-  if body_hits.any?
-    warn "✗ #{target}: regime: none but the profile body contains personal-data indicators"
-    body_hits.first(3).each { |l| warn "  → #{l.strip}" }
+  # Collect table-looking rows from the body.
+  body_table_rows = body.lines.select { |l| l.match?(DATA_ROW_PATTERN) }
+  # Drop separator rows (only |---|:---:| etc. content).
+  non_separator = body_table_rows.reject { |l| l.gsub(/[\|\-:\s]/, "").empty? }
+  # Drop the first non-separator row (the column header row).
+  data_rows = non_separator.drop(1)
+  # Flag a contradiction only when a data row matches personal-data indicators.
+  pd_hits = data_rows.select { |l| l.match?(PERSONAL_DATA_PATTERN) }
+
+  if pd_hits.any?
+    warn "✗ #{target}: regime: none but the profile body contains personal-data indicator rows"
+    pd_hits.first(3).each { |l| warn "  → #{l.strip}" }
     warn "  → either declare an appropriate regime or remove the personal-data entries"
     exit 1
   end
@@ -352,23 +368,32 @@ if regime == "none"
     exit 1
   end
 
-  # Consistency: regime: none + personal-data in data-inventory → contradiction.
+  # Consistency: regime: none + personal-data rows in data-inventory → contradiction.
+  #
+  # A contradiction requires at least one table data row (not a separator row
+  # and not the first/header row) that matches PERSONAL_DATA_PATTERN. A table
+  # with only a header row (no data rows) is NOT a contradiction — that is an
+  # empty inventory.
   inventory_path = File.join(project_root, INVENTORY_REL)
   if File.exist?(inventory_path)
-    PERSONAL_DATA_PATTERN = /personal[_-]data|data[_-]subject|PII|\|\s*[A-Za-z]/i.freeze
+    PERSONAL_DATA_PATTERN = /personal[_-]data|data[_-]subject|PII/i.freeze
     DATA_ROW_PATTERN      = /^\|\s*\S/i.freeze
     inv_content = File.read(inventory_path)
-    data_rows = inv_content.lines.select { |l| l.match?(DATA_ROW_PATTERN) }
-    # Filter out header/separator rows (only `|---|` cells).
-    non_separator_rows = data_rows.reject { |l| l.gsub(/[\|\-:\s]/, "").empty? }
-    if non_separator_rows.any?
+    inv_table_rows = inv_content.lines.select { |l| l.match?(DATA_ROW_PATTERN) }
+    # Drop separator rows (only |---|:---:| etc. content).
+    non_separator_rows = inv_table_rows.reject { |l| l.gsub(/[\|\-:\s]/, "").empty? }
+    # Drop the first non-separator row (the column header row).
+    data_rows = non_separator_rows.drop(1)
+    # Flag a contradiction only when a data row matches personal-data indicators.
+    pd_hits = data_rows.select { |l| l.match?(PERSONAL_DATA_PATTERN) }
+    if pd_hits.any?
       warn "✗ Contradiction: #{PROFILE_REL} declares regime: none but #{INVENTORY_REL}"
-      warn "  contains #{non_separator_rows.length} personal-data entries."
+      warn "  contains #{pd_hits.length} personal-data indicator row(s)."
       warn "  → either remove the personal-data entries or declare an appropriate regime"
       exit 1
     end
 
-    # Soft WARN: inventory exists but no non-separator rows (empty table is OK).
+    # An inventory with only a header row (empty table) is OK.
   end
 end
 
@@ -414,8 +439,12 @@ if regime == "none"
   inventory_path = File.join(project_root, INVENTORY_REL)
   unless File.exist?(inventory_path)
     sensitive_globs = %w[pii personal consent user_data user-data privacy]
+    SKIP_DIRS = %w[.git node_modules vendor dist].freeze
     found_sensitive = sensitive_globs.any? do |keyword|
-      !Dir.glob(File.join(project_root, "**", "*#{keyword}*"), File::FNM_CASEFOLD).empty?
+      Dir.glob(File.join(project_root, "**", "*#{keyword}*"), File::FNM_CASEFOLD).any? do |p|
+        rel = p.sub(project_root + "/", "")
+        SKIP_DIRS.none? { |d| rel.start_with?("#{d}/") }
+      end
     end
     if found_sensitive
       warn "⚠ regime: none but data-handling-looking paths detected in the project tree."

@@ -2,7 +2,7 @@
 
 **Structure:** Structured Template (see README.md § Observation Structure; locked by ADR-0002)
 **Write Policy:** heartbeat-only (see README.md § Write Policy; adjustable)
-**Last Updated:** 2026-06-02 *(Copilot review remediation on PR #90: normalized OPP-0013's off-enum `partially-accepted` status to the documented `accepted` enum value with partial-promotion prose, and appended the validator-vs-vocabulary-gap observation; built on the cross-consumer-wedge observation from healthcare wedge Phase 1)*
+**Last Updated:** 2026-06-02 *(healthcare wedge Tasks 3–4: domains/healthcare-fhir module.yaml + README; appended jurisdiction-neutral-core-as-default-design observation)*
 
 Append-only structured observations from project participants (agents
 and humans). Read this file on each heartbeat. Observations accumulate
@@ -2439,3 +2439,12 @@ here until distillation.
 - **Confidence:** medium. One instance, but the underlying gap (no enum enforcement) is directly verifiable and general to every controlled-vocabulary metadata field in the harness.
 - **Severity:** programming-discipline
 - **Contributed by:** Claude Code (claude-opus-4-8), 2026-06-02 (Copilot review remediation on PR #90; satisfies the PRD-0004 distillation rule fired by the OPP-0013 re-edit; substantive connection — generalizes the specific Copilot finding into a reusable lesson about the validator-vs-vocabulary gap, names the within-enum-plus-prose resolution and the ADR path for a genuine enum extension, and pairs with the preceding cross-consumer-wedge observation from the same initiative)
+
+### Jurisdiction-neutral-core is the correct default design for international-standard domain overlays — not a regional default with a carve-out
+
+- **Context:** `domains/healthcare-fhir` (PRD-0017, Tasks 3–4) governs HL7 FHIR, which is an international standard. When designing the overlay, the question arose: should the module default to US Core (the author's jurisdiction) and treat other profiles as opt-in deviations? Or should it start jurisdiction-agnostic and *force* the consumer to declare theirs via a required artifact?
+- **Observation:** The jurisdiction-neutral-core design is categorically correct for any overlay governing an international standard. Defaulting to the author's jurisdiction embeds a regional assumption into a cross-regional standard — every non-US consumer inherits a mismatch silently. The neutral design instead surfaces the jurisdiction question as a *required* consumer decision (a forcing artifact: `docs/healthcare/jurisdiction-profile.md`), ensuring the bias is never invisible. The same logic applies symmetrically to any future overlay for an international standard (DICOM, HL7v2, SNOMED CT, ICD-10, ISO 27001 controls, etc.).
+- **Implication:** When authoring overlays for international standards, the default template should be: (1) jurisdiction-neutral core; (2) required `jurisdiction-profile.md` artifact with a bias guardrail in the template; (3) `sensitivePaths` tuned to the standard's PHI/PII surface, not to any jurisdiction's additional requirements. Jurisdiction-specific profiles (US Core, IPS, UK Core, AU Base) belong in optional artifacts or consumer-side extensions, not in the base overlay. Reviewers should push back on domain overlays for international standards that bake in a regional default without an ADR justifying the narrowing.
+- **Confidence:** medium. One concrete instance (`healthcare-fhir`). The structural argument extends to any overlay for a published international standard; HL7 FHIR is a clear exemplar because the gap between the standard and its regional profiles is well-documented and the bias risk is high (HIPAA is not GDPR is not UK DSP Toolkit).
+- **Severity:** architecture
+- **Contributed by:** Claude Code (claude-sonnet-4-6), 2026-06-02 (healthcare wedge Tasks 3–4; satisfies the PRD-0004 distillation rule fired by the new platform/profiles/domains/healthcare-fhir/module.yaml addition; substantive connection — captures the jurisdiction-design decision that distinguishes this overlay from a naive US-Core default, and generalizes it to future international-standard overlays)

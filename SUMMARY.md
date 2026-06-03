@@ -156,6 +156,7 @@ Vendor, ecosystem, or specialist overlays.
 * [Web3](platform/profiles/domains/web3/README.md) — Ethereum-specific smart-contract concerns
 * [Cryptographic Identity](platform/profiles/domains/cryptographic-identity/README.md) — BIP32/BIP39 wallets, DID/SSI, key custody (non-Ethereum)
 * [Healthcare FHIR](platform/profiles/domains/healthcare-fhir/README.md) — FHIR data-layer domain overlay; PHI governance and jurisdiction-profile forcing artifact
+* [Healthcare SMART on FHIR](platform/profiles/domains/healthcare-smart-on-fhir/README.md) — SMART app launch + OAuth scopes across provider-launch and patient-access roles
 * [GitBook](platform/profiles/domains/gitbook/README.md)
 
 ### Agents

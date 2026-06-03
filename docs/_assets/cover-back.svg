@@ -36,7 +36,7 @@
   <text x="160" y="800" font-family="Helvetica, Arial, sans-serif" font-size="36" fill="#1f3a5f" font-weight="700">What is in this book</text>
 
   <g font-family="Helvetica, Arial, sans-serif" fill="#0e1c2e" font-size="28">
-    <text x="160" y="870" font-weight="600">46 modules</text>
+    <text x="160" y="870" font-weight="600">47 modules</text>
     <text x="380" y="870">across stacks, architectures, data, delivery,</text>
     <text x="380" y="906">management, domains, and agent packs</text>
 

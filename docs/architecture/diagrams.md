@@ -50,7 +50,7 @@ flowchart TD
     Manifest["<b>harness.manifest.yaml</b><br/>project-local activation"]
 
     subgraph CATALOG["Active Catalog (per project)"]
-        Manifest --> Modules["<b>Modules</b><br/>core · profiles · agents<br/>(46 total in-tree)"]
+        Manifest --> Modules["<b>Modules</b><br/>core · profiles · agents<br/>(47 total in-tree)"]
     end
 
     subgraph CONTRACT["Per-Module Contract (module.yaml)"]

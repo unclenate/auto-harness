@@ -87,6 +87,7 @@ originating opportunity records.
 | [0015](requirements/PRD-0015-validate-skill-content.md) | Skill Content Safety Validator (`validate-skill-content.sh`) | Proposed | [OPP-0033](opportunities/OPP-0033-validate-skill-content.md) |
 | [0016](requirements/PRD-0016-security-static-analysis-module.md) | Security Static Analysis Module (`management/security-static-analysis`) | Accepted | [OPP-0035](opportunities/OPP-0035-security-static-analysis.md) |
 | [0017](requirements/PRD-0017-healthcare-fhir-smart-wedge.md) | Healthcare FHIR + SMART-on-FHIR Wedge | Proposed | [OPP-0013](opportunities/OPP-0013-domain-family-healthcare-decomposed.md) |
+| [0018](requirements/PRD-0018-privacy-by-design.md) | Privacy-by-Design Module (`management/privacy-by-design`) | Proposed | — |
 
 ---
 

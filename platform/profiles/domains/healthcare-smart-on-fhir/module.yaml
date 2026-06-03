@@ -1,0 +1,48 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+id: healthcare-smart-on-fhir
+type: domain
+version: 1.0.0
+summary: SMART-on-FHIR app-launch and OAuth-scope domain overlay — models provider-launch and patient-access trust roles as a documented axis on top of the FHIR data layer.
+dependsOn:
+  - kernel/base
+  - healthcare-fhir
+conflictsWith: []
+requiredArtifacts:
+  - docs/healthcare/smart-scope-map.md
+optionalArtifacts: []
+sensitivePaths:
+  - description: SMART app launch, OAuth scope, and token-handling surfaces
+    patterns:
+      - ^src/FHIR/SMART/
+      - ^auth/
+      - scope
+      - launch
+      - token
+      - oauth
+companionRules:
+  - description: SMART scope-map changes require an ADR or change-log entry
+    triggerPaths:
+      - ^docs/healthcare/smart-scope-map\.md$
+    requiredAny:
+      - ^docs/adr/ADR-
+      - ^docs/project/change-log\.md$
+    humanReview: Reviewers confirm scope grants and launch-context changes are intentional.
+  - description: Patient-access scope changes require a risk-register update (patient is the resource owner)
+    triggerPaths:
+      - ^src/FHIR/SMART/
+      - ^auth/
+    requiredAny:
+      - ^docs/security/risk-register\.md$
+      - ^docs/adr/ADR-
+    humanReview: Reviewers verify the provider-launch vs patient-access scope boundary is preserved.
+validators:
+  - validate-companions
+reviewGates:
+  - Human review is required for scope grants, launch-context changes, and any provider-to-patient scope-boundary edit.
+agentAdapters:
+  - platform/agents/base
+compiledFragments:
+  - platform/profiles/domains/healthcare-smart-on-fhir/README.md
+recommendedSkills:
+  - harness-governance   # trust tiers and companion rules (source: platform/skills/)

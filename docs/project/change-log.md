@@ -11,6 +11,17 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## Healthcare wedge Tasks 3–4 — `domains/healthcare-fhir` module shipped
+
+`platform/profiles/domains/healthcare-fhir/` (module.yaml + README) is the first concrete
+catalog artifact from PRD-0017. The overlay introduces a jurisdiction-neutral FHIR data-layer
+governance pattern: two required artifacts (`fhir-resource-map.md` and a forcing
+`jurisdiction-profile.md`), two PHI-aware companion rules, and a `sensitivePaths` surface
+covering `fhir/`, `src/FHIR/`, and PHI-adjacent path fragments. Catalog counts (37 profile
+modules, 46 total), SUMMARY.md, and cycle-end distillation updated in the same pass.
+
+---
+
 ## OPP-0013 status normalized to the documented enum (`accepted`) — Copilot review
 
 Copilot review on PR #90 flagged that OPP-0013's `**Status:** partially-accepted` is not a

@@ -2,7 +2,7 @@
 
 **Structure:** Structured Template (see README.md § Observation Structure; locked by ADR-0002)
 **Write Policy:** heartbeat-only (see README.md § Write Policy; adjustable)
-**Last Updated:** 2026-06-02 *(Copilot review remediation on PR #90: normalized OPP-0013's off-enum `partially-accepted` status to the documented `accepted` enum value with partial-promotion prose, and appended the validator-vs-vocabulary-gap observation; built on the cross-consumer-wedge observation from healthcare wedge Phase 1)*
+**Last Updated:** 2026-06-02 *(Appended the adopter-artifact/host-IP attribution-boundary observation — the de-identified evidence behind OPP-0038, naming git first-authorship as the computable signal that partitions adopter-created artifacts from a host project's original IP. Prior update this date: Copilot review remediation on PR #90, normalizing OPP-0013's off-enum status and appending the validator-vs-vocabulary-gap observation.)*
 
 Append-only structured observations from project participants (agents
 and humans). Read this file on each heartbeat. Observations accumulate
@@ -2439,3 +2439,12 @@ here until distillation.
 - **Confidence:** medium. One instance, but the underlying gap (no enum enforcement) is directly verifiable and general to every controlled-vocabulary metadata field in the harness.
 - **Severity:** programming-discipline
 - **Contributed by:** Claude Code (claude-opus-4-8), 2026-06-02 (Copilot review remediation on PR #90; satisfies the PRD-0004 distillation rule fired by the OPP-0013 re-edit; substantive connection — generalizes the specific Copilot finding into a reusable lesson about the validator-vs-vocabulary gap, names the within-enum-plus-prose resolution and the ADR path for a genuine enum extension, and pairs with the preceding cross-consumer-wedge observation from the same initiative)
+
+### The adopter-artifact / host-IP attribution boundary is computable from git first-authorship
+
+- **Context:** During a brownfield second-pass onboarding of a fork-held external consumer (a fork held by the harness maintainer, instrumented to explore whether the resulting governance would interest the upstream owner), the intake-authored governance artifacts had been stamped `Owner: @adopter (HostOrg)` — badging the adopter with the *host project's* company identity. HostOrg is the original owner and trademark holder, not the adopter. No validator caught it; the human maintainer did.
+- **Observation:** The boundary between "artifacts the adopter created" (theirs to author) and "the host project's original IP" (never to re-attribute) is not a judgment call — it is directly computable from `git log --diff-filter=A` (first-add authorship). In the incident the partition fell *exactly* on first-authorship: every mis-stamped file was first-added by the adopter at intake; every file carrying legitimate host-org references (the original README / OPEN_CORE / TRADEMARK / articles, which state the owner's actual trademark rights correctly) was first-added by the original maintainer.
+- **Implication:** Because the boundary is computable, the attribution discipline is a candidate for *tooling*, not merely guidance — a `validate-attribution`-style check could flag adopter-authored files that assert the host org's identity or trademarks, given manifest-declared host-owner / adopter identities. More broadly, brownfield adopters are very often *not* the host project's legal owner (forks, outside contractors, internal platform teams), so "how does an adopter sign artifacts without asserting rights" is a recurring, harness-general question. Filed as OPP-0038 (design deferred pending more adoptions).
+- **Confidence:** medium-high on computability (directly verified in one incident; `git` first-authorship is deterministic). Medium on the eventual convention's generalizability — which is why the OPP defers design.
+- **Severity:** governance-relevant
+- **Contributed by:** @unclenate via Claude Code, 2026-06-02 (consumer-adoption distillation; satisfies the PRD-0004 distillation rule fired by adding [[OPP-0038]]; substantive connection — this observation is the de-identified evidence OPP-0038 cites, and names the computable-from-git-first-authorship mechanism that makes the OPP's proposed `validate-attribution` check feasible)

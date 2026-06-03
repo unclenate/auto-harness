@@ -11,6 +11,26 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-02 — OPP-0038 filed: adopter artifact attribution boundary
+
+Audit-trail entry for the observation appended to
+`docs/knowledge/shared-observations.md` (*"The adopter-artifact / host-IP
+attribution boundary is computable from git first-authorship"*), satisfying the
+`knowledge-capture` observation companion rule. The observation is the
+de-identified evidence behind **OPP-0038** (filed same PR; index row added to
+`candidates.md`), which proposes a harness convention — and possibly a
+`validate-attribution` check — for how a brownfield adopter signs governance
+artifacts in a host project they don't own, without asserting affiliation,
+ownership, or rights over the host's identity, code, or trademarks. Design is
+**deferred** (status `proposed`) to be informed by ongoing adoption practice.
+
+Origin: a fork-held consumer's intake artifacts had been stamped `Owner:
+@adopter (HostOrg)`, badging the adopter with the original owner's company;
+corrected in the consumer repo. The adopter-artifact vs. host-IP split was shown
+to be computable from `git log --diff-filter=A` first-authorship.
+
+---
+
 ## OPP-0013 status normalized to the documented enum (`accepted`) — Copilot review
 
 Copilot review on PR #90 flagged that OPP-0013's `**Status:** partially-accepted` is not a

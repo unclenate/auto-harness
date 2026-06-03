@@ -107,6 +107,19 @@ underspecified.
 
 ### Consumer onboarding & project hygiene
 
+- [OPP-0038](OPP-0038-adopter-artifact-attribution-boundary.md) *(proposed
+  2026-06-02; design deferred — to be informed by ongoing adoption practice)* —
+  Define how a brownfield adopter should **sign** governance artifacts they
+  author in a host project they don't own — retaining authorship without
+  asserting affiliation, ownership, or rights over the host's identity, code, or
+  trademarks. Origin: a fork-held consumer's intake artifacts were stamped
+  `Owner: @adopter (HostOrg)`, falsely badging the adopter with the original
+  owner's company; caught by a human, not a validator. The adopter-artifact vs.
+  host-IP boundary is computable from `git` first-authorship, suggesting a
+  possible `validate-attribution` check + manifest `hostOwner`/`adopter`
+  declarations. Generalizes to any adopter-≠-owner context (contractors,
+  internal platform teams, upstream contributors).
+
 - [OPP-0006](OPP-0006-trust-tier-enforcement.md) *(exploring;
   PRD-0006 in flight, drafted 2026-05-23)* — Make the kernel-doctrine
   trust tier model machine-checkable. Six tiers are referenced

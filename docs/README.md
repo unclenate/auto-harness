@@ -134,6 +134,7 @@ clustered backlog with framing.
 | [0035](opportunities/OPP-0035-security-static-analysis.md) | Security Static Analysis Module (`management/security-static-analysis`) | accepted |
 | [0036](opportunities/OPP-0036-validate-knowledge-redaction.md) | Knowledge-Redaction Validator + CODEOWNERS | proposed |
 | [0037](opportunities/OPP-0037-classify-before-enforcing-as-operating-principle.md) | Classify-Before-Enforcing as Operating Principle | exploring |
+| [0038](opportunities/OPP-0038-adopter-artifact-attribution-boundary.md) | Adopter Artifact Attribution: Signing Governance Without Asserting Rights | proposed |
 
 ---
 

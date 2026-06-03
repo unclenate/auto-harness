@@ -264,7 +264,7 @@ declares its governance contract. You compose them to match your project.
 | **Data** | Storage overlays | `relational-postgres`, `document-store`, `object-storage` |
 | **Delivery** | Lifecycle posture | `prototype`, `production-saas`, `internal-platform`, `self-hosted-oss`, `managed-fleet` |
 | **Management** | Product, project, program, knowledge, opportunity, and testing governance | `discovery-intake`, `product-lite`, `project-standard`, `program-lite`, `testing-standard`, `knowledge-capture`, `opportunity-capture` |
-| **Domains** | Vendor or specialist overlays | `supabase`, `web3`, `media-pipeline`, `gitbook` |
+| **Domains** | Vendor or specialist overlays | `supabase`, `web3`, `media-pipeline`, `gitbook`, `healthcare-fhir` |
 | **Agents** | AI-tool operating packs | `base`, `claude-code`, `generic-llm`, `openclaw` |
 
 Each `module.yaml` specifies:
@@ -548,7 +548,7 @@ The bootstrap is brownfield-safe — it never overwrites pre-existing files from
 │   │   ├── data/                    # relational-postgres, document-store, object-storage
 │   │   ├── delivery/                # prototype, production-saas, internal-platform
 │   │   ├── management/              # discovery-intake, product-lite, project-standard, program-lite, testing-standard, knowledge-capture, opportunity-capture
-│   │   └── domains/                 # supabase, web3, media-pipeline, gitbook
+│   │   └── domains/                 # supabase, web3, media-pipeline, gitbook, healthcare-fhir, healthcare-smart-on-fhir
 │   ├── agents/                      # Agent operating packs: base, claude-code, generic-llm, openclaw
 │   ├── skills/                      # Agent Skills: harness-governance, harness-testing, harness-web3, harness-onboarding, harness-tools, harness-agentic-interfaces, harness-mcp
 │   ├── templates/                   # Artifact skeletons for every required file

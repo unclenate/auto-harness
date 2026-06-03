@@ -856,3 +856,26 @@ Update the catalog counts in diagram (1) when the relevant artifact
 count changes by more than ±1; small drift is tolerated because
 exact-current counts are documented in
 [`platform/reference/how-to-read.md`](../../platform/reference/how-to-read.md).
+
+---
+
+## 12. Healthcare Domain Family
+
+```mermaid
+graph TD
+    Base["kernel/base"]
+    FHIR["domains/healthcare-fhir<br/>FHIR data layer<br/>jurisdiction-neutral core"]
+    SMART["domains/healthcare-smart-on-fhir<br/>app launch + scopes"]
+    Jur["jurisdiction-profile.md<br/>(forcing artifact + bias guardrail)"]
+    Roles["scope-map roles:<br/>provider-launch | patient-access"]
+
+    Base --> FHIR
+    FHIR --> SMART
+    FHIR -.requires.-> Jur
+    SMART -.documents.-> Roles
+```
+
+This is the template shape for any deep-industry-domain family: a technology-bounded
+sub-module tree, a jurisdiction-profile forcing artifact at the root, and trust-role axes
+documented on the modules that carry them. Finance, logistics, and manufacturing families
+follow the same structure.

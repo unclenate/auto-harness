@@ -70,7 +70,7 @@ flowchart TD
 
     subgraph SURFACE["Consumer-Facing Surfaces"]
         Skills["<b>Skills</b><br/>governance, onboarding,<br/>testing, web3, tools,<br/>agentic-interfaces, mcp"]
-        Templates["<b>Templates</b><br/>63 scaffolding files<br/>(tokenized headers)"]
+        Templates["<b>Templates</b><br/>66 scaffolding files<br/>(tokenized headers)"]
         Workflows["<b>Workflows</b><br/>18 guides:<br/>bootstrap, discovery,<br/>distillation, etc."]
     end
 

@@ -29,7 +29,7 @@ than as duplicate modules:
 |----------|---------|
 | `docs/healthcare/smart-scope-map.md` | Declares scopes per role (provider-launch section + patient-access section) and a trust-model note stating who owns the resource in each role |
 
-Template: `platform/templates/healthcare/smart-scope-map.md`.
+Template: `platform/templates/healthcare/` (file: `smart-scope-map.md`).
 
 ---
 

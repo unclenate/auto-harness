@@ -366,14 +366,14 @@ initialization, never assumed.
 
 **Default-on, opt-out.** Every bootstrapped project activates `management/privacy-by-design`.
 A project with genuinely no personal or sensitive data may opt out — but opt-out is explicit
-and recorded (a one-line exemption in `docs/privacy/privacy-profile.md`), never silent. If
+and recorded (a `none`-regime exemption in `docs/privacy/privacy-profile.md`), never silent. If
 data-handling later appears despite an exemption, the validator warns and prompts re-choosing
 a regime.
 
 **Layered enforcement.** The validator *warns* on privacy-risk patterns (advisory); companion
 rules *enforce* that privacy artifacts update when data-handling paths change; review gates
 *prevent* risky merges via required human sign-off. Privacy *outcomes* remain human-judged
-(Asserted-only per §10); artifact presence is Enforced; risk-pattern detection is
+(Asserted-only per §10); artifact presence and the data-handling companion rule are Enforced; risk-pattern detection is
 Half-enforced.
 
 This principle is the first cross-vertical reuse of the deep-domain

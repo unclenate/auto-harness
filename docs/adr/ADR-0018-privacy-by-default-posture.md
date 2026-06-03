@@ -127,7 +127,7 @@ majority while giving data-free projects a documented, non-silent escape.
   low-effort cost, but it is a new obligation that did not exist before.
 - The WARN posture means the validator is advisory, not blocking.
   Privacy *outcomes* remain Asserted-only (human-judged) per § 10;
-  only artifact presence is Enforced. This is a deliberate limitation,
+  artifact presence and companion-rule pairing are Enforced. This is a deliberate limitation,
   not an oversight.
 
 **Watch:**
@@ -150,7 +150,6 @@ majority while giving data-free projects a documented, non-silent escape.
   design spec (module structure, validator contract, bootstrap wiring,
   forcing-artifact list)
 - `docs/requirements/PRD-0018-privacy-by-design.md` — build specification
-  (to be filed)
 - [ADR-0017: Safety Hardening Roadmap](ADR-0017-safety-hardening-roadmap.md)
   — sibling governance ADR; the safety and privacy hardening tracks are
   parallel-safe and share the same WARN-posture / ship-as-catalog pattern

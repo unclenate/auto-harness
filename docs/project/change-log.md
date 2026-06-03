@@ -11,14 +11,24 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
-## Healthcare wedge Tasks 3–4 — `domains/healthcare-fhir` module shipped
+## Healthcare wedge — both domain modules shipped (`healthcare-fhir` + `healthcare-smart-on-fhir`)
 
-`platform/profiles/domains/healthcare-fhir/` (module.yaml + README) is the first concrete
-catalog artifact from PRD-0017. The overlay introduces a jurisdiction-neutral FHIR data-layer
-governance pattern: two required artifacts (`fhir-resource-map.md` and a forcing
-`jurisdiction-profile.md`), two PHI-aware companion rules, and a `sensitivePaths` surface
-covering `fhir/`, `src/FHIR/`, and PHI-adjacent path fragments. Catalog counts (37 profile
-modules, 46 total), SUMMARY.md, and cycle-end distillation updated in the same pass.
+Full PRD-0017 healthcare-wedge implementation. Both profile modules landed:
+
+- `platform/profiles/domains/healthcare-fhir/` — jurisdiction-neutral FHIR data-layer overlay;
+  required artifacts `fhir-resource-map.md` + `jurisdiction-profile.md` (forcing bias-guardrail);
+  two PHI-aware companion rules; `sensitivePaths` covering `fhir/`, `src/FHIR/`, and PHI-adjacent
+  path fragments.
+- `platform/profiles/domains/healthcare-smart-on-fhir/` — SMART on FHIR app-launch + OAuth scope
+  overlay; required artifact `smart-scope-map.md`; trust-role axes (provider-launch / patient-access)
+  documented; depends on `healthcare-fhir`.
+- Three templates under `platform/templates/healthcare/` scaffolding the required artifacts.
+- Sample composition `platform/compositions/healthcare-fhir-app.yaml`.
+- Architecture diagram #12 (Healthcare Domain Family) added to `docs/architecture/diagrams.md`.
+- Discoverability propagation: SUMMARY.md, README.md module-system table, onboarding skill
+  required-artifacts column, and discovery-to-composition Step 6 decision matrix updated.
+
+Catalog counts: 38 profile modules, 47 total in-tree, 66 templates, 12 diagrams.
 
 ---
 

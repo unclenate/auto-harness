@@ -222,6 +222,8 @@ modules. Use it to populate `harness.manifest.yaml`.
 | Discovery phase active (now) | `management/discovery-intake` |
 | Multi-participant project (agents + humans) producing longitudinal observations? | `management/knowledge-capture` |
 | Capturing forward-looking product candidates with a promotion path to PRDs? | `management/opportunity-capture` |
+| Implementing FHIR resources / a FHIR server? | `domains/healthcare-fhir` |
+| SMART on FHIR app launch or OAuth scopes (provider-launch or patient-access)? | `domains/healthcare-smart-on-fhir` |
 
 **Starter manifest for a project in discovery** (before stack is chosen):
 

@@ -16,7 +16,7 @@ need the picture in context.
 > repository view. Edit a diagram by editing the Mermaid block in this
 > file — there is no separate image to regenerate.
 
-Eleven diagrams below, grouped by what they answer:
+Twelve diagrams below, grouped by what they answer:
 
 | # | Question the diagram answers | Section |
 |---|------------------------------|---------|
@@ -31,6 +31,7 @@ Eleven diagrams below, grouped by what they answer:
 | 9 | *How does `validate-catalog-counts.sh` work?* | [Catalog-Counts Assertion Flow](#9-catalog-counts-assertion-flow) |
 | 10 | *How does the canonical-position artifact compose with citation + ratification?* (PRD-0007, v0.6.0) | [Canonical-Position Artifact Flow](#10-canonical-position-artifact-flow) |
 | 11 | *How does anchor-satellite OPP filing produce better PRD scoping?* | [Anchor-Satellite Filing Pattern](#11-anchor-satellite-filing-pattern) |
+| 12 | *How does a deep-domain module family compose, and where does jurisdiction belong?* | [Healthcare Domain Family](#12-healthcare-domain-family) |
 
 ---
 

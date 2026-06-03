@@ -190,7 +190,7 @@ this PRD names each load-bearing claim and its enforcement mechanism:
 | DPIA (Data Protection Impact Assessment) tooling | A structured DPIA tool is a separate domain concern; v1 only validates that a `privacy-impact-assessment.md` artifact exists when present | When a grounded consumer requests DPIA toolchain integration |
 | PII detection in source files or payloads | Runtime scanning is out of scope for the WARN-posture validator; governance of artifacts, not data | If a future consumer requests automated PII scanning and a harness governance hook is appropriate |
 | Kernel-mandatory enforcement | Rejected in ADR-0018; data-free projects would suffer spurious ceremony | ADR-0018 is settled; revisit only if the consumer-autonomy principle is revised |
-| `harness-privacy` skill (Phase 1) | Deferrable should-have; Phase 1 ships the module, validator, and templates | Phase 2 or follow-on PR per open question below |
+| `harness-privacy` skill | Deferrable should-have; Phase 1 is design-only (§ 11 + ADR-0018 + this PRD); the module, validator, and templates are Phase 2 deliverables | Phase 2 or a follow-on PR per open question below |
 
 ## Implementation Deferral
 
@@ -299,8 +299,10 @@ The module is verified, not asserted:
   `retention`); the implementing PR finalizes and tests the set. **Bias: use the
   design spec candidates as the v1 starting point; refine if they cause false
   positives on real consumer trees.**
-- [ ] **`harness-privacy` skill — Phase 1 or Phase 2?** The optional skill
-  (FR-S01) is a should-have deferrable to a follow-on PR. **Bias: defer to
-  Phase 2; the module, validator, and templates are the load-bearing deliverable
-  for Phase 1; the skill adds discoverability value but does not unblock any
-  enforced claim.**
+- [ ] **`harness-privacy` skill — ship in Phase 2 or defer to a later PR?**
+  Phase 1 is design-only (§ 11 + ADR-0018 + this PRD); the module, validator,
+  and templates are Phase 2 deliverables. The optional skill (FR-S01) is a
+  should-have that can accompany Phase 2 or move to a follow-on PR.
+  **Bias: include in Phase 2; the skill adds discoverability value and does
+  not block any enforced claim, but co-shipping with the module is lower
+  overhead than a dedicated follow-on PR.**

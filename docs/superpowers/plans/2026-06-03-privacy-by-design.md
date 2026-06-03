@@ -129,7 +129,7 @@ from assuming a jurisdiction keeps privacy from assuming a legal regime.
 ### Task 3: PRD-0018 (design contract)
 
 **Files:**
-- Create: `docs/requirements/PRD-0018-privacy-by-design-module.md`
+- Create: `docs/requirements/PRD-0018-privacy-by-design.md`
 - Modify: `docs/README.md` (PRD catalog row)
 
 - [ ] **Step 1: Read a recent PRD** — `sed -n '1,60p' docs/requirements/PRD-0017-healthcare-fhir-smart-wedge.md` for the section order + §10 block + standalone Verification section.
@@ -146,7 +146,7 @@ from assuming a jurisdiction keeps privacy from assuming a legal regime.
 
 - [ ] **Step 7: Commit**
   ```
-  git add docs/requirements/PRD-0018-privacy-by-design-module.md docs/README.md
+  git add docs/requirements/PRD-0018-privacy-by-design.md docs/README.md
   git commit -m "[Privacy by Design] PRD-0018 — privacy-by-design module (design-only)"
   ```
 

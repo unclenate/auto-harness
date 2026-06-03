@@ -39,8 +39,10 @@ Sensitive paths cover SMART launch, OAuth scope, and token handling (`src/FHIR/S
 `auth/`, and paths containing `scope`, `launch`, `token`, `oauth`). Companion rules:
 
 - Scope-map changes require an ADR or change-log entry.
-- Changes touching patient-access scopes require a risk-register update — the patient is the
-  resource owner, so the bar is higher than for provider-launch scopes.
+- Changes under the SMART implementation and auth surfaces (`src/FHIR/SMART/`, `auth/`)
+  require a risk-register update or ADR — these implement the scope, launch, and token
+  handling that governs the patient-access trust boundary, where the patient is the
+  resource owner (a higher bar than a documentation-only scope-map edit).
 
 ---
 

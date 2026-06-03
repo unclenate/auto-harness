@@ -28,7 +28,7 @@ companionRules:
       - ^docs/adr/ADR-
       - ^docs/project/change-log\.md$
     humanReview: Reviewers confirm scope grants and launch-context changes are intentional.
-  - description: Patient-access scope changes require a risk-register update (patient is the resource owner)
+  - description: SMART implementation and auth-surface changes (src/FHIR/SMART/, auth/) require a risk-register update or ADR — these paths implement the scope, launch, and token handling that governs the patient-access trust boundary, where the patient is the resource owner
     triggerPaths:
       - ^src/FHIR/SMART/
       - ^auth/

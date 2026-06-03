@@ -485,6 +485,8 @@ Dependency: `management/program-lite` requires `management/project-standard`. `m
 | `domains/media-pipeline` | `ffmpeg`, media processing jobs, or media CDN SDK found | `data/object-storage` | none |
 | `domains/web3` | `ethers`, `wagmi`, `viem`, `hardhat`, `foundry`, `contracts/`, or `abi/` found | — | `docs/web3/chain-config.md` |
 | `domains/gitbook` | `SUMMARY.md` at root or in `docs/`, `.gitbook.yaml` found | — | `docs/SUMMARY.md` |
+| `domains/healthcare-fhir` | FHIR data layer; activate when a codebase implements FHIR resources / a FHIR server. Pairs with `healthcare-smart-on-fhir`. | — | none |
+| `domains/healthcare-smart-on-fhir` | SMART app launch + OAuth scopes; activate when a codebase does SMART-on-FHIR auth (provider-launch or patient-access). | `domains/healthcare-fhir` | none |
 
 ---
 

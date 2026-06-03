@@ -11,6 +11,33 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-01 — Consumer-adoption observations (recommend-vs-adopt drift; fork PR base default)
+
+Audit-trail entry for two observations appended to
+`docs/knowledge/shared-observations.md`, satisfying the `knowledge-capture`
+observation companion rule. Both were distilled from a consumer-side
+adoption session (bumping an external fork-held consumer's `.harness`
+submodule pin), not from harness-self development:
+
+1. **Recommend-vs-adopt drift (governance-relevant, OPP candidate).** A
+   submodule pin bump moves the trusted commit but never the consumer's
+   hard-coded validator invocation list, so newly-recommended CI-template
+   steps are silently unadopted. Names an unclosed drift class and three
+   candidate harness responses (post-bump template diff step, opt-in
+   `validate-ci-currency` advisory, upstream "new consumer-CI step"
+   release signal). Design-shaped; not yet specced.
+2. **Fork PR base default (informational, onboarding note).** `gh pr
+   create` defaults the base to a fork's upstream parent, yielding a
+   misleading "no commits between" error; fix is explicit
+   `--repo`/`--head` qualification. Relevant to any fork-held brownfield
+   consumer.
+
+No rule, validator, or module changed — observations only. The
+distillation trigger did not fire (no ADR/OPP/module/manifest edit); this
+entry exists solely to satisfy the observation audit-trail rule.
+
+---
+
 ## Healthcare wedge — both domain modules shipped (`healthcare-fhir` + `healthcare-smart-on-fhir`)
 
 Full PRD-0017 healthcare-wedge implementation. Both profile modules landed:

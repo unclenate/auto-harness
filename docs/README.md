@@ -88,6 +88,7 @@ originating opportunity records.
 | [0016](requirements/PRD-0016-security-static-analysis-module.md) | Security Static Analysis Module (`management/security-static-analysis`) | Accepted | [OPP-0035](opportunities/OPP-0035-security-static-analysis.md) |
 | [0017](requirements/PRD-0017-healthcare-fhir-smart-wedge.md) | Healthcare FHIR + SMART-on-FHIR Wedge | Proposed | [OPP-0013](opportunities/OPP-0013-domain-family-healthcare-decomposed.md) |
 | [0018](requirements/PRD-0018-privacy-by-design.md) | Privacy-by-Design Module (`management/privacy-by-design`) | Proposed | — |
+| [0019](requirements/PRD-0019-aec-iso19650-openbim-wedge.md) | AEC ISO 19650 + openBIM Wedge | Proposed | [OPP-0039](opportunities/OPP-0039-domain-family-aec-decomposed.md) |
 
 ---
 
@@ -136,6 +137,7 @@ clustered backlog with framing.
 | [0035](opportunities/OPP-0035-security-static-analysis.md) | Security Static Analysis Module (`management/security-static-analysis`) | accepted |
 | [0036](opportunities/OPP-0036-validate-knowledge-redaction.md) | Knowledge-Redaction Validator + CODEOWNERS | proposed |
 | [0037](opportunities/OPP-0037-classify-before-enforcing-as-operating-principle.md) | Classify-Before-Enforcing as Operating Principle | exploring |
+| [0039](opportunities/OPP-0039-domain-family-aec-decomposed.md) | AEC Domain Family (decomposed) | accepted (partial promotion) |
 
 ---
 

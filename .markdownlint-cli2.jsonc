@@ -27,7 +27,8 @@
     "platform/bootstrap/test/fixtures/**",
     ".remember/**",
     "docs/superpowers/plans/**",
-    "docs/superpowers/specs/**"
+    "docs/superpowers/specs/**",
+    "documentation-audit-2026-05-27/**"
     // docs/superpowers/{plans,specs} are informal working artifacts (session
     // implementation plans and design specs that quote template bodies), not
     // published docs held to the doc-quality bar. They are already excluded

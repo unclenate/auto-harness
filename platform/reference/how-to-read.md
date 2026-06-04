@@ -52,6 +52,20 @@ Already have a codebase? Start with
 4. [Discovery to Composition](../workflow/discovery-to-composition.md) — a guided process
    for going from an idea to a composed manifest
 
+**Management-overlay posture note:** `privacy-by-design` is default-on for data-handling
+projects; `security-static-analysis` is opt-in SAST; `testing-standard` and
+`eval-gated-testing` are compatible sibling quality-gates.
+
+### "I'm building a regulated or domain-specialist product"
+
+1. Start with the relevant domain module — [`domains/healthcare-fhir`](../profiles/domains/healthcare-fhir/README.md)
+   or [`domains/healthcare-smart-on-fhir`](../profiles/domains/healthcare-smart-on-fhir/README.md)
+2. Review [`platform/compositions/healthcare-fhir-app.yaml`](../compositions/healthcare-fhir-app.yaml)
+   as a concrete composition example
+3. Activate the [`management/privacy-by-design`](../profiles/management/privacy-by-design/README.md)
+   overlay (default-on for data-handling projects; covers Cavoukian's 7 principles and
+   consumer-declared legal regime)
+
 ### "I want to integrate AI agents"
 
 1. [Skills and Agents](../workflow/skills-and-agents.md) — the integration model

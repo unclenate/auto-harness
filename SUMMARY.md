@@ -156,8 +156,9 @@ Vendor, ecosystem, or specialist overlays.
 * [Media Pipeline](platform/profiles/domains/media-pipeline/README.md)
 * [Web3](platform/profiles/domains/web3/README.md) — Ethereum-specific smart-contract concerns
 * [Cryptographic Identity](platform/profiles/domains/cryptographic-identity/README.md) — BIP32/BIP39 wallets, DID/SSI, key custody (non-Ethereum)
-* [Healthcare FHIR](platform/profiles/domains/healthcare-fhir/README.md) — FHIR data-layer domain overlay; PHI governance and jurisdiction-profile forcing artifact
-* [Healthcare SMART on FHIR](platform/profiles/domains/healthcare-smart-on-fhir/README.md) — SMART app launch + OAuth scopes across provider-launch and patient-access roles
+* Healthcare (FHIR + SMART on FHIR) — deep-domain family
+  * [Healthcare FHIR](platform/profiles/domains/healthcare-fhir/README.md) — FHIR data layer; jurisdiction-neutral core
+  * [Healthcare SMART on FHIR](platform/profiles/domains/healthcare-smart-on-fhir/README.md) — app launch + scopes; provider/patient roles
 * [GitBook](platform/profiles/domains/gitbook/README.md)
 
 ### Agents
@@ -171,7 +172,7 @@ AI-tool packs and operating adapters.
 
 ## Validator Reference
 
-The eight validator scripts and their shared Ruby library. CI wiring and troubleshooting live in the workflow sections above.
+The fifteen validator scripts and their shared Ruby library. CI wiring and troubleshooting live in the workflow sections above.
 
 * [Validators Overview](platform/validators/README.md)
 * [validate-manifest.sh](platform/validators/validate-manifest.sh)
@@ -182,6 +183,13 @@ The eight validator scripts and their shared Ruby library. CI wiring and trouble
 * [validate-companions.sh](platform/validators/validate-companions.sh)
 * [validate-doc-references.sh](platform/validators/validate-doc-references.sh)
 * [validate-catalog-counts.sh](platform/validators/validate-catalog-counts.sh)
+* [validate-list-completeness.sh](platform/validators/validate-list-completeness.sh)
+* [validate-trust-tier.sh](platform/validators/validate-trust-tier.sh)
+* [validate-sensitive-paths.sh](platform/validators/validate-sensitive-paths.sh)
+* [validate-skill-content.sh](platform/validators/validate-skill-content.sh)
+* [validate-knowledge-redaction.sh](platform/validators/validate-knowledge-redaction.sh)
+* [validate-sast-coverage.sh](platform/validators/validate-sast-coverage.sh)
+* [validate-privacy-by-design.sh](platform/validators/validate-privacy-by-design.sh)
 * [Shared Library: harness\_registry.rb](platform/validators/lib/harness_registry.rb)
 
 ### Test Suite
@@ -470,6 +478,7 @@ Open-source-cut metadata: license, contribution flow, community standards, and t
 * [ADR-0015: Add delivery/managed-fleet Posture](docs/adr/ADR-0015-managed-fleet-delivery-posture.md)
 * [ADR-0016: Documentation IA — Phase 3–4 Target Structure](docs/adr/ADR-0016-documentation-ia-phase-3-4-target-structure.md)
 * [ADR-0017: Safety Hardening Roadmap](docs/adr/ADR-0017-safety-hardening-roadmap.md)
+* [ADR-0018: Privacy by Default Posture](docs/adr/ADR-0018-privacy-by-default-posture.md)
 
 ### Product Requirements Documents (this project)
 
@@ -491,6 +500,8 @@ Specifications for substantive new capabilities, paired with their originating o
 * [PRD-0014: Agent Observability with OpenTelemetry Semantic Conventions](docs/requirements/PRD-0014-agent-observability.md)
 * [PRD-0015: Skill Content Safety Validator](docs/requirements/PRD-0015-validate-skill-content.md) — `validate-skill-content.sh` design contract (Wave 5.2; closes red-team V1/V2/V4-partial/V6)
 * [PRD-0016: Security Static Analysis Module](docs/requirements/PRD-0016-security-static-analysis-module.md) — `management/security-static-analysis` design contract (Wave 5.4; opt-in posture for SAST coverage)
+* [PRD-0017: Healthcare FHIR + SMART on FHIR Wedge](docs/requirements/PRD-0017-healthcare-fhir-smart-wedge.md)
+* [PRD-0018: Privacy by Design Module](docs/requirements/PRD-0018-privacy-by-design.md)
 
 ### Opportunity Records (this project)
 

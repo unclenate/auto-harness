@@ -75,6 +75,7 @@ Pick the one that fits your situation:
 - **Just an idea?** [`platform/workflow/discovery-to-composition.md`](platform/workflow/discovery-to-composition.md)
 - **Existing codebase?** [`platform/workflow/brownfield-onboarding.md`](platform/workflow/brownfield-onboarding.md)
 - **Web3 project?** [`platform/workflow/bootstrap-web3-quickstart.md`](platform/workflow/bootstrap-web3-quickstart.md)
+- **Regulated / healthcare project?** Start with the `healthcare-fhir-app.yaml` composition and the `management/privacy-by-design` overlay.
 - **Already adopted, need to update or audit?** [`platform/workflow/maintenance-operations.md`](platform/workflow/maintenance-operations.md)
 - **Want the recommended consumption pattern?** [`platform/workflow/submodule-integration.md`](platform/workflow/submodule-integration.md) — mount auto-harness as a git submodule for automatic upstream updates
 
@@ -84,7 +85,7 @@ Pick the one that fits your situation:
 **Contributing:** see [CONTRIBUTING.md](CONTRIBUTING.md) · **Security:** see [SECURITY.md](SECURITY.md) · **Conduct:** see [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
 
 <details>
-<summary>Full table of contents — 17 sections; expand for navigation</summary>
+<summary>Full table of contents — 18 sections; expand for navigation</summary>
 
 - [What It Does](#what-it-does)
 - [Who This Is For](#who-this-is-for)
@@ -263,8 +264,8 @@ declares its governance contract. You compose them to match your project.
 | **Architectures** | Deployment and interaction patterns | `web-app`, `api-service`, `event-driven`, `mcp-server` |
 | **Data** | Storage overlays | `relational-postgres`, `document-store`, `object-storage` |
 | **Delivery** | Lifecycle posture | `prototype`, `production-saas`, `internal-platform`, `self-hosted-oss`, `managed-fleet` |
-| **Management** | Product, project, program, knowledge, opportunity, and testing governance | `discovery-intake`, `product-lite`, `project-standard`, `program-lite`, `testing-standard`, `knowledge-capture`, `opportunity-capture`, `privacy-by-design` |
-| **Domains** | Vendor or specialist overlays | `supabase`, `web3`, `media-pipeline`, `gitbook`, `healthcare-fhir`, `healthcare-smart-on-fhir` |
+| **Management** | Product, project, program, knowledge, opportunity, and testing governance | `discovery-intake`, `interview-driven`, `product-lite`, `project-standard`, `program-lite`, `testing-standard`, `eval-gated-testing`, `knowledge-capture`, `opportunity-capture`, `security-static-analysis`, `privacy-by-design` |
+| **Domains** | Vendor or specialist overlays | `supabase`, `web3`, `media-pipeline`, `gitbook`, `agentic-interfaces`, `cryptographic-identity`, `healthcare-fhir`, `healthcare-smart-on-fhir` |
 | **Agents** | AI-tool operating packs | `base`, `claude-code`, `generic-llm`, `openclaw` |
 
 Each `module.yaml` specifies:
@@ -424,6 +425,7 @@ Fifteen validators, each targeting a specific governance layer:
 | `validate-skill-content.sh` | Scans authored prose in active modules (description / summary / reviewGates / humanReview + SKILL.md bodies + compiledFragments markdown) against a denylist of prompt-injection and tier-bypass patterns (default BLOCK; `.skill-content-ignore` for exemptions) — closes safety-security-sweep §3 vectors V1/V2/V4-partial/V6 |
 | `validate-knowledge-redaction.sh` | Surfaces consumer-name hits in new lines added to `docs/knowledge/shared-observations.md` and `docs/operating-principles.md` (default WARN; `--block` for hard fail) — closes the §8 cross-pollination + §9 upstream-propagation pathways |
 | `validate-sast-coverage.sh` | Opt-in: when `management/security-static-analysis` is active, validates `docs/security/sast-coverage.md` declares a recommended-set tool (`semgrep` / `codeql` / `bandit` / `gosec` / `eslint-plugin-security` / `snyk-code`), scan paths, and a severity threshold — half-enforces sweep §11 (consumer CI honors the contract for end-to-end enforcement) |
+| `validate-privacy-by-design.sh` | Privacy-by-design overlay — gated; validates privacy-profile presence/consistency, WARN-surfaces privacy-risk patterns |
 
 All validators are pure shell + Ruby (no external service calls). Ruby 3.0+ and ripgrep
 are the only runtime requirements.
@@ -548,8 +550,8 @@ The bootstrap is brownfield-safe — it never overwrites pre-existing files from
 │   │   ├── architectures/           # web-app, api-service, event-driven
 │   │   ├── data/                    # relational-postgres, document-store, object-storage
 │   │   ├── delivery/                # prototype, production-saas, internal-platform
-│   │   ├── management/              # discovery-intake, product-lite, project-standard, program-lite, testing-standard, knowledge-capture, opportunity-capture, privacy-by-design
-│   │   └── domains/                 # supabase, web3, media-pipeline, gitbook, healthcare-fhir, healthcare-smart-on-fhir
+│   │   ├── management/              # discovery-intake, interview-driven, product-lite, project-standard, program-lite, testing-standard, eval-gated-testing, knowledge-capture, opportunity-capture, security-static-analysis, privacy-by-design
+│   │   └── domains/                 # supabase, web3, media-pipeline, gitbook, agentic-interfaces, cryptographic-identity, healthcare-fhir, healthcare-smart-on-fhir
 │   ├── agents/                      # Agent operating packs: base, claude-code, generic-llm, openclaw
 │   ├── skills/                      # Agent Skills: harness-governance, harness-testing, harness-web3, harness-onboarding, harness-tools, harness-agentic-interfaces, harness-mcp
 │   ├── templates/                   # Artifact skeletons for every required file

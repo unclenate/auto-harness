@@ -355,7 +355,7 @@ flowchart TD
     Write --> Headers["<b>Fill template headers</b><br/>bash .harness/platform/bootstrap/<br/>set-consumer-headers.sh"]
     Headers --> Config["Writes .harness-headers.yaml<br/>(owner_name, owner_email,<br/>year, spdx_license, project_name)"]
 
-    Config --> Validate["Run validator chain locally<br/>(8 validators)"]
+    Config --> Validate["Run validator chain locally<br/>(15 validators)"]
     Validate --> Pass{"All exit 0?"}
 
     Pass -->|"no"| Troubleshoot["See workflow/troubleshooting.md<br/>or harness-onboarding skill"]

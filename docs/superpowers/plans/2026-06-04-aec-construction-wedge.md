@@ -39,7 +39,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 - `docs/opportunities/OPP-0039-domain-family-aec-decomposed.md` — the AEC family opportunity (6-module roadmap; 3 promoted to the wedge, 3 deferred).
 - `docs/requirements/PRD-0019-aec-iso19650-openbim-wedge.md` — the wedge design contract with a §10 Claim Classification block.
-- Edits: the spec (OPP-0038→OPP-0039 fix), `SUMMARY.md` (PRD + OPP rows), `docs/README.md` (PRD + OPP rows for list-completeness), `docs/opportunities/candidates.md` (no row — accepted OPPs are not candidates; verify), `docs/project/change-log.md` (one entry).
+- Edits: the spec (OPP-0038→OPP-0039 fix), `SUMMARY.md` (PRD + OPP rows), `docs/README.md` (PRD + OPP rows for list-completeness), `docs/opportunities/candidates.md` (ADD an OPP-0039 row — every OPP needs a candidates token), `docs/knowledge/shared-observations.md` (the OPP's distillation entry — REQUIRED in the Phase-1 PR, PRD-0004 rule fires on the new OPP), `docs/project/change-log.md` (one entry).
 
 **Phase 2 (implementation) creates:**
 
@@ -536,7 +536,7 @@ Expected: clean; exit 0.
 
 **Files:**
 - Modify: `SUMMARY.md`, `docs/README.md`, `docs/project/change-log.md`
-- Check: `docs/opportunities/candidates.md` (accepted OPPs are not candidates — confirm no row is required)
+- Modify: `docs/opportunities/candidates.md` (**ADD an OPP-0039 row** — `validate-list-completeness.sh` Check 3 requires EVERY `OPP-*.md` to have a candidates token, accepted included; section placement is a maintainer-domain call) *[corrected post-Phase-1: the original plan wrongly assumed accepted OPPs are omitted]*
 
 - [ ] **Step 1: Add the PRD + OPP rows where the catalog lists them.** `validate-list-completeness.sh` requires new ADRs/PRDs/OPPs to appear in `docs/README.md`. Find the PRD list and OPP list in `docs/README.md` and add, in numeric order:
 
@@ -1507,9 +1507,13 @@ run validate-skill-content.sh harness.manifest.yaml .
 run validate-sast-coverage.sh harness.manifest.yaml .
 run validate-privacy-by-design.sh harness.manifest.yaml .
 run validate-companions.sh harness.manifest.yaml . main
+run validate-knowledge-redaction.sh . main
 echo; echo "=== SUITE: $([ $fail -eq 0 ] && echo ALL GREEN || echo RED) ==="
 ```
-Expected: `=== SUITE: ALL GREEN ===`.
+Expected: `=== SUITE: ALL GREEN ===`. **Both diff-based validators (`companions`,
+`knowledge-redaction`) MUST run with the `. main` base-ref — a 13/13 local pass
+without them is NOT a CI prediction** (this is how Phase 1's distillation defect
+slipped past local checks). Capture each `rc` immediately.
 
 - [ ] **Step 2: Run markdownlint preflight** (per `feedback-ci-markdownlint-preflight` — MD004 soft-wrap `+`, MD012, MD018, MD034, frontmatter-at-line-1 are the recurring trips):
 

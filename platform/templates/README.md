@@ -207,7 +207,8 @@ Templates that share a category directory keep the subdirectory structure intact
 Jump to: [Discovery](#discovery) | [Product](#product) | [Project](#project) |
 [Program](#program) | [Testing](#testing) | [Governance](#governance) |
 [Architecture and Ops](#architecture-and-operations) | [Database](#database) |
-[Web3](#web3-templates) | [Healthcare](#healthcare-templates)
+[Web3](#web3-templates) | [Healthcare](#healthcare-templates) |
+[Privacy](#privacy-templates)
 
 ### Discovery
 
@@ -348,6 +349,14 @@ duplicating inline. Absorbed from governance patterns observed in adsclaw.
 | FHIR resource map | `domains/healthcare-fhir` | `templates/healthcare/fhir-resource-map.md` |
 | Jurisdiction profile | `domains/healthcare-fhir` | `templates/healthcare/jurisdiction-profile.md` |
 | SMART scope map | `domains/healthcare-smart-on-fhir` | `templates/healthcare/smart-scope-map.md` |
+
+### Privacy Templates
+
+| Template | Required By Module | Path |
+| -------- | ------------------ | ---- |
+| Privacy profile (bias-guardrail + regime declaration) | `management/privacy-by-design` | `templates/privacy/privacy-profile.md` |
+| Data inventory | `management/privacy-by-design` | `templates/privacy/data-inventory.md` |
+| Privacy impact assessment (DPIA / PIA) | `management/privacy-by-design` | `templates/privacy/privacy-impact-assessment.md` |
 
 ### Agentic Interface
 

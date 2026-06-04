@@ -120,7 +120,7 @@ of this wedge. See `project-deep-industry-domains` (memory).
 ## Governance mapping + sequencing (two phases, mirrors healthcare/privacy)
 
 - **Phase 1 (design-only PR):** an **OPP** (the AEC deep-domain family opportunity, analog of
-  OPP-0013; next is OPP-0038) + a **PRD** (the 3-module wedge design contract, with a §10 Claim
+  OPP-0013; next is OPP-0039) + a **PRD** (the 3-module wedge design contract, with a §10 Claim
   Classification block; next is PRD-0019) — both citing the research brief as discovery evidence.
 - **Phase 2 (implementation PR):** the 3 modules + 5 templates + discoverability (SUMMARY,
   README, onboarding skill, discovery-to-composition Step 6) + a family diagram + a sample

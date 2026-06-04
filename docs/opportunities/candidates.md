@@ -230,6 +230,14 @@ references back to OPP-0008/0009/0010 record the convergence.*
   `healthcare-full-ehr.yaml` convenience composition. Healthcare is
   the largest plausible regulated-domain expansion; per-concern
   granularity avoids forcing consumers into bundled artifact debt.
+- [OPP-0039](OPP-0039-domain-family-aec-decomposed.md) *(accepted 2026-06-04; PRD-0019; partial promotion — iso19650-im + openbim-exchange + iso19650-5-security)*
+  — Decomposed `domains/aec-*` family (6 sub-modules; 3 promoted to a v1
+  wedge, 3 deferred) + `templates/aec/` + `aec-bim-project.yaml`
+  convenience composition. The designated second built deep-domain
+  vertical (sibling of OPP-0013); standards-anchored (ISO 19650 / openBIM
+  / ISO 19650-5) rather than brownfield-derived. Grounds the deep-domain
+  framework harvest with a compound forcing artifact and a domain ×
+  cross-cutting composition.
 - [OPP-0014](OPP-0014-polyglot-companion-services.md) *(proposed 2026-05-24)* —
   `domains/polyglot-services` module for companion-service pattern
   (one language per service surface). Triggered by ccdaservice

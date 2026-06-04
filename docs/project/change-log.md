@@ -11,6 +11,17 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## AEC wedge — OPP-0039 + PRD-0019 (design-only)
+
+Filed the AEC domain-family opportunity (OPP-0039; decomposed — 3-module wedge
+promoted, 3 deferred) and the wedge design contract (PRD-0019, with a §10 Claim
+Classification block). Phase 1 of the second deep-domain vertical; design-only per
+§ 9. Implementation (3 `domains/aec-*` modules, 5 `templates/aec/` artifacts,
+discoverability, a family diagram, and the `aec-bim-project.yaml` composition)
+deferred to Phase 2.
+
+---
+
 ## Documentation quality + organization pass (catalog consistency + navigation)
 
 An audit-driven pass after the healthcare + privacy-by-design catalog growth (now 39

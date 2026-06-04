@@ -334,6 +334,49 @@ Answer:
 
 ---
 
+## Section 9 — Privacy
+
+**9.1 Does this project handle personal or sensitive data?**
+*(Personal data includes names, emails, IP addresses, location data, behavioral data, and anything
+that can identify an individual. Sensitive data includes health, financial, biometric, and
+government-ID data. When in doubt, assume yes.)*
+
+- [ ] Yes — personal data (names, emails, identifiers, behavioral data)
+- [ ] Yes — sensitive data (health, financial, biometric, government ID)
+- [ ] Yes — both personal and sensitive data
+- [ ] No — no personal or sensitive data of any kind
+
+If no: [[REASON_NO_PERSONAL_DATA]]
+*(One-sentence explanation, e.g., "Internal developer tooling with no end-user accounts." This
+becomes the documented `regime: none` exemption in `docs/privacy/privacy-profile.md`.)*
+
+---
+
+**9.2 Which legal privacy regime(s) apply?**
+*(Check all that apply. Leave blank only if §9.1 is No.)*
+
+- [ ] GDPR (EU / EEA users or EU-based processing)
+- [ ] CCPA / CPRA (California consumers)
+- [ ] LGPD (Brazil)
+- [ ] PIPEDA / Law 25 (Canada)
+- [ ] PIPL (China)
+- [ ] HIPAA (US health data)
+- [ ] Other: [[OTHER_REGIME]]
+- [ ] Unknown — needs legal review
+
+Applicable regimes: [[APPLICABLE_REGIMES]]
+
+---
+
+**9.3 Data subjects and data categories**
+*(Who does the data belong to, and what categories of data will be collected or processed?)*
+
+Data subjects (e.g., end users, employees, patients): [[DATA_SUBJECTS]]
+
+Data categories collected: [[DATA_CATEGORIES]]
+
+---
+
 ## Composition Signals Summary
 
 Complete this after finishing the questionnaire. It maps answers to candidate harness modules.
@@ -359,6 +402,7 @@ Use this to initialize `harness.manifest.yaml`.
 | Other LLM tool in use (§7.2) | `agents/generic-llm` |
 | Always include for real products | `management/product-lite` + `management/project-standard` |
 | Starting from this questionnaire | `management/discovery-intake` |
+| Handles personal or sensitive data (§9.1, §9.2) — default: yes | `management/privacy-by-design` (default-on; remove only with a documented `regime: none` exemption) |
 
 **Selected modules for this project:**
 
@@ -379,6 +423,7 @@ modules:
     - discovery-intake
     - product-lite
     - project-standard
+    - privacy-by-design
   agents:
     - base
     - # claude-code or generic-llm

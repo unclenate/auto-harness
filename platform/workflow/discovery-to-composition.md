@@ -224,6 +224,7 @@ modules. Use it to populate `harness.manifest.yaml`.
 | Capturing forward-looking product candidates with a promotion path to PRDs? | `management/opportunity-capture` |
 | Implementing FHIR resources / a FHIR server? | `domains/healthcare-fhir` |
 | SMART on FHIR app launch or OAuth scopes (provider-launch or patient-access)? | `domains/healthcare-smart-on-fhir` |
+| Handles any personal or sensitive data? (default: yes) | `management/privacy-by-design` (default-on; opt out only with a documented `regime: none` exemption) |
 
 **Starter manifest for a project in discovery** (before stack is chosen):
 

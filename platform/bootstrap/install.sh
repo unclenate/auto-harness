@@ -84,6 +84,10 @@ PLATFORM_ROOT="${HARNESS_ROOT}/platform"
 # Defaults (overridable via flags)
 PROJECT_ROOT="$(pwd)"
 COMPOSITION="brownfield-lite"
+# management/privacy-by-design is default-active in brownfield-lite (and all other
+# starter compositions). Every bootstrapped project gets privacy governance unless
+# the consumer removes it or declares a documented `regime: none` exemption.
+# See: platform/profiles/management/privacy-by-design/module.yaml
 SKILLS="harness-governance,harness-onboarding"
 DRY_RUN=false
 FORCE=false

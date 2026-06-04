@@ -19,6 +19,7 @@ modules:
     - prototype
   management:
     - project-standard
+    - privacy-by-design
   domains:
     - media-pipeline
   agents:

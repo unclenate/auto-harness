@@ -11,6 +11,25 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## Documentation quality + organization pass (catalog consistency + navigation)
+
+An audit-driven pass after the healthcare + privacy-by-design catalog growth (now 39
+modules / 15 validators / 69 templates / 12 diagrams). Fixed cross-doc consistency drift
+that no validator enforces: stale prose counts (HARNESS.md eleven→twelve diagrams; SUMMARY
+eight→fifteen validators), missing module rows (README Module System table + Platform
+Structure tree: privacy-by-design, security-static-analysis, eval-gated-testing,
+interview-driven, agentic-interfaces, cryptographic-identity), the missing
+validate-privacy-by-design validator-table row, and the SUMMARY ADR/PRD index (ADR-0018,
+PRD-0017, PRD-0018). Organization: a healthcare deep-domain-family grouping in SUMMARY, a
+regulated/deep-domain reader path + management-overlay posture note in how-to-read.md, and
+collapsing HARNESS.md's duplicated "Consuming" section to a pointer (sharpening the
+self-governance boundary). Housekeeping: excluded the untracked documentation-audit-2026-05-27/
+folder from placeholder + markdownlint self-scan (removes the stash-before-validate hazard).
+Deferred (tracked in the 2026-05-27 audit roadmap): Wave 3 (visual program) and Wave 6 (IA
+migration).
+
+---
+
 ## Privacy by Design — Phase 2 implementation (`management/privacy-by-design`)
 
 Implements PRD-0018 / ADR-0018 (Phase 1, merged #97). Adds the default-on

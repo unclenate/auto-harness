@@ -156,9 +156,8 @@ Vendor, ecosystem, or specialist overlays.
 * [Media Pipeline](platform/profiles/domains/media-pipeline/README.md)
 * [Web3](platform/profiles/domains/web3/README.md) — Ethereum-specific smart-contract concerns
 * [Cryptographic Identity](platform/profiles/domains/cryptographic-identity/README.md) — BIP32/BIP39 wallets, DID/SSI, key custody (non-Ethereum)
-* Healthcare (FHIR + SMART on FHIR) — deep-domain family
-  * [Healthcare FHIR](platform/profiles/domains/healthcare-fhir/README.md) — FHIR data layer; jurisdiction-neutral core
-  * [Healthcare SMART on FHIR](platform/profiles/domains/healthcare-smart-on-fhir/README.md) — app launch + scopes; provider/patient roles
+* [Healthcare FHIR](platform/profiles/domains/healthcare-fhir/README.md) — FHIR data layer; jurisdiction-neutral core (healthcare deep-domain family)
+* [Healthcare SMART on FHIR](platform/profiles/domains/healthcare-smart-on-fhir/README.md) — app launch + scopes; provider/patient roles (pairs with Healthcare FHIR)
 * [GitBook](platform/profiles/domains/gitbook/README.md)
 
 ### Agents

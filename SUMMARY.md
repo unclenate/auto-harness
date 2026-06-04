@@ -158,6 +158,9 @@ Vendor, ecosystem, or specialist overlays.
 * [Cryptographic Identity](platform/profiles/domains/cryptographic-identity/README.md) — BIP32/BIP39 wallets, DID/SSI, key custody (non-Ethereum)
 * [Healthcare FHIR](platform/profiles/domains/healthcare-fhir/README.md) — FHIR data layer; jurisdiction-neutral core (healthcare deep-domain family)
 * [Healthcare SMART on FHIR](platform/profiles/domains/healthcare-smart-on-fhir/README.md) — app launch + scopes; provider/patient roles (pairs with Healthcare FHIR)
+* [AEC ISO 19650 IM](platform/profiles/domains/aec-iso19650-im/README.md) — ISO 19650 information-management substrate; CDE, containers, actor model (AEC deep-domain family)
+* [AEC openBIM Exchange](platform/profiles/domains/aec-openbim-exchange/README.md) — IFC/IDS exchange + producer/receiver/reviewer roles (pairs with AEC ISO 19650 IM)
+* [AEC ISO 19650-5 Security](platform/profiles/domains/aec-iso19650-5-security/README.md) — security-minded sensitivity + security-management plan (composes with privacy-by-design)
 * [GitBook](platform/profiles/domains/gitbook/README.md)
 
 ### Agents

@@ -30,6 +30,7 @@ cp platform/compositions/node-web-saas-postgres.yaml harness.manifest.yaml
 | [research-pipeline-python-object-storage.yaml](research-pipeline-python-object-storage.yaml) | Python | Data / ML pipeline |
 | [web3-risk-analytics.yaml](web3-risk-analytics.yaml) | Python | Blockchain-integrated platform |
 | [healthcare-fhir-app.yaml](healthcare-fhir-app.yaml) | Any | FHIR + SMART-on-FHIR application — healthcare data layer + SMART app-launch/scopes, provider-launch + patient-access roles |
+| [aec-bim-project.yaml](aec-bim-project.yaml) | ISO 19650 IM + openBIM exchange + ISO 19650-5 security + privacy-by-design | Delivering built-environment information under ISO 19650 with openBIM model exchange |
 
 ---
 

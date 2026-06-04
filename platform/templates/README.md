@@ -358,6 +358,16 @@ duplicating inline. Absorbed from governance patterns observed in adsclaw.
 | Data inventory | `management/privacy-by-design` | `templates/privacy/data-inventory.md` |
 | Privacy impact assessment (DPIA / PIA) | `management/privacy-by-design` | `templates/privacy/privacy-impact-assessment.md` |
 
+### AEC
+
+| Template | Required By Module | Path |
+| -------- | ------------------ | ---- |
+| Information Management Plan | `domains/aec-iso19650-im` | `templates/aec/information-management-plan.md` |
+| Jurisdiction Profile | `domains/aec-iso19650-im` | `templates/aec/jurisdiction-profile.md` |
+| Exchange Requirements | `domains/aec-openbim-exchange` | `templates/aec/exchange-requirements.md` |
+| Sensitivity Assessment | `domains/aec-iso19650-5-security` | `templates/aec/sensitivity-assessment.md` |
+| Security Management Plan | `domains/aec-iso19650-5-security` | `templates/aec/security-management-plan.md` |
+
 ### Agentic Interface
 
 Templates for projects shipping an in-product copilot / generative-UI / conversational-primary

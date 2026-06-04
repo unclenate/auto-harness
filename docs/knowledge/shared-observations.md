@@ -2,7 +2,7 @@
 
 **Structure:** Structured Template (see README.md § Observation Structure; locked by ADR-0002)
 **Write Policy:** heartbeat-only (see README.md § Write Policy; adjustable)
-**Last Updated:** 2026-06-04 *(AEC wedge Phase 1: OPP-0039; appended the standard-vs-codebase grounding observation, satisfying the PRD-0004 distillation rule fired by the new OPP)*
+**Last Updated:** 2026-06-04 *(AEC wedge Phase 2: PRD-0019 implementation; appended the second-domain-instance observation (compound forcing artifact + first domain × cross-cutting composition), satisfying the PRD-0004 distillation rule fired by the three new `domains/aec-*/module.yaml` additions)*
 
 Append-only structured observations from project participants (agents
 and humans). Read this file on each heartbeat. Observations accumulate
@@ -2466,3 +2466,12 @@ here until distillation.
 - **Confidence:** medium. One instance (AEC/OPP-0039), but it contrasts cleanly with the code-grounded healthcare precedent and the partition logic generalizes to any standard-partitioned domain.
 - **Severity:** architecture
 - **Contributed by:** Claude Code (claude-opus-4-8), 2026-06-04 (AEC wedge Phase 1; satisfies the PRD-0004 distillation rule fired by the new `docs/opportunities/OPP-0039-domain-family-aec-decomposed.md`; substantive connection — captures the standard-vs-codebase grounding distinction behind OPP-0039's decomposition and generalizes it to the next standards-rich verticals, rather than restating the OPP's content)
+
+### The AEC wedge is the second domain instance of the deep-domain primitives — it adds a compound forcing artifact and the catalog's first domain × cross-cutting composition
+
+- **Context:** The AEC wedge implementation (PRD-0019, Phase 2) shipped three `domains/aec-*` modules (`aec-iso19650-im` + `aec-openbim-exchange` + `aec-iso19650-5-security`), five `platform/templates/aec/` artifacts, and the `aec-bim-project.yaml` composition. It is the second *built* domain instance of the deep-domain primitives (neutral-core + forcing-artifact + bias-guardrail + trust-role) after healthcare, and the first to compose a domain family with a cross-cutting concern.
+- **Observation:** AEC surfaces two enrichments a single domain (healthcare) could not. First, a **compound** forcing artifact: the `jurisdiction-profile.md` is `{National Annex} × {AHJ + code edition} × {classification}` — three axes — versus healthcare's single jurisdiction axis, demonstrating the forcing-artifact primitive scales from one axis to N without changing the bias-guardrail mechanism (default-deny the over-documented path; force an explicit declaration). Second, the catalog's first **domain × cross-cutting composition**: `aec-iso19650-5-security` composes with `management/privacy-by-design` — built-asset sensitivity versus occupant personal-data privacy — documented (in the security README and the `sensitivity-assessment.md` template's reference to the privacy regime) so the two concerns neither overlap nor leave a gap.
+- **Implication:** With two shipped domains (healthcare, AEC) plus the privacy cross-cutting, the deep-domain primitives now have three independent reuse instances — the evidence bar the design spec set for promoting them to an operating-principle in the harvest pass. The compound forcing artifact and the documented domain × cross-cutting composition boundary are the two patterns the harvest should generalize beyond their AEC-specific wording; future standards-rich verticals with multi-axis jurisdictions or asset-versus-personal-data tension can copy them directly.
+- **Confidence:** medium. Two domain instances plus one cross-cutting instance; the compound-artifact and composition-boundary patterns are concrete and copyable, but their generality is asserted against analog verticals not yet built.
+- **Severity:** architecture
+- **Contributed by:** Claude Code (claude-opus-4-8), 2026-06-04 (AEC wedge Phase 2; satisfies the PRD-0004 distillation rule fired by the three new `platform/profiles/domains/aec-*/module.yaml` additions; substantive connection — names the two enrichments the second built domain surfaces over the first, advancing the harvest evidence captured by the preceding standard-vs-codebase observation rather than restating it)

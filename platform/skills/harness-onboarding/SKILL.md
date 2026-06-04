@@ -530,6 +530,9 @@ Dependency: `management/program-lite` requires `management/project-standard`. `m
 | `domains/gitbook` | `SUMMARY.md` at root or in `docs/`, `.gitbook.yaml` found | — | `docs/SUMMARY.md` |
 | `domains/healthcare-fhir` | FHIR data layer; activate when a codebase implements FHIR resources / a FHIR server. Pairs with `domains/healthcare-smart-on-fhir`. | — | `docs/healthcare/fhir-resource-map.md`, `docs/healthcare/jurisdiction-profile.md` |
 | `domains/healthcare-smart-on-fhir` | SMART app launch + OAuth scopes; activate when a codebase does SMART-on-FHIR auth (provider-launch or patient-access). | `domains/healthcare-fhir` | `docs/healthcare/smart-scope-map.md` |
+| `domains/aec-iso19650-im` | ISO 19650 information delivery; activate when a project runs a CDE with information containers, a BEP, or a MIDP. | — | `docs/aec/information-management-plan.md`, `docs/aec/jurisdiction-profile.md` |
+| `domains/aec-openbim-exchange` | openBIM (IFC/BCF/IDS) model exchange under an information-delivery contract. | `domains/aec-iso19650-im` | `docs/aec/exchange-requirements.md` |
+| `domains/aec-iso19650-5-security` | Security-minded handling of sensitive built-asset information (BS EN ISO 19650-5). Composes with `management/privacy-by-design`. | `domains/aec-iso19650-im` | `docs/aec/sensitivity-assessment.md`, `docs/aec/security-management-plan.md` |
 
 ---
 

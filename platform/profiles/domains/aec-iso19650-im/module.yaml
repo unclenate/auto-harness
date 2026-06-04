@@ -1,0 +1,51 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+id: aec-iso19650-im
+type: domain
+version: 1.0.0
+summary: ISO 19650 information-management substrate — governs the Common Data Environment, information-container status codes (S0–S7), the appointing / lead-appointed / appointed-party actor model, and a compound jurisdiction-profile forcing artifact.
+dependsOn:
+  - kernel/base
+conflictsWith: []
+requiredArtifacts:
+  - docs/aec/information-management-plan.md
+  - docs/aec/jurisdiction-profile.md
+optionalArtifacts: []
+sensitivePaths:
+  - description: Common Data Environment, information-container, and BIM model surfaces
+    patterns:
+      - ^cde/
+      - ^containers/
+      - models
+      - bep
+      - midp
+companionRules:
+  - description: CDE-structure or container status-transition changes require an information-management-plan update or an ADR
+    triggerPaths:
+      - ^docs/aec/information-management-plan\.md$
+      - ^cde/
+      - ^containers/
+      - models
+      - bep
+      - midp
+    requiredAny:
+      - ^docs/adr/ADR-
+      - ^docs/project/change-log\.md$
+    humanReview: Reviewers confirm CDE-structure and container status-transition changes are intentional and the actor model still holds.
+  - description: jurisdiction-profile changes require a change-log entry or an ADR
+    triggerPaths:
+      - ^docs/aec/jurisdiction-profile\.md$
+    requiredAny:
+      - ^docs/project/change-log\.md$
+      - ^docs/adr/ADR-
+    humanReview: Reviewers confirm the declared National Annex, AHJ, and classification system are intentional.
+validators:
+  - validate-companions
+reviewGates:
+  - Human review is required to promote an information container to Published or As-Built status (a published container is contractually binding) or to change a declared jurisdiction profile.
+agentAdapters:
+  - platform/agents/base
+compiledFragments:
+  - platform/profiles/domains/aec-iso19650-im/README.md
+recommendedSkills:
+  - harness-governance   # trust tiers and companion rules (source: platform/skills/)

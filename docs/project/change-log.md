@@ -11,6 +11,24 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## AEC wedge — PRD-0019 implementation (3 modules + 5 templates + composition)
+
+Implements PRD-0019 (Phase 1, OPP-0039 + PRD-0019 design-only). Ships the
+three-module AEC wedge (`aec-iso19650-im`, `aec-openbim-exchange`,
+`aec-iso19650-5-security`), five `platform/templates/aec/` artifacts, the
+`aec-bim-project.yaml` composition, architecture diagram #13 (AEC Domain Family),
+and discoverability + catalog-count propagation (modules 39→42 / 48→51, templates
+69→74, diagrams 12→13). Catalog-only — auto-harness does not activate the modules in
+its own manifest, so the validator suite stays predict-clean. Second deep-domain
+vertical; the catalog's first domain × cross-cutting composition
+(`aec-iso19650-5-security` composes with `management/privacy-by-design`). The
+accompanying `shared-observations.md` entry captures the second-domain-instance
+insight (the compound forcing artifact + the documented composition boundary) and
+satisfies the PRD-0004 distillation rule fired by the new module manifests; this
+change-log entry is the audit trail for that knowledge-destination touch.
+
+---
+
 ## AEC wedge — OPP-0039 + PRD-0019 (design-only)
 
 Filed the AEC domain-family opportunity (OPP-0039; decomposed — 3-module wedge

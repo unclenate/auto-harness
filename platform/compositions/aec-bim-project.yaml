@@ -1,0 +1,29 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+# Starter composition for an ISO 19650 / openBIM delivery. Activates the AEC
+# information-management substrate, the openBIM exchange layer, and the ISO 19650-5
+# security overlay together, plus privacy-by-design for occupant personal data —
+# the catalog's first domain x cross-cutting composition.
+# References:
+#   - platform/profiles/domains/aec-iso19650-im/README.md
+#   - platform/profiles/domains/aec-openbim-exchange/README.md
+#   - platform/profiles/domains/aec-iso19650-5-security/README.md
+#   - docs/requirements/PRD-0019-aec-iso19650-openbim-wedge.md
+schemaVersion: 1
+project:
+  id: example-aec-bim-project
+  name: Example ISO 19650 + openBIM Project
+  maturity: prototype
+  criticality: high
+modules:
+  core:
+    - kernel/base
+  domains:
+    - aec-iso19650-im
+    - aec-openbim-exchange
+    - aec-iso19650-5-security
+  management:
+    - privacy-by-design
+overrides:
+  requiredArtifacts: []
+  disabledValidations: []

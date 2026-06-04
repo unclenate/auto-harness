@@ -284,16 +284,16 @@ onboarding.
    - If yes (or uncertain): `management/privacy-by-design` stays active. Record the applicable
      legal regime(s) (GDPR / CCPA-CPRA / LGPD / PIPEDA / PIPL / HIPAA / other) and data
      categories in `docs/privacy/privacy-profile.md`.
-   - If genuinely no (e.g., internal developer tooling with no end-user accounts): remove
-     `management/privacy-by-design` from the manifest and record a one-sentence explanation as
-     `regime: none` in `docs/privacy/privacy-profile.md`. The file is still required — it
-     documents the decision, not just the presence of data.
+   - If genuinely no (e.g., internal developer tooling with no end-user accounts): keep
+     `management/privacy-by-design` active in the manifest and declare `regime: none` with a
+     non-empty `exemption:` line in `docs/privacy/privacy-profile.md`. Exempt mode keeps the
+     companion rules firing and the profile present as the documented decision record.
 
 2. Are there cross-border data flows or multi-jurisdiction users?
    - If yes: note which regimes apply and whether data residency restrictions exist.
 
 3. Is a data-subject rights mechanism required (access, deletion, portability)?
-   - Record the answer in `privacy-profile.md` under `subject-rights`.
+   - Record the answer in `privacy-profile.md` under `## Implementation Notes`.
 
 **Output of Step 2a:**
 

@@ -2,7 +2,7 @@
 
 **Structure:** Structured Template (see README.md § Observation Structure; locked by ADR-0002)
 **Write Policy:** heartbeat-only (see README.md § Write Policy; adjustable)
-**Last Updated:** 2026-06-03 *(privacy-by-design Phase 2: management/privacy-by-design module.yaml; appended the cross-vertical-primitive-reuse observation, satisfying the PRD-0004 distillation rule fired by the new module)*
+**Last Updated:** 2026-06-04 *(AEC wedge Phase 1: OPP-0039; appended the standard-vs-codebase grounding observation, satisfying the PRD-0004 distillation rule fired by the new OPP)*
 
 Append-only structured observations from project participants (agents
 and humans). Read this file on each heartbeat. Observations accumulate
@@ -2457,3 +2457,12 @@ here until distillation.
 - **Confidence:** medium. Two implemented instances sharing the structural pattern (healthcare domain + privacy cross-cutting), plus a third designed (construction). The cross-cutting reuse is the load-bearing new evidence.
 - **Severity:** architecture
 - **Contributed by:** Claude Code (claude-opus-4-8), 2026-06-03 (privacy-by-design Phase 2 module addition; satisfies the PRD-0004 distillation rule fired by `platform/profiles/management/privacy-by-design/module.yaml`; substantive connection — names the cross-vertical reuse the module embodies and its consequence for scoping the eventual framework harvest as a general governance primitive rather than a domains-only one)
+
+### A deep-domain vertical can be grounded in a standard + research brief alone — the evidence pattern shifts from "observed subsystem boundaries" to "standard-defined concern boundaries"
+
+- **Context:** OPP-0039 designates AEC/construction as the second built deep-domain vertical and promotes a three-module ISO 19650 + openBIM wedge (PRD-0019). Unlike healthcare (OPP-0013), which was grounded in two real consumer codebases — OpenEMR (provider role) and Tula (patient role), each sub-module anchored to an observed code path — AEC has **no brownfield consumer codebase** in hand. The wedge boundary was instead lifted from the structure of the standards themselves (a committed research brief on ISO 19650 parts 1–6, openBIM IFC/BCF/IDS, and ISO 19650-5).
+- **Observation:** A deep-domain OPP does not require a consumer codebase to be well-grounded. When a domain is governed by mature, well-partitioned international standards, the standard's own concern boundaries supply the decomposition evidence: ISO 19650 *information management* (CDE/containers/actors), openBIM *exchange* (IFC/IDS/roles), and ISO 19650-5 *security* are distinct, standard-defined concerns that map one-to-one onto modules — exactly as OpenEMR's `src/FHIR/`, `src/FHIR/SMART/`, and `src/Encryption/` did, but derived from the spec rather than the repo. The evidence pattern shifts from "observed subsystem boundaries in a codebase" to "concern boundaries defined by the standard," and the bias risk shifts correspondingly (for AEC, over-documentation of the UK BS EN + Uniclass path rather than US-healthcare assumptions).
+- **Implication:** For standards-rich domains where no single consumer codebase exercises the whole surface (AEC, but also likely finance/ISO 20022, logistics/GS1, manufacturing/ISA-95), ground the OPP in the standard's partition and flag the absence of a consumer codebase explicitly as a Risk (refine sensitive-path regexes against a real repo when one onboards). Reviewers should accept standard-derived decomposition as first-class evidence, not a weaker substitute for code-path grounding — but should require the standard-partition rationale to be as concrete as a code-path anchor would be.
+- **Confidence:** medium. One instance (AEC/OPP-0039), but it contrasts cleanly with the code-grounded healthcare precedent and the partition logic generalizes to any standard-partitioned domain.
+- **Severity:** architecture
+- **Contributed by:** Claude Code (claude-opus-4-8), 2026-06-04 (AEC wedge Phase 1; satisfies the PRD-0004 distillation rule fired by the new `docs/opportunities/OPP-0039-domain-family-aec-decomposed.md`; substantive connection — captures the standard-vs-codebase grounding distinction behind OPP-0039's decomposition and generalizes it to the next standards-rich verticals, rather than restating the OPP's content)

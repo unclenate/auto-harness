@@ -300,10 +300,15 @@ rescue HarnessRegistry::ManifestShapeError => e
   exit 2
 end
 
-active_modules = HarnessRegistry.active_modules(platform_root, manifest)
+begin
+  active_modules = HarnessRegistry.active_modules(platform_root, manifest)
+rescue RuntimeError => e
+  warn "usage error: #{e.message}"
+  exit 2
+end
 
 # Active-module gating — the module is opt-in.
-unless active_modules.any? { |m| m["id"] == "privacy-by-design" || m["__id_with_type"] == MODULE_ID }
+unless active_modules.any? { |m| m["id"] == "privacy-by-design" }
   puts "✓ Privacy-by-design validation skipped (management/privacy-by-design not active)"
   exit 0
 end

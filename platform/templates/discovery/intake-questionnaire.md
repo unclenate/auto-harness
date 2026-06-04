@@ -402,7 +402,7 @@ Use this to initialize `harness.manifest.yaml`.
 | Other LLM tool in use (§7.2) | `agents/generic-llm` |
 | Always include for real products | `management/product-lite` + `management/project-standard` |
 | Starting from this questionnaire | `management/discovery-intake` |
-| Handles personal or sensitive data (§9.1, §9.2) — default: yes | `management/privacy-by-design` (default-on; remove only with a documented `regime: none` exemption) |
+| Handles personal or sensitive data (§9.1, §9.2) — default: yes | `management/privacy-by-design` (default-on; opt out by declaring `regime: none` with a documented `exemption:` — the overlay stays active in exempt mode, not removed from the manifest) |
 
 **Selected modules for this project:**
 

@@ -11,6 +11,22 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-05-27 documentation-audit working folder — committed to tree
+
+Committed the `documentation-audit-2026-05-27/` working folder (five audit
+artifacts: execution roadmap, IA-restructure proposal, safety/security sweep,
+refresh notes, CLI-execution prompt) that had been sitting untracked in the
+working tree. The folder is already `.placeholder-ignore`'d (it discusses the
+date-stamp and placeholder-token conventions as audit prose, not as unfilled
+tokens), and the ignore-file comment explicitly tracked "committing the folder
+itself" as a separate follow-up — this discharges that follow-up. The folder is
+cited as a context source by ADR-0016, ADR-0017, OPP-0037, PRD-0015, PRD-0016,
+two implementation plans, the adversarial-fixtures README, and this log; those
+prose citations now resolve to a tracked path in clean checkouts. Reference
+material only — no governance contract, validator, or module changes.
+
+---
+
 ## AEC wedge — PRD-0019 implementation (3 modules + 5 templates + composition)
 
 Implements PRD-0019 (Phase 1, OPP-0039 + PRD-0019 design-only). Ships the

@@ -1,0 +1,48 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+id: aec-openbim-exchange
+type: domain
+version: 1.0.0
+summary: openBIM exchange overlay — IDS-style exchange requirements, an enforced pinned IFC version, and the producer / receiver / reviewer role axis (ISO 19650-4) on top of the information-management substrate.
+dependsOn:
+  - kernel/base
+  - aec-iso19650-im
+conflictsWith: []
+requiredArtifacts:
+  - docs/aec/exchange-requirements.md
+optionalArtifacts: []
+sensitivePaths:
+  - description: IFC, BCF, and federated-exchange surfaces
+    patterns:
+      - ^ifc/
+      - ^exchange/
+      - bcf
+      - federation
+companionRules:
+  - description: exchange-requirements changes (including the pinned IFC version or an exchange grant) require an ADR or change-log entry
+    triggerPaths:
+      - ^docs/aec/exchange-requirements\.md$
+    requiredAny:
+      - ^docs/adr/ADR-
+      - ^docs/project/change-log\.md$
+    humanReview: Reviewers confirm IFC-version-pin and exchange-grant changes are intentional.
+  - description: IFC or exchange-surface changes (ifc/, exchange/, bcf, federation) require a risk-register update or an ADR — these paths carry the federated model exchange the producer / receiver / reviewer role axis governs
+    triggerPaths:
+      - ^ifc/
+      - ^exchange/
+      - bcf
+      - federation
+    requiredAny:
+      - ^docs/security/risk-register\.md$
+      - ^docs/adr/ADR-
+    humanReview: Reviewers verify the producer / receiver / reviewer exchange boundary is preserved.
+validators:
+  - validate-companions
+reviewGates:
+  - Human review is required to change the pinned IFC version or widen an exchange grant.
+agentAdapters:
+  - platform/agents/base
+compiledFragments:
+  - platform/profiles/domains/aec-openbim-exchange/README.md
+recommendedSkills:
+  - harness-governance   # trust tiers and companion rules (source: platform/skills/)

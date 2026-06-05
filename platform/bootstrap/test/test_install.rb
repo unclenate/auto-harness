@@ -75,6 +75,10 @@ class TestInstallGreenfield < Minitest::Test
       content = File.read(File.join(dir, "harness.manifest.yaml"))
       assert_match(/^schemaVersion: 1$/, content)
       assert_match(/^  id: brownfield-project/, content)
+      # management/privacy-by-design is default-active in the brownfield-lite
+      # composition so every bootstrapped project gets it automatically.
+      assert_match(/- privacy-by-design/, content,
+                   "default composition must include management/privacy-by-design")
     end
   end
 end

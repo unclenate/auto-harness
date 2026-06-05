@@ -144,6 +144,7 @@ Product, project, and program governance overlays.
 * [Eval-Gated Testing](platform/profiles/management/eval-gated-testing/README.md) — quality gated on binary-graded evals rather than coverage (sibling to Testing Standard)
 * [Knowledge Capture](platform/profiles/management/knowledge-capture/README.md)
 * [Opportunity Capture](platform/profiles/management/opportunity-capture/README.md)
+* [Privacy by Design](platform/profiles/management/privacy-by-design/README.md) — default-on privacy-by-design overlay; Cavoukian's 7 principles + a consumer-declared legal regime
 * [Security Static Analysis](platform/profiles/management/security-static-analysis/README.md) — opt-in SAST coverage posture for agent-generated code (Wave 5.4; PRD-0016)
 
 ### Domains
@@ -155,8 +156,11 @@ Vendor, ecosystem, or specialist overlays.
 * [Media Pipeline](platform/profiles/domains/media-pipeline/README.md)
 * [Web3](platform/profiles/domains/web3/README.md) — Ethereum-specific smart-contract concerns
 * [Cryptographic Identity](platform/profiles/domains/cryptographic-identity/README.md) — BIP32/BIP39 wallets, DID/SSI, key custody (non-Ethereum)
-* [Healthcare FHIR](platform/profiles/domains/healthcare-fhir/README.md) — FHIR data-layer domain overlay; PHI governance and jurisdiction-profile forcing artifact
-* [Healthcare SMART on FHIR](platform/profiles/domains/healthcare-smart-on-fhir/README.md) — SMART app launch + OAuth scopes across provider-launch and patient-access roles
+* [Healthcare FHIR](platform/profiles/domains/healthcare-fhir/README.md) — FHIR data layer; jurisdiction-neutral core (healthcare deep-domain family)
+* [Healthcare SMART on FHIR](platform/profiles/domains/healthcare-smart-on-fhir/README.md) — app launch + scopes; provider/patient roles (pairs with Healthcare FHIR)
+* [AEC ISO 19650 IM](platform/profiles/domains/aec-iso19650-im/README.md) — ISO 19650 information-management substrate; CDE, containers, actor model (AEC deep-domain family)
+* [AEC openBIM Exchange](platform/profiles/domains/aec-openbim-exchange/README.md) — IFC/IDS exchange + producer/receiver/reviewer roles (pairs with AEC ISO 19650 IM)
+* [AEC ISO 19650-5 Security](platform/profiles/domains/aec-iso19650-5-security/README.md) — security-minded sensitivity + security-management plan (composes with privacy-by-design)
 * [GitBook](platform/profiles/domains/gitbook/README.md)
 
 ### Agents
@@ -170,7 +174,7 @@ AI-tool packs and operating adapters.
 
 ## Validator Reference
 
-The eight validator scripts and their shared Ruby library. CI wiring and troubleshooting live in the workflow sections above.
+The fifteen validator scripts and their shared Ruby library. CI wiring and troubleshooting live in the workflow sections above.
 
 * [Validators Overview](platform/validators/README.md)
 * [validate-manifest.sh](platform/validators/validate-manifest.sh)
@@ -181,6 +185,13 @@ The eight validator scripts and their shared Ruby library. CI wiring and trouble
 * [validate-companions.sh](platform/validators/validate-companions.sh)
 * [validate-doc-references.sh](platform/validators/validate-doc-references.sh)
 * [validate-catalog-counts.sh](platform/validators/validate-catalog-counts.sh)
+* [validate-list-completeness.sh](platform/validators/validate-list-completeness.sh)
+* [validate-trust-tier.sh](platform/validators/validate-trust-tier.sh)
+* [validate-sensitive-paths.sh](platform/validators/validate-sensitive-paths.sh)
+* [validate-skill-content.sh](platform/validators/validate-skill-content.sh)
+* [validate-knowledge-redaction.sh](platform/validators/validate-knowledge-redaction.sh)
+* [validate-sast-coverage.sh](platform/validators/validate-sast-coverage.sh)
+* [validate-privacy-by-design.sh](platform/validators/validate-privacy-by-design.sh)
 * [Shared Library: harness\_registry.rb](platform/validators/lib/harness_registry.rb)
 
 ### Test Suite
@@ -469,6 +480,7 @@ Open-source-cut metadata: license, contribution flow, community standards, and t
 * [ADR-0015: Add delivery/managed-fleet Posture](docs/adr/ADR-0015-managed-fleet-delivery-posture.md)
 * [ADR-0016: Documentation IA — Phase 3–4 Target Structure](docs/adr/ADR-0016-documentation-ia-phase-3-4-target-structure.md)
 * [ADR-0017: Safety Hardening Roadmap](docs/adr/ADR-0017-safety-hardening-roadmap.md)
+* [ADR-0018: Privacy by Default Posture](docs/adr/ADR-0018-privacy-by-default-posture.md)
 
 ### Product Requirements Documents (this project)
 
@@ -490,6 +502,9 @@ Specifications for substantive new capabilities, paired with their originating o
 * [PRD-0014: Agent Observability with OpenTelemetry Semantic Conventions](docs/requirements/PRD-0014-agent-observability.md)
 * [PRD-0015: Skill Content Safety Validator](docs/requirements/PRD-0015-validate-skill-content.md) — `validate-skill-content.sh` design contract (Wave 5.2; closes red-team V1/V2/V4-partial/V6)
 * [PRD-0016: Security Static Analysis Module](docs/requirements/PRD-0016-security-static-analysis-module.md) — `management/security-static-analysis` design contract (Wave 5.4; opt-in posture for SAST coverage)
+* [PRD-0017: Healthcare FHIR + SMART on FHIR Wedge](docs/requirements/PRD-0017-healthcare-fhir-smart-wedge.md)
+* [PRD-0018: Privacy by Design Module](docs/requirements/PRD-0018-privacy-by-design.md)
+* [PRD-0019: AEC ISO 19650 + openBIM Wedge](docs/requirements/PRD-0019-aec-iso19650-openbim-wedge.md)
 
 ### Opportunity Records (this project)
 
@@ -533,3 +548,4 @@ Forward-looking pre-PRD candidates managed by the `opportunity-capture` module.
 * [OPP-0035: Security Static Analysis Module](docs/opportunities/OPP-0035-security-static-analysis.md) — `management/security-static-analysis`, child of OPP-0020 (Wave 5.4; closes underhanded-code blind spot)
 * [OPP-0036: Knowledge-Redaction Validator + CODEOWNERS](docs/opportunities/OPP-0036-validate-knowledge-redaction.md) — `validate-knowledge-redaction.sh` (Wave 5.5; closes cross-pollination + reverse-leakage pathways)
 * [OPP-0037: Classify-Before-Enforcing as Operating Principle](docs/opportunities/OPP-0037-classify-before-enforcing-as-operating-principle.md) — Doctrine codification; promoted the four-instance meta-pattern to operating-principles §10 (design-only OPP + half-day implementation pattern)
+* [OPP-0039: AEC Domain Family (decomposed `domains/aec-*`)](docs/opportunities/OPP-0039-domain-family-aec-decomposed.md) — Second built deep-domain vertical; 3-module ISO 19650 + openBIM wedge promoted via PRD-0019 (partial promotion), 3 sub-modules deferred

@@ -84,6 +84,12 @@ PLATFORM_ROOT="${HARNESS_ROOT}/platform"
 # Defaults (overridable via flags)
 PROJECT_ROOT="$(pwd)"
 COMPOSITION="brownfield-lite"
+# management/privacy-by-design is default-active in brownfield-lite (and all other
+# starter compositions). Every bootstrapped project gets privacy governance. Opt out
+# by declaring `regime: none` with a documented `exemption:` in
+# docs/privacy/privacy-profile.md — the overlay stays active in exempt mode; it is
+# not removed from the manifest.
+# See: platform/profiles/management/privacy-by-design/module.yaml
 SKILLS="harness-governance,harness-onboarding"
 DRY_RUN=false
 FORCE=false

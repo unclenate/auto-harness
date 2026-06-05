@@ -93,6 +93,15 @@ jobs:
         # scanPaths, severityThreshold). Half-enforces sweep §11.
         run: bash .harness/platform/validators/validate-sast-coverage.sh harness.manifest.yaml .
 
+      - name: Validate privacy-by-design
+        # Opt-in: when management/privacy-by-design is not active in the
+        # manifest, the validator exits 0 with a "module inactive" message.
+        # When active, validates privacy-profile.md existence and
+        # well-formedness, checks consistency against data-inventory.md, and
+        # surfaces advisory WARN hits for privacy-risk indicators.
+        # Half-enforces sweep §11.
+        run: bash .harness/platform/validators/validate-privacy-by-design.sh harness.manifest.yaml .
+
       - name: Validate companion rules
         # PR-diff-based; only meaningful on pull_request events.
         if: github.event_name == 'pull_request'

@@ -1,0 +1,50 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+id: aec-iso19650-5-security
+type: domain
+version: 1.0.0
+summary: ISO 19650-5 security-minded overlay — a sensitivity assessment and a security-management plan governing built-asset and infrastructure sensitivity. Composes with management/privacy-by-design for occupant personal data.
+dependsOn:
+  - kernel/base
+  - aec-iso19650-im
+conflictsWith: []
+requiredArtifacts:
+  - docs/aec/sensitivity-assessment.md
+  - docs/aec/security-management-plan.md
+optionalArtifacts: []
+sensitivePaths:
+  - description: Security-classified information, redaction, and secure-federation surfaces
+    patterns:
+      - sensitive
+      - classified
+      - redaction
+      - ^security/
+companionRules:
+  - description: sensitivity-assessment or security-management-plan changes require an ADR or change-log entry
+    triggerPaths:
+      - ^docs/aec/sensitivity-assessment\.md$
+      - ^docs/aec/security-management-plan\.md$
+    requiredAny:
+      - ^docs/adr/ADR-
+      - ^docs/project/change-log\.md$
+    humanReview: Reviewers confirm sensitivity classifications and the security-management plan are intentional and current.
+  - description: changes to security-classified, redaction, or secure-federation surfaces require a risk-register update or an ADR
+    triggerPaths:
+      - sensitive
+      - classified
+      - redaction
+      - ^security/
+    requiredAny:
+      - ^docs/security/risk-register\.md$
+      - ^docs/adr/ADR-
+    humanReview: Reviewers verify declassification or access-broadening is intentional and bounded.
+validators:
+  - validate-companions
+reviewGates:
+  - Human review is required to declassify information, broaden access to a sensitive container, or change the redaction policy.
+agentAdapters:
+  - platform/agents/base
+compiledFragments:
+  - platform/profiles/domains/aec-iso19650-5-security/README.md
+recommendedSkills:
+  - harness-governance   # trust tiers and companion rules (source: platform/skills/)

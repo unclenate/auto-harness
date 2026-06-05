@@ -21,6 +21,7 @@ modules:
     - product-lite
     - project-standard
     - testing-standard
+    - privacy-by-design
   agents:
     - base
     - claude-code

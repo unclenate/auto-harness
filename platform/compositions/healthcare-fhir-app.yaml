@@ -19,6 +19,8 @@ modules:
   domains:
     - healthcare-fhir
     - healthcare-smart-on-fhir
+  management:
+    - privacy-by-design
 overrides:
   requiredArtifacts: []
   disabledValidations: []

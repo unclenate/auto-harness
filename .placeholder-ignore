@@ -20,3 +20,11 @@ docs/superpowers/specs/**
 # future-work section captures teaching the validator to skip code spans,
 # which would obviate this exemption).
 docs/requirements/PRD-0005-consumer-header-hygiene.md
+# The 2026-05-27 documentation-audit working folder is reference material that
+# discusses the YYYY-MM-DD and [[PLACEHOLDER]] conventions as audit prose (e.g.
+# tables describing what validate-placeholders enforces), not unfilled tokens in
+# shipped docs. Excluding it removes the long-standing need to stash the folder
+# out of the tree before every validator run. It is cited as a context source by
+# ADR-0016/ADR-0017; committing the folder itself is tracked as a separate
+# follow-up.
+documentation-audit-2026-05-27/**

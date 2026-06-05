@@ -1,0 +1,56 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+id: privacy-by-design
+type: management
+version: 1.0.0
+summary: Privacy-by-design overlay — Cavoukian's 7 principles as a jurisdiction-neutral spine, a consumer-declared legal regime, and a warn+validate floor for data-handling changes. Default-active, opt-out via a documented exemption.
+dependsOn:
+  - kernel/base
+conflictsWith: []
+requiredArtifacts:
+  - docs/privacy/privacy-profile.md
+optionalArtifacts:
+  - docs/privacy/data-inventory.md
+  - docs/privacy/privacy-impact-assessment.md
+sensitivePaths:
+  - description: Personal-data handling, consent, telemetry, and third-party data egress surfaces
+    patterns:
+      - pii
+      - personal
+      - ^src/.*user
+      - consent
+      - analytics
+      - telemetry
+      - tracking
+      - ^auth/
+companionRules:
+  - description: Data-handling sensitive-path changes require a privacy-profile or data-inventory update or an ADR
+    triggerPaths:
+      - pii
+      - personal
+      - consent
+      - analytics
+      - telemetry
+    requiredAny:
+      - ^docs/privacy/privacy-profile\.md$
+      - ^docs/privacy/data-inventory\.md$
+      - ^docs/adr/ADR-
+    humanReview: Reviewers confirm the privacy implications of the change are captured and the declared regime still holds.
+  - description: privacy-profile regime or exemption changes require a change-log entry or ADR
+    triggerPaths:
+      - ^docs/privacy/privacy-profile\.md$
+    requiredAny:
+      - ^docs/project/change-log\.md$
+      - ^docs/adr/ADR-
+    humanReview: Reviewers confirm a regime or exemption change is intentional.
+validators:
+  - validate-privacy-by-design
+  - validate-companions
+reviewGates:
+  - Human review is required for broadening data collection, adding third-party data egress, weakening a declared privacy default, changing legal regime, or logging PII-shaped data.
+agentAdapters:
+  - platform/agents/base
+compiledFragments:
+  - platform/profiles/management/privacy-by-design/README.md
+recommendedSkills:
+  - harness-governance   # trust tiers and companion rules (source: platform/skills/)

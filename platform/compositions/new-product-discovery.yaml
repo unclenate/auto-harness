@@ -15,6 +15,7 @@ modules:
     - discovery-intake
     - product-lite
     - project-standard
+    - privacy-by-design
   agents:
     - base
 overrides:

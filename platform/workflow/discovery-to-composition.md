@@ -222,6 +222,12 @@ modules. Use it to populate `harness.manifest.yaml`.
 | Discovery phase active (now) | `management/discovery-intake` |
 | Multi-participant project (agents + humans) producing longitudinal observations? | `management/knowledge-capture` |
 | Capturing forward-looking product candidates with a promotion path to PRDs? | `management/opportunity-capture` |
+| Implementing FHIR resources / a FHIR server? | `domains/healthcare-fhir` |
+| SMART on FHIR app launch or OAuth scopes (provider-launch or patient-access)? | `domains/healthcare-smart-on-fhir` |
+| Delivering built-environment information under ISO 19650 (CDE, containers, BEP/MIDP)? | `domains/aec-iso19650-im` |
+| Exchanging federated BIM models via openBIM (IFC/BCF/IDS)? | `domains/aec-openbim-exchange` |
+| Handling sensitive built-asset / infrastructure information (BS EN ISO 19650-5)? | `domains/aec-iso19650-5-security` (composes with `management/privacy-by-design`) |
+| Handles any personal or sensitive data? (default: yes) | `management/privacy-by-design` (default-on; opt out only with a documented `regime: none` exemption) |
 
 **Starter manifest for a project in discovery** (before stack is chosen):
 

@@ -1,0 +1,50 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+id: healthcare-fhir
+type: domain
+version: 1.0.0
+summary: FHIR data-layer domain overlay — governs FHIR resources, the API surface, and PHI exposure, with a jurisdiction-neutral core and a forcing jurisdiction-profile artifact.
+dependsOn:
+  - kernel/base
+conflictsWith: []
+requiredArtifacts:
+  - docs/healthcare/fhir-resource-map.md
+  - docs/healthcare/jurisdiction-profile.md
+optionalArtifacts:
+  - docs/healthcare/bulk-export-readiness.md
+sensitivePaths:
+  - description: FHIR implementation and PHI-touching surfaces
+    patterns:
+      - ^fhir/
+      - ^src/FHIR/
+      - patient
+      - observation
+      - bundle
+      - phi
+companionRules:
+  - description: FHIR resource-map or jurisdiction-profile changes require an ADR or change-log entry
+    triggerPaths:
+      - ^docs/healthcare/fhir-resource-map\.md$
+      - ^docs/healthcare/jurisdiction-profile\.md$
+    requiredAny:
+      - ^docs/adr/ADR-
+      - ^docs/project/change-log\.md$
+    humanReview: Reviewers confirm the declared jurisdiction profile is intentional and PHI exposure is bounded.
+  - description: PHI-schema-touching changes require a risk-register update
+    triggerPaths:
+      - ^src/FHIR/
+      - ^fhir/
+    requiredAny:
+      - ^docs/security/risk-register\.md$
+      - ^docs/adr/ADR-
+    humanReview: Reviewers verify PHI flows and access scope changes are tracked.
+validators:
+  - validate-companions
+reviewGates:
+  - Human review is required for any change widening PHI exposure or changing a declared jurisdiction profile.
+agentAdapters:
+  - platform/agents/base
+compiledFragments:
+  - platform/profiles/domains/healthcare-fhir/README.md
+recommendedSkills:
+  - harness-governance   # trust tiers and companion rules (source: platform/skills/)

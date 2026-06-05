@@ -36,18 +36,18 @@
   <text x="160" y="800" font-family="Helvetica, Arial, sans-serif" font-size="36" fill="#1f3a5f" font-weight="700">What is in this book</text>
 
   <g font-family="Helvetica, Arial, sans-serif" fill="#0e1c2e" font-size="28">
-    <text x="160" y="870" font-weight="600">45 modules</text>
+    <text x="160" y="870" font-weight="600">51 modules</text>
     <text x="380" y="870">across stacks, architectures, data, delivery,</text>
     <text x="380" y="906">management, domains, and agent packs</text>
 
-    <text x="160" y="980" font-weight="600">14 validators</text>
+    <text x="160" y="980" font-weight="600">15 validators</text>
     <text x="380" y="980">enforcing the contract at PR time</text>
 
     <text x="160" y="1054" font-weight="600">7 skills</text>
     <text x="380" y="1054">cross-client agent guidance (Claude, Cursor,</text>
     <text x="380" y="1090">Copilot, Codex, Gemini, OpenClaw)</text>
 
-    <text x="160" y="1164" font-weight="600">63 templates</text>
+    <text x="160" y="1164" font-weight="600">74 templates</text>
     <text x="380" y="1164">ADRs · PRDs · OPPs · risk registers ·</text>
     <text x="380" y="1200">runbooks · knowledge captures · more</text>
 
@@ -55,9 +55,9 @@
     <text x="380" y="1274">bootstrap · discovery · brownfield · CI ·</text>
     <text x="380" y="1310">distillation · troubleshooting</text>
 
-    <text x="160" y="1384" font-weight="600">11 diagrams</text>
+    <text x="160" y="1384" font-weight="600">13 diagrams</text>
     <text x="380" y="1384">composition · trust tier · companion rules · lifecycle · distillation ·</text>
-    <text x="380" y="1420">adoption · paired-mechanism · OPP/PRD pressure · catalog-counts · canonical-position · anchor-satellite</text>
+    <text x="380" y="1420">adoption · paired-mechanism · OPP/PRD pressure · catalog-counts · canonical-position · anchor-satellite · healthcare-family</text>
   </g>
 
   <!-- Section 3: For whom -->

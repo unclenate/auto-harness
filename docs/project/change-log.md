@@ -31,6 +31,135 @@ to be computable from `git log --diff-filter=A` first-authorship.
 
 ---
 
+## 2026-06-01 — Consumer-adoption observations (recommend-vs-adopt drift; fork PR base default)
+
+Audit-trail entry for two observations appended to
+`docs/knowledge/shared-observations.md`, satisfying the `knowledge-capture`
+observation companion rule. Both were distilled from a consumer-side
+adoption session (bumping an external fork-held consumer's `.harness`
+submodule pin), not from harness-self development:
+
+1. **Recommend-vs-adopt drift (governance-relevant, OPP candidate).** A
+   submodule pin bump moves the trusted commit but never the consumer's
+   hard-coded validator invocation list, so newly-recommended CI-template
+   steps are silently unadopted. Names an unclosed drift class and three
+   candidate harness responses (post-bump template diff step, opt-in
+   `validate-ci-currency` advisory, upstream "new consumer-CI step"
+   release signal). Design-shaped; not yet specced.
+2. **Fork PR base default (informational, onboarding note).** `gh pr
+   create` defaults the base to a fork's upstream parent, yielding a
+   misleading "no commits between" error; fix is explicit
+   `--repo`/`--head` qualification. Relevant to any fork-held brownfield
+   consumer.
+
+No rule, validator, or module changed — observations only. The
+distillation trigger did not fire (no ADR/OPP/module/manifest edit); this
+entry exists solely to satisfy the observation audit-trail rule.
+
+---
+
+## 2026-05-27 documentation-audit working folder — committed to tree
+
+Committed the `documentation-audit-2026-05-27/` working folder (five audit
+artifacts: execution roadmap, IA-restructure proposal, safety/security sweep,
+refresh notes, CLI-execution prompt) that had been sitting untracked in the
+working tree. The folder is already `.placeholder-ignore`'d (it discusses the
+date-stamp and placeholder-token conventions as audit prose, not as unfilled
+tokens), and the ignore-file comment explicitly tracked "committing the folder
+itself" as a separate follow-up — this discharges that follow-up. The folder is
+cited as a context source by ADR-0016, ADR-0017, OPP-0037, PRD-0015, PRD-0016,
+two implementation plans, the adversarial-fixtures README, and this log; those
+prose citations now resolve to a tracked path in clean checkouts. Reference
+material only — no governance contract, validator, or module changes.
+
+---
+
+## AEC wedge — PRD-0019 implementation (3 modules + 5 templates + composition)
+
+Implements PRD-0019 (Phase 1, OPP-0039 + PRD-0019 design-only). Ships the
+three-module AEC wedge (`aec-iso19650-im`, `aec-openbim-exchange`,
+`aec-iso19650-5-security`), five `platform/templates/aec/` artifacts, the
+`aec-bim-project.yaml` composition, architecture diagram #13 (AEC Domain Family),
+and discoverability + catalog-count propagation (modules 39→42 / 48→51, templates
+69→74, diagrams 12→13). Catalog-only — auto-harness does not activate the modules in
+its own manifest, so the validator suite stays predict-clean. Second deep-domain
+vertical; the catalog's first domain × cross-cutting composition
+(`aec-iso19650-5-security` composes with `management/privacy-by-design`). The
+accompanying `shared-observations.md` entry captures the second-domain-instance
+insight (the compound forcing artifact + the documented composition boundary) and
+satisfies the PRD-0004 distillation rule fired by the new module manifests; this
+change-log entry is the audit trail for that knowledge-destination touch.
+
+---
+
+## AEC wedge — OPP-0039 + PRD-0019 (design-only)
+
+Filed the AEC domain-family opportunity (OPP-0039; decomposed — 3-module wedge
+promoted, 3 deferred) and the wedge design contract (PRD-0019, with a §10 Claim
+Classification block). Phase 1 of the second deep-domain vertical; design-only per
+§ 9. Implementation (3 `domains/aec-*` modules, 5 `templates/aec/` artifacts,
+discoverability, a family diagram, and the `aec-bim-project.yaml` composition)
+deferred to Phase 2.
+
+---
+
+## Documentation quality + organization pass (catalog consistency + navigation)
+
+An audit-driven pass after the healthcare + privacy-by-design catalog growth (now 39
+modules / 15 validators / 69 templates / 12 diagrams). Fixed cross-doc consistency drift
+that no validator enforces: stale prose counts (HARNESS.md eleven→twelve diagrams; SUMMARY
+eight→fifteen validators), missing module rows (README Module System table + Platform
+Structure tree: privacy-by-design, security-static-analysis, eval-gated-testing,
+interview-driven, agentic-interfaces, cryptographic-identity), the missing
+validate-privacy-by-design validator-table row, and the SUMMARY ADR/PRD index (ADR-0018,
+PRD-0017, PRD-0018). Organization: a healthcare deep-domain-family grouping in SUMMARY, a
+regulated/deep-domain reader path + management-overlay posture note in how-to-read.md, and
+collapsing HARNESS.md's duplicated "Consuming" section to a pointer (sharpening the
+self-governance boundary). Housekeeping: excluded the untracked documentation-audit-2026-05-27/
+folder from placeholder + markdownlint self-scan (removes the stash-before-validate hazard).
+Deferred (tracked in the 2026-05-27 audit roadmap): Wave 3 (visual program) and Wave 6 (IA
+migration).
+
+---
+
+## Privacy by Design — Phase 2 implementation (`management/privacy-by-design`)
+
+Implements PRD-0018 / ADR-0018 (Phase 1, merged #97). Adds the default-on
+`management/privacy-by-design` overlay, a module-gated WARN-posture
+`validate-privacy-by-design.sh`, the `platform/templates/privacy/` family (incl.
+the bias-guardrail `privacy-profile.md`), the default-active mechanism
+(install.sh generated manifest + discovery Step 6 + bootstrap-quickstart), init-flow
+education, and CI wiring. Catalog counts: modules 38→39 / 47→48, templates 66→69,
+validators 14→15. The accompanying `shared-observations.md` entry captures the
+cross-vertical-primitive-reuse insight (privacy reusing the deep-domain
+neutral-core + forcing-artifact + bias-guardrail pattern) and satisfies the
+PRD-0004 distillation rule fired by the new module; this change-log entry is the
+audit trail for that knowledge-destination touch. Dogfood deferred: auto-harness
+does not activate the overlay in its own manifest (validator gated → exit 0).
+
+---
+
+## Healthcare wedge — both domain modules shipped (`healthcare-fhir` + `healthcare-smart-on-fhir`)
+
+Full PRD-0017 healthcare-wedge implementation. Both profile modules landed:
+
+- `platform/profiles/domains/healthcare-fhir/` — jurisdiction-neutral FHIR data-layer overlay;
+  required artifacts `fhir-resource-map.md` + `jurisdiction-profile.md` (forcing bias-guardrail);
+  two PHI-aware companion rules; `sensitivePaths` covering `fhir/`, `src/FHIR/`, and PHI-adjacent
+  path fragments.
+- `platform/profiles/domains/healthcare-smart-on-fhir/` — SMART on FHIR app-launch + OAuth scope
+  overlay; required artifact `smart-scope-map.md`; trust-role axes (provider-launch / patient-access)
+  documented; depends on `healthcare-fhir`.
+- Three templates under `platform/templates/healthcare/` scaffolding the required artifacts.
+- Sample composition `platform/compositions/healthcare-fhir-app.yaml`.
+- Architecture diagram #12 (Healthcare Domain Family) added to `docs/architecture/diagrams.md`.
+- Discoverability propagation: SUMMARY.md, README.md module-system table, onboarding skill
+  required-artifacts column, and discovery-to-composition Step 6 decision matrix updated.
+
+Catalog counts: 38 profile modules, 47 total in-tree, 66 templates, 12 diagrams.
+
+---
+
 ## OPP-0013 status normalized to the documented enum (`accepted`) — Copilot review
 
 Copilot review on PR #90 flagged that OPP-0013's `**Status:** partially-accepted` is not a

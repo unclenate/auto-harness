@@ -16,7 +16,7 @@ need the picture in context.
 > repository view. Edit a diagram by editing the Mermaid block in this
 > file — there is no separate image to regenerate.
 
-Eleven diagrams below, grouped by what they answer:
+Thirteen diagrams below, grouped by what they answer:
 
 | # | Question the diagram answers | Section |
 |---|------------------------------|---------|
@@ -31,6 +31,8 @@ Eleven diagrams below, grouped by what they answer:
 | 9 | *How does `validate-catalog-counts.sh` work?* | [Catalog-Counts Assertion Flow](#9-catalog-counts-assertion-flow) |
 | 10 | *How does the canonical-position artifact compose with citation + ratification?* (PRD-0007, v0.6.0) | [Canonical-Position Artifact Flow](#10-canonical-position-artifact-flow) |
 | 11 | *How does anchor-satellite OPP filing produce better PRD scoping?* | [Anchor-Satellite Filing Pattern](#11-anchor-satellite-filing-pattern) |
+| 12 | *How does a deep-domain module family compose, and where does jurisdiction belong?* | [Healthcare Domain Family](#12-healthcare-domain-family) |
+| 13 | *What is the AEC module family composition, and where do standards, jurisdiction, and security belong?* | [AEC Domain Family](#13-aec-domain-family) |
 
 ---
 
@@ -50,7 +52,7 @@ flowchart TD
     Manifest["<b>harness.manifest.yaml</b><br/>project-local activation"]
 
     subgraph CATALOG["Active Catalog (per project)"]
-        Manifest --> Modules["<b>Modules</b><br/>core · profiles · agents<br/>(45 total in-tree)"]
+        Manifest --> Modules["<b>Modules</b><br/>core · profiles · agents<br/>(51 total in-tree)"]
     end
 
     subgraph CONTRACT["Per-Module Contract (module.yaml)"]
@@ -61,7 +63,7 @@ flowchart TD
     end
 
     subgraph ENFORCE["Enforcement (CI)"]
-        Validators["<b>Validators</b><br/>14 scripts"]
+        Validators["<b>Validators</b><br/>15 scripts"]
         Validators -.reads.-> Manifest
         Validators -.reads.-> Required
         Validators -.reads.-> Companions
@@ -70,7 +72,7 @@ flowchart TD
 
     subgraph SURFACE["Consumer-Facing Surfaces"]
         Skills["<b>Skills</b><br/>governance, onboarding,<br/>testing, web3, tools,<br/>agentic-interfaces, mcp"]
-        Templates["<b>Templates</b><br/>63 scaffolding files<br/>(tokenized headers)"]
+        Templates["<b>Templates</b><br/>74 scaffolding files<br/>(tokenized headers)"]
         Workflows["<b>Workflows</b><br/>18 guides:<br/>bootstrap, discovery,<br/>distillation, etc."]
     end
 
@@ -354,7 +356,7 @@ flowchart TD
     Write --> Headers["<b>Fill template headers</b><br/>bash .harness/platform/bootstrap/<br/>set-consumer-headers.sh"]
     Headers --> Config["Writes .harness-headers.yaml<br/>(owner_name, owner_email,<br/>year, spdx_license, project_name)"]
 
-    Config --> Validate["Run validator chain locally<br/>(8 validators)"]
+    Config --> Validate["Run validator chain locally<br/>(15 validators)"]
     Validate --> Pass{"All exit 0?"}
 
     Pass -->|"no"| Troubleshoot["See workflow/troubleshooting.md<br/>or harness-onboarding skill"]
@@ -856,3 +858,53 @@ Update the catalog counts in diagram (1) when the relevant artifact
 count changes by more than ±1; small drift is tolerated because
 exact-current counts are documented in
 [`platform/reference/how-to-read.md`](../../platform/reference/how-to-read.md).
+
+---
+
+## 12. Healthcare Domain Family
+
+```mermaid
+graph TD
+    Base["kernel/base"]
+    FHIR["domains/healthcare-fhir<br/>FHIR data layer<br/>jurisdiction-neutral core"]
+    SMART["domains/healthcare-smart-on-fhir<br/>app launch + scopes"]
+    Jur["jurisdiction-profile.md<br/>(forcing artifact + bias guardrail)"]
+    Roles["scope-map roles:<br/>provider-launch | patient-access"]
+
+    Base --> FHIR
+    FHIR --> SMART
+    FHIR -.requires.-> Jur
+    SMART -.documents.-> Roles
+```
+
+This is the template shape for any deep-industry-domain family: a technology-bounded
+sub-module tree, a jurisdiction-profile forcing artifact at the root, and trust-role axes
+documented on the modules that carry them. Finance, logistics, and manufacturing families
+follow the same structure.
+
+## 13. AEC Domain Family
+
+**Question:** *What is the AEC module family composition, and where do standards, jurisdiction, and security belong?*
+
+```mermaid
+graph TD
+    KB[kernel/base]
+    IM["domains/aec-iso19650-im<br/>(CDE • containers • actor model)"]
+    EX["domains/aec-openbim-exchange<br/>(IFC pin • producer/receiver/reviewer)"]
+    SEC["domains/aec-iso19650-5-security<br/>(sensitivity • security mgmt)"]
+    PBD["management/privacy-by-design<br/>(occupant personal data)"]
+    JP[["jurisdiction-profile.md<br/>National Annex × AHJ × classification"]]
+
+    KB --> IM
+    IM --> EX
+    IM --> SEC
+    IM -.forces.-> JP
+    SEC -.composes with.-> PBD
+```
+
+The substrate (`aec-iso19650-im`) carries the compound jurisdiction-profile forcing
+artifact and is depended on by both the exchange layer and the security spine. The
+security spine composes with `management/privacy-by-design` — built-asset
+sensitivity and occupant personal-data privacy are governed side-by-side without
+overlap. This mirrors the healthcare family (diagram #12) and is the template for
+future deep-domain verticals.

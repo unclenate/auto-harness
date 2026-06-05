@@ -862,6 +862,7 @@ VALIDATOR_SCRIPTS = %w[
   validate-knowledge-redaction.sh
   validate-skill-content.sh
   validate-sast-coverage.sh
+  validate-privacy-by-design.sh
 ].freeze
 
 class TestValidatorHelpFlag < Minitest::Test
@@ -1569,6 +1570,133 @@ class TestValidateSastCoverage < Minitest::Test
   def test_missing_manifest_aborts_with_exit_2
     nonexistent = File.join(Dir.tmpdir, "validate-sast-coverage-nope-#{Process.pid}.yaml")
     _out, err, code = run_validator("validate-sast-coverage.sh", nonexistent)
+    assert_equal 2, code, "missing manifest must exit 2 (usage error)"
+    assert_match(/not found|No such file/i, err)
+  end
+end
+
+# ---------------------------------------------------------------------------
+# validate-privacy-by-design.sh
+#
+# PRD-0018 Phase 2 Task 5. The validator is opt-in: when the
+# management/privacy-by-design module is not in the active set, the
+# validator exits 0 with a "module inactive" message. When the module is
+# active, the validator reads docs/privacy/privacy-profile.md, parses the
+# YAML frontmatter, and asserts either a declared regime (non-empty string
+# other than "none") or regime: none with a non-empty exemption. It also
+# checks for regime:none contradictions and surfaces WARN hits for
+# privacy-risk indicators in the project tree.
+#
+# Same platform-root-fixed constraint as the other Wave-5-era validators —
+# --scan-file mode (test seam) is the fixture-firing surface for assertion-
+# level coverage.
+# ---------------------------------------------------------------------------
+class TestValidatePrivacyByDesign < Minitest::Test
+  HARNESS_ROOT         = File.expand_path("..", PLATFORM_DIR)
+  PRIVACY_FIXTURES_DIR = File.join(
+    PLATFORM_DIR, "validators", "test", "fixtures", "privacy"
+  )
+
+  # Expected exit code per fixture (PRD-0018 contract).
+  FIXTURE_EXPECTATIONS = {
+    "clean-profile.md"                => 0,  # valid regime declared → pass
+    "none-exempt.md"                  => 0,  # regime: none + exemption declared → pass
+    "none-exempt-empty-inventory.md"  => 0,  # regime: none + header-only table → pass (no false positive)
+    "unfilled-profile.md"             => 1,  # empty regime, no exemption → fail
+    "contradiction-profile.md"        => 1,  # regime: none + personal-data body rows → fail
+  }.freeze
+
+  def test_runs_clean_against_harness_repo
+    # The harness does not activate management/privacy-by-design —
+    # the validator must exit 0 with the "module inactive" message
+    # (predict-clean absorption per PRD-0018).
+    manifest = File.join(HARNESS_ROOT, "harness.manifest.yaml")
+    out, err, code = run_validator("validate-privacy-by-design.sh", manifest, HARNESS_ROOT)
+    assert_equal 0, code,
+                 "Module-inactive path must exit 0. stderr: #{err}"
+    assert_match(/skipped/, out)
+    assert_match(/not active/, out)
+  end
+
+  def test_every_fixture_has_expected_exit_in_scan_file_mode
+    # Each fixture exercises one expected outcome. The fixture set is the
+    # contract; adding a new validation rule means adding a fixture in the
+    # same PR.
+    FIXTURE_EXPECTATIONS.each do |fixture_name, expected_code|
+      fixture = File.join(PRIVACY_FIXTURES_DIR, fixture_name)
+      assert File.exist?(fixture),
+             "Fixture missing: #{fixture}"
+      out, err, code = run_validator(
+        "validate-privacy-by-design.sh", "--scan-file", fixture
+      )
+      assert_equal expected_code, code,
+                   "#{fixture_name} expected exit #{expected_code}, got #{code}. " \
+                   "stdout: #{out} stderr: #{err}"
+    end
+  end
+
+  def test_clean_profile_passes_with_success_marker
+    fixture = File.join(PRIVACY_FIXTURES_DIR, "clean-profile.md")
+    out, err, code = run_validator("validate-privacy-by-design.sh", "--scan-file", fixture)
+    assert_equal 0, code, "clean-profile must pass. stderr: #{err}"
+    assert_match(/✓/, out)
+    assert_match(/regime=GDPR/, out)
+  end
+
+  def test_none_exempt_passes_with_success_marker
+    fixture = File.join(PRIVACY_FIXTURES_DIR, "none-exempt.md")
+    out, err, code = run_validator("validate-privacy-by-design.sh", "--scan-file", fixture)
+    assert_equal 0, code, "none-exempt must pass. stderr: #{err}"
+    assert_match(/✓/, out)
+    assert_match(/regime=none/, out)
+  end
+
+  def test_none_exempt_empty_inventory_passes_no_false_positive
+    # Regression guard: a regime:none profile whose body contains ONLY a
+    # table-header row (no data rows) must NOT be flagged as a contradiction.
+    # FIX 1 — header-only table must not trigger the personal-data check.
+    fixture = File.join(PRIVACY_FIXTURES_DIR, "none-exempt-empty-inventory.md")
+    out, err, code = run_validator("validate-privacy-by-design.sh", "--scan-file", fixture)
+    assert_equal 0, code,
+                 "header-only data-inventory table must not cause a false-positive contradiction. " \
+                 "stderr: #{err}"
+    assert_match(/✓/, out)
+    assert_match(/regime=none/, out)
+  end
+
+  def test_unfilled_profile_fails_with_regime_error
+    fixture = File.join(PRIVACY_FIXTURES_DIR, "unfilled-profile.md")
+    _out, err, code = run_validator("validate-privacy-by-design.sh", "--scan-file", fixture)
+    assert_equal 1, code, "unfilled-profile must fail"
+    assert_match(/regime/i, err, "error must mention regime field")
+  end
+
+  def test_contradiction_profile_fails_with_contradiction_message
+    fixture = File.join(PRIVACY_FIXTURES_DIR, "contradiction-profile.md")
+    _out, err, code = run_validator("validate-privacy-by-design.sh", "--scan-file", fixture)
+    assert_equal 1, code, "contradiction-profile must fail"
+    assert_match(/regime: none.*personal.data|personal.data.*regime: none|contradiction/i, err,
+                 "error must flag the regime:none + personal-data contradiction")
+  end
+
+  def test_scan_file_missing_path_exits_2
+    nonexistent = File.join(Dir.tmpdir, "privacy-profile-nope-#{Process.pid}.md")
+    _out, err, code = run_validator(
+      "validate-privacy-by-design.sh", "--scan-file", nonexistent
+    )
+    assert_equal 2, code, "missing scan-file target must exit 2"
+    assert_match(/not found|No such file/i, err)
+  end
+
+  def test_scan_file_requires_argument
+    _out, err, code = run_validator("validate-privacy-by-design.sh", "--scan-file")
+    assert_equal 2, code, "--scan-file without argument must exit 2"
+    assert_match(/requires a file path/i, err)
+  end
+
+  def test_missing_manifest_aborts_with_exit_2
+    nonexistent = File.join(Dir.tmpdir, "validate-privacy-by-design-nope-#{Process.pid}.yaml")
+    _out, err, code = run_validator("validate-privacy-by-design.sh", nonexistent)
     assert_equal 2, code, "missing manifest must exit 2 (usage error)"
     assert_match(/not found|No such file/i, err)
   end

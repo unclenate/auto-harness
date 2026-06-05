@@ -29,7 +29,9 @@ modules:
   delivery:
     - prototype                   # Replace with production-saas if repo serves real users
   #
-  # management:                   # Select applicable
+  management:
+    - privacy-by-design           # Default-on; opt out only with a documented regime: none exemption
+  # management:                   # Add further management modules after assessment
   #   - product-lite              # Any real product (problem statement, requirements, release intent)
   #   - project-standard          # Scope plan, milestones, change log, dependency log
   #   - testing-standard          # Formal test strategy and coverage thresholds

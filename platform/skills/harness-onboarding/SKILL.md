@@ -262,6 +262,48 @@ Present the proposed composition as a structured list organized by module family
 
 ---
 
+### Step 2a — Privacy Posture
+
+`management/privacy-by-design` is default-active. This step records the project's privacy posture
+before the gap analysis so that `docs/privacy/privacy-profile.md` can be created as part of
+onboarding.
+
+**The 7 Cavoukian principles (brief):**
+
+1. **Proactive, not remedial** — anticipate and prevent privacy events before they occur.
+2. **Privacy as the default** — no action required by the user to protect their privacy.
+3. **Privacy embedded into design** — built in as a core function, not bolted on.
+4. **Full functionality** — positive-sum (privacy AND security, privacy AND utility).
+5. **End-to-end security** — lifecycle protection from collection through deletion.
+6. **Visibility and transparency** — open about practices; verifiable commitments.
+7. **Respect for user privacy** — user-centric defaults, accurate notice, consent mechanisms.
+
+**Walk the consumer through the following questions:**
+
+1. Does the project collect, process, store, or transmit any personal or sensitive data?
+   - If yes (or uncertain): `management/privacy-by-design` stays active. Record the applicable
+     legal regime(s) (GDPR / CCPA-CPRA / LGPD / PIPEDA / PIPL / HIPAA / other) and data
+     categories in `docs/privacy/privacy-profile.md`.
+   - If genuinely no (e.g., internal developer tooling with no end-user accounts): keep
+     `management/privacy-by-design` active in the manifest and declare `regime: none` with a
+     non-empty `exemption:` line in `docs/privacy/privacy-profile.md`. Exempt mode keeps the
+     companion rules firing and the profile present as the documented decision record.
+
+2. Are there cross-border data flows or multi-jurisdiction users?
+   - If yes: note which regimes apply and whether data residency restrictions exist.
+
+3. Is a data-subject rights mechanism required (access, deletion, portability)?
+   - Record the answer in `privacy-profile.md` under `## Implementation Notes`.
+
+**Output of Step 2a:**
+
+State the privacy posture decision: `regime: <list>` or `regime: none` with reason.
+Confirm whether `docs/privacy/privacy-profile.md` exists (`EXISTS` / `MISSING`).
+If MISSING, add it to the gap table in Step 3 and to the artifact creation order in the
+Progression Path.
+
+---
+
 ### Step 3 — Gap Analysis
 
 For each required artifact declared by the active modules in the proposed composition, check whether the file exists in the repository.
@@ -472,6 +514,7 @@ No required artifacts for `delivery/prototype`. Required artifacts for `delivery
 | `management/knowledge-capture` | Multi-participant project (agents + humans) producing longitudinal observations that crystallize into durable operating principles over time | `docs/knowledge/README.md`, `docs/knowledge/shared-observations.md` *(plus promotion into `docs/operating-principles.md` when patterns crystallize — see ADR-0014 for why `distilled-learnings.md` is no longer required)* |
 | `management/opportunity-capture` | Capturing pre-PRD product candidates with explicit status, evidence linkage to observations, and a promotion path to PRDs | `docs/opportunities/README.md` (required); `docs/opportunities/candidates.md` (optional — organizational candidate index, add when the candidate set grows past a flat list) |
 | `management/security-static-analysis` | Project ships software (not only docs) and SAST coverage of agent-generated code is a structural quality gate; consumer CI runs the tool, the harness validates the declaration (tool / scanPaths / severityThreshold) | `docs/security/sast-coverage.md` |
+| `management/privacy-by-design` | Default-active for all projects. Encodes the 7 Cavoukian principles as governance. Opt out only by declaring `regime: none` with a documented reason. | `docs/privacy/privacy-profile.md` |
 
 Dependency: `management/program-lite` requires `management/project-standard`. `management/knowledge-capture` and `management/opportunity-capture` both depend on `management/project-standard`. `management/opportunity-capture` does not require `management/knowledge-capture` to be active, but its Origin / Evidence field is most useful when paired with `shared-observations.md` from `knowledge-capture`.
 
@@ -485,6 +528,11 @@ Dependency: `management/program-lite` requires `management/project-standard`. `m
 | `domains/media-pipeline` | `ffmpeg`, media processing jobs, or media CDN SDK found | `data/object-storage` | none |
 | `domains/web3` | `ethers`, `wagmi`, `viem`, `hardhat`, `foundry`, `contracts/`, or `abi/` found | — | `docs/web3/chain-config.md` |
 | `domains/gitbook` | `SUMMARY.md` at root or in `docs/`, `.gitbook.yaml` found | — | `docs/SUMMARY.md` |
+| `domains/healthcare-fhir` | FHIR data layer; activate when a codebase implements FHIR resources / a FHIR server. Pairs with `domains/healthcare-smart-on-fhir`. | — | `docs/healthcare/fhir-resource-map.md`, `docs/healthcare/jurisdiction-profile.md` |
+| `domains/healthcare-smart-on-fhir` | SMART app launch + OAuth scopes; activate when a codebase does SMART-on-FHIR auth (provider-launch or patient-access). | `domains/healthcare-fhir` | `docs/healthcare/smart-scope-map.md` |
+| `domains/aec-iso19650-im` | ISO 19650 information delivery; activate when a project runs a CDE with information containers, a BEP, or a MIDP. | — | `docs/aec/information-management-plan.md`, `docs/aec/jurisdiction-profile.md` |
+| `domains/aec-openbim-exchange` | openBIM (IFC/BCF/IDS) model exchange under an information-delivery contract. | `domains/aec-iso19650-im` | `docs/aec/exchange-requirements.md` |
+| `domains/aec-iso19650-5-security` | Security-minded handling of sensitive built-asset information (BS EN ISO 19650-5). Composes with `management/privacy-by-design`. | `domains/aec-iso19650-im` | `docs/aec/sensitivity-assessment.md`, `docs/aec/security-management-plan.md` |
 
 ---
 

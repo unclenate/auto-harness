@@ -30,6 +30,7 @@ modules:
     - prototype
   management:
     - interview-driven
+    - privacy-by-design
   agents:
     - base
 overrides:

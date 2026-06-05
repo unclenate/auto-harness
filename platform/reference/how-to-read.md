@@ -7,7 +7,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 # How to Use This Documentation
 
 This page helps you find the right starting point based on what you are trying to do.
-The harness documentation is large — 36 modules, 63 templates, 14 validators, 7 skills, 18 workflows —
+The harness documentation is large — 42 modules, 74 templates, 15 validators, 7 skills, 18 workflows —
 but most readers need only a narrow slice at any given time.
 
 <!--
@@ -52,6 +52,20 @@ Already have a codebase? Start with
 4. [Discovery to Composition](../workflow/discovery-to-composition.md) — a guided process
    for going from an idea to a composed manifest
 
+**Management-overlay posture note:** `privacy-by-design` is default-on for data-handling
+projects; `security-static-analysis` is opt-in SAST; `testing-standard` and
+`eval-gated-testing` are compatible sibling quality-gates.
+
+### "I'm building a regulated or domain-specialist product"
+
+1. Start with the relevant domain module — [`domains/healthcare-fhir`](../profiles/domains/healthcare-fhir/README.md)
+   or [`domains/healthcare-smart-on-fhir`](../profiles/domains/healthcare-smart-on-fhir/README.md)
+2. Review [`platform/compositions/healthcare-fhir-app.yaml`](../compositions/healthcare-fhir-app.yaml)
+   as a concrete composition example
+3. Activate the [`management/privacy-by-design`](../profiles/management/privacy-by-design/README.md)
+   overlay (default-on for data-handling projects; covers Cavoukian's 7 principles and
+   consumer-declared legal regime)
+
 ### "I want to integrate AI agents"
 
 1. [Skills and Agents](../workflow/skills-and-agents.md) — the integration model
@@ -85,7 +99,7 @@ precedence.
                               │
                     ┌─────────▼───────────┐
                     │   module.yaml tree   │  Contractual: each module's machine-
-                    │   (36 modules)       │  readable governance declaration.
+                    │   (42 modules)       │  readable governance declaration.
                     │                      │  Validators enforce these.
                     └─────────┬───────────┘
                               │
@@ -93,7 +107,7 @@ precedence.
               │               │               │
     ┌─────────▼─────┐ ┌──────▼──────┐ ┌──────▼──────┐
     │  validators   │ │  templates  │ │  workflows  │
-    │  (14 scripts)  │ │  (63 files) │ │ (18 guides) │
+    │  (15 scripts)  │ │  (74 files) │ │ (18 guides) │
     │               │ │             │ │             │
     │  Operational: │ │  Generative:│ │  Procedural:│
     │  enforce the  │ │  produce    │ │  how to use │

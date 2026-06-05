@@ -43,6 +43,7 @@ modules:
   management:
     - project-standard
     - knowledge-capture
+    - privacy-by-design
   agents:
     - base
     - claude-code

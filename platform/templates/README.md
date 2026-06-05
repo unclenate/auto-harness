@@ -207,7 +207,8 @@ Templates that share a category directory keep the subdirectory structure intact
 Jump to: [Discovery](#discovery) | [Product](#product) | [Project](#project) |
 [Program](#program) | [Testing](#testing) | [Governance](#governance) |
 [Architecture and Ops](#architecture-and-operations) | [Database](#database) |
-[Web3](#web3-templates)
+[Web3](#web3-templates) | [Healthcare](#healthcare-templates) |
+[Privacy](#privacy-templates)
 
 ### Discovery
 
@@ -340,6 +341,32 @@ duplicating inline. Absorbed from governance patterns observed in adsclaw.
 | Token strategy | `domains/web3` (optional) | `templates/web3/token-strategy.md` |
 | Web3 ADR | `domains/web3` | `templates/web3/adr-web3.md` |
 | Web3 intake supplement | `domains/web3` | `templates/web3/web3-intake-supplement.md` |
+
+### Healthcare Templates
+
+| Template | Required By Module | Path |
+| -------- | ------------------ | ---- |
+| FHIR resource map | `domains/healthcare-fhir` | `templates/healthcare/fhir-resource-map.md` |
+| Jurisdiction profile | `domains/healthcare-fhir` | `templates/healthcare/jurisdiction-profile.md` |
+| SMART scope map | `domains/healthcare-smart-on-fhir` | `templates/healthcare/smart-scope-map.md` |
+
+### Privacy Templates
+
+| Template | Required By Module | Path |
+| -------- | ------------------ | ---- |
+| Privacy profile (bias-guardrail + regime declaration) | `management/privacy-by-design` | `templates/privacy/privacy-profile.md` |
+| Data inventory | `management/privacy-by-design` | `templates/privacy/data-inventory.md` |
+| Privacy impact assessment (DPIA / PIA) | `management/privacy-by-design` | `templates/privacy/privacy-impact-assessment.md` |
+
+### AEC
+
+| Template | Required By Module | Path |
+| -------- | ------------------ | ---- |
+| Information Management Plan | `domains/aec-iso19650-im` | `templates/aec/information-management-plan.md` |
+| Jurisdiction Profile | `domains/aec-iso19650-im` | `templates/aec/jurisdiction-profile.md` |
+| Exchange Requirements | `domains/aec-openbim-exchange` | `templates/aec/exchange-requirements.md` |
+| Sensitivity Assessment | `domains/aec-iso19650-5-security` | `templates/aec/sensitivity-assessment.md` |
+| Security Management Plan | `domains/aec-iso19650-5-security` | `templates/aec/security-management-plan.md` |
 
 ### Agentic Interface
 

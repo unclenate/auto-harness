@@ -86,6 +86,16 @@ jobs:
         # end-to-end enforcement).
         run: bash platform/validators/validate-sast-coverage.sh harness.manifest.yaml .
 
+      - name: Validate privacy-by-design
+        # Opt-in: when management/privacy-by-design is not active in the
+        # consumer manifest, the validator exits 0 with a "module inactive"
+        # message. When active, validates privacy-profile.md existence and
+        # well-formedness, checks consistency against data-inventory.md, and
+        # surfaces advisory WARN hits for privacy-risk indicators.
+        # Half-enforces sweep §11 (consumer CI honors the contract for
+        # end-to-end enforcement).
+        run: bash platform/validators/validate-privacy-by-design.sh harness.manifest.yaml .
+
       - name: Validate companion rules
         if: github.event_name == 'pull_request'
         env:

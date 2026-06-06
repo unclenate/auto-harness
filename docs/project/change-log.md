@@ -11,6 +11,30 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-05 — OPP-0040 filed: cross-platform install prerequisites
+
+Audit-trail entry satisfying the `opportunity-capture` OPP companion rule for the
+filing of **OPP-0040** (index row added to `candidates.md` in the same change).
+The candidate proposes that the harness surface and preflight its real install
+prerequisites — **Bash 4+, Ruby 3.0+, ripgrep, Git `core.symlinks=true`** — at the
+point of first contact, via a consolidated cross-platform matrix (macOS / Linux /
+Windows-WSL) and an up-front `install.sh` preflight pass.
+
+Origin: operator-reported friction adopting on macOS — Bash 3.2 and Ruby were hit
+*mid-install*, not at first contact — generalized to the likely-unexamined
+Windows/Linux cases. Grounded by concrete in-repo findings: prerequisites are
+stated in three reference sections but never in the quickstart's first-contact
+flow; `install.sh` hard-preflights Bash but surfaces a missing Ruby only as a late
+post-validator follow-up and never preflights ripgrep or git-symlinks; and
+`README.md` cross-references the ripgrep requirement to
+`submodule-integration.md#prerequisites`, a section that does not list ripgrep —
+an internal inconsistency, so the gap is a correctness defect as well as an
+ergonomics one. Design is **deferred** (status `proposed`); consolidated-doc vs.
+preflight-command shape and the Windows (WSL-first?) stance are open questions in
+the record.
+
+---
+
 ## 2026-06-02 — OPP-0038 filed: adopter artifact attribution boundary
 
 Audit-trail entry for the observation appended to

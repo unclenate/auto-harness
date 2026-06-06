@@ -139,6 +139,7 @@ clustered backlog with framing.
 | [0037](opportunities/OPP-0037-classify-before-enforcing-as-operating-principle.md) | Classify-Before-Enforcing as Operating Principle | exploring |
 | [0038](opportunities/OPP-0038-adopter-artifact-attribution-boundary.md) | Adopter Artifact Attribution: Signing Governance Without Asserting Rights | proposed |
 | [0039](opportunities/OPP-0039-domain-family-aec-decomposed.md) | AEC Domain Family (decomposed) | accepted (partial promotion) |
+| [0040](opportunities/OPP-0040-cross-platform-install-prerequisites.md) | Cross-Platform Install Prerequisites: Surface and Preflight Them at First Contact | proposed |
 
 ---
 

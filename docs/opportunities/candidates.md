@@ -107,6 +107,21 @@ underspecified.
 
 ### Consumer onboarding & project hygiene
 
+- [OPP-0040](OPP-0040-cross-platform-install-prerequisites.md) *(proposed
+  2026-06-05)* — Surface and preflight the install path's real prerequisites
+  (**Bash 4+, Ruby 3.0+, ripgrep, Git `core.symlinks=true`**) at first contact.
+  Today they are documented only in reference sections an adopter reaches *after*
+  the quickstart, and `install.sh` preflights them asymmetrically: Bash is
+  hard-checked up front, a missing Ruby surfaces only as a late post-validator
+  follow-up, and ripgrep / git-symlinks aren't preflighted at all. Surfaced by
+  operator-reported macOS friction (Bash 3.2 + Ruby hit mid-install, not at first
+  contact); grounded further by an internal doc inconsistency — `README.md` cites
+  `submodule-integration.md#prerequisites` for the ripgrep requirement, but that
+  section never lists ripgrep. Initial bias: a consolidated cross-platform
+  prerequisites matrix (macOS / Linux / Windows-WSL) plus an `install.sh`
+  up-front `--preflight`/doctor pass emitting one actionable report. Cross-platform
+  (Windows/Linux) coverage is currently thin beyond the well-documented macOS edge.
+
 - [OPP-0038](OPP-0038-adopter-artifact-attribution-boundary.md) *(proposed
   2026-06-02; design deferred — to be informed by ongoing adoption practice)* —
   Define how a brownfield adopter should **sign** governance artifacts they

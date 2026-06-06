@@ -35,6 +35,40 @@ the record.
 
 ---
 
+## 2026-06-05 — OPP-0041 + OPP-0042 filed: onboarding guardrails (containment + greenfield conservatism)
+
+Audit-trail entry satisfying the `opportunity-capture` OPP companion rule for the
+filing of **OPP-0041** and **OPP-0042** (index rows added to `candidates.md` and
+`docs/README.md` in the same change). Both are forward-looking guardrail
+candidates; design is **deferred** (status `proposed`).
+
+Origin: a single 2026-06-05 incident. A contextless greenfield consumer
+(`unclenate.com`, described only as "a portfolio site for me") was bootstrapped
+*inside* the auto-harness platform working tree. The consumer became a plain
+subdirectory with no `.git` of its own, its scaffold was committed into
+auto-harness's own history (`chore: add auto-harness as submodule` /
+`feat: wire auto-harness via submodule`), and `unclenate.com/.harness` was a
+gitlink to auto-harness's own HEAD — the platform mounted inside itself. It was
+caught only when a routine "commit this" was about to push the personal site's
+files up into the platform repo; every validator had passed. The vestige was fully
+removed (the two unpushed scaffold commits dropped, `.gitmodules` entry and
+`.git/modules/unclenate.com` deleted, dependent branch rebased clean); the user's
+site is being developed in its correct separate location.
+
+- **OPP-0041 (containment safety, general):** bootstrap/onboarding must detect and
+  refuse instantiating a consumer inside the platform repo (or any unrelated git
+  repo). Detection is local and unambiguous. Confidence high. Pairs with the
+  up-front preflight in OPP-0040.
+- **OPP-0042 (greenfield conservatism, specific):** contextless greenfield should
+  route to discovery rather than asserting a full enforced module set from a
+  one-line description; the "conservative module selection" rule is brownfield-shaped
+  and needs the inverse default for greenfield. Confidence medium.
+
+The two mirror the maintainer's framing — guardrails "for onboarding in general,
+and for complete greenfield projects specifically."
+
+---
+
 ## 2026-06-02 — OPP-0038 filed: adopter artifact attribution boundary
 
 Audit-trail entry for the observation appended to

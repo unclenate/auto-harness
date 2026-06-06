@@ -122,6 +122,41 @@ underspecified.
   up-front `--preflight`/doctor pass emitting one actionable report. Cross-platform
   (Windows/Linux) coverage is currently thin beyond the well-documented macOS edge.
 
+Onboarding-safety pair surfaced by a single 2026-06-05 incident: a contextless
+greenfield consumer (`unclenate.com`, "a portfolio site") was bootstrapped *inside*
+the auto-harness platform working tree, committing the consumer's scaffold into the
+platform's own history and mounting the platform into itself — caught by a human
+when a routine commit was about to push a personal site up into the platform repo
+(vestige since fully removed). OPP-0041 is the *general* guardrail (containment
+safety); OPP-0042 is the *greenfield-specific* guardrail (don't over-assert from a
+one-liner). They mirror the maintainer's own framing — "onboarding in general, and
+complete greenfield projects specifically."
+
+- [OPP-0041](OPP-0041-onboarding-containment-safety.md) *(proposed 2026-06-05)* —
+  Bootstrap/onboarding must **detect and refuse** instantiating a consumer *inside*
+  the auto-harness platform repo (or any unrelated git repo), so a consumer is
+  never scaffolded as a subdirectory of — or committed into — the platform.
+  Detection is local and unambiguous (enclosing repo root owns `platform/core/kernel/`
+  plus a `project.id: development-harness-framework` manifest). Silent today; passed
+  every validator; caught only by a human. Initial bias: hard-fail preflight in
+  `install.sh` (composes with OPP-0040) + the onboarding skill's first step, an
+  `--inside-platform` escape hatch for `platform/examples/`, plus an
+  extract-a-mis-created-consumer recovery runbook (the procedure this incident
+  produced). Confidence: high.
+
+- [OPP-0042](OPP-0042-greenfield-onboarding-conservatism.md) *(proposed 2026-06-05)* —
+  Contextless greenfield should **route to discovery** (`new-product-discovery` /
+  `interview-driven`), not a guessed enforcement-on composition. From "a portfolio
+  site for me" the flow asserted `node-typescript` + `web-app` as active modules,
+  authored a full `docs/` tree, and re-enabled `required-artifacts` — before any
+  code existed, while its own comments admitted it was inferring intent
+  ("enforcement deferred until package.json exists"). The "conservative module
+  selection" rule is brownfield-shaped (evidence = files present); greenfield needs
+  the inverse default. Initial bias: assert no stack/architecture module without a
+  concrete evidence artifact; keep `required-artifacts` disabled through discovery;
+  consider a structured `intent:` vs `modules:` split. Routing/defaults, not new
+  machinery. Confidence: medium.
+
 - [OPP-0038](OPP-0038-adopter-artifact-attribution-boundary.md) *(proposed
   2026-06-02; design deferred — to be informed by ongoing adoption practice)* —
   Define how a brownfield adopter should **sign** governance artifacts they

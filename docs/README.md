@@ -140,6 +140,8 @@ clustered backlog with framing.
 | [0038](opportunities/OPP-0038-adopter-artifact-attribution-boundary.md) | Adopter Artifact Attribution: Signing Governance Without Asserting Rights | proposed |
 | [0039](opportunities/OPP-0039-domain-family-aec-decomposed.md) | AEC Domain Family (decomposed) | accepted (partial promotion) |
 | [0040](opportunities/OPP-0040-cross-platform-install-prerequisites.md) | Cross-Platform Install Prerequisites: Surface and Preflight Them at First Contact | proposed |
+| [0041](opportunities/OPP-0041-onboarding-containment-safety.md) | Onboarding Containment Safety: Never Instantiate or Commit a Consumer Inside the Platform Repo | proposed |
+| [0042](opportunities/OPP-0042-greenfield-onboarding-conservatism.md) | Greenfield Onboarding Conservatism: Route Contextless Greenfield to Discovery | proposed |
 
 ---
 

@@ -22,7 +22,7 @@ distillation observation appended in the same change.
 distinct mode (no code *and* no governance docs) alongside doc-only and standard
 brownfield, and adds the rule that an operator's verbal description is **intent,
 not evidence**: greenfield routes to a discovery posture
-(`management/discovery-intake` / `new-product-discovery` / `interview-driven`),
+(`management/discovery-intake` / `new-product-discovery` / `interview-driven-discovery`),
 code-dependent modules are recorded as `# intent:` comments rather than asserted,
 and `required-artifacts` stays disabled until real code evidence appears. This
 closes the over-assertion seen in the 2026-06-05 incident (a one-line "portfolio

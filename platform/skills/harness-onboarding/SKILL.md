@@ -109,6 +109,7 @@ Follow these rules throughout the assessment. They exist because the output will
 - **Respect dependencies.** `management/program-lite` requires `management/project-standard`. `domains/supabase` requires `data/relational-postgres`. `domains/media-pipeline` requires `data/object-storage`. All modules require `core/kernel/base`.
 - **Do not mark an artifact present unless you have verified its path.** PARTIAL is correct for files that exist but appear to be unfilled stubs or templates.
 - **Conservative module selection.** If evidence is ambiguous, omit the module rather than include it. It is cheaper to add a module later than to inherit all its required artifacts immediately.
+- **Greenfield = discovery, not composition (OPP-0042).** A new or near-empty repo with no code *and* no governance docs — even when the operator gives a one-line description of what it *will* be ("a portfolio site", "a SaaS for X") — is **greenfield**. That description is **intent, not evidence**: never assert a stack, architecture, or data module from a verbal description alone. Route greenfield to a discovery posture (`management/discovery-intake`, or the `new-product-discovery` / `interview-driven-discovery` compositions), keep `overrides.disabledValidations: [required-artifacts]`, and record intended-but-unevidenced modules as commented `# intent:` lines rather than active modules. Promote each to active — and enable its required artifacts — only when repo evidence appears (e.g. a `package.json`, a `pyproject.toml`, an actual framework config). The Conservative-module-selection rule above is brownfield-shaped (evidence = files present); greenfield has no files, so its default is the inverse — assert almost nothing until code lands. Prefer asking 2–3 scoping questions (interview-driven intake) over inferring a full stack from a sentence.
 - **Respect the absorption opt-in.** Absorption discovery outputs are conditional on explicit authorization. Never produce them without the stated consent described above.
 
 ---
@@ -205,7 +206,11 @@ Present findings in three categories:
 
 ### Step 1 — Repository Inventory
 
-**Determine brownfield mode first.** If Step 0 found rich governance documentation but Step 1's package/runtime signals are all `not found`, this is **doc-only brownfield** (pre-development). In this mode: record doc-signal-only rows from Step 0 in Step 1's inventory; skip code-dependent module selection (stacks, architectures, data) until implementation begins. Return to those modules when the project starts writing code.
+**Determine mode first.** Three cases, decided by what Step 0 and Step 1 actually find:
+
+- **Greenfield** — *both* governance docs (Step 0) *and* code/runtime signals (Step 1) are absent: a new or near-empty repo, perhaps with only a verbal description of intent. Apply the greenfield rule (Constraints): route to a discovery posture, treat the description as **intent, not evidence**, and defer *all* code-dependent module selection and `required-artifacts` until code lands. Do not assert a stack/architecture/data module from the description.
+- **Doc-only brownfield** — Step 0 found rich governance documentation but Step 1's package/runtime signals are all `not found` (pre-development). Record doc-signal-only rows from Step 0 in Step 1's inventory; skip code-dependent module selection (stacks, architectures, data) until implementation begins.
+- **Standard brownfield** — code signals are present; select modules from the evidence as usual.
 
 Scan the repository before making any recommendations. For each item, record the actual file path where evidence was found, or `not found`.
 
@@ -278,6 +283,8 @@ Based on Step 0 and Step 1 evidence only, select modules from the Module Catalog
 For each selected module: state the file path or signal that justifies selecting it.
 
 For each module family where no module is selected: state why (no evidence found, conflicting module chosen, or doc-only brownfield defers selection).
+
+**Greenfield (per the mode in Step 1):** select `core/kernel/base` plus a discovery baseline — `management/discovery-intake`, or copy the `new-product-discovery` / `interview-driven-discovery` composition — and stop there. Do **not** select code-dependent families (stacks, architectures, data); list any the operator's description hints at as `# intent:` comments in the manifest, not active modules. Keep `overrides.disabledValidations: [required-artifacts]` until the first real code evidence appears, then re-run this assessment to promote the intended modules and enable their artifacts. A guessed, enforcement-on manifest produced from a one-line description is the failure this avoids.
 
 Present the proposed composition as a structured list organized by module family: core, stacks, architectures, data, delivery, management, domains, agents.
 

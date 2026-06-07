@@ -11,6 +11,32 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-07 — PRD-0021 shipped: greenfield onboarding conservatism; OPP-0042 accepted
+
+Implementation PR promoting **OPP-0042** to `accepted` via **PRD-0021**
+(skill-guidance change; design + implementation together). Audit-trail entry for
+the OPP status flip (opportunity-capture companion rule) and the PRD-0004
+distillation observation appended in the same change.
+
+`platform/skills/harness-onboarding/SKILL.md` now names **greenfield** as a
+distinct mode (no code *and* no governance docs) alongside doc-only and standard
+brownfield, and adds the rule that an operator's verbal description is **intent,
+not evidence**: greenfield routes to a discovery posture
+(`management/discovery-intake` / `new-product-discovery` / `interview-driven`),
+code-dependent modules are recorded as `# intent:` comments rather than asserted,
+and `required-artifacts` stays disabled until real code evidence appears. This
+closes the over-assertion seen in the 2026-06-05 incident (a one-line "portfolio
+site" prompt produced a full enforcement-on `node-typescript` + `web-app`
+manifest). Deferred: a first-class `intent:` manifest schema field (v1 uses
+comments). No validator added — onboarding is AI-judgment work, so the claim is
+Half-enforced via the skill instruction (§10). `install.sh` unchanged
+(`brownfield-lite` already ships `required-artifacts` disabled).
+
+With this, the onboarding-friction cluster (OPP-0040/0041/0042) is fully promoted
+and shipped.
+
+---
+
 ## 2026-06-06 — PRD-0020 shipped: bootstrap hardening (guards + dependency preflight); OPP-0040 + OPP-0041 accepted
 
 Implementation PR promoting **OPP-0040** and **OPP-0041** to `accepted` via

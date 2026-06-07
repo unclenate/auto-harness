@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0042 — Greenfield Onboarding Conservatism: Route Contextless Greenfield to Discovery, Don't Over-Assert Modules or Enforcement
 
-**Status:** proposed
+**Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-06-05
-**Last Updated:** 2026-06-05
+**Last Updated:** 2026-06-07
 **Confidence:** medium
 
 ---
@@ -97,8 +97,18 @@ require those artifacts are actually grounded.
 
 ## Disposition
 
-<!-- Empty while Status: proposed. -->
+**Accepted 2026-06-07.** Promoted to PRD-0021 and implemented in the same PR as a
+skill-guidance change. `harness-onboarding` SKILL.md now names **greenfield** as a
+distinct mode (no code *and* no governance docs), treats an operator's verbal
+description as **intent, not evidence**, routes greenfield to a discovery posture
+(`management/discovery-intake` / `new-product-discovery` / `interview-driven`),
+records intended-but-unevidenced modules as `# intent:` comments, and keeps
+`required-artifacts` disabled until real code evidence appears. The
+`intent:` *manifest schema field* is deferred (v1 uses comments); no validator is
+added because onboarding is AI-judgment work (the claim is Half-enforced via the
+skill instruction). `install.sh` is unchanged — `brownfield-lite` already ships
+`required-artifacts` disabled, and the over-assertion originated in the skill.
 
 ## Promotion
 
-<!-- Empty until accepted. Then a link to PRD-NNNN. -->
+- See [`docs/requirements/PRD-0021-greenfield-onboarding-conservatism.md`](../requirements/PRD-0021-greenfield-onboarding-conservatism.md)

@@ -11,6 +11,24 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-07 — OPP-0040 follow-up: canonical cross-platform prerequisites page
+
+Closes the deferred follow-up named in OPP-0040's Disposition: a single
+first-contact, cross-platform prerequisites page at
+`platform/reference/prerequisites.md` (the matrix — Bash 4+, Ruby 3.0+, ripgrep,
+Git `core.symlinks=true` — plus per-platform install commands for macOS / Linux /
+Windows-WSL and the macOS Bash-3.2 / Ruby-2.6-shadow gotchas). Other docs now link
+to it rather than restating the list.
+
+Also fixes the documentation inconsistency OPP-0040 identified: `README.md`'s
+Integrating section previously cross-referenced the **ripgrep** prerequisite to
+`submodule-integration.md#prerequisites`, a section that did not list ripgrep.
+The README now points at the canonical page, and ripgrep is added to the
+submodule-integration and `bootstrap/README.md` requirement lists. Surfaced in
+`SUMMARY.md` and the README Reference table. Docs-only; no module/validator change.
+
+---
+
 ## 2026-06-07 — PRD-0021 shipped: greenfield onboarding conservatism; OPP-0042 accepted
 
 Implementation PR promoting **OPP-0042** to `accepted` via **PRD-0021**

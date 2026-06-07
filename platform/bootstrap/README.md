@@ -173,10 +173,13 @@ Claude Code (`.claude/settings.json`, `.claude/skills/`) and the cross-client AG
 
 ## Requirements
 
-- **Bash 4+** (for associative arrays; standard on Linux/macOS).
+Canonical, per-platform list: [`platform/reference/prerequisites.md`](../reference/prerequisites.md).
+`install.sh` preflights all of these and `--install-deps` can auto-install git + ripgrep. In short:
+
+- **Bash 4+** (for associative arrays; standard on Linux; macOS ships 3.2 — `brew install bash`).
 - **Ruby 3.0+** for `install.sh`'s manifest-merge logic and for running the harness validators that `install.sh` invokes as a smoke test. `link-skills.sh` alone needs no Ruby.
-- **`git submodule`** available (trivially true wherever git ≥ 1.5 is installed).
-- **`core.symlinks=true`** enabled in git on Windows consumers (macOS and Linux default to true).
+- **ripgrep (`rg`)** for `validate-placeholders.sh` and other validators.
+- **`git submodule`** available (trivially true wherever git ≥ 1.5 is installed), with **`core.symlinks=true`** (the default except on Windows).
 
 ## Tests
 

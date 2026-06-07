@@ -17,6 +17,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 * [Platform Overview](platform/README.md)
 * [Roadmap](docs/roadmap.md) — released versions, planned versions, and what's coming toward v1.0
 * [How to Use This Documentation](platform/reference/how-to-read.md)
+* [Prerequisites](platform/reference/prerequisites.md) — per-platform toolchain (macOS / Linux / Windows-WSL)
 * [Glossary](platform/reference/glossary.md)
 * [Topic Index](platform/reference/index.md)
 
@@ -87,6 +88,7 @@ The universal rules that apply to every harnessed project, regardless of modules
 
 * [Architecture Diagrams](docs/architecture/diagrams.md) — composition, trust tier flow, companion rule firing, OPP/PRD/ADR lifecycle, distillation triggers, consumer adoption
 * [Module Types](platform/core/registry/module-types.md) — families, field reference, compiled fragments vs skills
+* [Prerequisites](platform/reference/prerequisites.md) — per-platform toolchain (macOS / Linux / Windows-WSL)
 * [Glossary](platform/reference/glossary.md) — shared terminology
 * [Topic Index](platform/reference/index.md) — cross-reference by concept
 

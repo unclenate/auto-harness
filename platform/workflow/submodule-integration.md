@@ -27,8 +27,13 @@ Symlinks from `.agents/skills/` and `.claude/skills/` into the submodule mean th
 
 ## Prerequisites
 
+The canonical, per-platform list lives at
+[`platform/reference/prerequisites.md`](../reference/prerequisites.md) — `install.sh`
+preflights all of these and `--install-deps` can auto-install the safe ones. In short:
+
 - **Bash 4+** (standard on Linux). **macOS ships Bash 3.2 by default** due to GPL-v3 licensing — `install.sh` uses associative arrays (`declare -A`) and will refuse to run under Bash 3. Install a newer one via `brew install bash`, then invoke through it: `/opt/homebrew/bin/bash .harness/platform/bootstrap/install.sh ...` (Apple Silicon) or `/usr/local/bin/bash ...` (Intel). The script preflights its own version and bails with a helpful message if it sees Bash 3.
-- **Ruby 3.0+** (required by all eight harness validators and by `install.sh`'s manifest merge). The pure-bash `link-skills.sh` is the only tool that runs without Ruby. See [ADR-0003 Consequences > Negative](../../docs/adr/ADR-0003-submodule-integration.md) for rationale.
+- **Ruby 3.0+** (required by the harness validators and by `install.sh`'s manifest merge). The pure-bash `link-skills.sh` is the only tool that runs without Ruby. See [ADR-0003 Consequences > Negative](../../docs/adr/ADR-0003-submodule-integration.md) for rationale.
+- **ripgrep (`rg`)** (required by `validate-placeholders.sh` and other validators; auto-installable via `--install-deps`).
 - **Git ≥ 2.0** with `core.symlinks=true` (the default everywhere except Windows — Windows consumers need `git config --global core.symlinks true`).
 
 ## Quick start

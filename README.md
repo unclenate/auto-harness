@@ -511,7 +511,7 @@ After adoption, the [Maintenance & Operations guide](platform/workflow/maintenan
 
 The steps above show the "platform-at-root" / self-dogfood pattern — auto-harness's `platform/` tree lives inside the repo. For consumer projects, the recommended pattern is **auto-harness as a git submodule**:
 
-**Prerequisites.** macOS ships Bash 3.2 by default (GPL-v3 licensing reasons), which `install.sh` refuses to run under because it relies on associative arrays. Install Bash 4+ via Homebrew before bootstrapping: `brew install bash`. The script will exit cleanly with a helpful message if it detects Bash <4, but installing upfront avoids a confusing first run. Linux users typically have Bash 4+ already. Other prerequisites — Ruby 3.0+, ripgrep, Git with `core.symlinks=true` — are documented in [`platform/workflow/submodule-integration.md`](platform/workflow/submodule-integration.md#prerequisites).
+**Prerequisites.** You need Bash 4+, Ruby 3.0+, ripgrep, and Git (with `core.symlinks=true`). `install.sh` preflights all of them and fails with a per-platform message naming every gap, and `--install-deps` can auto-install the safe ones — so the fast path is "run it, install what it asks for, re-run." The single canonical list, with per-platform install commands (macOS / Linux / Windows-WSL) and the macOS Bash-3.2 / Ruby-2.6 gotchas, is [`platform/reference/prerequisites.md`](platform/reference/prerequisites.md).
 
 ```bash
 cd your-repo
@@ -624,6 +624,7 @@ Contributions are accepted under both licenses on the same terms. See [CONTRIBUT
 | -------- | ---- |
 | Table of contents | [`SUMMARY.md`](SUMMARY.md) |
 | Architecture diagrams | [`docs/architecture/diagrams.md`](docs/architecture/diagrams.md) — composition, trust tier flow, companion rule firing, OPP/PRD/ADR lifecycle, distillation, consumer adoption |
+| Prerequisites (per-platform) | [`platform/reference/prerequisites.md`](platform/reference/prerequisites.md) |
 | Glossary | [`platform/reference/glossary.md`](platform/reference/glossary.md) |
 | How to read the docs | [`platform/reference/how-to-read.md`](platform/reference/how-to-read.md) |
 | Adoption — Bootstrap quickstart | [`platform/workflow/bootstrap-quickstart.md`](platform/workflow/bootstrap-quickstart.md) |

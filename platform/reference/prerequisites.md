@@ -63,6 +63,11 @@ asks for, install that, re-run.
 
 ## Verifying and installing
 
+> **macOS:** invoke through your Homebrew Bash — e.g.
+> `/opt/homebrew/bin/bash .harness/platform/bootstrap/install.sh …` (Apple Silicon)
+> or `/usr/local/bin/bash …` (Intel). A bare `bash` resolves to the system 3.2,
+> which `install.sh` refuses to run.
+
 ```bash
 # install.sh preflights everything and reports all gaps at once:
 bash .harness/platform/bootstrap/install.sh

@@ -179,7 +179,7 @@ Canonical, per-platform list: [`platform/reference/prerequisites.md`](../referen
 - **Bash 4+** (for associative arrays; standard on Linux; macOS ships 3.2 — `brew install bash`).
 - **Ruby 3.0+** for `install.sh`'s manifest-merge logic and for running the harness validators that `install.sh` invokes as a smoke test. `link-skills.sh` alone needs no Ruby.
 - **ripgrep (`rg`)** for `validate-placeholders.sh` and other validators.
-- **`git submodule`** available (trivially true wherever git ≥ 1.5 is installed), with **`core.symlinks=true`** (the default except on Windows).
+- **Git ≥ 2.0** with **`core.symlinks=true`** (the default except on Windows) — needed to mount and update the submodule.
 
 ## Tests
 

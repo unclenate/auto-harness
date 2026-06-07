@@ -117,6 +117,27 @@ Follow these rules throughout the assessment. They exist because the output will
 
 Work through these steps in order. Do not skip sections. Do not merge sections.
 
+### Step 0a — Instantiation-Location Precondition (STOP-gate)
+
+Before any assessment or scaffolding, verify **where** you are creating/governing
+the consumer. A consumer must be its **own git repository**, with auto-harness
+mounted beneath it as a submodule — never a subdirectory of, or committed into,
+another repo. Refuse and surface to the human if either holds:
+
+1. **Inside the auto-harness platform repo.** The enclosing git root contains
+   `platform/core/kernel/base/doctrine.md` and a `harness.manifest.yaml` whose
+   `project.id` is `development-harness-framework`. (Highest-consequence: a private
+   consumer's files would be committed/pushed into the platform repo.)
+2. **Nested inside another git repo.** The project root is a subdirectory of a git
+   working tree (its enclosing `git rev-parse --show-toplevel` is not the project
+   root itself) — unless the human confirms an intentional monorepo subproject.
+
+This mirrors the hard-fail guards in `install.sh` (see
+[PRD-0020](../../../docs/requirements/PRD-0020-bootstrap-hardening-guards-and-preflight.md)).
+If a consumer was already mis-created inside the platform tree, point the human at
+[`platform/workflow/recover-misplaced-consumer.md`](../../workflow/recover-misplaced-consumer.md)
+before continuing.
+
 ### Step 0 — Governance Inventory
 
 Before auditing code, audit governance. Many brownfield projects have governance patterns the harness doesn't know about — some of which may match or differ from harness defaults in meaningful ways. Record what exists as evidence for later steps.

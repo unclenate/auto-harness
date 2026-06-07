@@ -11,6 +11,36 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-06 — PRD-0020 shipped: bootstrap hardening (guards + dependency preflight); OPP-0040 + OPP-0041 accepted
+
+Implementation PR promoting **OPP-0040** and **OPP-0041** to `accepted` via
+**PRD-0020** (design + implementation in the same PR). Audit-trail entry for the
+OPP status flips (opportunity-capture companion rule) and the PRD-0004
+distillation observation appended in the same change.
+
+`platform/bootstrap/install.sh` now, before any write:
+
+- **Hard-fails** if a consumer is being bootstrapped **inside the auto-harness
+  platform repo** (Guard A) or **nested inside another git repo** (Guard B), with
+  narrow escape hatches (`--inside-platform`, `--allow-nested`). Detection is
+  local/unambiguous (enclosing root owns kernel doctrine + the
+  `development-harness-framework` manifest).
+- Runs a **dependency preflight** (Bash 4+, Ruby ≥ 3.0, ripgrep, git) reporting
+  all gaps together with per-platform commands; opt-in `--install-deps`
+  auto-installs the safe ones (git/ripgrep, never Ruby); `HARNESS_SKIP_DEPCHECK=1`
+  bypasses only the preflight (not the guards).
+
+The `harness-onboarding` skill gains the same instantiation-location STOP-gate as
+its first step. Ships with the recovery runbook
+(`platform/workflow/recover-misplaced-consumer.md`) and bootstrap test coverage
+(29 tests, incl. 5 new). Design decision on auto-install: **opt-in**, because
+auto-installing system packages is environment-altering (Tier 4) and Ruby cannot
+be fixed reliably from a script (system Ruby shadows package-manager Ruby — the
+dogfood machine itself ran Ruby 2.6.10 with no `rg`). OPP-0042 (greenfield
+over-assertion) remains `proposed`.
+
+---
+
 ## 2026-06-05 — OPP-0040 filed: cross-platform install prerequisites
 
 Audit-trail entry satisfying the `opportunity-capture` OPP companion rule for the

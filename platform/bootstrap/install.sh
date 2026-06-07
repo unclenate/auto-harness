@@ -27,6 +27,17 @@
 #   --force                 Overwrite harness-managed files that exist with a
 #                           harness signature. Never overwrites foreign or
 #                           platform-artifact files.
+#   --inside-platform       Escape hatch for the containment guard: allow
+#                           bootstrapping inside the auto-harness platform repo
+#                           (only for authoring in-tree examples). Off by default.
+#   --allow-nested          Escape hatch for the nesting guard: allow
+#                           bootstrapping a consumer nested inside another git
+#                           repo (intentional monorepo subproject). Off by default.
+#   --install-deps          Opt-in: auto-install missing dependencies that can be
+#                           fixed safely (git, ripgrep) via the detected package
+#                           manager. Ruby is never auto-installed (use a version
+#                           manager). Off by default; without it, missing deps
+#                           hard-fail with instructions. Environment-altering.
 #   --non-interactive       Never prompt; fail fast if a confirmation would
 #                           otherwise be required. (Currently unused; reserved.)
 #   --help, -h              Show this help and exit.
@@ -100,6 +111,11 @@ FORCE=false
 # prompt path is added that consults it. shellcheck SC2034 is suppressed
 # inline on the case-branch where the assignment fires.
 NON_INTERACTIVE=false
+# Instantiation-boundary guards (OPP-0041). Both default OFF (guards active);
+# each flag is a narrow, explicit escape hatch for a rare intentional case.
+INSIDE_PLATFORM=false   # allow bootstrapping inside the auto-harness platform repo
+ALLOW_NESTED=false      # allow bootstrapping nested inside another git repo (monorepo)
+INSTALL_DEPS=false      # opt-in auto-install of missing deps (git/ripgrep) via package manager
 MOUNT_PATH=""  # auto-detected after PROJECT_ROOT is known
 
 die()   { echo "error: $*" >&2; exit 2; }
@@ -120,6 +136,9 @@ while [[ $# -gt 0 ]]; do
     --skills)           SKILLS="$2"; shift 2 ;;
     --dry-run)          DRY_RUN=true; shift ;;
     --force)            FORCE=true; shift ;;
+    --inside-platform)  INSIDE_PLATFORM=true; shift ;;
+    --allow-nested)     ALLOW_NESTED=true; shift ;;
+    --install-deps)     INSTALL_DEPS=true; shift ;;
     --non-interactive)  NON_INTERACTIVE=true; shift ;;
     --help|-h)          print_usage; exit 0 ;;
     *)                  die "unknown argument: $1 (use --help)" ;;
@@ -128,6 +147,173 @@ done
 
 [[ -d "$PROJECT_ROOT" ]] || die "--project-root not a directory: $PROJECT_ROOT"
 PROJECT_ROOT="$(cd "$PROJECT_ROOT" && pwd)"
+
+# ---------------------------------------------------------------------------
+# Dependency preflight (OPP-0040). Check ALL runtime dependencies up front and
+# report any that are missing together, with per-platform install hints —
+# rather than discovering each at the point it is first used (Ruby at the
+# manifest merge, ripgrep at the placeholder validator, …). Bash 4+ is already
+# enforced at the top of this script. Hard-fail if anything is missing so
+# initialization never completes against a broken toolchain.
+#
+# HARNESS_SKIP_DEPCHECK=1 skips ONLY this dependency preflight (not the location
+# guards below). It exists for the test harness, for CI images that provision
+# the toolchain themselves, and for advanced users managing deps out-of-band.
+# ---------------------------------------------------------------------------
+if [[ -z "${HARNESS_SKIP_DEPCHECK:-}" ]]; then
+
+# Populate MISSING_TOKENS with canonical dep ids (git|ruby|ripgrep). Re-runnable
+# so we can re-check after an --install-deps attempt.
+MISSING_TOKENS=()
+detect_missing_deps() {
+  MISSING_TOKENS=()
+  command -v git >/dev/null 2>&1 || MISSING_TOKENS+=("git")
+  if command -v ruby >/dev/null 2>&1; then
+    ruby -e 'exit((RUBY_VERSION.split(".").map(&:to_i) <=> [3,0,0]) >= 0 ? 0 : 1)' 2>/dev/null \
+      || MISSING_TOKENS+=("ruby")
+  else
+    MISSING_TOKENS+=("ruby")
+  fi
+  command -v rg >/dev/null 2>&1 || MISSING_TOKENS+=("ripgrep")
+}
+dep_desc() {
+  case "$1" in
+    git)     echo "git — required to mount and update the auto-harness submodule" ;;
+    ripgrep) echo "ripgrep (rg) — required by validate-placeholders.sh and other validators" ;;
+    ruby)
+      if command -v ruby >/dev/null 2>&1; then
+        echo "ruby >= 3.0 (found $(ruby -e 'print RUBY_VERSION' 2>/dev/null)) — required by install.sh's manifest merge and the validators"
+      else
+        echo "ruby >= 3.0 — required by install.sh's manifest merge and the validators"
+      fi ;;
+  esac
+}
+
+detect_missing_deps
+
+# Opt-in auto-install (Tier 4 / environment-altering). Only git and ripgrep are
+# auto-installed; Ruby is deliberately excluded because a system Ruby commonly
+# shadows a package-manager Ruby, making a scripted fix unreliable.
+if [[ ${#MISSING_TOKENS[@]} -gt 0 ]] && $INSTALL_DEPS; then
+  PM_INSTALL=""
+  if   command -v brew    >/dev/null 2>&1; then PM_INSTALL="brew install"
+  elif command -v apt-get >/dev/null 2>&1; then PM_INSTALL="sudo apt-get install -y"
+  elif command -v dnf     >/dev/null 2>&1; then PM_INSTALL="sudo dnf install -y"
+  elif command -v pacman  >/dev/null 2>&1; then PM_INSTALL="sudo pacman -S --noconfirm"
+  fi
+  if [[ -z "$PM_INSTALL" ]]; then
+    echo "--install-deps: no supported package manager (brew/apt-get/dnf/pacman) found; skipping auto-install." >&2
+  else
+    PKGS=()
+    for tok in "${MISSING_TOKENS[@]}"; do
+      case "$tok" in
+        git)     PKGS+=("git") ;;
+        ripgrep) PKGS+=("ripgrep") ;;
+        ruby)    echo "--install-deps: not auto-installing Ruby (a system Ruby often shadows a package-manager Ruby); use a version manager — see note below." >&2 ;;
+      esac
+    done
+    if [[ ${#PKGS[@]} -gt 0 ]]; then
+      echo "--install-deps: installing via: $PM_INSTALL ${PKGS[*]}" >&2
+      # shellcheck disable=SC2086
+      $PM_INSTALL "${PKGS[@]}" >&2 || echo "--install-deps: install command failed; see output above." >&2
+    fi
+    detect_missing_deps
+  fi
+fi
+
+if [[ ${#MISSING_TOKENS[@]} -gt 0 ]]; then
+  {
+    echo "error: missing required dependencies — bootstrap cannot complete:"
+    echo ""
+    for tok in "${MISSING_TOKENS[@]}"; do echo "  - $(dep_desc "$tok")"; done
+    echo ""
+    case "$(uname -s)" in
+      Darwin) echo "Install on macOS (Homebrew):   brew install git ruby ripgrep bash" ;;
+      Linux)
+        echo "Install on Debian/Ubuntu:       sudo apt-get install -y git ruby ripgrep"
+        echo "Install on Fedora/RHEL:         sudo dnf install -y git ruby ripgrep"
+        echo "Install on Arch:                sudo pacman -S git ruby ripgrep" ;;
+      *)      echo "Install git, ruby (>=3.0), and ripgrep via your platform's package manager." ;;
+    esac
+    echo ""
+    echo "Note: some distributions ship Ruby < 3.0 — use a version manager (rbenv/asdf)"
+    echo "or your distro's ruby3.x package to get a current Ruby."
+    echo ""
+    echo "Tip: re-run with --install-deps to auto-install git/ripgrep via your package"
+    echo "manager (Ruby still needs a version manager). Re-run once deps are present."
+  } >&2
+  exit 2
+fi
+fi  # end HARNESS_SKIP_DEPCHECK guard
+
+# ---------------------------------------------------------------------------
+# Instantiation-boundary guards (OPP-0041). A consumer MUST be its own git
+# repository — never the auto-harness platform repo itself, and never nested
+# inside another repo's working tree (its files would be committed into, and
+# possibly pushed to, the wrong repository). Detect both BEFORE writing
+# anything and hard-fail with a remedy. Each guard has a narrow escape hatch
+# for the rare intentional case. The check runs only when PROJECT_ROOT is
+# inside a git repo; a not-yet-init'd consumer dir trips neither guard.
+# See: platform/workflow/recover-misplaced-consumer.md (recovery runbook).
+# ---------------------------------------------------------------------------
+ENCLOSING_TOPLEVEL=""
+if command -v git >/dev/null 2>&1; then
+  ENCLOSING_TOPLEVEL="$(git -C "$PROJECT_ROOT" rev-parse --show-toplevel 2>/dev/null || true)"
+fi
+
+if [[ -n "$ENCLOSING_TOPLEVEL" ]]; then
+  # Guard A — inside the auto-harness platform repo itself. Highest-consequence
+  # case (a private consumer's files committed/pushed into the platform repo).
+  # The fingerprint — kernel doctrine path + the self-repo manifest id — is
+  # unique to auto-harness's own repository, so false positives are negligible.
+  if [[ -f "$ENCLOSING_TOPLEVEL/platform/core/kernel/base/doctrine.md" ]] \
+     && grep -Eq '^[[:space:]]*id:[[:space:]]*development-harness-framework[[:space:]]*$' \
+            "$ENCLOSING_TOPLEVEL/harness.manifest.yaml" 2>/dev/null; then
+    if ! $INSIDE_PLATFORM; then
+      {
+        echo "error: refusing to bootstrap a consumer inside the auto-harness platform repo."
+        echo ""
+        echo "  Platform repo detected at: $ENCLOSING_TOPLEVEL"
+        echo "  Target consumer root:      $PROJECT_ROOT"
+        echo ""
+        echo "A consumer must be its OWN git repository, with auto-harness mounted"
+        echo "beneath it as a submodule — never a subdirectory of the platform."
+        echo ""
+        echo "Fix — from a directory OUTSIDE the platform repo:"
+        echo "  cd ~/projects/my-app && git init"
+        echo "  git submodule add -b main <auto-harness-url> .harness"
+        echo "  bash .harness/platform/bootstrap/install.sh"
+        echo ""
+        echo "Authoring an intentional in-tree example? Re-run with --inside-platform."
+        echo "Already created files in the platform tree? Recover with:"
+        echo "  ${HARNESS_ROOT}/platform/workflow/recover-misplaced-consumer.md"
+      } >&2
+      exit 2
+    fi
+  # Guard B — nested under some OTHER git repo. The consumer's files would be
+  # tracked by the enclosing repo rather than a repo of its own. The common
+  # legitimate case is a monorepo subproject, hence an explicit escape hatch
+  # rather than a silent proceed.
+  elif [[ "$ENCLOSING_TOPLEVEL" != "$PROJECT_ROOT" ]]; then
+    if ! $ALLOW_NESTED; then
+      {
+        echo "error: refusing to bootstrap a consumer nested inside another git repository."
+        echo ""
+        echo "  Enclosing git repo:   $ENCLOSING_TOPLEVEL"
+        echo "  Target consumer root: $PROJECT_ROOT"
+        echo ""
+        echo "The consumer's files would be tracked by the enclosing repo, not by a"
+        echo "repository of their own. A consumer should be its own git root."
+        echo ""
+        echo "Fix: run from the intended repository root (where .git lives), or create"
+        echo "a fresh repo for the consumer outside '$ENCLOSING_TOPLEVEL'."
+        echo ""
+        echo "Intentional monorepo subproject? Re-run with --allow-nested."
+      } >&2
+      exit 2
+    fi
+  fi
+fi
 
 # Auto-detect MOUNT_PATH if not provided
 if [[ -z "$MOUNT_PATH" ]]; then

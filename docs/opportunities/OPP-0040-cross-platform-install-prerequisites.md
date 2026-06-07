@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0040 — Cross-Platform Install Prerequisites: Surface and Preflight Them at First Contact
 
-**Status:** proposed
+**Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-06-05
-**Last Updated:** 2026-06-05
+**Last Updated:** 2026-06-06
 **Confidence:** medium
 
 ---
@@ -118,8 +118,16 @@ actionable report rather than failing piecemeal.
 
 ## Disposition
 
-<!-- Empty while Status: proposed. -->
+**Accepted 2026-06-06.** Promoted to PRD-0020 and implemented in the same PR. The
+preflight half ships now: `install.sh` checks Bash 4+, Ruby ≥ 3.0, ripgrep, and
+git up front and fails with one consolidated, per-platform report instead of
+discovering each gap mid-run. The friction-vs-safety question on auto-install was
+resolved as **opt-in** (`--install-deps`, environment-altering / Tier 4), with
+Ruby deliberately excluded (a system Ruby shadows a package-manager Ruby). The
+internal doc inconsistency (README → a prerequisites section omitting ripgrep) is
+closed by the consolidated check. A single first-contact cross-platform
+*prerequisites matrix doc* remains a follow-up.
 
 ## Promotion
 
-<!-- Empty until accepted. Then a link to PRD-NNNN. -->
+- See [`docs/requirements/PRD-0020-bootstrap-hardening-guards-and-preflight.md`](../requirements/PRD-0020-bootstrap-hardening-guards-and-preflight.md)

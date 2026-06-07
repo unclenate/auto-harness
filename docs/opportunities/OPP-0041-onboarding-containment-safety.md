@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0041 — Onboarding Containment Safety: Never Instantiate or Commit a Consumer Inside the Platform Repo
 
-**Status:** proposed
+**Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-06-05
-**Last Updated:** 2026-06-05
+**Last Updated:** 2026-06-06
 **Confidence:** high
 
 ---
@@ -99,8 +99,17 @@ submodule beneath it* — never a subdirectory living *inside* the platform.
 
 ## Disposition
 
-<!-- Empty while Status: proposed. -->
+**Accepted 2026-06-06.** Promoted to PRD-0020 and implemented in the same PR.
+`install.sh` now hard-fails before any write when the consumer is inside the
+auto-harness platform repo (Guard A) or nested inside another git repo (Guard B),
+with narrow escape hatches (`--inside-platform`, `--allow-nested`) for the rare
+intentional cases. The detection signal is local and unambiguous (enclosing root
+owns `platform/core/kernel/base/doctrine.md` + a `development-harness-framework`
+manifest). The `harness-onboarding` skill carries the same refusal as a first
+step. The recovery runbook
+([`recover-misplaced-consumer.md`](../../platform/workflow/recover-misplaced-consumer.md))
+ships alongside. Both guards are covered by the bootstrap test suite.
 
 ## Promotion
 
-<!-- Empty until accepted. Then a link to PRD-NNNN. -->
+- See [`docs/requirements/PRD-0020-bootstrap-hardening-guards-and-preflight.md`](../requirements/PRD-0020-bootstrap-hardening-guards-and-preflight.md)

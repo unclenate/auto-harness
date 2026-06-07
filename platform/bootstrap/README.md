@@ -101,7 +101,39 @@ Supports the same `--project-root`, `--mount-path`, `--force` flags as `install.
 |------|---------|
 | `0` | Completed successfully, no conflicts |
 | `1` | Completed with one or more conflicts (see summary) |
-| `2` | Usage error — bad flag, missing submodule, unknown composition/skill, etc. |
+| `2` | Usage error — bad flag, missing submodule, unknown composition/skill, **or a blocked dependency preflight / instantiation guard** |
+
+## Instantiation guards & dependency preflight (`install.sh`)
+
+Before writing anything, `install.sh` runs two safety checks (PRD-0020). Both
+hard-fail (exit 2) with a remedy; each has a narrow, explicit escape hatch.
+
+**Instantiation-boundary guards.** A consumer must be its *own* git repository
+with auto-harness mounted beneath it — never a subdirectory of, or committed
+into, another repo.
+
+- *Inside the platform repo* (you ran `install.sh` from within an auto-harness
+  checkout): refused. Override with `--inside-platform` (intentional in-tree
+  example only). Recover an already-mis-created consumer with
+  [`../workflow/recover-misplaced-consumer.md`](../workflow/recover-misplaced-consumer.md).
+- *Nested inside another git repo*: refused. Override with `--allow-nested`
+  (intentional monorepo subproject).
+
+The guards run only when the target is inside a git repo; a not-yet-`init`'d
+consumer directory trips neither.
+
+**Dependency preflight.** Checks Bash 4+, Ruby ≥ 3.0, ripgrep, and git up front
+and reports every gap together with per-platform install commands, rather than
+failing partway through.
+
+- `--install-deps` opts into auto-installing the deps that can be fixed safely
+  (git, ripgrep) via the detected package manager (brew / apt-get / dnf / pacman).
+  This is **environment-altering** (Tier 4), so it is **off by default**. **Ruby
+  is never auto-installed** — a system Ruby commonly shadows a package-manager
+  Ruby; use a version manager (rbenv/asdf) instead.
+- `HARNESS_SKIP_DEPCHECK=1` skips **only** the dependency preflight (not the
+  guards) — for the test harness, CI images that provision their own toolchain,
+  and advanced users managing dependencies out-of-band.
 
 ## The five-block summary (`install.sh`)
 

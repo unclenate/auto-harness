@@ -204,6 +204,8 @@ Your existing content outside the markers is preserved verbatim. If the file did
 
 Submodule-related operational issues — broken symlinks, "harness skills dir not found", Windows symlink configuration, recovering from drift, post-update re-initialization — are documented in **[Maintenance & Operations](maintenance-operations.md)**. The items below are setup-time symptoms specific to first-time integration.
 
+> **Bootstrapped a consumer *inside* the auto-harness repo by mistake?** If the consumer's files show up as changes to auto-harness (or a "commit" would push them into the platform repo), see the **[Recover a Misplaced Consumer](recover-misplaced-consumer.md)** runbook. A consumer must be its own git repository with auto-harness mounted as a submodule beneath it — never a subdirectory of the platform.
+
 ### `[CONFLICT] .agents/skills/<name> is a directory`
 
 Something put a real directory at the path where a symlink was expected. `link-skills.sh` and `install.sh` both refuse to delete real directories even with `--force` — the content could be user-authored. Move or remove the directory manually, then re-run.

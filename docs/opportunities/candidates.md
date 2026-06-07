@@ -107,8 +107,8 @@ underspecified.
 
 ### Consumer onboarding & project hygiene
 
-- [OPP-0040](OPP-0040-cross-platform-install-prerequisites.md) *(proposed
-  2026-06-05)* — Surface and preflight the install path's real prerequisites
+- [OPP-0040](OPP-0040-cross-platform-install-prerequisites.md) *(accepted
+  2026-06-06; PRD-0020 — preflight + opt-in installer shipped)* — Surface and preflight the install path's real prerequisites
   (**Bash 4+, Ruby 3.0+, ripgrep, Git `core.symlinks=true`**) at first contact.
   Today they are documented only in reference sections an adopter reaches *after*
   the quickstart, and `install.sh` preflights them asymmetrically: Bash is
@@ -132,7 +132,7 @@ safety); OPP-0042 is the *greenfield-specific* guardrail (don't over-assert from
 one-liner). They mirror the maintainer's own framing — "onboarding in general, and
 complete greenfield projects specifically."
 
-- [OPP-0041](OPP-0041-onboarding-containment-safety.md) *(proposed 2026-06-05)* —
+- [OPP-0041](OPP-0041-onboarding-containment-safety.md) *(accepted 2026-06-06; PRD-0020 — both guards shipped in install.sh + skill)* —
   Bootstrap/onboarding must **detect and refuse** instantiating a consumer *inside*
   the auto-harness platform repo (or any unrelated git repo), so a consumer is
   never scaffolded as a subdirectory of — or committed into — the platform.

@@ -89,6 +89,7 @@ originating opportunity records.
 | [0017](requirements/PRD-0017-healthcare-fhir-smart-wedge.md) | Healthcare FHIR + SMART-on-FHIR Wedge | Proposed | [OPP-0013](opportunities/OPP-0013-domain-family-healthcare-decomposed.md) |
 | [0018](requirements/PRD-0018-privacy-by-design.md) | Privacy-by-Design Module (`management/privacy-by-design`) | Proposed | — |
 | [0019](requirements/PRD-0019-aec-iso19650-openbim-wedge.md) | AEC ISO 19650 + openBIM Wedge | Proposed | [OPP-0039](opportunities/OPP-0039-domain-family-aec-decomposed.md) |
+| [0020](requirements/PRD-0020-bootstrap-hardening-guards-and-preflight.md) | Bootstrap Hardening — Instantiation-Boundary Guards + Dependency Preflight | Accepted | [OPP-0041](opportunities/OPP-0041-onboarding-containment-safety.md), [OPP-0040](opportunities/OPP-0040-cross-platform-install-prerequisites.md) |
 
 ---
 
@@ -139,8 +140,8 @@ clustered backlog with framing.
 | [0037](opportunities/OPP-0037-classify-before-enforcing-as-operating-principle.md) | Classify-Before-Enforcing as Operating Principle | exploring |
 | [0038](opportunities/OPP-0038-adopter-artifact-attribution-boundary.md) | Adopter Artifact Attribution: Signing Governance Without Asserting Rights | proposed |
 | [0039](opportunities/OPP-0039-domain-family-aec-decomposed.md) | AEC Domain Family (decomposed) | accepted (partial promotion) |
-| [0040](opportunities/OPP-0040-cross-platform-install-prerequisites.md) | Cross-Platform Install Prerequisites: Surface and Preflight Them at First Contact | proposed |
-| [0041](opportunities/OPP-0041-onboarding-containment-safety.md) | Onboarding Containment Safety: Never Instantiate or Commit a Consumer Inside the Platform Repo | proposed |
+| [0040](opportunities/OPP-0040-cross-platform-install-prerequisites.md) | Cross-Platform Install Prerequisites: Surface and Preflight Them at First Contact | accepted |
+| [0041](opportunities/OPP-0041-onboarding-containment-safety.md) | Onboarding Containment Safety: Never Instantiate or Commit a Consumer Inside the Platform Repo | accepted |
 | [0042](opportunities/OPP-0042-greenfield-onboarding-conservatism.md) | Greenfield Onboarding Conservatism: Route Contextless Greenfield to Discovery | proposed |
 
 ---

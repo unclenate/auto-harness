@@ -23,7 +23,17 @@ COEXIST_FIXTURES_DIR = File.expand_path("fixtures/consumer-repos", __dir__)
 
 def run_install(project_root, *args)
   cmd = ["bash", INSTALL_PATH, "--project-root", project_root, *args]
-  stdout, stderr, status = Open3.capture3(*cmd)
+  # Skip the dependency preflight: these tests exercise install.sh's file logic
+  # and the location guards, not the host toolchain. The dep preflight is
+  # covered separately and verified against real environments.
+  stdout, stderr, status = Open3.capture3({ "HARNESS_SKIP_DEPCHECK" => "1" }, *cmd)
+  [stdout, stderr, status.exitstatus]
+end
+
+# Like run_install but WITHOUT the dep-check bypass — for testing the preflight.
+def run_install_with_depcheck(project_root, env, *args)
+  cmd = ["bash", INSTALL_PATH, "--project-root", project_root, *args]
+  stdout, stderr, status = Open3.capture3(env, *cmd)
   [stdout, stderr, status.exitstatus]
 end
 
@@ -425,6 +435,113 @@ class TestInstallCiSnippet < Minitest::Test
       assert_match(/HARNESS_SUBMODULE_ROOT/, out)
       assert_match(/ruby\/setup-ruby@v1/, out)
       assert_match(/submodules: recursive/, out)
+    end
+  end
+end
+
+# ---------------------------------------------------------------------------
+# Instantiation-boundary guards (OPP-0041): refuse to bootstrap a consumer
+# inside the auto-harness platform repo, or nested inside any other git repo.
+# These use run_install (dep preflight bypassed) so the guards are what's
+# under test, not the host toolchain.
+# ---------------------------------------------------------------------------
+class TestInstallLocationGuards < Minitest::Test
+  def make_fake_platform(root)
+    FileUtils.mkdir_p(File.join(root, "platform/core/kernel/base"))
+    File.write(File.join(root, "platform/core/kernel/base/doctrine.md"), "doctrine\n")
+    File.write(File.join(root, "harness.manifest.yaml"),
+               "project:\n  id: development-harness-framework\n")
+    system("git", "-C", root, "init", "-q")
+  end
+
+  def git_init(root)
+    system("git", "-C", root, "init", "-q")
+  end
+
+  def test_refuses_inside_platform_repo
+    Dir.mktmpdir do |dir|
+      make_fake_platform(dir)
+      sub = File.join(dir, "my-app")
+      setup_mount(sub)
+      out, err, code = run_install(sub, "--dry-run")
+      assert_equal 2, code, "expected hard-fail inside platform. out:#{out} err:#{err}"
+      assert_match(/inside the auto-harness platform repo/, err)
+      refute File.exist?(File.join(sub, "harness.manifest.yaml")), "must not write on refusal"
+    end
+  end
+
+  def test_inside_platform_escape_hatch_allows
+    Dir.mktmpdir do |dir|
+      make_fake_platform(dir)
+      sub = File.join(dir, "my-app")
+      setup_mount(sub)
+      _out, _err, code = run_install(sub, "--dry-run", "--inside-platform")
+      assert_equal 0, code
+    end
+  end
+
+  def test_refuses_nested_inside_other_repo
+    Dir.mktmpdir do |dir|
+      git_init(dir)
+      sub = File.join(dir, "packages", "app")
+      setup_mount(sub)
+      out, err, code = run_install(sub, "--dry-run")
+      assert_equal 2, code, "expected hard-fail when nested. out:#{out} err:#{err}"
+      assert_match(/nested inside another git repository/, err)
+    end
+  end
+
+  def test_allow_nested_escape_hatch_allows
+    Dir.mktmpdir do |dir|
+      git_init(dir)
+      sub = File.join(dir, "packages", "app")
+      setup_mount(sub)
+      _out, _err, code = run_install(sub, "--dry-run", "--allow-nested")
+      assert_equal 0, code
+    end
+  end
+end
+
+# ---------------------------------------------------------------------------
+# Dependency preflight (OPP-0040): with the bypass OFF, a curated PATH that
+# hides ripgrep makes the preflight hard-fail with a consolidated report.
+# ---------------------------------------------------------------------------
+class TestInstallDependencyPreflight < Minitest::Test
+  def test_missing_ripgrep_is_reported
+    skip "needs git+ruby on PATH" unless system("sh", "-c", "command -v git >/dev/null && command -v ruby >/dev/null")
+    Dir.mktmpdir do |dir|
+      setup_mount(dir)
+      # Curated bin: symlink the real tools the script needs, but NOT rg.
+      bin = File.join(dir, "_bin")
+      FileUtils.mkdir_p(bin)
+      %w[bash sh git ruby dirname basename cd pwd uname grep sed ls cat mktemp env realpath].each do |tool|
+        real = `command -v #{tool} 2>/dev/null`.strip
+        File.symlink(real, File.join(bin, tool)) if !real.empty? && !File.exist?(File.join(bin, tool))
+      end
+      out, err, code = run_install_with_depcheck(dir, { "PATH" => bin }, "--dry-run")
+      assert_equal 2, code, "expected dep preflight to fail. out:#{out} err:#{err}"
+      assert_match(/missing required dependencies/, err)
+      assert_match(/ripgrep/, err)
+    end
+  end
+end
+
+class TestInstallDepsFlag < Minitest::Test
+  def test_install_deps_without_package_manager_skips_and_still_fails
+    skip "needs git+ruby on PATH" unless system("sh", "-c", "command -v git >/dev/null && command -v ruby >/dev/null")
+    Dir.mktmpdir do |dir|
+      setup_mount(dir)
+      bin = File.join(dir, "_bin")
+      FileUtils.mkdir_p(bin)
+      # curated PATH: real tools the script needs, but NO rg and NO brew/apt/dnf/pacman
+      %w[bash sh git ruby dirname basename pwd uname grep sed ls cat mktemp env realpath].each do |t|
+        real = `command -v #{t} 2>/dev/null`.strip
+        File.symlink(real, File.join(bin, t)) if !real.empty? && !File.exist?(File.join(bin, t))
+      end
+      out, err, code = run_install_with_depcheck(dir, { "PATH" => bin }, "--dry-run", "--install-deps")
+      assert_equal 2, code, "still-missing deps must fail. out:#{out} err:#{err}"
+      assert_match(/no supported package manager/, err)
+      assert_match(/missing required dependencies/, err)
     end
   end
 end

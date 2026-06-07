@@ -90,6 +90,7 @@ originating opportunity records.
 | [0018](requirements/PRD-0018-privacy-by-design.md) | Privacy-by-Design Module (`management/privacy-by-design`) | Proposed | — |
 | [0019](requirements/PRD-0019-aec-iso19650-openbim-wedge.md) | AEC ISO 19650 + openBIM Wedge | Proposed | [OPP-0039](opportunities/OPP-0039-domain-family-aec-decomposed.md) |
 | [0020](requirements/PRD-0020-bootstrap-hardening-guards-and-preflight.md) | Bootstrap Hardening — Instantiation-Boundary Guards + Dependency Preflight | Accepted | [OPP-0041](opportunities/OPP-0041-onboarding-containment-safety.md), [OPP-0040](opportunities/OPP-0040-cross-platform-install-prerequisites.md) |
+| [0021](requirements/PRD-0021-greenfield-onboarding-conservatism.md) | Greenfield Onboarding Conservatism — Route Contextless Greenfield to Discovery | Accepted | [OPP-0042](opportunities/OPP-0042-greenfield-onboarding-conservatism.md) |
 
 ---
 
@@ -142,7 +143,7 @@ clustered backlog with framing.
 | [0039](opportunities/OPP-0039-domain-family-aec-decomposed.md) | AEC Domain Family (decomposed) | accepted (partial promotion) |
 | [0040](opportunities/OPP-0040-cross-platform-install-prerequisites.md) | Cross-Platform Install Prerequisites: Surface and Preflight Them at First Contact | accepted |
 | [0041](opportunities/OPP-0041-onboarding-containment-safety.md) | Onboarding Containment Safety: Never Instantiate or Commit a Consumer Inside the Platform Repo | accepted |
-| [0042](opportunities/OPP-0042-greenfield-onboarding-conservatism.md) | Greenfield Onboarding Conservatism: Route Contextless Greenfield to Discovery | proposed |
+| [0042](opportunities/OPP-0042-greenfield-onboarding-conservatism.md) | Greenfield Onboarding Conservatism: Route Contextless Greenfield to Discovery | accepted |
 
 ---
 

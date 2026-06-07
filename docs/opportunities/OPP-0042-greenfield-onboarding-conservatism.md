@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0042 — Greenfield Onboarding Conservatism: Route Contextless Greenfield to Discovery, Don't Over-Assert Modules or Enforcement
 
-**Status:** proposed
+**Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-06-05
-**Last Updated:** 2026-06-05
+**Last Updated:** 2026-06-07
 **Confidence:** medium
 
 ---
@@ -23,7 +23,7 @@ full *enforced* module set and authors a complete artifact tree. The
 evidence-based, but its notion of evidence is **brownfield-shaped** (files present
 in the repo). Greenfield has no files, so "no evidence" should resolve to "almost
 nothing is assertable yet" → **route to a discovery-stage manifest**
-(`new-product-discovery` / `interview-driven`), not a guessed, enforcement-on
+(`new-product-discovery` / `interview-driven-discovery`), not a guessed, enforcement-on
 composition. The harness should make greenfield-with-minimal-context **default to
 discovery**, keep **intent-only modules out of the active/enforced set** until
 evidence exists, and **not flip `required-artifacts` on** until the modules that
@@ -85,7 +85,7 @@ require those artifacts are actually grounded.
   `disabledValidations: [required-artifacts]` through the discovery phase and lift
   it per-module as evidence lands.
 - **Interview depth.** Contextless greenfield arguably should trigger a short
-  `interview-driven` intake (a handful of questions) rather than silent inference.
+  `interview-driven-discovery` intake (a handful of questions) rather than silent inference.
   How many questions before it becomes friction the vibecoder bounces off?
 - **De-duplicate, don't reinvent.** This is about making onboarding *route to* the
   existing discovery surfaces by default; the design must avoid restating
@@ -97,8 +97,18 @@ require those artifacts are actually grounded.
 
 ## Disposition
 
-<!-- Empty while Status: proposed. -->
+**Accepted 2026-06-07.** Promoted to PRD-0021 and implemented in the same PR as a
+skill-guidance change. `harness-onboarding` SKILL.md now names **greenfield** as a
+distinct mode (no code *and* no governance docs), treats an operator's verbal
+description as **intent, not evidence**, routes greenfield to a discovery posture
+(`management/discovery-intake` / `new-product-discovery` / `interview-driven-discovery`),
+records intended-but-unevidenced modules as `# intent:` comments, and keeps
+`required-artifacts` disabled until real code evidence appears. The
+`intent:` *manifest schema field* is deferred (v1 uses comments); no validator is
+added because onboarding is AI-judgment work (the claim is Half-enforced via the
+skill instruction). `install.sh` is unchanged — `brownfield-lite` already ships
+`required-artifacts` disabled, and the over-assertion originated in the skill.
 
 ## Promotion
 
-<!-- Empty until accepted. Then a link to PRD-NNNN. -->
+- See [`docs/requirements/PRD-0021-greenfield-onboarding-conservatism.md`](../requirements/PRD-0021-greenfield-onboarding-conservatism.md)

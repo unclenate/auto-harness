@@ -144,9 +144,9 @@ complete greenfield projects specifically."
   extract-a-mis-created-consumer recovery runbook (the procedure this incident
   produced). Confidence: high.
 
-- [OPP-0042](OPP-0042-greenfield-onboarding-conservatism.md) *(proposed 2026-06-05)* —
+- [OPP-0042](OPP-0042-greenfield-onboarding-conservatism.md) *(accepted 2026-06-07; PRD-0021 — greenfield mode added to the onboarding skill)* —
   Contextless greenfield should **route to discovery** (`new-product-discovery` /
-  `interview-driven`), not a guessed enforcement-on composition. From "a portfolio
+  `interview-driven-discovery`), not a guessed enforcement-on composition. From "a portfolio
   site for me" the flow asserted `node-typescript` + `web-app` as active modules,
   authored a full `docs/` tree, and re-enabled `required-artifacts` — before any
   code existed, while its own comments admitted it was inferring intent

@@ -7,7 +7,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 # Operating Principles — Development Harness Framework
 
 > Owner: @unclenate
-> Last updated: 2026-05-28 *(§ 10 "Classify Claims Before Enforcing Them" added — promoted from the four-instance [[claim-vs-enforcement-classification]] observation chain in shared-observations.md, gated by the same three-instance bar § 9 was promoted under; OPP-0037 captures the design contract. § 9 "Split Design from Implementation" was added 2026-05-26 from the three-instance deferred-implementations observation; the curated longitudinal destination role was established 2026-05-25 per ADR-0014)*
+> Last updated: 2026-06-07 *(§ 3 gained a bullet — an unregistered prose count claim will drift; register catalog-size claims in the `validate-catalog-counts.sh` assertion table — added during the QA pass that fixed the HARNESS.md/README.md "twelve→thirteen" diagram-count drift. Prior: § 10 "Classify Claims Before Enforcing Them" added 2026-05-28 from the four-instance [[claim-vs-enforcement-classification]] observation chain (OPP-0037); § 9 "Split Design from Implementation" added 2026-05-26; the curated longitudinal destination role established 2026-05-25 per ADR-0014)*
 
 These principles govern how the harness platform itself is built and evolved.
 They are derived from the kernel doctrine and adapted to this project's context.

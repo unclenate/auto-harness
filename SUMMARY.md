@@ -508,6 +508,8 @@ Specifications for substantive new capabilities, paired with their originating o
 * [PRD-0017: Healthcare FHIR + SMART on FHIR Wedge](docs/requirements/PRD-0017-healthcare-fhir-smart-wedge.md)
 * [PRD-0018: Privacy by Design Module](docs/requirements/PRD-0018-privacy-by-design.md)
 * [PRD-0019: AEC ISO 19650 + openBIM Wedge](docs/requirements/PRD-0019-aec-iso19650-openbim-wedge.md)
+* [PRD-0020: Bootstrap Hardening — Guards + Dependency Preflight](docs/requirements/PRD-0020-bootstrap-hardening-guards-and-preflight.md)
+* [PRD-0021: Greenfield Onboarding Conservatism](docs/requirements/PRD-0021-greenfield-onboarding-conservatism.md)
 
 ### Opportunity Records (this project)
 
@@ -551,4 +553,8 @@ Forward-looking pre-PRD candidates managed by the `opportunity-capture` module.
 * [OPP-0035: Security Static Analysis Module](docs/opportunities/OPP-0035-security-static-analysis.md) — `management/security-static-analysis`, child of OPP-0020 (Wave 5.4; closes underhanded-code blind spot)
 * [OPP-0036: Knowledge-Redaction Validator + CODEOWNERS](docs/opportunities/OPP-0036-validate-knowledge-redaction.md) — `validate-knowledge-redaction.sh` (Wave 5.5; closes cross-pollination + reverse-leakage pathways)
 * [OPP-0037: Classify-Before-Enforcing as Operating Principle](docs/opportunities/OPP-0037-classify-before-enforcing-as-operating-principle.md) — Doctrine codification; promoted the four-instance meta-pattern to operating-principles §10 (design-only OPP + half-day implementation pattern)
+* [OPP-0038: Adopter Artifact Attribution Boundary](docs/opportunities/OPP-0038-adopter-artifact-attribution-boundary.md) — Signing governance artifacts in a host project without asserting affiliation/ownership (design deferred)
 * [OPP-0039: AEC Domain Family (decomposed `domains/aec-*`)](docs/opportunities/OPP-0039-domain-family-aec-decomposed.md) — Second built deep-domain vertical; 3-module ISO 19650 + openBIM wedge promoted via PRD-0019 (partial promotion), 3 sub-modules deferred
+* [OPP-0040: Cross-Platform Install Prerequisites](docs/opportunities/OPP-0040-cross-platform-install-prerequisites.md) — Surface + preflight install deps at first contact (accepted; PRD-0020)
+* [OPP-0041: Onboarding Containment Safety](docs/opportunities/OPP-0041-onboarding-containment-safety.md) — Refuse bootstrapping a consumer inside the platform / nested in another repo (accepted; PRD-0020)
+* [OPP-0042: Greenfield Onboarding Conservatism](docs/opportunities/OPP-0042-greenfield-onboarding-conservatism.md) — Route contextless greenfield to discovery, not a guessed enforced manifest (accepted; PRD-0021)

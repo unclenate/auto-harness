@@ -160,6 +160,10 @@ ASSERTIONS=(
   "README.md|Validator chain\*\* — ([a-z]+) shell scripts|validators"
   "README.md|^([A-Z][a-z]+) validators, each targeting|validators"
   "README.md|The harness provides ([a-z]+) skills|skills"
+  "README.md|architecture diagrams \(([a-z]+) in total|diagrams"
+
+  # HARNESS.md — diagram count prose (recurring drift site; word-form)
+  "HARNESS.md|— ([a-z]+) Mermaid diagrams|diagrams"
   # README.md — mermaid Enforcement (CI) box (numeric form)
   "README.md|Validators</b><br/>([0-9]+) scripts|validators"
 

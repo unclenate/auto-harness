@@ -16,12 +16,13 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 This repository IS the modular governance platform. It governs itself using its own
 module system, validators, and companion rules.
 
-> **Visual reference:** [Architecture Diagrams](docs/architecture/diagrams.md) — twelve
-> Mermaid diagrams covering composition, trust tier flow, companion rule firing,
+> **Visual reference:** [Architecture Diagrams](docs/architecture/diagrams.md) — thirteen Mermaid diagrams
+> covering composition, trust tier flow, companion rule firing,
 > opportunity-to-decision lifecycle, distillation triggers, consumer adoption,
 > paired-mechanism dynamic, OPP→PRD design-pressure cascade, catalog-counts
 > assertion flow, canonical-position artifact flow, the anchor-satellite
-> filing pattern, and the healthcare domain-family composition.
+> filing pattern, the healthcare domain-family composition, and the AEC
+> domain-family composition.
 
 **Manifest:** `harness.manifest.yaml`
 **Maturity:** Platform (Alpha)

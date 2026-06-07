@@ -160,7 +160,7 @@ flowchart TD
     Modules -.documented in.-> Workflows
 ```
 
-For the full set of architecture diagrams (twelve in total — covering trust tier flow, companion rule firing, the OPP/PRD/ADR lifecycle, and more) see [`docs/architecture/diagrams.md`](docs/architecture/diagrams.md).
+For the full set of architecture diagrams (thirteen in total — covering trust tier flow, companion rule firing, the OPP/PRD/ADR lifecycle, and more) see [`docs/architecture/diagrams.md`](docs/architecture/diagrams.md).
 
 ### 1. Declare your modules
 

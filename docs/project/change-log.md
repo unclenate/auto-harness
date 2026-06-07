@@ -11,6 +11,33 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-07 — QA + documentation pass: diagram-count drift, GitBook TOC sync, drift-class closure
+
+A QA/documentation-improvement pass focused on GitBook and the architecture diagrams.
+
+- **Diagram-count drift fixed.** `docs/architecture/diagrams.md` (13 numbered
+  diagrams, incl. #12 Healthcare and #13 AEC), the cover SVG, and
+  `validate-catalog-counts.sh` all read **thirteen**, but `HARNESS.md` and
+  `README.md` prose still said **"twelve"** (and HARNESS's list omitted AEC).
+  Corrected both; this is a *recurring* drift site (a prior `eleven→twelve` lapse
+  is in this log).
+- **Drift class closed.** Added the two diagram-count prose sites (HARNESS.md,
+  README.md) to the `validate-catalog-counts.sh` assertion table (word-form), so
+  this specific recurrence cannot pass CI again. Captured the general rule as a new
+  bullet in operating-principles § 3 (an unregistered prose count claim will drift)
+  — which also satisfies the kernel governance-entrypoint companion rule fired by
+  the HARNESS.md edit.
+- **GitBook TOC synced.** `SUMMARY.md` enumerates OPPs/PRDs individually but had
+  drifted — it was missing OPP-0038/0040/0041/0042 and PRD-0020/0021 (everything
+  filed since #102). Added them. Note: `SUMMARY.md` completeness is **not**
+  validated (list-completeness keys on `docs/README.md`), so this list is
+  hand-maintained and a candidate for a future completeness check or a
+  link-to-the-catalog restructure.
+
+Docs/validator-assertion only; no module or rule change.
+
+---
+
 ## 2026-06-07 — OPP-0040 follow-up: canonical cross-platform prerequisites page
 
 Closes the deferred follow-up named in OPP-0040's Disposition: a single

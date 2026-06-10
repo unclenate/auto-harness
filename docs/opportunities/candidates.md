@@ -6,7 +6,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # auto-harness — Opportunity Candidates Index
 
-**Owner:** @unclenate | **Last Updated:** 2026-06-09 *(added Cybersecurity deep-domain cluster: OPP-0043)*
+**Owner:** @unclenate | **Last Updated:** 2026-06-10 *(added Digital Twin / Scenario Runtime cluster: OPP-0044)*
 
 Organizational index of opportunity candidates filed in this directory. The
 canonical record for each candidate is its own `OPP-NNNN-slug.md` file —
@@ -500,6 +500,21 @@ siblings) and a tool-entry (dogfooded) / catalog-module (predict-clean) split.
   `aec-iso19650-5-security` (built-asset sensitivity). Composes with
   `management/privacy-by-design` — the catalog's second domain × cross-cutting
   composition.
+
+### Digital Twin / Scenario Runtime overlay (2026-06-10)
+
+A reusable cross-cutting governance overlay for projects that model real-world
+systems, run scenarios, and publish decision-support outputs. The second
+discipline overlay (after privacy-by-design) built on the deep-domain
+primitives; dual-spine standards anchor (interoperability/digital-thread +
+the Gemini Principles); a maturity-gated forcing artifact.
+
+- [OPP-0044](OPP-0044-digital-twin-scenario-runtime.md) *(accepted 2026-06-10; ADR-0019; PRD-0023)*
+  — `management/digital-twin` (default-off opt-in) + `templates/digital-twin/` +
+  `digital-twin-prototype.yaml` composition + two Half-enforced WARN validators
+  (`validate-twin-profile`, `validate-scenario-manifest`) + the `harness-digital-twin`
+  skill. Composes with `management/privacy-by-design` and `domains/aec-iso19650-im`
+  (the municipal / real-estate planning-twin stack).
 
 ### Canonical direction & strategic alignment
 

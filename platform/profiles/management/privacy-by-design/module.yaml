@@ -31,6 +31,9 @@ companionRules:
       - consent
       - analytics
       - telemetry
+      - ^src/.*user
+      - tracking
+      - ^auth/
     requiredAny:
       - ^docs/privacy/privacy-profile\.md$
       - ^docs/privacy/data-inventory\.md$

@@ -11,6 +11,23 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-10 — privacy-by-design self-covers its sensitivePaths (PR #114)
+
+The `privacy-by-design` module declared `^auth/`, `^src/.*user`, and `tracking` in
+`sensitivePaths` (the advisory WARN layer) but not in its own
+`companionRules.triggerPaths` (the enforced VALIDATE layer), so
+`validate-sensitive-paths` passed only when another active module happened to
+cross-cover those paths — a project activating `privacy-by-design` in isolation
+failed the validator with exit 1. Added the three patterns to the data-handling
+companion rule's `triggerPaths`, making the module self-sufficient and aligning it
+with `healthcare-smart-on-fhir` (which already enforces `^auth/`).
+
+The `module.yaml` change fired the PRD-0004 distillation rule, satisfied by a
+`docs/knowledge/shared-observations.md` entry naming the ambient-cross-coverage
+masking failure mode (a module's declare-layer and enforce-layer must be internally
+self-consistent, not made whole by ambient context). Branch brought current with
+`main` (post diagram-#14 / 17-validator state) before this fix.
+
 ## 2026-06-10 — Digital Twin family diagram (#14) + entrypoint count bump (PRD-0023 FR-007)
 
 Completes the FR-007 deferral recorded in the Phase-2 entry below. Adds architecture

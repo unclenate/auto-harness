@@ -6,7 +6,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # auto-harness — Opportunity Candidates Index
 
-**Owner:** @unclenate | **Last Updated:** 2026-05-24 *(added Tula cluster: OPP-0018..0022 + OPP-0013/0016 augmentation)*
+**Owner:** @unclenate | **Last Updated:** 2026-06-09 *(added Cybersecurity deep-domain cluster: OPP-0043)*
 
 Organizational index of opportunity candidates filed in this directory. The
 canonical record for each candidate is its own `OPP-NNNN-slug.md` file —
@@ -481,6 +481,25 @@ the §9 split-design-from-implementation discipline.
   (refresh-2 audit, Wave 2b safety sweep, Wave 5.1 mechanizing-doctrine,
   Wave 5.5 posture-design) exceed the §9 three-instance bar by one.
   Design-only OPP; implementation PR adds the §10 section.
+
+### Cybersecurity deep-domain vertical — OSINT / Maltego (2026-06-05)
+
+The third built deep-domain vertical after healthcare (OPP-0013) and AEC
+(OPP-0039). Standards/tool-anchored (MITRE ATT&CK + PTES, anchored on the
+real operator tool Maltego) rather than brownfield-derived. Adds a single
+family-wide forcing artifact (`engagement-charter.md`, shared across unbuilt
+siblings) and a tool-entry (dogfooded) / catalog-module (predict-clean) split.
+
+- [OPP-0043](OPP-0043-domain-family-cybersecurity-decomposed.md) *(accepted 2026-06-05; PRD-0022; partial promotion — cybersec-osint)*
+  — Decomposed `domains/cybersec-*` family (`cybersec-osint` built as a v1
+  wedge; `cybersec-red` + `cybersec-blue` deferred; Purple is a documented
+  red × blue composition, never a module) + `templates/cybersec/` +
+  `cybersec-osint-engagement.yaml` composition + a Half-enforced
+  `engagement-charter` WARN validator + the dogfooded Maltego tool entry.
+  Disambiguated from `management/security-static-analysis` (SAST) and
+  `aec-iso19650-5-security` (built-asset sensitivity). Composes with
+  `management/privacy-by-design` — the catalog's second domain × cross-cutting
+  composition.
 
 ### Canonical direction & strategic alignment
 

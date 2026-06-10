@@ -11,6 +11,28 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-09 — OPP-0043 + PRD-0022 filed: Cybersecurity OSINT / Maltego wedge (design-only)
+
+Phase-1 design contract for the **third deep-domain vertical** (Cybersecurity),
+landed as a pure-docs PR per § 9 (split design from implementation). **OPP-0043**
+ratifies the decomposed `domains/cybersec-*` family — `cybersec-osint` (recon + CTI,
+promoted to a v1 wedge), `cybersec-red` and `cybersec-blue` (deferred), and Purple
+(a documented red × blue composition, never a module) — anchored on MITRE ATT&CK +
+PTES and on the real operator tool Maltego. **PRD-0022** specifies the OSINT wedge:
+the module, a single family-wide `engagement-charter.md` forcing artifact, a
+Half-enforced module-gated WARN validator, the dogfooded Maltego tool entry, and the
+`management/privacy-by-design` composition (the catalog's second domain × cross-cutting
+composition). All implementation — module, templates, validator (chain 15→16), tool
+entries, diagram (#14), composition, and catalog-count propagation — is **deferred to
+Phase 2** per § 9.
+
+The family name `domains/cybersec-*` is deliberately disambiguated from the two
+existing "security" surfaces: `management/security-static-analysis` (SAST) and
+`domains/aec-iso19650-5-security` (built-asset sensitivity). The PRD-0004 distillation
+rule (fired by creating OPP-0043) is satisfied by the third-built-domain observation
+appended to `docs/knowledge/shared-observations.md` in the same PR. Design evidence:
+`docs/superpowers/specs/2026-06-05-cybersecurity-osint-maltego-wedge-design.md`.
+
 ## 2026-06-07 — QA + documentation pass: diagram-count drift, GitBook TOC sync, drift-class closure
 
 A QA/documentation-improvement pass focused on GitBook and the architecture diagrams.

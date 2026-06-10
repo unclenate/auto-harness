@@ -1,0 +1,67 @@
+schemaVersion: 1
+scenario:
+  id: scenario-001
+  title: Test Scenario
+  owner: test-owner
+  purpose: Validate the scenario manifest validator
+  maturity: digital-twin-prototype
+  status: draft
+  created: "2026-06-10"
+  updated: "2026-06-10"
+boundary:
+  geography: test-region
+  included:
+    - test-area
+  excluded:
+    - out-of-scope-area
+baseline:
+  worldStateVersion: "1.0.0"
+  source: test-data-source
+  asOf: "2026-06-10"
+  limitations: Limited to test data only
+datasets:
+  - id: d1
+    name: Test Dataset
+    source: test-data-warehouse
+    version: "2.1.0"
+    asOf: "2026-06-10"
+    confidence: medium
+    owner: data-team
+    license: internal
+assumptions:
+  - id: a1
+    statement: Growth rate remains constant
+    confidence: low
+    sensitivity: high
+    rationale: Historical trend projection
+    source: internal-analysis
+models:
+  - id: m1
+    name: Test Model
+    owner: modeling-team
+    inputs: [dataset-d1]
+    outputs: [projection]
+    validation: unit-tested
+outputs:
+  - id: o1
+    audience: internal
+    publicationAllowed: false
+    reviewRequired: true
+uncertainty:
+  method: sensitivity-analysis
+  confidenceScale: low/medium/high
+  sensitivityMethod: one-at-a-time
+  requiredDisclosure: true
+provenance:
+  gitCommit: abc123def456
+  runId: run-2026-06-10-001
+  generatedAt: "2026-06-10T12:00:00Z"
+  generatedBy: test-runner
+  inputHash: sha256:aabbccdd
+  outputHash: sha256:eeff0011
+review:
+  reviewers:
+    - internal-reviewer
+  gates:
+    - pre-publication
+  status: pending

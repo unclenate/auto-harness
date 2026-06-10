@@ -1701,3 +1701,110 @@ class TestValidatePrivacyByDesign < Minitest::Test
     assert_match(/not found|No such file/i, err)
   end
 end
+
+# ---------------------------------------------------------------------------
+# validate-twin-profile.sh
+#
+# PRD-0023 Phase 2 Task 3. The validator is opt-in: when the
+# management/digital-twin module is not in the active set, the validator exits
+# 0 with a "module inactive" message. When the module is active, the validator
+# reads docs/twin/twin-profile.md, parses the YAML frontmatter, and asserts:
+#   - maturity is a non-empty string
+#   - at least one conformance entry exists
+#   - governingPrinciples is non-empty
+#   - no conformance entry marks a known-emerging standard as status: published
+#
+# --scan-file mode is the fixture-firing test seam (mirrors validate-privacy-
+# by-design.sh and validate-sast-coverage.sh patterns).
+# ---------------------------------------------------------------------------
+class TestValidateTwinProfile < Minitest::Test
+  HARNESS_ROOT      = File.expand_path("..", PLATFORM_DIR)
+  TWIN_FIXTURES_DIR = File.join(PLATFORM_DIR, "validators", "test", "fixtures", "digital-twin")
+
+  # Expected exit code per fixture (PRD-0023 contract).
+  FIXTURE_EXPECTATIONS = {
+    "clean-profile.md"         => 0,  # valid maturity + conformance + principles → pass
+    "unfilled-profile.md"      => 1,  # empty maturity, no conformance → fail
+    "emerging-as-published.md" => 1,  # ISO 23247-5 marked published → fail (overclaim)
+  }.freeze
+
+  def test_runs_clean_against_harness_repo
+    # The harness does not activate management/digital-twin — the validator must
+    # exit 0 with the "module inactive" message (catalog-only; predict-clean).
+    manifest = File.join(HARNESS_ROOT, "harness.manifest.yaml")
+    out, err, code = run_validator("validate-twin-profile.sh", manifest, HARNESS_ROOT)
+    assert_equal 0, code,
+                 "Module-inactive path must exit 0. stderr: #{err}"
+    assert_match(/skipped/, out)
+    assert_match(/not active/, out)
+  end
+
+  def test_every_fixture_has_expected_exit_in_scan_file_mode
+    # Each fixture exercises one expected outcome. The fixture set is the
+    # contract; adding a new validation rule means adding a fixture in the
+    # same PR.
+    FIXTURE_EXPECTATIONS.each do |fixture_name, expected_code|
+      fixture = File.join(TWIN_FIXTURES_DIR, fixture_name)
+      assert File.exist?(fixture),
+             "Fixture missing: #{fixture}"
+      out, err, code = run_validator(
+        "validate-twin-profile.sh", "--scan-file", fixture
+      )
+      assert_equal expected_code, code,
+                   "#{fixture_name} expected exit #{expected_code}, got #{code}. " \
+                   "stdout: #{out} stderr: #{err}"
+    end
+  end
+end
+
+# ---------------------------------------------------------------------------
+# validate-scenario-manifest.sh
+#
+# PRD-0023 Phase 2 Task 4. The validator is opt-in: when the
+# management/digital-twin module is not in the active set, the validator exits
+# 0 with a "module inactive" message. When the module is active, it scans all
+# scenario manifests under scenarios/ (or a single --scan-file target) and
+# asserts: required top-level sections present; datasets carry source/version/
+# asOf/confidence; assumptions carry confidence/sensitivity; provenance present;
+# no output marks publicationAllowed: true without a publication.approvalStatus.
+# ---------------------------------------------------------------------------
+class TestValidateScenarioManifest < Minitest::Test
+  HARNESS_ROOT      = File.expand_path("..", PLATFORM_DIR)
+  TWIN_FIXTURES_DIR = File.join(PLATFORM_DIR, "validators", "test", "fixtures", "digital-twin")
+
+  # Expected exit code per fixture (PRD-0023 contract).
+  FIXTURE_EXPECTATIONS = {
+    "clean-manifest.yaml"             => 0,  # all required sections + valid datasets → pass
+    "missing-provenance.yaml"         => 1,  # no provenance section → fail
+    "dataset-missing-version.yaml"    => 1,  # dataset lacks version/asOf/confidence → fail
+    "published-without-approval.yaml" => 1,  # publicationAllowed: true without approvalStatus → fail
+  }.freeze
+
+  def test_runs_clean_against_harness_repo
+    # The harness does not activate management/digital-twin — the validator must
+    # exit 0 with the "module inactive" message (catalog-only; predict-clean).
+    manifest = File.join(HARNESS_ROOT, "harness.manifest.yaml")
+    out, err, code = run_validator("validate-scenario-manifest.sh", manifest, HARNESS_ROOT)
+    assert_equal 0, code,
+                 "Module-inactive path must exit 0. stderr: #{err}"
+    assert_match(/skipped/, out)
+    assert_match(/not active/, out)
+  end
+
+  def test_every_fixture_has_expected_exit_in_scan_file_mode
+    # Each fixture exercises one expected outcome. The fixture set is the
+    # contract; adding a new validation rule means adding a fixture in the
+    # same PR.
+    FIXTURE_EXPECTATIONS.each do |fixture_name, expected_code|
+      fixture = File.join(TWIN_FIXTURES_DIR, fixture_name)
+      assert File.exist?(fixture),
+             "Fixture missing: #{fixture}"
+      out, err, code = run_validator(
+        "validate-scenario-manifest.sh", "--scan-file", fixture
+      )
+      assert_equal expected_code, code,
+                   "#{fixture_name} expected exit #{expected_code}, got #{code}. " \
+                   "stdout: #{out} stderr: #{err}"
+    end
+  end
+end

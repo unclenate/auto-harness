@@ -1,0 +1,28 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+# Starter composition for a scenario-driven digital-twin prototype. Activates the
+# digital-twin overlay with privacy-by-design (civic/personal data) on a built-
+# environment substrate (ISO 19650 IM) — the municipal / real-estate planning-twin
+# stack. The catalog's second domain x cross-cutting x cross-cutting composition.
+# References:
+#   - platform/profiles/management/digital-twin/README.md
+#   - platform/profiles/management/privacy-by-design/README.md
+#   - platform/profiles/domains/aec-iso19650-im/README.md
+#   - docs/requirements/PRD-0023-digital-twin-scenario-runtime-overlay.md
+schemaVersion: 1
+project:
+  id: example-digital-twin-prototype
+  name: Example Digital Twin Prototype
+  maturity: prototype
+  criticality: medium
+modules:
+  core:
+    - kernel/base
+  domains:
+    - aec-iso19650-im
+  management:
+    - digital-twin
+    - privacy-by-design
+overrides:
+  requiredArtifacts: []
+  disabledValidations: []

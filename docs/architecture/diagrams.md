@@ -16,7 +16,7 @@ need the picture in context.
 > repository view. Edit a diagram by editing the Mermaid block in this
 > file — there is no separate image to regenerate.
 
-Thirteen diagrams below, grouped by what they answer:
+Fourteen diagrams below, grouped by what they answer:
 
 | # | Question the diagram answers | Section |
 |---|------------------------------|---------|
@@ -33,6 +33,7 @@ Thirteen diagrams below, grouped by what they answer:
 | 11 | *How does anchor-satellite OPP filing produce better PRD scoping?* | [Anchor-Satellite Filing Pattern](#11-anchor-satellite-filing-pattern) |
 | 12 | *How does a deep-domain module family compose, and where does jurisdiction belong?* | [Healthcare Domain Family](#12-healthcare-domain-family) |
 | 13 | *What is the AEC module family composition, and where do standards, jurisdiction, and security belong?* | [AEC Domain Family](#13-aec-domain-family) |
+| 14 | *How does the digital-twin overlay compose, and what does its forcing artifact gate?* | [Digital Twin Overlay Family](#14-digital-twin-overlay-family) |
 
 ---
 
@@ -52,7 +53,7 @@ flowchart TD
     Manifest["<b>harness.manifest.yaml</b><br/>project-local activation"]
 
     subgraph CATALOG["Active Catalog (per project)"]
-        Manifest --> Modules["<b>Modules</b><br/>core · profiles · agents<br/>(51 total in-tree)"]
+        Manifest --> Modules["<b>Modules</b><br/>core · profiles · agents<br/>(52 total in-tree)"]
     end
 
     subgraph CONTRACT["Per-Module Contract (module.yaml)"]
@@ -63,7 +64,7 @@ flowchart TD
     end
 
     subgraph ENFORCE["Enforcement (CI)"]
-        Validators["<b>Validators</b><br/>15 scripts"]
+        Validators["<b>Validators</b><br/>17 scripts"]
         Validators -.reads.-> Manifest
         Validators -.reads.-> Required
         Validators -.reads.-> Companions
@@ -72,7 +73,7 @@ flowchart TD
 
     subgraph SURFACE["Consumer-Facing Surfaces"]
         Skills["<b>Skills</b><br/>governance, onboarding,<br/>testing, web3, tools,<br/>agentic-interfaces, mcp"]
-        Templates["<b>Templates</b><br/>74 scaffolding files<br/>(tokenized headers)"]
+        Templates["<b>Templates</b><br/>84 scaffolding files<br/>(tokenized headers)"]
         Workflows["<b>Workflows</b><br/>19 guides:<br/>bootstrap, discovery,<br/>distillation, etc."]
     end
 
@@ -356,7 +357,7 @@ flowchart TD
     Write --> Headers["<b>Fill template headers</b><br/>bash .harness/platform/bootstrap/<br/>set-consumer-headers.sh"]
     Headers --> Config["Writes .harness-headers.yaml<br/>(owner_name, owner_email,<br/>year, spdx_license, project_name)"]
 
-    Config --> Validate["Run validator chain locally<br/>(15 validators)"]
+    Config --> Validate["Run validator chain locally<br/>(17 validators)"]
     Validate --> Pass{"All exit 0?"}
 
     Pass -->|"no"| Troubleshoot["See workflow/troubleshooting.md<br/>or harness-onboarding skill"]
@@ -908,3 +909,35 @@ security spine composes with `management/privacy-by-design` — built-asset
 sensitivity and occupant personal-data privacy are governed side-by-side without
 overlap. This mirrors the healthcare family (diagram #12) and is the template for
 future deep-domain verticals.
+
+## 14. Digital Twin Overlay Family
+
+**Question:** *How does the digital-twin overlay compose, and what does its forcing artifact gate?*
+
+```mermaid
+graph TD
+    KB[kernel/base]
+    DT["management/digital-twin<br/>(cross-cutting overlay • opt-in • default-off)"]
+    TP[["twin-profile.md<br/>maturity × standards-conformance × Gemini Principles"]]
+    LADDER["maturity ladder (gates artifact depth)<br/>L1 model → L2 shadow → L3 prototype<br/>→ L4 operational → L5 control-loop"]
+    AEC["domains/aec-iso19650-im<br/>(built-environment planning substrate)"]
+    PBD["management/privacy-by-design<br/>(resident / occupant personal data)"]
+
+    KB --> DT
+    DT -.forces.-> TP
+    TP -.gated by.-> LADDER
+    DT -.composes with.-> AEC
+    DT -.composes with.-> PBD
+```
+
+Unlike the healthcare (#12) and AEC (#13) *domain* families, `management/digital-twin`
+is a **discipline overlay** — twin-ness is orthogonal to subject matter, so it layers on
+top of any vertical rather than living under `domains/`. Its forcing artifact,
+`twin-profile.md`, is maturity-gated: the declared level on the ladder governs how much
+of the contract (provenance, registries, run-logs, uncertainty, publication, security
+boundaries) must exist, and the bias guardrail is default-deny overclaiming — no maturity
+beyond evidence, no draft standard cited as ratified. The lead composition is the
+built-environment planning-twin stack (`aec-iso19650-im` × `digital-twin` ×
+`privacy-by-design`); it is institutionally coherent because CDBB authored both the
+Gemini Principles and the UK ISO 19650 transition. This is the **second discipline overlay**
+after `privacy-by-design`, and the template for future cross-cutting disciplines.

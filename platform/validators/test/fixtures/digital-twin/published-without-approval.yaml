@@ -1,0 +1,35 @@
+schemaVersion: 1
+scenario:
+  id: scenario-004
+  title: Published Without Approval Scenario
+  owner: test-owner
+  maturity: digital-twin-prototype
+  status: draft
+datasets:
+  - id: d1
+    source: test-data-warehouse
+    version: "1.0.0"
+    asOf: "2026-06-10"
+    confidence: high
+assumptions:
+  - id: a1
+    statement: Some assumption
+    confidence: high
+    sensitivity: low
+outputs:
+  - id: o1
+    audience: public
+    publicationAllowed: true
+    reviewRequired: true
+    # publication section intentionally omitted — no approvalStatus → validator must exit 1
+uncertainty:
+  method: sensitivity-analysis
+  confidenceScale: low/medium/high
+  requiredDisclosure: true
+provenance:
+  gitCommit: abc123def456
+  runId: run-2026-06-10-004
+  generatedAt: "2026-06-10T12:00:00Z"
+  generatedBy: test-runner
+  inputHash: sha256:aabbccdd
+  outputHash: sha256:eeff0011

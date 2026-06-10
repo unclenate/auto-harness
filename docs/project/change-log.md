@@ -11,6 +11,96 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-10 — Digital Twin family diagram (#14) + entrypoint count bump (PRD-0023 FR-007)
+
+Completes the FR-007 deferral recorded in the Phase-2 entry below. Adds architecture
+diagram **#14 "Digital Twin Overlay Family"** to `docs/architecture/diagrams.md` —
+the overlay, the `twin-profile.md` forcing artifact, the maturity ladder, and the
+composition edges to `aec-iso19650-im` + `privacy-by-design` — and propagates the
+diagram count **13→14** across every asserted site (`HARNESS.md`, `README.md`,
+`docs/_assets/cover-back.svg`) plus the `diagrams.md` intro line and TOC.
+`validate-catalog-counts.sh` already normalizes the word-form "fourteen", so no
+validator change was needed.
+
+The `HARNESS.md` edit (`thirteen → fourteen Mermaid diagrams`) trips the
+governance-entrypoint companion reflex; it is satisfied here by a `docs/operating-principles.md`
+§ 3 bullet ("a new counted surface couples its entrypoint count in the same change"),
+which also discharges the PRD-0004 distillation rule. This closes the Digital Twin
+overlay end-to-end: the catalog now reads **14 diagrams**, and no DT follow-up remains
+except any future capability work.
+
+## 2026-06-10 — management/digital-twin overlay implemented (PRD-0023 Phase 2)
+
+PRD-0023 Phase 2 lands the full `management/digital-twin` implementation as a catalog-only
+PR: **module** (`platform/profiles/management/digital-twin/module.yaml` + README),
+**10 templates** (twin-profile, overview, scenario-manifest-spec, data-provenance,
+model-registry, agent-registry, run-log-spec, uncertainty-policy, publication-policy,
+security-boundaries), **2 Half-enforced WARN validators**
+(`validate-twin-profile.sh`, `validate-scenario-manifest.sh`),
+**skill** (`harness-digital-twin`), **sample composition**
+(`digital-twin-prototype.yaml` — digital-twin × privacy-by-design × aec-iso19650-im),
+**discoverability** (SUMMARY.md, README.md Module System table, harness-onboarding skill,
+discovery-to-composition.md, templates/README.md), and **count propagation**
+(modules 42→43/51→52, validators 15→17, skills 7→8, templates 74→84).
+
+Catalog-only (not in `harness.manifest.yaml`); the two new validators are module-gated
+and no-op on the harness's own CI (predict-clean posture). The dual-spine anchor
+(interoperability/digital-thread + Gemini Principles) is now concrete in the templates.
+PRD-0004 distillation rule is satisfied by the Phase-2 observation appended to
+`docs/knowledge/shared-observations.md`.
+
+**Deferred to a maintainer follow-up:** diagram FR-007 (family diagram) and the
+consequent HARNESS.md diagram-count bump — the companion-rule reflex on HARNESS.md
+(editing `— thirteen Mermaid diagrams`) requires an ADR or operating-principles update
+in the same commit, disproportionate for a count bump. All diagram-count sites stay 13;
+HARNESS.md is untouched in this PR.
+
+## 2026-06-10 — OPP-0044 + ADR-0019 + PRD-0023 filed: Digital Twin / Scenario Runtime overlay (design-only)
+
+Phase-1 design contract for a reusable **Digital Twin / Scenario Runtime** governance
+capability, landed as a pure-docs PR per § 9 (split design from implementation).
+**OPP-0044** ratifies the opportunity (a recurring twin/scenario pattern across municipal,
+real-estate, datacenter, civic, and health projects). **ADR-0019** records the placement
+decision — a `management/digital-twin` cross-cutting overlay (default-off opt-in), NOT a
+subject-matter domain — and stages the latent "epistemic-discipline" taxonomy category
+(shared with `eval-gated-testing`) rather than minting it. **PRD-0023** specifies the v1
+overlay: a single `twin-profile.md` forcing artifact, a dual-spine standards anchor
+(interoperability/digital-thread + the Gemini Principles), a maturity-gated artifact model,
+two Half-enforced WARN validators, a skill, a sample composition, and a diagram — with a §10
+Claim Classification block. All implementation (module, templates, validators, skill,
+composition, diagram, counts) is **deferred to Phase 2** per § 9.
+
+The overlay is the second cross-cutting discipline overlay after `privacy-by-design`,
+generalizing the deep-domain primitives beyond industry verticals. The lead composition is
+the built-environment planning-twin stack `domains/aec-iso19650-im` × `management/digital-twin`
+× `management/privacy-by-design` — institutionally coherent (CDBB authored both the Gemini
+Principles and the UK ISO 19650 transition). The PRD-0004 distillation rule (fired by creating
+OPP-0044 and ADR-0019) is satisfied by the second-cross-cutting-overlay observation appended to
+`docs/knowledge/shared-observations.md` in the same PR. Design evidence:
+`docs/superpowers/specs/2026-06-10-digital-twin-scenario-runtime-overlay-design.md`.
+
+## 2026-06-09 — OPP-0043 + PRD-0022 filed: Cybersecurity OSINT / Maltego wedge (design-only)
+
+Phase-1 design contract for the **third deep-domain vertical** (Cybersecurity),
+landed as a pure-docs PR per § 9 (split design from implementation). **OPP-0043**
+ratifies the decomposed `domains/cybersec-*` family — `cybersec-osint` (recon + CTI,
+promoted to a v1 wedge), `cybersec-red` and `cybersec-blue` (deferred), and Purple
+(a documented red × blue composition, never a module) — anchored on MITRE ATT&CK +
+PTES and on the real operator tool Maltego. **PRD-0022** specifies the OSINT wedge:
+the module, a single family-wide `engagement-charter.md` forcing artifact, a
+Half-enforced module-gated WARN validator, the dogfooded Maltego tool entry, and the
+`management/privacy-by-design` composition (the catalog's second domain × cross-cutting
+composition). All implementation — module, templates, validator (chain 15→16), tool
+entries, diagram (#14), composition, and catalog-count propagation — is **deferred to
+Phase 2** per § 9.
+
+The family name `domains/cybersec-*` is deliberately disambiguated from the two
+existing "security" surfaces: `management/security-static-analysis` (SAST) and
+`domains/aec-iso19650-5-security` (built-asset sensitivity). The PRD-0004 distillation
+rule (fired by creating OPP-0043) is satisfied by the third-built-domain observation
+appended to `docs/knowledge/shared-observations.md` in the same PR. Design evidence:
+`docs/superpowers/specs/2026-06-05-cybersecurity-osint-maltego-wedge-design.md`.
+
 ## 2026-06-07 — QA + documentation pass: diagram-count drift, GitBook TOC sync, drift-class closure
 
 A QA/documentation-improvement pass focused on GitBook and the architecture diagrams.

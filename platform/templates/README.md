@@ -358,6 +358,24 @@ duplicating inline. Absorbed from governance patterns observed in adsclaw.
 | Data inventory | `management/privacy-by-design` | `templates/privacy/data-inventory.md` |
 | Privacy impact assessment (DPIA / PIA) | `management/privacy-by-design` | `templates/privacy/privacy-impact-assessment.md` |
 
+### Digital Twin
+
+Templates for projects that model real-world systems, run scenarios, and publish
+decision-support. Copy the files you need into the project's `docs/twin/` tree.
+
+| Template | Required By Module | Path |
+| -------- | ------------------ | ---- |
+| Twin profile (forcing artifact) | `management/digital-twin` | `templates/digital-twin/twin-profile.md` |
+| Overview and maturity ladder | `management/digital-twin` | `templates/digital-twin/overview.md` |
+| Scenario manifest spec | `management/digital-twin` | `templates/digital-twin/scenario-manifest-spec.md` |
+| Data provenance | `management/digital-twin` | `templates/digital-twin/data-provenance.md` |
+| Model registry | `management/digital-twin` | `templates/digital-twin/model-registry.md` |
+| Agent registry | `management/digital-twin` | `templates/digital-twin/agent-registry.md` |
+| Run log spec | `management/digital-twin` | `templates/digital-twin/run-log-spec.md` |
+| Uncertainty policy | `management/digital-twin` | `templates/digital-twin/uncertainty-policy.md` |
+| Publication policy | `management/digital-twin` | `templates/digital-twin/publication-policy.md` |
+| Security boundaries | `management/digital-twin` | `templates/digital-twin/security-boundaries.md` |
+
 ### AEC
 
 | Template | Required By Module | Path |

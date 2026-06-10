@@ -53,7 +53,7 @@ harness provides:
 - **Artifact requirements** — the files that must exist for a module to be considered active
   and governed (problem statement, ADRs, risk register, release checklist, etc.)
 - **Sensitive path governance** — patterns that trigger elevated human review when changed
-- **Validator chain** — fifteen shell scripts you run locally or in CI that enforce all of the above
+- **Validator chain** — seventeen shell scripts you run locally or in CI that enforce all of the above
 - **Agent adapters** — `CLAUDE.md`, `AGENTS.md`, and `.claude/settings.json` shims that load
   the governance rules into agent context at session start
 
@@ -143,7 +143,7 @@ flowchart TD
     end
 
     subgraph ENFORCE["Enforcement (CI)"]
-        Validators["<b>Validators</b><br/>15 scripts"]
+        Validators["<b>Validators</b><br/>17 scripts"]
         Validators -.reads.-> Manifest
         Validators -.reads.-> Companions
         Validators --> CIGate["<b>CI gates merge</b>"]
@@ -160,7 +160,7 @@ flowchart TD
     Modules -.documented in.-> Workflows
 ```
 
-For the full set of architecture diagrams (thirteen in total — covering trust tier flow, companion rule firing, the OPP/PRD/ADR lifecycle, and more) see [`docs/architecture/diagrams.md`](docs/architecture/diagrams.md).
+For the full set of architecture diagrams (fourteen in total — covering trust tier flow, companion rule firing, the OPP/PRD/ADR lifecycle, and more) see [`docs/architecture/diagrams.md`](docs/architecture/diagrams.md).
 
 ### 1. Declare your modules
 
@@ -264,7 +264,7 @@ declares its governance contract. You compose them to match your project.
 | **Architectures** | Deployment and interaction patterns | `web-app`, `api-service`, `event-driven`, `mcp-server` |
 | **Data** | Storage overlays | `relational-postgres`, `document-store`, `object-storage` |
 | **Delivery** | Lifecycle posture | `prototype`, `production-saas`, `internal-platform`, `self-hosted-oss`, `managed-fleet` |
-| **Management** | Product, project, program, knowledge, opportunity, and testing governance | `discovery-intake`, `interview-driven`, `product-lite`, `project-standard`, `program-lite`, `testing-standard`, `eval-gated-testing`, `knowledge-capture`, `opportunity-capture`, `security-static-analysis`, `privacy-by-design` |
+| **Management** | Product, project, program, knowledge, opportunity, and testing governance | `discovery-intake`, `interview-driven`, `product-lite`, `project-standard`, `program-lite`, `testing-standard`, `eval-gated-testing`, `knowledge-capture`, `opportunity-capture`, `security-static-analysis`, `privacy-by-design`, `digital-twin` |
 | **Domains** | Vendor or specialist overlays | `supabase`, `web3`, `media-pipeline`, `gitbook`, `agentic-interfaces`, `cryptographic-identity`, `healthcare-fhir`, `healthcare-smart-on-fhir`, `aec-iso19650-im`, `aec-openbim-exchange`, `aec-iso19650-5-security` |
 | **Agents** | AI-tool operating packs | `base`, `claude-code`, `generic-llm`, `openclaw` |
 
@@ -323,6 +323,7 @@ Pre-built manifests for common project types. Copy the closest match and adjust:
 | [`mcp-server-typescript-oss.yaml`](platform/compositions/mcp-server-typescript-oss.yaml) | Node / TS | OSS-released MCP server (producer-side + `delivery/self-hosted-oss` + project-standard + knowledge-capture) |
 | [`healthcare-fhir-app.yaml`](platform/compositions/healthcare-fhir-app.yaml) | Any | FHIR + SMART-on-FHIR application — healthcare data layer + SMART app-launch/scopes, provider-launch + patient-access roles |
 | [`aec-bim-project.yaml`](platform/compositions/aec-bim-project.yaml) | Any | ISO 19650 IM + openBIM exchange + ISO 19650-5 security + privacy-by-design — built-environment information delivery with openBIM model exchange |
+| [`digital-twin-prototype.yaml`](platform/compositions/digital-twin-prototype.yaml) | Any | Scenario-driven digital-twin / decision-support project (municipal, real-estate, datacenter, civic) — digital-twin + privacy-by-design + ISO 19650 IM |
 
 ```bash
 cp platform/compositions/node-web-saas-postgres.yaml harness.manifest.yaml
@@ -373,7 +374,7 @@ A consumer project that adopts the harness once needs the maintenance guide inde
 
 ## Agent Skills
 
-The harness provides seven skills in [Agent Skills](https://agentskills.io/specification) format
+The harness provides eight skills in [Agent Skills](https://agentskills.io/specification) format
 — the open standard supported by Claude Code, VS Code Copilot, GitHub Copilot, Cursor,
 Gemini CLI, and others:
 
@@ -408,7 +409,7 @@ cp -r platform/skills/harness-governance .claude/skills/
 
 ## Validators
 
-Fifteen validators, each targeting a specific governance layer:
+Seventeen validators, each targeting a specific governance layer:
 
 | Validator | What It Checks |
 | --------- | -------------- |

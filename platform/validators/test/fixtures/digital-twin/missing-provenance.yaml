@@ -1,0 +1,28 @@
+schemaVersion: 1
+scenario:
+  id: scenario-002
+  title: Missing Provenance Scenario
+  owner: test-owner
+  maturity: digital-twin-prototype
+  status: draft
+datasets:
+  - id: d1
+    source: test-data-warehouse
+    version: "1.0.0"
+    asOf: "2026-06-10"
+    confidence: medium
+assumptions:
+  - id: a1
+    statement: Some assumption
+    confidence: medium
+    sensitivity: low
+outputs:
+  - id: o1
+    audience: internal
+    publicationAllowed: false
+    reviewRequired: true
+uncertainty:
+  method: sensitivity-analysis
+  confidenceScale: low/medium/high
+  requiredDisclosure: true
+# provenance section is intentionally omitted — validator must exit 1

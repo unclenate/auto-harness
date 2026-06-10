@@ -1,0 +1,65 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+id: digital-twin
+type: management
+version: 1.0.0
+summary: Digital Twin / Scenario Runtime overlay — governs projects that model real-world systems, run scenarios, and publish decision-support. A maturity-gated twin-profile forcing artifact, a dual-spine standards anchor (interoperability/digital-thread + the Gemini Principles), and a WARN+validate floor for scenario/provenance changes. Default-off, opt-in.
+dependsOn:
+  - kernel/base
+conflictsWith: []
+requiredArtifacts:
+  - docs/twin/twin-profile.md
+optionalArtifacts:
+  - docs/twin/scenario-manifest-spec.md
+  - docs/twin/data-provenance.md
+  - docs/twin/model-registry.md
+  - docs/twin/agent-registry.md
+  - docs/twin/run-log-spec.md
+  - docs/twin/uncertainty-policy.md
+  - docs/twin/publication-policy.md
+  - docs/twin/security-boundaries.md
+sensitivePaths:
+  - description: Scenario, model, agent, dataset, run-state, and public-scenario surfaces for a digital twin
+    patterns:
+      - ^scenarios/
+      - ^models/
+      - ^agents/
+      - ^datasets/
+      - ^data/
+      - ^simulation/
+      - ^public/scenarios/
+      - ^docs/twin/
+companionRules:
+  - description: Scenario/model/agent/dataset/run-state changes require a twin artifact update or an ADR
+    triggerPaths:
+      - ^scenarios/
+      - ^models/
+      - ^agents/
+      - ^datasets/
+      - ^simulation/
+    requiredAny:
+      - ^docs/twin/.*\.md$
+      - ^docs/adr/ADR-
+    humanReview: Reviewers confirm the scenario/model/provenance change is captured and the declared maturity level still holds.
+  - description: twin-profile maturity or conformance changes require a change-log entry or ADR
+    triggerPaths:
+      - ^docs/twin/twin-profile\.md$
+    requiredAny:
+      - ^docs/project/change-log\.md$
+      - ^docs/adr/ADR-
+    humanReview: Reviewers confirm a maturity-level or standards-conformance change is intentional and evidence-backed.
+validators:
+  - validate-twin-profile
+  - validate-scenario-manifest
+  - validate-companions
+reviewGates:
+  - Human review required before publishing any public scenario or decision-support output, and for any regulatory, financial, civic, safety, healthcare, or operational output.
+  - Second review required for production / control-loop integrations; security review for sensitive infrastructure or geospatial data; privacy review for personal, health, behavioral, or civic-participation data.
+  - ADR required for material changes to model semantics, scenario semantics, or public-facing methodology.
+agentAdapters:
+  - platform/agents/base
+compiledFragments:
+  - platform/profiles/management/digital-twin/README.md
+recommendedSkills:
+  - harness-digital-twin   # twin maturity, world/scenario/run state, provenance (source: platform/skills/)
+  - harness-governance     # trust tiers and companion rules

@@ -16,7 +16,7 @@ need the picture in context.
 > repository view. Edit a diagram by editing the Mermaid block in this
 > file — there is no separate image to regenerate.
 
-Thirteen diagrams below, grouped by what they answer:
+Fourteen diagrams below, grouped by what they answer:
 
 | # | Question the diagram answers | Section |
 |---|------------------------------|---------|
@@ -33,6 +33,7 @@ Thirteen diagrams below, grouped by what they answer:
 | 11 | *How does anchor-satellite OPP filing produce better PRD scoping?* | [Anchor-Satellite Filing Pattern](#11-anchor-satellite-filing-pattern) |
 | 12 | *How does a deep-domain module family compose, and where does jurisdiction belong?* | [Healthcare Domain Family](#12-healthcare-domain-family) |
 | 13 | *What is the AEC module family composition, and where do standards, jurisdiction, and security belong?* | [AEC Domain Family](#13-aec-domain-family) |
+| 14 | *How does the digital-twin overlay compose, and what does its forcing artifact gate?* | [Digital Twin Overlay Family](#14-digital-twin-overlay-family) |
 
 ---
 
@@ -908,3 +909,35 @@ security spine composes with `management/privacy-by-design` — built-asset
 sensitivity and occupant personal-data privacy are governed side-by-side without
 overlap. This mirrors the healthcare family (diagram #12) and is the template for
 future deep-domain verticals.
+
+## 14. Digital Twin Overlay Family
+
+**Question:** *How does the digital-twin overlay compose, and what does its forcing artifact gate?*
+
+```mermaid
+graph TD
+    KB[kernel/base]
+    DT["management/digital-twin<br/>(cross-cutting overlay • opt-in • default-off)"]
+    TP[["twin-profile.md<br/>maturity × standards-conformance × Gemini Principles"]]
+    LADDER["maturity ladder (gates artifact depth)<br/>L1 model → L2 shadow → L3 prototype<br/>→ L4 operational → L5 control-loop"]
+    AEC["domains/aec-iso19650-im<br/>(built-environment planning substrate)"]
+    PBD["management/privacy-by-design<br/>(resident / occupant personal data)"]
+
+    KB --> DT
+    DT -.forces.-> TP
+    TP -.gated by.-> LADDER
+    DT -.composes with.-> AEC
+    DT -.composes with.-> PBD
+```
+
+Unlike the healthcare (#12) and AEC (#13) *domain* families, `management/digital-twin`
+is a **discipline overlay** — twin-ness is orthogonal to subject matter, so it layers on
+top of any vertical rather than living under `domains/`. Its forcing artifact,
+`twin-profile.md`, is maturity-gated: the declared level on the ladder governs how much
+of the contract (provenance, registries, run-logs, uncertainty, publication, security
+boundaries) must exist, and the bias guardrail is default-deny overclaiming — no maturity
+beyond evidence, no draft standard cited as ratified. The lead composition is the
+built-environment planning-twin stack (`aec-iso19650-im` × `digital-twin` ×
+`privacy-by-design`); it is institutionally coherent because CDBB authored both the
+Gemini Principles and the UK ISO 19650 transition. This is the **second discipline overlay**
+after `privacy-by-design`, and the template for future cross-cutting disciplines.

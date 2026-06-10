@@ -11,6 +11,24 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-10 — Digital Twin family diagram (#14) + entrypoint count bump (PRD-0023 FR-007)
+
+Completes the FR-007 deferral recorded in the Phase-2 entry below. Adds architecture
+diagram **#14 "Digital Twin Overlay Family"** to `docs/architecture/diagrams.md` —
+the overlay, the `twin-profile.md` forcing artifact, the maturity ladder, and the
+composition edges to `aec-iso19650-im` + `privacy-by-design` — and propagates the
+diagram count **13→14** across every asserted site (`HARNESS.md`, `README.md`,
+`docs/_assets/cover-back.svg`) plus the `diagrams.md` intro line and TOC.
+`validate-catalog-counts.sh` already normalizes the word-form "fourteen", so no
+validator change was needed.
+
+The `HARNESS.md` edit (`thirteen → fourteen Mermaid diagrams`) trips the
+governance-entrypoint companion reflex; it is satisfied here by a `docs/operating-principles.md`
+§ 3 bullet ("a new counted surface couples its entrypoint count in the same change"),
+which also discharges the PRD-0004 distillation rule. This closes the Digital Twin
+overlay end-to-end: the catalog now reads **14 diagrams**, and no DT follow-up remains
+except any future capability work.
+
 ## 2026-06-10 — management/digital-twin overlay implemented (PRD-0023 Phase 2)
 
 PRD-0023 Phase 2 lands the full `management/digital-twin` implementation as a catalog-only

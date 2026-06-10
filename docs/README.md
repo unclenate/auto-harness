@@ -60,6 +60,7 @@ Accepted; supersession is recorded by status flip + a new ADR.
 | [0016](adr/ADR-0016-documentation-ia-phase-3-4-target-structure.md) | Documentation IA — Phase 3–4 Target Structure | Accepted |
 | [0017](adr/ADR-0017-safety-hardening-roadmap.md) | Safety Hardening Roadmap | Accepted |
 | [0018](adr/ADR-0018-privacy-by-default-posture.md) | Privacy-by-Default Posture | Accepted |
+| [0019](adr/ADR-0019-digital-twin-scenario-runtime-overlay.md) | Adopt Digital Twin / Scenario Runtime as a Management Overlay | Accepted |
 
 ---
 
@@ -92,6 +93,7 @@ originating opportunity records.
 | [0020](requirements/PRD-0020-bootstrap-hardening-guards-and-preflight.md) | Bootstrap Hardening — Instantiation-Boundary Guards + Dependency Preflight | Accepted | [OPP-0041](opportunities/OPP-0041-onboarding-containment-safety.md), [OPP-0040](opportunities/OPP-0040-cross-platform-install-prerequisites.md) |
 | [0021](requirements/PRD-0021-greenfield-onboarding-conservatism.md) | Greenfield Onboarding Conservatism — Route Contextless Greenfield to Discovery | Accepted | [OPP-0042](opportunities/OPP-0042-greenfield-onboarding-conservatism.md) |
 | [0022](requirements/PRD-0022-cybersec-osint-maltego-wedge.md) | Cybersecurity OSINT / Maltego Wedge | Proposed | [OPP-0043](opportunities/OPP-0043-domain-family-cybersecurity-decomposed.md) |
+| [0023](requirements/PRD-0023-digital-twin-scenario-runtime-overlay.md) | Digital Twin / Scenario Runtime Overlay | Proposed | [OPP-0044](opportunities/OPP-0044-digital-twin-scenario-runtime.md) |
 
 ---
 
@@ -146,6 +148,7 @@ clustered backlog with framing.
 | [0041](opportunities/OPP-0041-onboarding-containment-safety.md) | Onboarding Containment Safety: Never Instantiate or Commit a Consumer Inside the Platform Repo | accepted |
 | [0042](opportunities/OPP-0042-greenfield-onboarding-conservatism.md) | Greenfield Onboarding Conservatism: Route Contextless Greenfield to Discovery | accepted |
 | [0043](opportunities/OPP-0043-domain-family-cybersecurity-decomposed.md) | Cybersecurity Domain Family (decomposed) | accepted (partial promotion) |
+| [0044](opportunities/OPP-0044-digital-twin-scenario-runtime.md) | Digital Twin / Scenario Runtime Governance Overlay | accepted |
 
 ---
 

@@ -11,6 +11,30 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-10 — OPP-0044 + ADR-0019 + PRD-0023 filed: Digital Twin / Scenario Runtime overlay (design-only)
+
+Phase-1 design contract for a reusable **Digital Twin / Scenario Runtime** governance
+capability, landed as a pure-docs PR per § 9 (split design from implementation).
+**OPP-0044** ratifies the opportunity (a recurring twin/scenario pattern across municipal,
+real-estate, datacenter, civic, and health projects). **ADR-0019** records the placement
+decision — a `management/digital-twin` cross-cutting overlay (default-off opt-in), NOT a
+subject-matter domain — and stages the latent "epistemic-discipline" taxonomy category
+(shared with `eval-gated-testing`) rather than minting it. **PRD-0023** specifies the v1
+overlay: a single `twin-profile.md` forcing artifact, a dual-spine standards anchor
+(interoperability/digital-thread + the Gemini Principles), a maturity-gated artifact model,
+two Half-enforced WARN validators, a skill, a sample composition, and a diagram — with a §10
+Claim Classification block. All implementation (module, templates, validators, skill,
+composition, diagram, counts) is **deferred to Phase 2** per § 9.
+
+The overlay is the second cross-cutting discipline overlay after `privacy-by-design`,
+generalizing the deep-domain primitives beyond industry verticals. The lead composition is
+the built-environment planning-twin stack `domains/aec-iso19650-im` × `management/digital-twin`
+× `management/privacy-by-design` — institutionally coherent (CDBB authored both the Gemini
+Principles and the UK ISO 19650 transition). The PRD-0004 distillation rule (fired by creating
+OPP-0044 and ADR-0019) is satisfied by the second-cross-cutting-overlay observation appended to
+`docs/knowledge/shared-observations.md` in the same PR. Design evidence:
+`docs/superpowers/specs/2026-06-10-digital-twin-scenario-runtime-overlay-design.md`.
+
 ## 2026-06-09 — OPP-0043 + PRD-0022 filed: Cybersecurity OSINT / Maltego wedge (design-only)
 
 Phase-1 design contract for the **third deep-domain vertical** (Cybersecurity),

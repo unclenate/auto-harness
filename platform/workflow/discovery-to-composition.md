@@ -228,6 +228,7 @@ modules. Use it to populate `harness.manifest.yaml`.
 | Exchanging federated BIM models via openBIM (IFC/BCF/IDS)? | `domains/aec-openbim-exchange` |
 | Handling sensitive built-asset / infrastructure information (BS EN ISO 19650-5)? | `domains/aec-iso19650-5-security` (composes with `management/privacy-by-design`) |
 | Handles any personal or sensitive data? (default: yes) | `management/privacy-by-design` (default-on; opt out only with a documented `regime: none` exemption) |
+| Models a real-world system / runs scenarios / publishes decision-support? | `management/digital-twin` (default-off; declare maturity in `docs/twin/twin-profile.md`) |
 
 **Starter manifest for a project in discovery** (before stack is chosen):
 

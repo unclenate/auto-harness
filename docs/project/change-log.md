@@ -11,6 +11,32 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-10 — management/digital-twin overlay implemented (PRD-0023 Phase 2)
+
+PRD-0023 Phase 2 lands the full `management/digital-twin` implementation as a catalog-only
+PR: **module** (`platform/profiles/management/digital-twin/module.yaml` + README),
+**10 templates** (twin-profile, overview, scenario-manifest-spec, data-provenance,
+model-registry, agent-registry, run-log-spec, uncertainty-policy, publication-policy,
+security-boundaries), **2 Half-enforced WARN validators**
+(`validate-twin-profile.sh`, `validate-scenario-manifest.sh`),
+**skill** (`harness-digital-twin`), **sample composition**
+(`digital-twin-prototype.yaml` — digital-twin × privacy-by-design × aec-iso19650-im),
+**discoverability** (SUMMARY.md, README.md Module System table, harness-onboarding skill,
+discovery-to-composition.md, templates/README.md), and **count propagation**
+(modules 42→43/51→52, validators 15→17, skills 7→8, templates 74→84).
+
+Catalog-only (not in `harness.manifest.yaml`); the two new validators are module-gated
+and no-op on the harness's own CI (predict-clean posture). The dual-spine anchor
+(interoperability/digital-thread + Gemini Principles) is now concrete in the templates.
+PRD-0004 distillation rule is satisfied by the Phase-2 observation appended to
+`docs/knowledge/shared-observations.md`.
+
+**Deferred to a maintainer follow-up:** diagram FR-007 (family diagram) and the
+consequent HARNESS.md diagram-count bump — the companion-rule reflex on HARNESS.md
+(editing `— thirteen Mermaid diagrams`) requires an ADR or operating-principles update
+in the same commit, disproportionate for a count bump. All diagram-count sites stay 13;
+HARNESS.md is untouched in this PR.
+
 ## 2026-06-10 — OPP-0044 + ADR-0019 + PRD-0023 filed: Digital Twin / Scenario Runtime overlay (design-only)
 
 Phase-1 design contract for a reusable **Digital Twin / Scenario Runtime** governance

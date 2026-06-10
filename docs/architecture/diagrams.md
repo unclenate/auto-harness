@@ -52,7 +52,7 @@ flowchart TD
     Manifest["<b>harness.manifest.yaml</b><br/>project-local activation"]
 
     subgraph CATALOG["Active Catalog (per project)"]
-        Manifest --> Modules["<b>Modules</b><br/>core · profiles · agents<br/>(51 total in-tree)"]
+        Manifest --> Modules["<b>Modules</b><br/>core · profiles · agents<br/>(52 total in-tree)"]
     end
 
     subgraph CONTRACT["Per-Module Contract (module.yaml)"]
@@ -63,7 +63,7 @@ flowchart TD
     end
 
     subgraph ENFORCE["Enforcement (CI)"]
-        Validators["<b>Validators</b><br/>15 scripts"]
+        Validators["<b>Validators</b><br/>17 scripts"]
         Validators -.reads.-> Manifest
         Validators -.reads.-> Required
         Validators -.reads.-> Companions
@@ -72,7 +72,7 @@ flowchart TD
 
     subgraph SURFACE["Consumer-Facing Surfaces"]
         Skills["<b>Skills</b><br/>governance, onboarding,<br/>testing, web3, tools,<br/>agentic-interfaces, mcp"]
-        Templates["<b>Templates</b><br/>74 scaffolding files<br/>(tokenized headers)"]
+        Templates["<b>Templates</b><br/>84 scaffolding files<br/>(tokenized headers)"]
         Workflows["<b>Workflows</b><br/>19 guides:<br/>bootstrap, discovery,<br/>distillation, etc."]
     end
 

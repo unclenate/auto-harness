@@ -22,7 +22,7 @@ sensitivePaths:
       - bundle
       - phi
 companionRules:
-  - description: FHIR resource-map or jurisdiction-profile changes require an ADR or change-log entry
+  - description: Changes to docs/healthcare/fhir-resource-map.md or docs/healthcare/jurisdiction-profile.md require an ADR under docs/adr/ or a docs/project/change-log.md entry
     triggerPaths:
       - ^docs/healthcare/fhir-resource-map\.md$
       - ^docs/healthcare/jurisdiction-profile\.md$
@@ -30,7 +30,7 @@ companionRules:
       - ^docs/adr/ADR-
       - ^docs/project/change-log\.md$
     humanReview: Reviewers confirm the declared jurisdiction profile is intentional and PHI exposure is bounded.
-  - description: PHI-schema-touching changes require a risk-register update
+  - description: PHI-schema-touching changes require a docs/security/risk-register.md update or an ADR under docs/adr/
     triggerPaths:
       - ^src/FHIR/
       - ^fhir/

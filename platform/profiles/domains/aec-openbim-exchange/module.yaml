@@ -19,14 +19,14 @@ sensitivePaths:
       - bcf
       - federation
 companionRules:
-  - description: exchange-requirements changes (including the pinned IFC version or an exchange grant) require an ADR or change-log entry
+  - description: Changes to docs/aec/exchange-requirements.md (including the pinned IFC version or an exchange grant) require an ADR under docs/adr/ or a docs/project/change-log.md entry
     triggerPaths:
       - ^docs/aec/exchange-requirements\.md$
     requiredAny:
       - ^docs/adr/ADR-
       - ^docs/project/change-log\.md$
     humanReview: Reviewers confirm IFC-version-pin and exchange-grant changes are intentional.
-  - description: IFC or exchange-surface changes (ifc/, exchange/, bcf, federation) require a risk-register update or an ADR — these paths carry the federated model exchange the producer / receiver / reviewer role axis governs
+  - description: IFC or exchange-surface changes (ifc/, exchange/, bcf, federation) require a docs/security/risk-register.md update or an ADR under docs/adr/ — these paths carry the federated model exchange the producer / receiver / reviewer role axis governs
     triggerPaths:
       - ^ifc/
       - ^exchange/

@@ -16,6 +16,69 @@ force.
 
 ---
 
+## 2026-06-08 — Weekly doc-watch (Monday) — ALL CLEAR (large structural growth, zero drift)
+
+**Window:** 2026-05-28 → 2026-06-08. Branch `main`, 23 commits, working tree
+has 2 untracked AEC superpowers files (`docs/superpowers/plans/` +
+`specs/`, both markdownlint-ignored). Doc-relevant commits: all 23.
+
+**Large structural change this week** (meets re-audit threshold on all three
+counts — 3+ modules, new domain family, multiple new PRDs):
+
+- **+6 profile modules** (42 total): `domains/aec-iso19650-im`,
+  `domains/aec-iso19650-5-security`, `domains/aec-openbim-exchange`,
+  `domains/healthcare-fhir`, `domains/healthcare-smart-on-fhir`,
+  `management/privacy-by-design`.
+- **2 new deep-domain verticals** — healthcare wedge (PRD-0017) and AEC /
+  ISO 19650 + openBIM wedge (PRD-0019).
+- **+4 PRDs** (19 total): PRD-0016 SAST module, PRD-0017 healthcare,
+  PRD-0018 privacy-by-design, PRD-0019 AEC.
+- **+4 validators** since the 2026-05-25 audit (15 total):
+  `validate-sast-coverage.sh`, `validate-skill-content.sh`,
+  `validate-knowledge-redaction.sh`, `validate-sensitive-paths.sh`.
+- New OPPs (OPP-0035/0037/0038/0039 + OPP-0013 promotion; 38 total),
+  ADR-0018, and template families (AEC ×5, healthcare ×3, privacy ×3,
+  security ×1).
+
+**Drift checks — all green despite the growth:**
+
+- `validate-catalog-counts.sh`: ✓ 24/24 assertions.
+- `validate-doc-references.sh`: ✓ all link targets resolve.
+- `validate-list-completeness.sh`: ✓ 200/200 (ADR/PRD/OPP/composition/
+  template-subdir/module indexes all complete — no missing rows).
+- markdownlint-cli2 (`**/*.md`, repo `.markdownlint-cli2.jsonc`): ✓ 0 errors
+  across 361 linted files.
+- Narrative counts verified live: `how-to-read.md:10` "42 modules, 74
+  templates, 15 validators, 7 skills, 18 workflows" — all match;
+  `diagrams.md:359` "15 validators" — matches. No stale integers found in
+  README/HARNESS/SUMMARY/platform-README/glossary.
+- All 6 new modules have sibling `README.md`.
+
+**No drift in any location.** The Wave 1 list-completeness validator did
+exactly its job: the catalog grew by 6 modules + 2 domain families and not
+one hand-maintained index fell out of sync — the historical catalog-drift
+failure mode did not recur.
+
+**Re-verify of 2026-05-25 Refresh #1 open High findings — newly resolved:**
+
+- H-a (trust-model.md was a 26-line stub) → now 215 lines. **Resolved.**
+- H-b (`PLATFORM=path/to` placeholder in bootstrap-quickstart) → placeholder
+  gone. **Resolved.**
+- H-c / H-d / M-f / M-h / M-j (index + count drift) → structurally enforced
+  by list-completeness (200✓) + catalog-counts (24✓). **Resolved.**
+- M-b (module-README inconsistency) → Wave 4.2 standardization (#87). **Resolved.**
+- L-a (governance banners) → Wave 4.5 added adr/ + requirements/; opportunities
+  still deferred. **Partial.**
+
+**Verdict: All clear** on drift. Because the window brought large structural
+change (6 modules, 2 new domain families, 4 PRDs) since the last full audit
+(2026-05-25, two weeks old), a **full multi-agent re-audit is recommended** —
+not to fix drift (there is none) but to give the two new deep-domain verticals
+and the four new safety/privacy modules a first-pass content + IA review at
+audit depth.
+
+---
+
 ## 2026-05-28 — Wave 4.5 governance-doc banners (partial — opportunities deferred)
 
 **Partially closes Refresh #1 L-a.** Two of three governance-record

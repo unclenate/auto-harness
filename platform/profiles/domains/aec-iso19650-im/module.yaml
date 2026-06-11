@@ -20,7 +20,7 @@ sensitivePaths:
       - bep
       - midp
 companionRules:
-  - description: CDE-structure or container status-transition changes require an information-management-plan update or an ADR
+  - description: CDE-structure or container status-transition changes require a docs/aec/information-management-plan.md update or an ADR under docs/adr/
     triggerPaths:
       - ^docs/aec/information-management-plan\.md$
       - ^cde/
@@ -32,7 +32,7 @@ companionRules:
       - ^docs/adr/ADR-
       - ^docs/project/change-log\.md$
     humanReview: Reviewers confirm CDE-structure and container status-transition changes are intentional and the actor model still holds.
-  - description: jurisdiction-profile changes require a change-log entry or an ADR
+  - description: Changes to docs/aec/jurisdiction-profile.md require a docs/project/change-log.md entry or an ADR under docs/adr/
     triggerPaths:
       - ^docs/aec/jurisdiction-profile\.md$
     requiredAny:

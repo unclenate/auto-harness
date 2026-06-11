@@ -4,11 +4,11 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 -->
 
-# PRD-0019 — AEC ISO 19650 + openBIM Wedge
+# PRD-0019: AEC ISO 19650 + openBIM Wedge
 
 **Version:** 1.0 | **Owner:** @unclenate | **Last Updated:** 2026-06-04 | **Review Cycle:** On-change
 
-**Status:** Proposed
+**Status:** Accepted
 **Date:** 2026-06-04
 **Author:** @unclenate
 **Reviewers:** @unclenate

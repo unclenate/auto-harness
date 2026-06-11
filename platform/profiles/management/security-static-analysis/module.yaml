@@ -21,7 +21,7 @@ sensitivePaths:
       - ^bandit\.ya?ml$
       - ^\.gosec\.ya?ml$
 companionRules:
-  - description: Changes to guarded source paths require either updated SAST coverage declaration or attached SAST evidence — silently extending the source surface without adjusting the SAST contract weakens the security gate
+  - description: Changes to guarded source paths require either updated docs/security/sast-coverage.md declaration or attached SAST evidence under docs/security/sast-reports/ — silently extending the source surface without adjusting the SAST contract weakens the security gate
     triggerPaths:
       - ^src/
       - ^lib/
@@ -37,7 +37,7 @@ companionRules:
       a stated rationale. Agents must not silently broaden the source
       surface without an aligned SAST contract update. Verify the
       declared severity threshold has not been silently lowered.
-  - description: Changes to the SAST coverage declaration or tool configuration require a change-log entry, ADR, or PRD — security thresholds and tool selections are quality commitments
+  - description: Changes to the SAST coverage declaration (docs/security/sast-coverage.md) or tool configuration require a docs/project/change-log.md entry, an ADR under docs/adr/, or a PRD under docs/requirements/ — security thresholds and tool selections are quality commitments
     triggerPaths:
       - ^docs/security/sast-coverage\.md$
       - ^\.semgrep\.ya?ml$

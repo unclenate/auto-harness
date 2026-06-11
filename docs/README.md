@@ -76,7 +76,7 @@ originating opportunity records.
 | [0003](requirements/PRD-0003-opportunity-capture-module.md) | Opportunity Capture Module | Accepted | — |
 | [0004](requirements/PRD-0004-distillation-triggers.md) | Distillation Triggers | Accepted | [OPP-0004](opportunities/OPP-0004-distillation-triggers.md) |
 | [0005](requirements/PRD-0005-consumer-header-hygiene.md) | Consumer Header Hygiene | Accepted | [OPP-0005](opportunities/OPP-0005-consumer-header-hygiene.md) |
-| [0006](requirements/PRD-0006-trust-tier-enforcement.md) | Trust-Tier Enforcement | Proposed | [OPP-0006](opportunities/OPP-0006-trust-tier-enforcement.md) |
+| [0006](requirements/PRD-0006-trust-tier-enforcement.md) | Trust-Tier Enforcement | Accepted | [OPP-0006](opportunities/OPP-0006-trust-tier-enforcement.md) |
 | [0007](requirements/PRD-0007-canonical-position-artifact.md) | Canonical-Position Artifact | Proposed | [OPP-0007](opportunities/OPP-0007-canonical-position-artifact.md) |
 | [0008](requirements/PRD-0008-agent-skill-pack-architecture.md) | Agent Skill-Pack Architecture | Accepted | [OPP-0018](opportunities/OPP-0018-architecture-eval-gated-skill-pack.md) |
 | [0009](requirements/PRD-0009-eval-gated-testing-module.md) | Eval-Gated Testing Module | Accepted | [OPP-0019](opportunities/OPP-0019-eval-gated-testing-posture.md) |
@@ -85,15 +85,15 @@ originating opportunity records.
 | [0012](requirements/PRD-0012-doc-references-consumer-aware.md) | `validate-doc-references` Consumer-Aware Scan | Accepted | [OPP-0023](opportunities/OPP-0023-doc-references-consumer-scan.md) |
 | [0013](requirements/PRD-0013-session-cycle-orchestration.md) | Session-Cycle Orchestration and Review-Trigger Taxonomy | Proposed | [OPP-0032](opportunities/OPP-0032-session-cycle-orchestration.md) |
 | [0014](requirements/PRD-0014-agent-observability.md) | Agent Observability with OpenTelemetry Semantic Conventions | Proposed | [OPP-0029](opportunities/OPP-0029-agent-observability.md) |
-| [0015](requirements/PRD-0015-validate-skill-content.md) | Skill Content Safety Validator (`validate-skill-content.sh`) | Proposed | [OPP-0033](opportunities/OPP-0033-validate-skill-content.md) |
+| [0015](requirements/PRD-0015-validate-skill-content.md) | Skill Content Safety Validator (`validate-skill-content.sh`) | Accepted | [OPP-0033](opportunities/OPP-0033-validate-skill-content.md) |
 | [0016](requirements/PRD-0016-security-static-analysis-module.md) | Security Static Analysis Module (`management/security-static-analysis`) | Accepted | [OPP-0035](opportunities/OPP-0035-security-static-analysis.md) |
-| [0017](requirements/PRD-0017-healthcare-fhir-smart-wedge.md) | Healthcare FHIR + SMART-on-FHIR Wedge | Proposed | [OPP-0013](opportunities/OPP-0013-domain-family-healthcare-decomposed.md) |
-| [0018](requirements/PRD-0018-privacy-by-design.md) | Privacy-by-Design Module (`management/privacy-by-design`) | Proposed | — |
-| [0019](requirements/PRD-0019-aec-iso19650-openbim-wedge.md) | AEC ISO 19650 + openBIM Wedge | Proposed | [OPP-0039](opportunities/OPP-0039-domain-family-aec-decomposed.md) |
+| [0017](requirements/PRD-0017-healthcare-fhir-smart-wedge.md) | Healthcare FHIR + SMART-on-FHIR Wedge | Accepted | [OPP-0013](opportunities/OPP-0013-domain-family-healthcare-decomposed.md) |
+| [0018](requirements/PRD-0018-privacy-by-design.md) | Privacy-by-Design Module (`management/privacy-by-design`) | Accepted | — |
+| [0019](requirements/PRD-0019-aec-iso19650-openbim-wedge.md) | AEC ISO 19650 + openBIM Wedge | Accepted | [OPP-0039](opportunities/OPP-0039-domain-family-aec-decomposed.md) |
 | [0020](requirements/PRD-0020-bootstrap-hardening-guards-and-preflight.md) | Bootstrap Hardening — Instantiation-Boundary Guards + Dependency Preflight | Accepted | [OPP-0041](opportunities/OPP-0041-onboarding-containment-safety.md), [OPP-0040](opportunities/OPP-0040-cross-platform-install-prerequisites.md) |
 | [0021](requirements/PRD-0021-greenfield-onboarding-conservatism.md) | Greenfield Onboarding Conservatism — Route Contextless Greenfield to Discovery | Accepted | [OPP-0042](opportunities/OPP-0042-greenfield-onboarding-conservatism.md) |
 | [0022](requirements/PRD-0022-cybersec-osint-maltego-wedge.md) | Cybersecurity OSINT / Maltego Wedge | Proposed | [OPP-0043](opportunities/OPP-0043-domain-family-cybersecurity-decomposed.md) |
-| [0023](requirements/PRD-0023-digital-twin-scenario-runtime-overlay.md) | Digital Twin / Scenario Runtime Overlay | Proposed | [OPP-0044](opportunities/OPP-0044-digital-twin-scenario-runtime.md) |
+| [0023](requirements/PRD-0023-digital-twin-scenario-runtime-overlay.md) | Digital Twin / Scenario Runtime Overlay | Accepted | [OPP-0044](opportunities/OPP-0044-digital-twin-scenario-runtime.md) |
 
 ---
 

@@ -21,14 +21,14 @@ sensitivePaths:
       - token
       - oauth
 companionRules:
-  - description: SMART scope-map changes require an ADR or change-log entry
+  - description: Changes to docs/healthcare/smart-scope-map.md require an ADR under docs/adr/ or a docs/project/change-log.md entry
     triggerPaths:
       - ^docs/healthcare/smart-scope-map\.md$
     requiredAny:
       - ^docs/adr/ADR-
       - ^docs/project/change-log\.md$
     humanReview: Reviewers confirm scope grants and launch-context changes are intentional.
-  - description: SMART implementation and auth-surface changes (src/FHIR/SMART/, auth/) require a risk-register update or ADR — these paths implement the scope, launch, and token handling that governs the patient-access trust boundary, where the patient is the resource owner
+  - description: SMART implementation and auth-surface changes (src/FHIR/SMART/, auth/) require a docs/security/risk-register.md update or an ADR under docs/adr/ — these paths implement the scope, launch, and token handling that governs the patient-access trust boundary, where the patient is the resource owner
     triggerPaths:
       - ^src/FHIR/SMART/
       - ^auth/

@@ -20,7 +20,7 @@ sensitivePaths:
       - redaction
       - ^security/
 companionRules:
-  - description: sensitivity-assessment or security-management-plan changes require an ADR or change-log entry
+  - description: Changes to docs/aec/sensitivity-assessment.md or docs/aec/security-management-plan.md require an ADR under docs/adr/ or a docs/project/change-log.md entry
     triggerPaths:
       - ^docs/aec/sensitivity-assessment\.md$
       - ^docs/aec/security-management-plan\.md$
@@ -28,7 +28,7 @@ companionRules:
       - ^docs/adr/ADR-
       - ^docs/project/change-log\.md$
     humanReview: Reviewers confirm sensitivity classifications and the security-management plan are intentional and current.
-  - description: changes to security-classified, redaction, or secure-federation surfaces require a risk-register update or an ADR
+  - description: Changes to security-classified, redaction, or secure-federation surfaces require a docs/security/risk-register.md update or an ADR under docs/adr/
     triggerPaths:
       - sensitive
       - classified

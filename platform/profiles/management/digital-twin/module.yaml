@@ -30,7 +30,7 @@ sensitivePaths:
       - ^public/scenarios/
       - ^docs/twin/
 companionRules:
-  - description: Scenario/model/agent/dataset/run-state changes require a twin artifact update or an ADR
+  - description: Scenario/model/agent/dataset/run-state changes require a docs/twin/ artifact update or an ADR under docs/adr/
     triggerPaths:
       - ^scenarios/
       - ^models/
@@ -43,7 +43,7 @@ companionRules:
       - ^docs/twin/.*\.md$
       - ^docs/adr/ADR-
     humanReview: Reviewers confirm the scenario/model/provenance change is captured and the declared maturity level still holds.
-  - description: twin-profile maturity or conformance changes require a change-log entry or ADR
+  - description: Changes to docs/twin/twin-profile.md maturity or conformance require a docs/project/change-log.md entry or an ADR under docs/adr/
     triggerPaths:
       - ^docs/twin/twin-profile\.md$
     requiredAny:

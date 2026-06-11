@@ -24,7 +24,7 @@ sensitivePaths:
       - tracking
       - ^auth/
 companionRules:
-  - description: Data-handling sensitive-path changes require a privacy-profile or data-inventory update or an ADR
+  - description: Data-handling sensitive-path changes require a docs/privacy/privacy-profile.md or docs/privacy/data-inventory.md update or an ADR under docs/adr/
     triggerPaths:
       - pii
       - personal
@@ -39,7 +39,7 @@ companionRules:
       - ^docs/privacy/data-inventory\.md$
       - ^docs/adr/ADR-
     humanReview: Reviewers confirm the privacy implications of the change are captured and the declared regime still holds.
-  - description: privacy-profile regime or exemption changes require a change-log entry or ADR
+  - description: Changes to docs/privacy/privacy-profile.md regime or exemption require a docs/project/change-log.md entry or an ADR under docs/adr/
     triggerPaths:
       - ^docs/privacy/privacy-profile\.md$
     requiredAny:

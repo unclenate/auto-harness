@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 -->
 
-# PRD-0022 — Cybersecurity OSINT / Maltego Wedge
+# PRD-0022: Cybersecurity OSINT / Maltego Wedge
 
 **Version:** 1.0 | **Owner:** @unclenate | **Last Updated:** 2026-06-05 | **Review Cycle:** On-change
 

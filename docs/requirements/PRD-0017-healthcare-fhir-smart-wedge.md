@@ -4,11 +4,11 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 -->
 
-# PRD-0017 — Healthcare FHIR + SMART-on-FHIR Wedge
+# PRD-0017: Healthcare FHIR + SMART-on-FHIR Wedge
 
 **Version:** 1.0 | **Owner:** @unclenate | **Last Updated:** 2026-06-01 | **Review Cycle:** On-change
 
-**Status:** Proposed
+**Status:** Accepted
 **Date:** 2026-06-01
 **Author:** @unclenate
 **Reviewers:** @unclenate
@@ -127,6 +127,7 @@ this PRD names each load-bearing claim and its enforcement mechanism:
 |-------|-------|-----------|
 | Required artifacts exist when a healthcare module is active | Enforced | `validate-required-artifacts.sh` |
 | Sensitive-path edits pair with a governance document | Enforced | `validate-companions.sh` |
+| Sensitive paths are covered by module self-coverage rules | Enforced | `validate-sensitive-paths.sh` |
 | Jurisdiction is declared, never assumed | Asserted-only | review gate + bias-guardrail text in `jurisdiction-profile.md` template |
 | Provider/patient scope boundary is respected | Asserted-only | review gate (`humanReview`) on any provider↔patient scope-boundary edit |
 | Intra-family module dependency resolves cleanly | Enforced | `validate-module-graph.sh` |

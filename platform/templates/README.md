@@ -206,9 +206,12 @@ Templates that share a category directory keep the subdirectory structure intact
 
 Jump to: [Discovery](#discovery) | [Product](#product) | [Project](#project) |
 [Program](#program) | [Testing](#testing) | [Governance](#governance) |
-[Architecture and Ops](#architecture-and-operations) | [Database](#database) |
+[Architecture and Operations](#architecture-and-operations) | [Database](#database) |
 [Web3](#web3-templates) | [Healthcare](#healthcare-templates) |
 [Privacy](#privacy-templates)
+
+> [!NOTE]
+> Templates for the Cybersecurity domain family (OPP-0043 / PRD-0022) are deferred to Phase 2.
 
 ### Discovery
 

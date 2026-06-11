@@ -266,7 +266,7 @@ declares its governance contract. You compose them to match your project.
 | **Delivery** | Lifecycle posture | `prototype`, `production-saas`, `internal-platform`, `self-hosted-oss`, `managed-fleet` |
 | **Management** | Product, project, program, knowledge, opportunity, and testing governance | `discovery-intake`, `interview-driven`, `product-lite`, `project-standard`, `program-lite`, `testing-standard`, `eval-gated-testing`, `knowledge-capture`, `opportunity-capture`, `security-static-analysis`, `privacy-by-design`, `digital-twin` |
 | **Domains** | Vendor or specialist overlays | `supabase`, `web3`, `media-pipeline`, `gitbook`, `agentic-interfaces`, `cryptographic-identity`, `healthcare-fhir`, `healthcare-smart-on-fhir`, `aec-iso19650-im`, `aec-openbim-exchange`, `aec-iso19650-5-security` |
-| **Agents** | AI-tool operating packs | `base`, `claude-code`, `generic-llm`, `openclaw` |
+| **Agents** | AI-tool operating packs | `base`, `claude-code`, `codex-cli`, `copilot-cli`, `cursor`, `gemini-cli`, `generic-llm`, `openclaw` |
 
 Each `module.yaml` specifies:
 
@@ -391,19 +391,15 @@ Gemini CLI, and others:
 
 Skills are progressively disclosed — agents load only the name and description (~100 tokens)
 at startup. The full body loads on demand when a task matches the skill's domain.
+Keep `platform/skills/` canonical; tool-local folders such as `.agents/skills/`
+and `.claude/skills/` should be symlink install surfaces, not source-of-truth copies.
 
 ```bash
-# Cross-client installation (all projects)
-cp -r platform/skills/harness-governance .agents/skills/
-
-# Install additional skills based on active modules
-cp -r platform/skills/harness-testing .agents/skills/    # testing-standard active
-cp -r platform/skills/harness-web3 .agents/skills/       # Web3 projects
-cp -r platform/skills/harness-onboarding .agents/skills/ # brownfield onboarding
-cp -r platform/skills/harness-tools .agents/skills/      # agents/openclaw active
-
-# Claude Code native path
-cp -r platform/skills/harness-governance .claude/skills/
+# Submodule consumers: link canonical skills into .agents/skills/ and .claude/skills/.
+bash .harness/platform/bootstrap/link-skills.sh \
+  --project-root . \
+  --mount-path .harness \
+  harness-governance harness-testing harness-web3 harness-onboarding harness-tools
 ```
 
 ---
@@ -422,7 +418,7 @@ Seventeen validators, each targeting a specific governance layer:
 | `validate-companions.sh` | PR diff satisfies all active companion rules |
 | `validate-doc-references.sh` | Markdown links to `platform/...` paths resolve on disk — catches stale path strings as the catalog evolves |
 | `validate-catalog-counts.sh` | Documented catalog counts (modules, validators, skills, templates, workflows, diagrams) match canonical recipes — closes the count-drift class |
-| `validate-list-completeness.sh` | Every ADR / PRD / OPP / composition / template subdirectory / profile module on disk is referenced by its canonical index file — closes the list-completeness drift class |
+| `validate-list-completeness.sh` | Every ADR / PRD / OPP / composition / template subdirectory / profile module / agent module on disk is referenced by its canonical index file — closes the list-completeness drift class |
 | `validate-trust-tier.sh` | Each active module's declared trust tier (0–5) is coherent with its inferred tier (from `sensitivePaths`); agent `maxTier` ceilings respect the active manifest's highest non-agent tier — closes safety claims 10–11 (no self-elevation; tier-ceiling fixed) |
 | `validate-sensitive-paths.sh` | Every declared `sensitivePaths` regex is overlapped by at least one `companionRules.triggerPaths` regex on some active module — closes safety claim 12 (sensitive-paths from Asserted-only to Enforced) |
 | `validate-skill-content.sh` | Scans authored prose in active modules (description / summary / reviewGates / humanReview + SKILL.md bodies + compiledFragments markdown) against a denylist of prompt-injection and tier-bypass patterns (default BLOCK; `.skill-content-ignore` for exemptions) — closes safety-security-sweep §3 vectors V1/V2/V4-partial/V6 |
@@ -557,8 +553,8 @@ The bootstrap is brownfield-safe — it never overwrites pre-existing files from
 │   │   ├── delivery/                # prototype, production-saas, internal-platform
 │   │   ├── management/              # discovery-intake, interview-driven, product-lite, project-standard, program-lite, testing-standard, eval-gated-testing, knowledge-capture, opportunity-capture, security-static-analysis, privacy-by-design
 │   │   └── domains/                 # supabase, web3, media-pipeline, gitbook, agentic-interfaces, cryptographic-identity, healthcare-fhir, healthcare-smart-on-fhir
-│   ├── agents/                      # Agent operating packs: base, claude-code, generic-llm, openclaw
-│   ├── skills/                      # Agent Skills: harness-governance, harness-testing, harness-web3, harness-onboarding, harness-tools, harness-agentic-interfaces, harness-mcp
+│   ├── agents/                      # Agent operating packs: base, claude-code, codex-cli, copilot-cli, cursor, gemini-cli, generic-llm, openclaw
+│   ├── skills/                      # Agent Skills: harness-governance, harness-testing, harness-web3, harness-onboarding, harness-tools, harness-agentic-interfaces, harness-mcp, harness-digital-twin
 │   ├── templates/                   # Artifact skeletons for every required file
 │   ├── validators/                  # validate-*.sh scripts, Ruby library, test suite
 │   ├── compositions/                # Starter manifests for common project types

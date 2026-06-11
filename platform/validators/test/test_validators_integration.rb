@@ -977,8 +977,8 @@ end
 # ---------------------------------------------------------------------------
 class TestValidateListCompleteness < Minitest::Test
   # Build a minimal "complete-aligned" project tree at `root`: one entity per
-  # check (ADR, PRD, OPP, composition, template subdirectory, profile module)
-  # with all index rows present.
+  # check (ADR, PRD, OPP, composition, template subdirectory, profile module,
+  # agent module) with all index rows present.
   def write_complete_fixture(root)
     # ADR + PRD + OPP files
     FileUtils.mkdir_p(File.join(root, "docs/adr"))
@@ -1020,8 +1020,16 @@ class TestValidateListCompleteness < Minitest::Test
     FileUtils.mkdir_p(File.join(root, "platform/profiles/management/test-mod"))
     File.write(File.join(root, "platform/profiles/management/test-mod/module.yaml"),
                "id: test-mod\n")
-    File.write(File.join(root, "SUMMARY.md"),
-               "* [Test](platform/profiles/management/test-mod/README.md)\n")
+
+    # Agent module + SUMMARY.md entry
+    FileUtils.mkdir_p(File.join(root, "platform/agents/test-agent"))
+    File.write(File.join(root, "platform/agents/test-agent/module.yaml"),
+               "id: test-agent\n")
+
+    File.write(File.join(root, "SUMMARY.md"), <<~MD)
+      * [Test](platform/profiles/management/test-mod/README.md)
+      * [Test Agent](platform/agents/test-agent/README.md)
+    MD
   end
 
   def test_complete_fixture_passes
@@ -1100,10 +1108,22 @@ class TestValidateListCompleteness < Minitest::Test
   def test_profile_module_missing_from_summary_fails
     Dir.mktmpdir do |tmp|
       write_complete_fixture(tmp)
-      File.write(File.join(tmp, "SUMMARY.md"), "* [Other](other.md)\n")
+      File.write(File.join(tmp, "SUMMARY.md"),
+                 "* [Test Agent](platform/agents/test-agent/README.md)\n")
       _out, err, code = run_validator("validate-list-completeness.sh", tmp)
       assert_equal 1, code, "missing module row in SUMMARY.md must exit 1"
       assert_match(/missing profile module row for profiles\/management\/test-mod/, err)
+    end
+  end
+
+  def test_agent_module_missing_from_summary_fails
+    Dir.mktmpdir do |tmp|
+      write_complete_fixture(tmp)
+      File.write(File.join(tmp, "SUMMARY.md"),
+                 "* [Test](platform/profiles/management/test-mod/README.md)\n")
+      _out, err, code = run_validator("validate-list-completeness.sh", tmp)
+      assert_equal 1, code, "missing agent module row in SUMMARY.md must exit 1"
+      assert_match(/missing agent module row for agents\/test-agent/, err)
     end
   end
 

@@ -69,10 +69,11 @@ projects; `security-static-analysis` is opt-in SAST; `testing-standard` and
 ### "I want to integrate AI agents"
 
 1. [Skills and Agents](../workflow/skills-and-agents.md) — the integration model
-2. [Agent Base](../agents/base/README.md) — the foundational agent pack
-3. [Claude Code](../agents/claude-code/README.md) — Claude Code-specific adapter
-4. [Harness-Native Skills](../../SUMMARY.md#harness-native-skills) — governance, testing, web3, onboarding skills
-5. [Glossary: Compiled Fragment vs Skill](glossary.md#compiled-fragment) — understand the
+2. [Multi-Agent Tool Coordination](../workflow/multi-agent-tool-coordination.md) — per-tool context files, skill paths, approval modes, and known conflict surfaces
+3. [Agent Base](../agents/base/README.md) — the foundational cross-agent pack
+4. [Agents](../../SUMMARY.md#agents) — tool-specific packs for Claude Code, Codex CLI, Copilot CLI, Cursor, Gemini CLI, Generic LLM, and OpenClaw
+5. [Harness-Native Skills](../../SUMMARY.md#harness-native-skills) — governance, testing, web3, onboarding skills
+6. [Glossary: Compiled Fragment vs Skill](glossary.md#compiled-fragment) — understand the
    difference between always-on context and on-demand guidance
 
 ### "I want to contribute to the harness itself"

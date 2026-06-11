@@ -173,6 +173,10 @@ AI-tool packs and operating adapters.
 
 * [Base](platform/agents/base/README.md)
 * [Claude Code](platform/agents/claude-code/README.md)
+* [Codex CLI](platform/agents/codex-cli/README.md)
+* [Copilot CLI](platform/agents/copilot-cli/README.md)
+* [Cursor](platform/agents/cursor/README.md)
+* [Gemini CLI](platform/agents/gemini-cli/README.md)
 * [Generic LLM](platform/agents/generic-llm/README.md)
 * [OpenClaw](platform/agents/openclaw/README.md)
 

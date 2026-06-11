@@ -179,8 +179,10 @@ Otherwise, Step 0 still runs — the governance inventory is needed for accurate
 
 - `CLAUDE.md`, `.claude/` — Claude Code
 - `.agents/skills/` — Agent Skills standard
+- `.codex/`, `CODEX.md`, `AGENTS.override.md` — OpenAI Codex CLI
 - `.cursor/rules` — Cursor
-- `.github/copilot-instructions.md` — GitHub Copilot
+- `.github/copilot-instructions.md`, `.github/instructions/`, `.github/agents/` — GitHub Copilot CLI
+- `GEMINI.md`, `.gemini/` — Gemini CLI
 - `.aider.conf.yml` — Aider
 - OpenClaw workspace files (`TOOLS.md`, `SOUL.md`, etc.)
 
@@ -571,10 +573,14 @@ Dependency: `management/program-lite` requires `management/project-standard`. `m
 | ------ | ----------- |
 | `agents/base` | Always include as baseline |
 | `agents/claude-code` | Claude Code is the AI assistant for this project |
-| `agents/generic-llm` | Another AI assistant (Cursor, Copilot, Windsurf, Gemini CLI) is in use |
+| `agents/codex-cli` | OpenAI Codex CLI is used with project-local approval, sandbox, or shim policy |
+| `agents/copilot-cli` | GitHub Copilot CLI or custom Copilot CLI agents are used with project-local instructions |
+| `agents/cursor` | Cursor is used with project-local rules or Auto-Run allowlist policy |
+| `agents/gemini-cli` | Gemini CLI is used with project-local `GEMINI.md` or `.gemini/settings.json` context policy |
+| `agents/generic-llm` | Another AI assistant is in use and no first-class tool pack fits yet |
 | `agents/openclaw` | OpenClaw is the AI assistant for this project; requires `TOOLS.md` |
 
-No required artifacts for `base`, `claude-code`, or `generic-llm`. The `openclaw` pack requires `TOOLS.md` at project root.
+No required artifacts for `base`, `claude-code`, `codex-cli`, `copilot-cli`, `cursor`, or `generic-llm`. The `gemini-cli` pack requires either `GEMINI.md` or `.gemini/settings.json`. The `openclaw` pack requires `TOOLS.md` at project root.
 
 ---
 

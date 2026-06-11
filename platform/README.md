@@ -31,8 +31,8 @@ companion rules, templates, and getting started — see the
 platform/
 ├── core/           # Kernel doctrine, trust model, lifecycle controls, schemas
 ├── profiles/       # Stack, architecture, data, delivery, management, domain overlays
-├── agents/         # AI-tool operating packs: base, claude-code, generic-llm
-├── skills/         # Agent Skills: harness-governance, harness-testing, harness-web3, harness-onboarding, harness-tools, harness-agentic-interfaces, harness-mcp
+├── agents/         # AI-tool operating packs: base, claude-code, codex-cli, copilot-cli, cursor, gemini-cli, generic-llm, openclaw
+├── skills/         # Agent Skills: harness-governance, harness-testing, harness-web3, harness-onboarding, harness-tools, harness-agentic-interfaces, harness-mcp, harness-digital-twin
 ├── templates/      # Artifact skeletons — see templates/README.md for placeholder reference
 ├── validators/     # Validator scripts, shared Ruby library, test suite, fixtures
 ├── compositions/   # Starter manifests for common project types

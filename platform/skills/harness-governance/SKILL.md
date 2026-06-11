@@ -145,7 +145,7 @@ A few signature notes worth highlighting:
   itself).
 - **`validate-list-completeness.sh`** takes only `[<project-root>]`.
   Asserts every ADR / PRD / OPP / composition / template subdirectory /
-  profile module on disk has its canonical index row.
+  profile module / agent module on disk has its canonical index row.
 - **`validate-knowledge-redaction.sh`** takes
   `[--block] [<project-root>] [<base-branch>]` (defaults: cwd and `main`).
   Diff-based scan of new lines added to
@@ -232,11 +232,13 @@ Use templates from `platform/templates/` to create missing artifacts. Fill every
 
 ## Installing This Skill
 
-Copy this directory to your project's `.agents/skills/` for cross-client compatibility,
-or to `.claude/skills/` for Claude Code:
+Keep this directory canonical under `platform/skills/`. For submodule consumers,
+link the canonical skill into both `.agents/skills/` and `.claude/skills/` rather
+than copying it into tool-local folders:
 
 ```bash
-cp -r platform/skills/harness-governance .agents/skills/
-# or for Claude Code specifically:
-cp -r platform/skills/harness-governance .claude/skills/
+bash .harness/platform/bootstrap/link-skills.sh \
+  --project-root . \
+  --mount-path .harness \
+  harness-governance
 ```

@@ -11,6 +11,22 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-11 — agent catalog interoperability pass
+
+Aligned the agent-module discovery surfaces with the modules that already exist on disk.
+The README, platform overview, GitBook SUMMARY, reference index, and `harness-onboarding`
+skill now list the first-class agent packs for Claude Code, Codex CLI, Copilot CLI, Cursor,
+Gemini CLI, generic LLMs, and OpenClaw instead of routing most non-Claude tools through
+`agents/generic-llm`. This keeps new consumer manifests from under-declaring their actual
+agent surface when a tool-specific pack already exists.
+
+Also extended `validate-list-completeness.sh` so `platform/agents/*/module.yaml` entries
+must appear in the SUMMARY agent catalog, matching the existing profile-module guardrail.
+Finally, replaced the stale tracked `.claude/skills/harness-governance/SKILL.md` full
+mirror with a thin Claude-native adapter that points back to the canonical
+`platform/skills/harness-governance/SKILL.md`. This keeps the tool-local discovery
+surface useful without letting `.claude/` become an independent governance source.
+
 ## 2026-06-10 — sensitive-paths: composition coverage + disable lever (Issue #88)
 
 `validate-sensitive-paths` required every active `sensitivePath` to overlap a companion

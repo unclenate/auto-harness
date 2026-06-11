@@ -58,7 +58,7 @@ the topic but not which page covers it.
 ## Agent Integration
 
 - Skills standard — [Skills and Agents](../workflow/skills-and-agents.md)
-- Agent packs (base, claude-code, generic-llm) — [Agents](../../SUMMARY.md#agents) in the Module Library
+- Agent packs (base, Claude Code, Codex CLI, Copilot CLI, Cursor, Gemini CLI, generic LLM, OpenClaw) — [Agents](../../SUMMARY.md#agents) in the Module Library
 - Compiled fragments vs skills — [Glossary](glossary.md#compiled-fragment)
 - Harness-native skills — [Skills](../../SUMMARY.md#harness-native-skills) in the table of contents
 

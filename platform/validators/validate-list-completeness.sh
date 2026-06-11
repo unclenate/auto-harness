@@ -43,6 +43,7 @@
 #                                                        + README.md (root)
 #   5. Template dirs   platform/templates/<subdir>/     → platform/templates/README.md
 #   6. Profile modules platform/profiles/**/module.yaml → SUMMARY.md
+#   7. Agent modules   platform/agents/*/module.yaml    → SUMMARY.md
 #
 # Exit codes:
 #   0  every discovered entity is referenced in its canonical index file(s)
@@ -71,8 +72,8 @@ Arguments:
                 no docs/adr/), the corresponding check is a no-op.
 
 Behavior:
-  For each of six checks (ADRs, PRDs, OPPs, compositions, template
-  subdirectories, profile modules), discovers the on-disk entity set and
+  For each of seven checks (ADRs, PRDs, OPPs, compositions, template
+  subdirectories, profile modules, agent modules), discovers the on-disk entity set and
   asserts each entity is referenced in its canonical index file(s).
 
   Index file definitions:
@@ -81,7 +82,8 @@ Behavior:
     OPPs   → docs/README.md + docs/opportunities/candidates.md
     Compositions → platform/compositions/README.md + README.md
     Templates    → platform/templates/README.md
-    Modules      → SUMMARY.md
+    Profile modules → SUMMARY.md
+    Agent modules   → SUMMARY.md
 
 Exit codes:
   0  every entity has its canonical index row
@@ -221,6 +223,19 @@ if [[ -d platform/profiles ]]; then
     checks_run=$((checks_run + 1))
     assert_contains "SUMMARY.md" "$family_slug" "$family_slug" "profile module"
   done < <(find platform/profiles -name module.yaml | sort)
+fi
+
+# ----------------------------------------------------------------------
+# Check 7 — Agent modules → SUMMARY.md
+# ----------------------------------------------------------------------
+
+if [[ -d platform/agents ]]; then
+  while IFS= read -r mod; do
+    rel="${mod#platform/}"
+    dir="${rel%/module.yaml}/"
+    checks_run=$((checks_run + 1))
+    assert_contains "SUMMARY.md" "$dir" "$dir" "agent module"
+  done < <(find platform/agents -mindepth 2 -maxdepth 2 -name module.yaml | sort)
 fi
 
 # ----------------------------------------------------------------------

@@ -39,6 +39,17 @@ companionRules:
       - ^docs/adr/ADR-
       - ^docs/requirements/PRD-
     humanReview: Reviewers verify that strategy changes are consistent with current delivery posture and stack.
+  - description: Test or build configuration changes affect the quality gates — require a change-log entry, ADR, or PRD
+    triggerPaths:
+      - ^jest\.config
+      - ^vitest\.config
+      - ^pytest\.ini$
+      - ^pyproject\.toml$
+      - ^setup\.cfg$
+    requiredAny:
+      - ^docs/project/change-log\.md$
+      - ^docs/adr/ADR-
+      - ^docs/requirements/PRD-
 validators:
   - validate-required-artifacts
   - validate-companions

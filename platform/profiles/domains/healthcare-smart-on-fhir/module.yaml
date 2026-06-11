@@ -32,6 +32,9 @@ companionRules:
     triggerPaths:
       - ^src/FHIR/SMART/
       - ^auth/
+      - launch
+      - token
+      - oauth
     requiredAny:
       - ^docs/security/risk-register\.md$
       - ^docs/adr/ADR-

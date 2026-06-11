@@ -1210,6 +1210,47 @@ class TestValidateSensitivePaths < Minitest::Test
     assert_match(/sensitive-path patterns are companion-rule covered/, out)
   end
 
+  def test_disabled_validation_exits_zero
+    # A manifest that disables sensitive-paths must exit 0 with the override
+    # message, even though the early-return fires before module enumeration.
+    Dir.mktmpdir do |tmpdir|
+      manifest_path = File.join(tmpdir, "harness.manifest.yaml")
+      File.write(manifest_path, <<~YAML)
+        schemaVersion: 1
+        project:
+          id: test-disabled-sp
+          name: Test Disabled Sensitive Paths
+          maturity: prototype
+          criticality: low
+        modules:
+          core:
+            - kernel/base
+          management:
+            - product-lite
+        overrides:
+          disabledValidations:
+            - sensitive-paths
+      YAML
+
+      out, err, code = run_validator("validate-sensitive-paths.sh", manifest_path, HARNESS_ROOT)
+      assert_equal 0, code, "Disabled sensitive-paths validation should exit 0. stderr: #{err}"
+      assert_match(/disabled/i, out)
+    end
+  end
+
+  def test_all_shipped_compositions_are_covered
+    # Every shipped composition must pass sensitive-paths — the project's own
+    # examples gate the "declared-but-unenforced sensitivePath" class (Issue #88).
+    compositions = Dir.glob(File.join(HARNESS_ROOT, "platform", "compositions", "*.yaml"))
+    refute_empty compositions, "expected shipped compositions to exist"
+    failures = compositions.reject do |c|
+      _out, _err, code = run_validator("validate-sensitive-paths.sh", c, HARNESS_ROOT)
+      code.zero?
+    end
+    assert_empty failures.map { |f| File.basename(f) },
+                 "these shipped compositions have uncovered sensitivePaths"
+  end
+
   def test_missing_manifest_aborts_with_exit_2
     nonexistent = File.join(Dir.tmpdir, "validate-sensitive-paths-nope-#{Process.pid}.yaml")
     _out, err, code = run_validator("validate-sensitive-paths.sh", nonexistent)

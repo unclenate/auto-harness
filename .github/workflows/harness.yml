@@ -63,6 +63,17 @@ jobs:
       - name: Validate sensitive paths
         run: bash platform/validators/validate-sensitive-paths.sh harness.manifest.yaml .
 
+      - name: Validate sensitive paths over shipped compositions
+        run: |
+          fail=0
+          for c in platform/compositions/*.yaml; do
+            if ! bash platform/validators/validate-sensitive-paths.sh "$c" >/dev/null 2>&1; then
+              echo "✗ uncovered sensitivePaths in $c"; fail=1
+            fi
+          done
+          if [ "$fail" -ne 0 ]; then echo "Some shipped compositions have uncovered sensitivePaths"; exit 1; fi
+          echo "✓ All shipped compositions pass sensitive-paths"
+
       - name: Validate skill content
         # BLOCK posture (predict-clean absorption per PRD-0015 FR-003).
         # Scans authored prose in active modules against denylist of

@@ -146,6 +146,11 @@ rescue HarnessRegistry::ManifestShapeError => e
   exit 2
 end
 
+if HarnessRegistry.disabled_validation?(manifest, "sensitive-paths")
+  puts "✓ Sensitive-paths validation disabled by manifest override"
+  exit 0
+end
+
 active_modules = HarnessRegistry.active_modules(platform_root, manifest)
 
 # Collect every (sensitive_pattern, module_id) tuple across active modules.

@@ -1238,6 +1238,19 @@ class TestValidateSensitivePaths < Minitest::Test
     end
   end
 
+  def test_all_shipped_compositions_are_covered
+    # Every shipped composition must pass sensitive-paths — the project's own
+    # examples gate the "declared-but-unenforced sensitivePath" class (Issue #88).
+    compositions = Dir.glob(File.join(HARNESS_ROOT, "platform", "compositions", "*.yaml"))
+    refute_empty compositions, "expected shipped compositions to exist"
+    failures = compositions.reject do |c|
+      _out, _err, code = run_validator("validate-sensitive-paths.sh", c, HARNESS_ROOT)
+      code.zero?
+    end
+    assert_empty failures.map { |f| File.basename(f) },
+                 "these shipped compositions have uncovered sensitivePaths"
+  end
+
   def test_missing_manifest_aborts_with_exit_2
     nonexistent = File.join(Dir.tmpdir, "validate-sensitive-paths-nope-#{Process.pid}.yaml")
     _out, err, code = run_validator("validate-sensitive-paths.sh", nonexistent)

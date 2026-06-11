@@ -128,6 +128,14 @@ The bootstrap prints a suggested workflow (search stdout for `Suggested CI workf
 
 ### 6. Verify fresh-clone integration
 
+> **Prerequisite:** this test clones from your remote, so it only works once your
+> initial commit is pushed. For a brand-new (greenfield) repo the full order is:
+> commit (step 4) → `git remote add origin <url>` → `git push -u origin <branch>` →
+> then run the smoke test below. For an existing repo that is already pushed, skip
+> straight to the test. A clone of a repo with nothing pushed comes back empty, so
+> the `test -f` check below would fail for a reason unrelated to the gitlink it is
+> meant to validate.
+
 `.harness/` is a **gitlink**, not a copy. Your repo stores only the commit SHA the submodule
 points at — the actual files materialize when someone runs `git submodule update --init` (or
 clones with `--recurse-submodules`). Two failure modes are silent at *your* developer machine

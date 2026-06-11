@@ -11,6 +11,24 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-10 — sensitive-paths: composition coverage + disable lever (Issue #88)
+
+`validate-sensitive-paths` required every active `sensitivePath` to overlap a companion
+`triggerPath`, but eight of 13 shipped compositions failed across seven modules that
+declared sensitive paths they never enforced. Resolved by **self-coverage** — each orphan
+folded into its own module's companion rule (generalizing PR #114): `digital-twin`
+(`^data/`, `^public/scenarios/`), `node-typescript` (`^tsconfig\.`), `testing-standard`
+(jest/vitest/pytest/pyproject/setup config), `web3` (`^src/agents/`), `self-hosted-oss`
+(`release-intent.md`; `^CHANGELOG` removed as miscategorized), `healthcare-fhir`
+(patient/observation/bundle/phi → risk-register), `healthcare-smart-on-fhir`
+(launch/token/oauth → risk-register).
+
+Also fixed **Bug B**: `validate-sensitive-paths.sh` now honors
+`overrides.disabledValidations: [sensitive-paths]` (the documented consumer escape hatch),
+matching the three sibling validators. **Prevention:** CI + an integration test now run the
+validator over every `platform/compositions/*.yaml`. No change to the overlap algorithm or
+the validator's doctrine.
+
 ## 2026-06-10 — privacy-by-design self-covers its sensitivePaths (PR #114)
 
 The `privacy-by-design` module declared `^auth/`, `^src/.*user`, and `tracking` in

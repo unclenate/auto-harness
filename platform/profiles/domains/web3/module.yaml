@@ -69,6 +69,7 @@ companionRules:
       - signal_weights
       - ^src/scoring/
       - ^src/signals/
+      - ^src/agents/
     requiredAny:
       - ^docs/adr/ADR-
     humanReview: Reviewers verify that UNKNOWN propagation is preserved, evidence requirements are met, and determinism is not broken.

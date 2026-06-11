@@ -37,6 +37,8 @@ companionRules:
       - ^agents/
       - ^datasets/
       - ^simulation/
+      - ^data/
+      - ^public/scenarios/
     requiredAny:
       - ^docs/twin/.*\.md$
       - ^docs/adr/ADR-

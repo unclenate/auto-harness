@@ -34,6 +34,10 @@ companionRules:
     triggerPaths:
       - ^src/FHIR/
       - ^fhir/
+      - patient
+      - observation
+      - bundle
+      - phi
     requiredAny:
       - ^docs/security/risk-register\.md$
       - ^docs/adr/ADR-

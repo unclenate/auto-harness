@@ -30,6 +30,7 @@ companionRules:
       - ^pnpm-lock\.yaml$
       - ^yarn\.lock$
       - ^\.nvmrc$
+      - ^tsconfig\.
     requiredAny:
       - ^docs/adr/ADR-
       - ^docs/architecture/overview\.md$

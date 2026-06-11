@@ -26,7 +26,6 @@ sensitivePaths:
   - description: Release/versioning surface for the distributable artifact
     patterns:
       - ^docs/product/release-intent\.md$
-      - ^CHANGELOG
 companionRules:
   - description: Changes to self-host install/deploy automation require an update to the self-hosting guide or the release intent — the operator inherits whatever the install path does, so an undocumented install change is a silent change to every downstream deployment
     triggerPaths:
@@ -48,6 +47,13 @@ companionRules:
       ports, data locations, backup behavior) is called out — the operator
       inherits the security posture the project ships, so silent changes to it
       are governance failures even though no hosted service is involved.
+  - description: Release-intent changes require a self-hosting-guide update, change-log entry, or ADR — the release surface is what every downstream operator consumes
+    triggerPaths:
+      - ^docs/product/release-intent\.md$
+    requiredAny:
+      - ^docs/deployment/self-hosting-guide\.md$
+      - ^docs/project/change-log\.md$
+      - ^docs/adr/ADR-
 validators:
   - validate-required-artifacts
   - validate-companions

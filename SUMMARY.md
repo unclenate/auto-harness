@@ -196,6 +196,8 @@ The seventeen validator scripts and their shared Ruby library. CI wiring and tro
 * [validate-knowledge-redaction.sh](platform/validators/validate-knowledge-redaction.sh)
 * [validate-sast-coverage.sh](platform/validators/validate-sast-coverage.sh)
 * [validate-privacy-by-design.sh](platform/validators/validate-privacy-by-design.sh)
+* [validate-twin-profile.sh](platform/validators/validate-twin-profile.sh)
+* [validate-scenario-manifest.sh](platform/validators/validate-scenario-manifest.sh)
 * [Shared Library: harness\_registry.rb](platform/validators/lib/harness_registry.rb)
 
 ### Test Suite
@@ -230,6 +232,7 @@ other compliant clients. Install to `.agents/skills/` or `.claude/skills/`.
 * [harness-tools](platform/skills/harness-tools/SKILL.md)
 * [harness-agentic-interfaces](platform/skills/harness-agentic-interfaces/SKILL.md)
 * [harness-mcp](platform/skills/harness-mcp/SKILL.md)
+* [harness-digital-twin](platform/skills/harness-digital-twin/SKILL.md)
 
 ## Compositions and Examples
 

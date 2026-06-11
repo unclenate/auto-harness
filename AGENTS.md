@@ -151,7 +151,7 @@ Agents must halt and surface to a human when:
 
 Check `recommendedSkills` in each active module's `module.yaml` for tool-specific
 skill recommendations. Load skills on demand; do not pre-load. The harness provides
-seven native skills:
+eight native skills:
 
 - `harness-governance` — trust tiers, companion rules, lifecycle controls (all projects)
 - `harness-onboarding` — brownfield and greenfield onboarding workflows (during onboarding)
@@ -160,3 +160,4 @@ seven native skills:
 - `harness-tools` — MCP developer tool governance: tier map, Linear artifact workflow, Slack notifications (`agents/openclaw` active)
 - `harness-agentic-interfaces` — in-product copilot / generative-UI / conversational-primary surfaces (`domains/agentic-interfaces` active)
 - `harness-mcp` — producer-side MCP work (`architectures/mcp-server` active)
+- `harness-digital-twin` — digital-twin / scenario-runtime governance (`management/digital-twin` active)

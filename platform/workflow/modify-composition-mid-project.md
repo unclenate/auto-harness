@@ -74,7 +74,7 @@ makes the operational mechanics explicit.
    automatically apply once the manifest activates the module. No
    manual config; `validate-companions.sh` reads from the live manifest.
 
-6. **Run the full validator chain.** All 8 validators should exit 0.
+6. **Run the full validator chain.** All validators should exit 0.
 
 7. **Open a PR.** The new companion rules will fire against the diff;
    if your scaffolded artifacts satisfy them by construction, CI passes.

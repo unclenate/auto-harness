@@ -33,6 +33,7 @@ the client when their description matches the active task:
 - **`harness-tools`** — when working with the MCP developer tool surface (Linear, Slack, Calendar, Gmail, Canva, Ahrefs, Similarweb) on a project that has `agents/openclaw` active
 - **`harness-agentic-interfaces`** — when working in a consumer project that ships an in-product agent surface (`domains/agentic-interfaces` active)
 - **`harness-mcp`** — when working in a consumer project that produces its own MCP server (`architectures/mcp-server` active)
+- **`harness-digital-twin`** — only when the consumer project has the `management/digital-twin` overlay active (twin-profile maturity ladder, scenario epistemic-discipline contract)
 
 ## Companion-Rule Reflex
 

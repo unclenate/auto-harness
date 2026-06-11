@@ -387,6 +387,7 @@ Gemini CLI, and others:
 | [`harness-tools`](platform/skills/harness-tools/SKILL.md) | Projects with `agents/openclaw` active | MCP developer tool governance: trust tier map, Linear artifact workflow, Slack notifications, analytics tools |
 | [`harness-agentic-interfaces`](platform/skills/harness-agentic-interfaces/SKILL.md) | Projects with `domains/agentic-interfaces` active | In-product copilot / generative-UI / conversational-primary governance: flavor map, tier discipline for agent-callable actions, prompt-injection and renderer-contract threat model |
 | [`harness-mcp`](platform/skills/harness-mcp/SKILL.md) | Projects with `architectures/mcp-server` active | Producer-side MCP work: three-mode map (consumer / producer / exposed-governance), per-tool consumer-tier mapping, prompt-injection defense surface, capability and transport posture |
+| [`harness-digital-twin`](platform/skills/harness-digital-twin/SKILL.md) | Projects with `management/digital-twin` active | Digital-twin / scenario-runtime governance: maturity honesty, world / scenario / run separation, provenance and uncertainty disclosure, publication boundaries |
 
 Skills are progressively disclosed — agents load only the name and description (~100 tokens)
 at startup. The full body loads on demand when a task matches the skill's domain.
@@ -428,6 +429,8 @@ Seventeen validators, each targeting a specific governance layer:
 | `validate-knowledge-redaction.sh` | Surfaces consumer-name hits in new lines added to `docs/knowledge/shared-observations.md` and `docs/operating-principles.md` (default WARN; `--block` for hard fail) — closes the §8 cross-pollination + §9 upstream-propagation pathways |
 | `validate-sast-coverage.sh` | Opt-in: when `management/security-static-analysis` is active, validates `docs/security/sast-coverage.md` declares a recommended-set tool (`semgrep` / `codeql` / `bandit` / `gosec` / `eslint-plugin-security` / `snyk-code`), scan paths, and a severity threshold — half-enforces sweep §11 (consumer CI honors the contract for end-to-end enforcement) |
 | `validate-privacy-by-design.sh` | Privacy-by-design overlay — gated; validates privacy-profile presence/consistency, WARN-surfaces privacy-risk patterns |
+| `validate-twin-profile.sh` | Digital Twin overlay — gated; validates the `docs/twin/twin-profile.md` contract (maturity, conformance, governing principles) and WARN-surfaces standards-overclaim (emerging ISO 23247-5/-6, ISO/IEC 30188 marked published) |
+| `validate-scenario-manifest.sh` | Digital Twin overlay — gated; validates scenario manifests carry the required epistemic-discipline sections (datasets with source/version/asOf/confidence, assumptions with sensitivity, provenance, publication-approval gating) |
 
 All validators are pure shell + Ruby (no external service calls). Ruby 3.0+ and ripgrep
 are the only runtime requirements.

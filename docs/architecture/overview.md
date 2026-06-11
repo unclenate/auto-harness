@@ -47,7 +47,7 @@ governance contract:
   validators, templates, skills, agent packs, workflows, examples.
 - **`docs/`** is the project's self-governance — ADRs, PRDs, OPPs,
   observations, the canonical roadmap.
-- **CI** (in `.github/workflows/harness.yml`) runs the 8 validators
+- **CI** (in `.github/workflows/harness.yml`) runs the validator suite
   on every PR against `main`.
 
 See [`docs/architecture/diagrams.md`](diagrams.md) Diagram 1

@@ -863,6 +863,8 @@ VALIDATOR_SCRIPTS = %w[
   validate-skill-content.sh
   validate-sast-coverage.sh
   validate-privacy-by-design.sh
+  validate-twin-profile.sh
+  validate-scenario-manifest.sh
 ].freeze
 
 class TestValidatorHelpFlag < Minitest::Test

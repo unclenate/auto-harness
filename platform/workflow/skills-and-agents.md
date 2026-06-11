@@ -109,6 +109,7 @@ discover and activate.
 | `harness-tools` | `platform/skills/harness-tools/` | MCP developer tool governance: trust tier map, Linear artifact workflow, Slack notifications, analytics tools |
 | `harness-agentic-interfaces` | `platform/skills/harness-agentic-interfaces/` | In-product copilot / generative-UI / conversational-primary governance: flavor map, tier discipline for agent-callable actions, prompt-injection and renderer-contract threat model |
 | `harness-mcp` | `platform/skills/harness-mcp/` | Producer-side MCP work: three-mode map (consumer / producer / exposed-governance), per-tool consumer-tier mapping, prompt-injection defense surface, capability and transport posture |
+| `harness-digital-twin` | `platform/skills/harness-digital-twin/` | Digital-twin / scenario-runtime governance: maturity honesty, world / scenario / run separation, provenance and uncertainty disclosure, publication boundaries |
 
 **Why skills instead of (only) compiled fragments?**
 

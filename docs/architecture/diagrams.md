@@ -72,7 +72,7 @@ flowchart TD
     end
 
     subgraph SURFACE["Consumer-Facing Surfaces"]
-        Skills["<b>Skills</b><br/>governance, onboarding,<br/>testing, web3, tools,<br/>agentic-interfaces, mcp"]
+        Skills["<b>Skills</b><br/>governance, onboarding,<br/>testing, web3, tools,<br/>agentic-interfaces, mcp,<br/>digital-twin"]
         Templates["<b>Templates</b><br/>84 scaffolding files<br/>(tokenized headers)"]
         Workflows["<b>Workflows</b><br/>19 guides:<br/>bootstrap, discovery,<br/>distillation, etc."]
     end
@@ -557,7 +557,7 @@ flowchart LR
         R3["...7 recipes total..."]
     end
 
-    subgraph TABLE["Assertion table (23 rows)"]
+    subgraph TABLE["Assertion table (26 rows)"]
         A1["how-to-read.md \| regex \| modules_profiles"]
         A2["diagrams.md \| regex \| validators"]
         A3["cover-back.svg \| regex \| diagrams"]
@@ -577,9 +577,9 @@ flowchart LR
     Compare -->|"yes"| Pass["✓ assertion passes;<br/>iterate to next row"]
     Compare -->|"no"| Fail["✗ drift detected;<br/>report file + claim + canonical;<br/>increment violation count"]
 
-    Pass --> AllPass{"All 23<br/>assertions<br/>checked?"}
+    Pass --> AllPass{"All 26<br/>assertions<br/>checked?"}
     AllPass -->|"yes, 0 violations"| Exit0["exit 0<br/>✓ All N catalog-count<br/>assertions match"]
-    AllPass -->|"some violations"| Exit1["exit 1<br/>N of 23 assertions failed<br/>(detail emitted per failure)"]
+    AllPass -->|"some violations"| Exit1["exit 1<br/>N of 26 assertions failed<br/>(detail emitted per failure)"]
 
     style Pass fill:#2d4a2d,stroke:#4a7a4a,color:#fff
     style Exit0 fill:#2d4a2d,stroke:#4a7a4a,color:#fff
@@ -607,7 +607,7 @@ flowchart LR
 - Existing assertion's regex pattern changes (e.g., a doc gets
   reorganized and the surrounding prose shifts)
 - New canonical count is added (also requires a new recipe + the
-  current 23 assertions might need re-coverage)
+  current 26 assertions might need re-coverage)
 
 The validator's `--help` documents the row format. See the
 `harness-governance` SKILL.md signature-notes for the consumer-side

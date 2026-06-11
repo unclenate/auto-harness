@@ -15,7 +15,7 @@ Run locally during development and in CI on every pull request.
 
 - **Ruby 3.0+** — all validators use inline Ruby for YAML parsing and logic
 - **ripgrep (`rg`)** — required by `validate-placeholders.sh` only; other validators work without it
-- **Bash** — the seven `validate-*.sh` scripts delegate to Ruby and work with Bash 3.2 (macOS default) and 4+. The bootstrap scripts (`install.sh`, `link-skills.sh`, `add-license-headers.sh`) require Bash 4+ (use `declare -A` and other 4+ features); macOS users must `brew install bash` for those.
+- **Bash** — the seventeen `validate-*.sh` scripts delegate to Ruby and work with Bash 3.2 (macOS default) and 4+. The bootstrap scripts (`install.sh`, `link-skills.sh`, `add-license-headers.sh`) require Bash 4+ (use `declare -A` and other 4+ features); macOS users must `brew install bash` for those.
 
 ---
 
@@ -41,6 +41,9 @@ below).
 | `validate-skill-content.sh` | `[--verbose] [<manifest>] [<project-root>]` (or `--scan-file <path>`) | Across active modules, scans authored prose (`module.yaml` description / summary / reviewGates / companionRules.humanReview + SKILL.md bodies via `recommendedSkills` + `compiledFragments` markdown) against a built-in denylist of prompt-injection patterns (e.g., "ignore previous instructions"), tier-bypass phrasings (e.g., "always operates at Tier"), role-prompt headers (`^System:`/`^User:`/`^Assistant:`), zero-width characters, and Unicode bidi marks. Lines matching `.skill-content-ignore` regex patterns are exempted. **Default posture: BLOCK** — hard-fails on any unexempted hit (predict-clean absorption per PRD-0015 FR-003). `--scan-file <path>` provides direct content scanning for ad-hoc fixture checks. Closes safety-security-sweep §3 red-team vectors V1, V2, V4 (partial), V6. PRD-0015 / OPP-0033 / ADR-0017 Wave 5.2 |
 | `validate-knowledge-redaction.sh` | `[--block] [<project-root>] [<base-branch>]` | Diff-based scan of new lines added to `docs/knowledge/shared-observations.md` and `docs/operating-principles.md` against a built-in denylist of consumer-name patterns (Tula, OpenEMR, YouBase, municipal-brain, toast-mcp). Lines matching `.knowledge-redaction-ignore` patterns are exempted. **Default posture: WARN** — surfaces hits on stderr but exits 0 (reviewers eyeball in CI logs). `--block` escalates hits to exit 1 (v2 posture per OPP-0036). Closes safety-security-sweep §8 (cross-pollination) + §9 (upstream-propagation pathways). OPP-0036 / ADR-0017 Wave 5.5 |
 | `validate-sast-coverage.sh` | `[<manifest>] [<project-root>]` (or `--scan-file <path>`) | Opt-in validator for the `management/security-static-analysis` overlay. When the module is not active, exits 0 with a "module inactive" message — the harness itself does not activate the module, so its own CI run is a no-op pass (predict-clean absorption per PRD-0016 FR-003). When the module is active, reads `docs/security/sast-coverage.md`, parses YAML frontmatter, and asserts `tool:` is from the recommended set (`semgrep` / `codeql` / `bandit` / `gosec` / `eslint-plugin-security` / `snyk-code`), `scanPaths:` is a non-empty list, `severityThreshold:` is a non-empty string. `--scan-file <path>` provides direct content scanning for fixture tests and ad-hoc validation. Half-enforces safety-security-sweep §11 (the largest mission-relative gap in the sweep) — the harness validates the contract; consumer CI honors it for end-to-end enforcement. PRD-0016 / OPP-0035 / ADR-0017 Wave 5.4 |
+| `validate-privacy-by-design.sh` | `[--block] [<manifest>] [<project-root>]` (or `--scan-file <path>`) | Opt-in validator for the `management/privacy-by-design` overlay. When the module is not active, exits 0 (module-gated no-op). When active, validates the privacy-profile presence/consistency (FAIL layer) and WARN-surfaces privacy-risk patterns; `--block` escalates WARN hits to a non-zero exit. PRD-0018 / §11 |
+| `validate-twin-profile.sh` | `[--block] [<manifest>] [<project-root>]` (or `--scan-file <path>`) | Opt-in validator for the `management/digital-twin` overlay. When the module is not active, exits 0. When active, parses `docs/twin/twin-profile.md` frontmatter and asserts `maturity` / `conformance` / `governingPrinciples` are populated and no emerging standard (ISO 23247-5/-6, ISO/IEC 30188) is marked `published`. Advisory WARN (exit 0); `--block` escalates. PRD-0023 / ADR-0019 |
+| `validate-scenario-manifest.sh` | `[--block] [<manifest>] [<project-root>]` (or `--scan-file <path>`) | Opt-in validator for the `management/digital-twin` overlay. When the module is not active, exits 0. When active, scans scenario manifests for the required epistemic-discipline sections (`scenario` / `datasets` / `assumptions` / `outputs` / `uncertainty` / `provenance`), per-dataset `source`+`version`+`asOf`+`confidence`, per-assumption `sensitivity`, and publication-approval gating. Advisory WARN (exit 0); `--block` escalates. PRD-0023 / ADR-0019 |
 
 ### `--help` / `-h`
 
@@ -168,8 +171,8 @@ ruby -I platform/validators/lib platform/validators/test/test_harness_registry.r
 
 ### Integration tests
 
-**`test/test_validators_integration.rb`** — hard-coded tests + 24 dynamically
-generated `--help` / `-h` coverage tests (3 per validator × 8 validators) that
+**`test/test_validators_integration.rb`** — hard-coded tests + 51 dynamically
+generated `--help` / `-h` coverage tests (3 per validator × 17 validators) that
 shell out to the actual validator scripts against fixture projects:
 
 - `validate-manifest.sh` — valid pass, bad schema fail, missing file → exit 2

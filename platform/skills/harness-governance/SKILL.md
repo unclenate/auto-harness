@@ -106,6 +106,7 @@ bash $PLATFORM/validators/validate-sensitive-paths.sh    harness.manifest.yaml .
 bash $PLATFORM/validators/validate-skill-content.sh      harness.manifest.yaml .
 bash $PLATFORM/validators/validate-knowledge-redaction.sh .                    main
 bash $PLATFORM/validators/validate-sast-coverage.sh      harness.manifest.yaml .
+bash $PLATFORM/validators/validate-privacy-by-design.sh  harness.manifest.yaml .
 bash $PLATFORM/validators/validate-companions.sh         harness.manifest.yaml . main
 ```
 

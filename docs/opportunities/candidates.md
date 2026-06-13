@@ -516,6 +516,23 @@ the Gemini Principles); a maturity-gated forcing artifact.
   skill. Composes with `management/privacy-by-design` and `domains/aec-iso19650-im`
   (the municipal / real-estate planning-twin stack).
 
+### Geospatial / GIS domain family (2026-06-12)
+
+The fourth deep-domain vertical: GIS / mapping / BIM↔GIS governance. A
+jurisdiction-neutral CRS substrate, an OGC exchange layer with a
+publisher/consumer role axis, and the first cross-family bridge module
+(geospatial × AEC). The CRS forcing artifact is the purest instance of the
+jurisdiction-profile primitive — geodetically *and* temporally bound.
+
+- [OPP-0045](OPP-0045-domain-family-geospatial-decomposed.md) *(proposed 2026-06-12; PRD-0024)*
+  — decomposed `domains/geospatial-*`: a `geospatial-foundation` +
+  `geospatial-exchange` + `geospatial-bim-georeference` wedge,
+  `templates/geospatial/`, the `geospatial-bim-twin.yaml` 4-way composition, and
+  four deferred family members. First cross-family dependency
+  (`geospatial-bim-georeference → aec-openbim-exchange`) and first temporal
+  forcing-artifact axis. Composes with `management/digital-twin` and
+  `management/privacy-by-design` for geospatial sensitivity (compose-don't-build).
+
 ### Canonical direction & strategic alignment
 
 - [OPP-0007](OPP-0007-canonical-position-artifact.md) *(exploring;

@@ -94,6 +94,7 @@ originating opportunity records.
 | [0021](requirements/PRD-0021-greenfield-onboarding-conservatism.md) | Greenfield Onboarding Conservatism — Route Contextless Greenfield to Discovery | Accepted | [OPP-0042](opportunities/OPP-0042-greenfield-onboarding-conservatism.md) |
 | [0022](requirements/PRD-0022-cybersec-osint-maltego-wedge.md) | Cybersecurity OSINT / Maltego Wedge | Proposed | [OPP-0043](opportunities/OPP-0043-domain-family-cybersecurity-decomposed.md) |
 | [0023](requirements/PRD-0023-digital-twin-scenario-runtime-overlay.md) | Digital Twin / Scenario Runtime Overlay | Accepted | [OPP-0044](opportunities/OPP-0044-digital-twin-scenario-runtime.md) |
+| [0024](requirements/PRD-0024-geospatial-gis-wedge.md) | Geospatial / GIS Wedge (CRS + OGC exchange + BIM↔GIS georeferencing) | Accepted | [OPP-0045](opportunities/OPP-0045-domain-family-geospatial-decomposed.md) |
 
 ---
 
@@ -149,6 +150,7 @@ clustered backlog with framing.
 | [0042](opportunities/OPP-0042-greenfield-onboarding-conservatism.md) | Greenfield Onboarding Conservatism: Route Contextless Greenfield to Discovery | accepted |
 | [0043](opportunities/OPP-0043-domain-family-cybersecurity-decomposed.md) | Cybersecurity Domain Family (decomposed) | accepted (partial promotion) |
 | [0044](opportunities/OPP-0044-digital-twin-scenario-runtime.md) | Digital Twin / Scenario Runtime Governance Overlay | accepted |
+| [0045](opportunities/OPP-0045-domain-family-geospatial-decomposed.md) | Geospatial / GIS Domain Family (decomposed) | proposed |
 
 ---
 

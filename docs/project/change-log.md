@@ -11,6 +11,21 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-13 — geospatial / GIS deep-domain wedge (design)
+
+Filed the design contract for the fourth deep-domain vertical: a
+`domains/geospatial-*` family governing GIS / mapping data and the BIM↔GIS seam.
+OPP-0045 ratifies the decomposed family shape; PRD-0024 promotes a thin
+three-module wedge (`geospatial-foundation` + `geospatial-exchange` +
+`geospatial-bim-georeference`) plus four geospatial templates, a diagram, and the
+first 4-way `geospatial-bim-twin` composition. Design-only per operating-principle
+§ 9 — the implementing PR builds the scaffolding. Two harvest enrichments: the
+catalog's first cross-family dependency
+(`geospatial-bim-georeference → aec-openbim-exchange`) and the first temporal axis
+on the jurisdiction-profile forcing artifact (a CRS is place- *and* time-bound).
+Geospatial sensitivity is composed via the digital-twin and privacy overlays
+rather than a built spine.
+
 ## 2026-06-11 — agent catalog interoperability pass
 
 Aligned the agent-module discovery surfaces with the modules that already exist on disk.

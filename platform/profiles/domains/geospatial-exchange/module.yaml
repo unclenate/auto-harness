@@ -1,0 +1,59 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+id: geospatial-exchange
+type: domain
+version: 1.0.0
+summary: Geospatial exchange overlay — governs OGC exchange formats and services (GeoJSON, GeoPackage, CityGML/CityJSON, shapefile; WMS/WFS/WMTS, OGC API), the publisher / consumer role axis, and a CRS-on-the-wire preservation policy on top of the spatial-reference substrate.
+dependsOn:
+  - kernel/base
+  - geospatial-foundation
+conflictsWith: []
+requiredArtifacts:
+  - docs/geospatial/exchange-profile.md
+optionalArtifacts: []
+sensitivePaths:
+  - description: Geospatial exchange and service surfaces
+    patterns:
+      - ^exchange/
+      - ^services/
+      - ^api/geo
+      - wfs
+      - wms
+      - geojson
+      - tiles
+companionRules:
+  - description: Changes to docs/geospatial/exchange-profile.md (format set, CRS-on-the-wire policy, or role axis) require an ADR under docs/adr/ or a docs/project/change-log.md entry
+    triggerPaths:
+      - ^docs/geospatial/exchange-profile\.md$
+      - ^exchange/
+      - ^services/
+      - ^api/geo
+      - wfs
+      - wms
+      - geojson
+      - tiles
+    requiredAny:
+      - ^docs/adr/ADR-
+      - ^docs/project/change-log\.md$
+    humanReview: Reviewers confirm format-set, CRS-on-the-wire, and role-axis changes preserve the declared CRS across exchange boundaries (GeoJSON RFC 7946 drops non-WGS84 CRS on the wire).
+  - description: Publishing a new authoritative dataset or service endpoint requires a docs/security/risk-register.md update or an ADR under docs/adr/
+    triggerPaths:
+      - ^services/
+      - ^api/geo
+      - wfs
+      - wms
+      - tiles
+    requiredAny:
+      - ^docs/security/risk-register\.md$
+      - ^docs/adr/ADR-
+    humanReview: Reviewers verify a newly published service grant is intentional (publication = exposure).
+validators:
+  - validate-companions
+reviewGates:
+  - Human review is required to widen a published service grant or change the CRS-on-the-wire policy.
+agentAdapters:
+  - platform/agents/base
+compiledFragments:
+  - platform/profiles/domains/geospatial-exchange/README.md
+recommendedSkills:
+  - harness-governance   # trust tiers and companion rules (source: platform/skills/)

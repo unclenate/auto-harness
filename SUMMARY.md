@@ -165,6 +165,9 @@ Vendor, ecosystem, or specialist overlays.
 * [AEC ISO 19650 IM](platform/profiles/domains/aec-iso19650-im/README.md) — ISO 19650 information-management substrate; CDE, containers, actor model (AEC deep-domain family)
 * [AEC openBIM Exchange](platform/profiles/domains/aec-openbim-exchange/README.md) — IFC/IDS exchange + producer/receiver/reviewer roles (pairs with AEC ISO 19650 IM)
 * [AEC ISO 19650-5 Security](platform/profiles/domains/aec-iso19650-5-security/README.md) — security-minded sensitivity + security-management plan (composes with privacy-by-design)
+* [Geospatial Foundation](platform/profiles/domains/geospatial-foundation/README.md) — spatial-reference substrate; CRS, datum, epoch, units + per-dataset provenance (geospatial deep-domain family)
+* [Geospatial Exchange](platform/profiles/domains/geospatial-exchange/README.md) — OGC formats/services exchange + publisher/consumer roles + CRS-on-the-wire policy (pairs with Geospatial Foundation)
+* [Geospatial BIM↔GIS Georeference](platform/profiles/domains/geospatial-bim-georeference/README.md) — IfcMapConversion georeferencing bridge (first cross-family dependency; bridges to AEC openBIM Exchange)
 * [GitBook](platform/profiles/domains/gitbook/README.md)
 
 ### Agents

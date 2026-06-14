@@ -564,6 +564,9 @@ Dependency: `management/program-lite` requires `management/project-standard`. `m
 | `domains/aec-iso19650-im` | ISO 19650 information delivery; activate when a project runs a CDE with information containers, a BEP, or a MIDP. | — | `docs/aec/information-management-plan.md`, `docs/aec/jurisdiction-profile.md` |
 | `domains/aec-openbim-exchange` | openBIM (IFC/BCF/IDS) model exchange under an information-delivery contract. | `domains/aec-iso19650-im` | `docs/aec/exchange-requirements.md` |
 | `domains/aec-iso19650-5-security` | Security-minded handling of sensitive built-asset information (BS EN ISO 19650-5). Composes with `management/privacy-by-design`. | `domains/aec-iso19650-im` | `docs/aec/sensitivity-assessment.md`, `docs/aec/security-management-plan.md` |
+| `domains/geospatial-foundation` | Spatial-reference substrate; activate when a project handles GIS / mapping data, survey data, or coordinates tied to the real world. Forces a CRS / datum / epoch / units declaration. | — | `docs/geospatial/spatial-reference-profile.md`, `docs/geospatial/dataset-inventory.md` |
+| `domains/geospatial-exchange` | OGC exchange formats/services (GeoJSON, GeoPackage, CityGML/CityJSON; WMS/WFS/WMTS, OGC API); publisher/consumer role axis + CRS-on-the-wire policy. | `domains/geospatial-foundation` | `docs/geospatial/exchange-profile.md` |
+| `domains/geospatial-bim-georeference` | BIM↔GIS georeferencing bridge; activate when pinning a Revit/IFC model to real-world coordinates (IfcMapConversion, survey point). First cross-family dependency. | `domains/geospatial-foundation`, `domains/aec-openbim-exchange` | `docs/geospatial/georeference-map.md` |
 
 ---
 

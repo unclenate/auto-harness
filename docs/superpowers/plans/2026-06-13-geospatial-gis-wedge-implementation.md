@@ -623,10 +623,10 @@ A wrong map conversion silently mislocates the whole federated model. Record how
 the parameters were derived and verified.
 ````
 
-- [ ] **Step 5: Verify header hygiene + lint**
+- [ ] **Step 5: Verify placeholder + lint**
 
-Run: `bash platform/validators/validate-header-hygiene.sh; echo $?`
-Expected: `0` (all four templates carry the tokenized SPDX header).
+Run: `bash platform/validators/validate-placeholders.sh; echo $?`
+Expected: `0` (templates carry tokenized SPDX headers; `platform/**` is excluded via `.placeholder-ignore`). Note: there is no `validate-header-hygiene.sh`; header/SPDX coverage is gated by `validate-placeholders.sh` + markdownlint.
 
 Run: `npx markdownlint-cli2 "platform/templates/geospatial/*.md" 2>&1 | tail -2`
 Expected: `Summary: 0 error(s)`.

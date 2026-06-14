@@ -324,6 +324,7 @@ Pre-built manifests for common project types. Copy the closest match and adjust:
 | [`healthcare-fhir-app.yaml`](platform/compositions/healthcare-fhir-app.yaml) | Any | FHIR + SMART-on-FHIR application — healthcare data layer + SMART app-launch/scopes, provider-launch + patient-access roles |
 | [`aec-bim-project.yaml`](platform/compositions/aec-bim-project.yaml) | Any | ISO 19650 IM + openBIM exchange + ISO 19650-5 security + privacy-by-design — built-environment information delivery with openBIM model exchange |
 | [`digital-twin-prototype.yaml`](platform/compositions/digital-twin-prototype.yaml) | Any | Scenario-driven digital-twin / decision-support project (municipal, real-estate, datacenter, civic) — digital-twin + privacy-by-design + ISO 19650 IM |
+| [`geospatial-bim-twin.yaml`](platform/compositions/geospatial-bim-twin.yaml) | Any | BIM + GIS digital twin — first 4-way domain × domain × cross-cutting × cross-cutting composition (geospatial foundation + exchange + BIM↔GIS georeference + openBIM exchange + digital-twin + privacy-by-design) |
 
 ```bash
 cp platform/compositions/node-web-saas-postgres.yaml harness.manifest.yaml

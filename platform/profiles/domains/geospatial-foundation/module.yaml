@@ -1,0 +1,53 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+id: geospatial-foundation
+type: domain
+version: 1.0.0
+summary: Geospatial spatial-reference substrate — governs the coordinate reference system (horizontal datum, vertical datum, epoch, units) and per-dataset provenance via a compound, temporal forcing artifact.
+dependsOn:
+  - kernel/base
+conflictsWith: []
+requiredArtifacts:
+  - docs/geospatial/spatial-reference-profile.md
+  - docs/geospatial/dataset-inventory.md
+optionalArtifacts: []
+sensitivePaths:
+  - description: Spatial data, coordinate, and projection surfaces
+    patterns:
+      - ^geo/
+      - ^gis/
+      - ^data/spatial/
+      - coordinate
+      - projection
+      - crs
+companionRules:
+  - description: Changes to docs/geospatial/spatial-reference-profile.md (especially a CRS, datum, or epoch change) require an ADR under docs/adr/ or a docs/project/change-log.md entry
+    triggerPaths:
+      - ^docs/geospatial/spatial-reference-profile\.md$
+      - ^geo/
+      - ^gis/
+      - ^data/spatial/
+      - coordinate
+      - projection
+      - crs
+    requiredAny:
+      - ^docs/adr/ADR-
+      - ^docs/project/change-log\.md$
+    humanReview: Reviewers confirm any CRS, datum, vertical-datum, epoch, or units change is intentional — a datum or CRS change silently relocates all spatial data.
+  - description: Changes to docs/geospatial/dataset-inventory.md require a docs/project/change-log.md entry or an ADR under docs/adr/
+    triggerPaths:
+      - ^docs/geospatial/dataset-inventory\.md$
+    requiredAny:
+      - ^docs/project/change-log\.md$
+      - ^docs/adr/ADR-
+    humanReview: Reviewers confirm dataset source, license, and provenance changes are intentional.
+validators:
+  - validate-companions
+reviewGates:
+  - Human review is required to change the declared authoritative CRS, datum, vertical datum, or epoch (it silently relocates all spatial data).
+agentAdapters:
+  - platform/agents/base
+compiledFragments:
+  - platform/profiles/domains/geospatial-foundation/README.md
+recommendedSkills:
+  - harness-governance   # trust tiers and companion rules (source: platform/skills/)

@@ -11,6 +11,19 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-15 — OPP-0046: triage #121 + #122 into one opportunity
+
+Triaged two field reports from live multi-agent cycles — issue #121
+(machine-readable work-package lane contracts + cross-agent conflict protocol,
+from Codex) and issue #122 (inter-agent variance in parallel fullstack execution)
+— into a single opportunity record, **OPP-0046 (Parallel Multi-Agent Work-Package
+Lane Contract)**, status `proposed`. Decomposes eight sub-components into a
+recommended thin wedge (lane schema + lane-vs-diff lint validator + idempotent
+worktree runbook + conflict protocol) and deferred items (cross-agent memory-bus
+auto-load, interface-first contract-stub, project-specific rules). No promotion
+yet; a PRD would follow. Framed as the multi-agent analog of the module
+declare-then-enforce contract.
+
 ## 2026-06-14 — consumer upgrade runbook + helper script
 
 Consolidated the consumer-side upgrade sequence (previously spread across

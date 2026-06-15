@@ -151,6 +151,7 @@ clustered backlog with framing.
 | [0043](opportunities/OPP-0043-domain-family-cybersecurity-decomposed.md) | Cybersecurity Domain Family (decomposed) | accepted (partial promotion) |
 | [0044](opportunities/OPP-0044-digital-twin-scenario-runtime.md) | Digital Twin / Scenario Runtime Governance Overlay | accepted |
 | [0045](opportunities/OPP-0045-domain-family-geospatial-decomposed.md) | Geospatial / GIS Domain Family (decomposed) | proposed |
+| [0046](opportunities/OPP-0046-parallel-multi-agent-work-package-lane-contract.md) | Parallel Multi-Agent Work-Package Lane Contract | proposed |
 
 ---
 

@@ -533,6 +533,20 @@ jurisdiction-profile primitive — geodetically *and* temporally bound.
   forcing-artifact axis. Composes with `management/digital-twin` and
   `management/privacy-by-design` for geospatial sensitivity (compose-don't-build).
 
+### Parallel multi-agent execution — work-package lane contract (2026-06-15)
+
+Governing concurrent multi-agent work (Claude + Codex + Gemini in isolated git
+worktrees): a machine-checkable work-package lane contract, a normalized worktree
+runbook, and the shared-observations ledger as an explicit cross-agent memory bus.
+The multi-agent analog of the module declare-then-enforce contract.
+
+- [OPP-0046](OPP-0046-parallel-multi-agent-work-package-lane-contract.md) *(proposed 2026-06-15; triage of issues #121 + #122)*
+  — decomposed: a WP lane schema (`allowedFiles` / `requiredChecks` /
+  `forbiddenCommands` / `prMode`) + a lane-vs-diff lint validator + a conflict
+  protocol + an idempotent worktree runbook (wedge candidates); cross-agent
+  memory-bus auto-load, interface-first contract-stub, and project-specific rules
+  deferred. Harvest the schema from real PlanAtlas / `central-city-web` lane specs.
+
 ### Canonical direction & strategic alignment
 
 - [OPP-0007](OPP-0007-canonical-position-artifact.md) *(exploring;

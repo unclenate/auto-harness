@@ -16,6 +16,78 @@ force.
 
 ---
 
+## 2026-06-15 — Weekly doc-watch — ALL CLEAR (full deep-domain expansion + consumer tooling, zero drift)
+
+**Window:** 2026-06-09 → 2026-06-15. Branch `main`. Doc-relevant merges: the
+digital-twin overlay (#111–#113), privacy + sensitive-paths fixes (#114–#116),
+the greenfield clone-ordering fix (#118), the agent-catalog interoperability pass
+(`95a9a09`), the geospatial / GIS vertical (#119–#120), and the consumer upgrade
+runbook + `upgrade.sh` (#123). Working tree carries one untracked, intentionally
+parked spec (`docs/superpowers/specs/2026-06-09-digital-twin-seed-brief.md` —
+markdownlint-ignored, do-not-publish).
+
+**Large structural change this window** (well past the re-audit threshold):
+
+- **Second cross-cutting overlay shipped:** `management/digital-twin`
+  (OPP-0044 / ADR-0019 / PRD-0023) — module + 10 templates + 2 Half-enforced WARN
+  validators (`validate-twin-profile`, `validate-scenario-manifest`) + the
+  `harness-digital-twin` skill + diagram #14.
+- **Fourth deep-domain vertical shipped:** `domains/geospatial-*`
+  (OPP-0045 / PRD-0024) — `geospatial-foundation` + `geospatial-exchange` +
+  `geospatial-bim-georeference` (the catalog's first cross-family dependency) +
+  4 templates + diagram #15 + the first 4-way `geospatial-bim-twin` composition.
+- **Third deep-domain vertical (design-only):** cybersec OSINT wedge
+  (OPP-0043 / PRD-0022, #110).
+- **Consumer tooling:** the consolidated `consumer-upgrade-runbook.md` +
+  `platform/bootstrap/upgrade.sh` (#123).
+- **Net catalog:** 46 profile modules / 55 total / 17 validators / 8 skills /
+  88 templates / 15 diagrams / 14 compositions / 20 workflows.
+
+**Drift checks — all green despite the growth:**
+
+- `validate-catalog-counts.sh`: ✓ 26/26 assertions.
+- `validate-doc-references.sh`: ✓ all link targets resolve.
+- `validate-list-completeness.sh`: ✓ 236/236 (every ADR / PRD / OPP / module /
+  template-subdir / composition index complete — no missing rows).
+- `validate-companions.sh` / `validate-knowledge-redaction.sh` (PR-diff mode):
+  ✓ on every merge this window.
+- markdownlint-cli2 (`**/*.md`): ✓ 0 errors.
+- Narrative counts verified live: `how-to-read.md:10` "46 modules, 88 templates,
+  17 validators, 8 skills, 20 workflows" — all match; a stale-integer scan across
+  README / HARNESS / SUMMARY / diagrams found none.
+- All new modules carry a sibling `README.md` citing their OPP / PRD origin.
+
+**Non-validator coherence checks (this window's specific risk surfaces):**
+
+- **Upgrade-doc cluster (new this week).** The upgrade sequence now spans four
+  workflow docs. Verified **bidirectional** linkage: the three sources
+  (`submodule-integration`, `release-and-versioning`, `maintenance-operations`)
+  all point to the new `consumer-upgrade-runbook.md`, and the runbook links back
+  to all three. No contradiction — tag-pinning is the recommended production path
+  in the runbook + release-and-versioning, with `--remote` branch-tracking
+  correctly scoped to experimental adoption; the runbook's pinning table
+  disambiguates. **Coherent.**
+- **Geospatial family narrative.** Three module READMEs present, each citing
+  OPP-0045 / PRD-0024; diagram #15 prose places the family correctly (healthcare
+  #12 → AEC #13 → geospatial, fourth). Spot-checked **clean**.
+
+**Verdict: All clear** on drift — the list-completeness + catalog-counts gates
+again held the line through a very large window (a full cross-cutting overlay, a
+full domain vertical, and a tooling addition) with not one hand-maintained index
+falling out of sync.
+
+**Standing recommendation (carried from 2026-06-08):** accumulated structural
+growth — now four deep-domain verticals + two cross-cutting overlays — continues
+to outpace the last full content audit (2026-05-25/27). A full multi-agent
+re-audit remains advisable, not to fix drift (there is none) but to give the
+newer surfaces (digital-twin, geospatial, the consumer-upgrade cluster) a first
+content + IA review at audit depth.
+
+**Forward-looking:** open issues #121 (machine-readable WP lane contracts)
+and #122 (inter-agent variance in parallel execution) propose a new governance
+surface for parallel multi-agent work-packages; if accepted they add
+docs/validators that future doc-watch windows should track.
+
 ## 2026-06-08 — Weekly doc-watch (Monday) — ALL CLEAR (large structural growth, zero drift)
 
 **Window:** 2026-05-28 → 2026-06-08. Branch `main`, 23 commits, working tree

@@ -60,6 +60,7 @@ How to use the harness during normal development on a project that has already a
 How to keep the harness itself healthy after adoption — upgrades, version pinning, drift recovery, governance audits.
 
 * [Maintenance & Operations Guide](platform/workflow/maintenance-operations.md) — upgrade flow, pinning, rollback, drift detection, copy-to-submodule migration, lifecycle transitions, periodic audits
+* [Consumer Upgrade Runbook](platform/workflow/consumer-upgrade-runbook.md) — single-page checklist to bump a consuming repo to a newer version, plus the `upgrade.sh` helper script
 * [Recover a Misplaced Consumer](platform/workflow/recover-misplaced-consumer.md) — runbook for extracting a consumer mistakenly created inside the platform repo
 * [Release and Versioning](platform/workflow/release-and-versioning.md) — policy and process for releasing auto-harness itself
 * [Validator Error Solver (Troubleshooting)](platform/workflow/troubleshooting.md)

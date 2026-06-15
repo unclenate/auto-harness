@@ -11,6 +11,21 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-14 — consumer upgrade runbook + helper script
+
+Consolidated the consumer-side upgrade sequence (previously spread across
+`submodule-integration.md`, `release-and-versioning.md`, and
+`maintenance-operations.md`) into a single **[Consumer Upgrade Runbook](../../platform/workflow/consumer-upgrade-runbook.md)**,
+and added `platform/bootstrap/upgrade.sh` — a guided, safe helper a consuming
+repo runs to bump its auto-harness submodule. The script automates the
+deterministic, non-destructive steps (fetch tags, show current pin vs. available
+versions, check out a target tag, and preview required artifacts via the existing
+dry-run install + `validate-required-artifacts`) and **stops** before the
+judgment/mutation steps — it never commits the bump, never runs `install.sh
+--force`, and never creates artifacts. Tooling that operationalizes already-
+documented behavior (no new module, validator, or enforced claim), so it ships
+directly. The three source docs now point to the runbook + script.
+
 ## 2026-06-14 — geospatial / GIS deep-domain wedge (implementation)
 
 Shipped Phase 2 of the geospatial vertical (PRD-0024): the three wedge modules

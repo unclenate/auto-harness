@@ -185,6 +185,8 @@ The `install.sh` bootstrap and all generated artifacts reference `$HARNESS_SUBMO
 
 Pulling upstream improvements, detecting new required artifacts after an upgrade, version pinning, and rollback are covered in the dedicated **[Maintenance & Operations](maintenance-operations.md)** guide. The short form for first-time readers: `git submodule update --remote .harness` pulls upstream changes; review the diff and commit. See the maintenance guide for the full upgrade workflow.
 
+For a single consolidated checklist plus a helper script that automates the safe steps (`bash <mount>/platform/bootstrap/upgrade.sh`), use the **[Consumer Upgrade Runbook](consumer-upgrade-runbook.md)**.
+
 ## Brownfield integration (existing repo with other platforms)
 
 `install.sh` co-exists with configuration from other AI platforms. It recognizes these and **never modifies** files matching their signatures:

@@ -182,7 +182,10 @@ PATCH releases do not need announcement beyond the GitHub release.
 ## Consumer-Side Upgrading
 
 Consumers using auto-harness as a git submodule pin to a tag (preferred)
-or a commit. Upgrade flow:
+or a commit. The **[Consumer Upgrade Runbook](consumer-upgrade-runbook.md)** is
+the single-page checklist for this, and
+`<mount>/platform/bootstrap/upgrade.sh` automates the safe steps (fetch,
+version discovery, checkout, and a required-artifact preview). Upgrade flow:
 
 ```bash
 cd .harness

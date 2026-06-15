@@ -24,6 +24,12 @@ Maintenance starts where adoption ends.
 
 ### Pulling Upstream Improvements (Submodule Mode)
 
+> **Shortcut:** `bash <mount>/platform/bootstrap/upgrade.sh` automates the safe
+> steps below (fetch, show current pin vs. available tags, check out a target
+> tag, and preview required artifacts), stopping before the review-and-commit
+> steps. See the **[Consumer Upgrade Runbook](consumer-upgrade-runbook.md)** for
+> the consolidated checklist. The manual flow follows.
+
 If you adopted the harness via the recommended git-submodule pattern, every upstream improvement — new skill, fixed validator, refined composition — is one command away:
 
 ```bash

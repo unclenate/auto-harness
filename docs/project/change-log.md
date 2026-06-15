@@ -11,6 +11,17 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-15 — OPP-0047: delivery-cost & unit-economics governance (+ research brief)
+
+Captured a new opportunity — governing the **token cost of agentic delivery** (what
+it costs to build a unit of code) as evidence for **build-vs-buy** decisions:
+**OPP-0047 (Delivery-Cost & Unit-Economics Governance)**, status `proposed`, plus a
+web-grounded research brief scoping the agenda (baselines, scope→spend prediction,
+dispatch-cost optimization). A new economics axis beside quality/safety; it governs
+the record / budget / cite-the-evidence contract (not the token extraction, which
+is a runtime/CI concern) and composes with OPP-0046 (the work-package lane as the
+unit of delivery). No promotion yet; a PRD would follow.
+
 ## 2026-06-15 — OPP-0046: triage #121 + #122 into one opportunity
 
 Triaged two field reports from live multi-agent cycles — issue #121

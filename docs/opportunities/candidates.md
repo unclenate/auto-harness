@@ -547,6 +547,22 @@ The multi-agent analog of the module declare-then-enforce contract.
   memory-bus auto-load, interface-first contract-stub, and project-specific rules
   deferred. Harvest the schema from real PlanAtlas / `central-city-web` lane specs.
 
+### Delivery-cost & unit-economics governance (2026-06-15)
+
+Token cost of agentic *delivery* (what it costs to build a unit of code) as
+governance evidence for build-vs-buy decisions — a new economics axis beside
+quality/safety. Govern the contract (a delivery-cost record + budget + a
+cite-the-evidence rule), not the extraction; composes with the OPP-0046 lane
+(lane = scope, cost record = economics).
+
+- [OPP-0047](OPP-0047-delivery-cost-unit-economics-governance.md) *(proposed 2026-06-15; pairs with a research brief)*
+  — decomposed: a delivery-cost record schema + a `tokenBudget` on the WP lane +
+  a `build-vs-buy-decision.md` artifact that must cite cost evidence (wedge
+  candidates); the cost-attribution convention, baselines, scope→spend predictor,
+  and dispatch-cost optimization deferred (mostly research). Landscape confirms the
+  gap: OTel standardizes token counts not cost, and no tool attributes cost to a
+  unit of delivery.
+
 ### Canonical direction & strategic alignment
 
 - [OPP-0007](OPP-0007-canonical-position-artifact.md) *(exploring;

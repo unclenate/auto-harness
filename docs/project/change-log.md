@@ -11,6 +11,19 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-14 — geospatial / GIS deep-domain wedge (implementation)
+
+Shipped Phase 2 of the geospatial vertical (PRD-0024): the three wedge modules
+(`geospatial-foundation` + `geospatial-exchange` + `geospatial-bim-georeference`),
+four `platform/templates/geospatial/` templates, diagram #15, and the 4-way
+`geospatial-bim-twin` composition — **catalog-only / predict-clean** (the modules
+are not added to `harness.manifest.yaml`, so the harness's own CI does not activate
+them). Catalog counts bumped: 43→46 profile modules / 52→55 total / 84→88 templates
+/ 14→15 diagrams / 13→14 compositions. The catalog's first cross-family dependency
+(`geospatial-bim-georeference → aec-openbim-exchange`) resolved with no validator
+change — confirming the design PR's claim that the `dependsOn` mechanism is already
+family-agnostic.
+
 ## 2026-06-13 — geospatial / GIS deep-domain wedge (design)
 
 Filed the design contract for the fourth deep-domain vertical: a

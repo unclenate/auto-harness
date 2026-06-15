@@ -160,7 +160,7 @@ flowchart TD
     Modules -.documented in.-> Workflows
 ```
 
-For the full set of architecture diagrams (fourteen in total — covering trust tier flow, companion rule firing, the OPP/PRD/ADR lifecycle, and more) see [`docs/architecture/diagrams.md`](docs/architecture/diagrams.md).
+For the full set of architecture diagrams (fifteen in total — covering trust tier flow, companion rule firing, the OPP/PRD/ADR lifecycle, and more) see [`docs/architecture/diagrams.md`](docs/architecture/diagrams.md).
 
 ### 1. Declare your modules
 
@@ -265,7 +265,7 @@ declares its governance contract. You compose them to match your project.
 | **Data** | Storage overlays | `relational-postgres`, `document-store`, `object-storage` |
 | **Delivery** | Lifecycle posture | `prototype`, `production-saas`, `internal-platform`, `self-hosted-oss`, `managed-fleet` |
 | **Management** | Product, project, program, knowledge, opportunity, and testing governance | `discovery-intake`, `interview-driven`, `product-lite`, `project-standard`, `program-lite`, `testing-standard`, `eval-gated-testing`, `knowledge-capture`, `opportunity-capture`, `security-static-analysis`, `privacy-by-design`, `digital-twin` |
-| **Domains** | Vendor or specialist overlays | `supabase`, `web3`, `media-pipeline`, `gitbook`, `agentic-interfaces`, `cryptographic-identity`, `healthcare-fhir`, `healthcare-smart-on-fhir`, `aec-iso19650-im`, `aec-openbim-exchange`, `aec-iso19650-5-security` |
+| **Domains** | Vendor or specialist overlays | `supabase`, `web3`, `media-pipeline`, `gitbook`, `agentic-interfaces`, `cryptographic-identity`, `healthcare-fhir`, `healthcare-smart-on-fhir`, `aec-iso19650-im`, `aec-openbim-exchange`, `aec-iso19650-5-security`, `geospatial-foundation`, `geospatial-exchange`, `geospatial-bim-georeference` |
 | **Agents** | AI-tool operating packs | `base`, `claude-code`, `codex-cli`, `copilot-cli`, `cursor`, `gemini-cli`, `generic-llm`, `openclaw` |
 
 Each `module.yaml` specifies:
@@ -324,6 +324,7 @@ Pre-built manifests for common project types. Copy the closest match and adjust:
 | [`healthcare-fhir-app.yaml`](platform/compositions/healthcare-fhir-app.yaml) | Any | FHIR + SMART-on-FHIR application — healthcare data layer + SMART app-launch/scopes, provider-launch + patient-access roles |
 | [`aec-bim-project.yaml`](platform/compositions/aec-bim-project.yaml) | Any | ISO 19650 IM + openBIM exchange + ISO 19650-5 security + privacy-by-design — built-environment information delivery with openBIM model exchange |
 | [`digital-twin-prototype.yaml`](platform/compositions/digital-twin-prototype.yaml) | Any | Scenario-driven digital-twin / decision-support project (municipal, real-estate, datacenter, civic) — digital-twin + privacy-by-design + ISO 19650 IM |
+| [`geospatial-bim-twin.yaml`](platform/compositions/geospatial-bim-twin.yaml) | Any | BIM + GIS digital twin — first 4-way domain × domain × cross-cutting × cross-cutting composition (geospatial foundation + exchange + BIM↔GIS georeference + openBIM exchange + digital-twin + privacy-by-design) |
 
 ```bash
 cp platform/compositions/node-web-saas-postgres.yaml harness.manifest.yaml

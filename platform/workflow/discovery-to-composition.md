@@ -227,6 +227,9 @@ modules. Use it to populate `harness.manifest.yaml`.
 | Delivering built-environment information under ISO 19650 (CDE, containers, BEP/MIDP)? | `domains/aec-iso19650-im` |
 | Exchanging federated BIM models via openBIM (IFC/BCF/IDS)? | `domains/aec-openbim-exchange` |
 | Handling sensitive built-asset / infrastructure information (BS EN ISO 19650-5)? | `domains/aec-iso19650-5-security` (composes with `management/privacy-by-design`) |
+| Handling GIS / mapping / survey data tied to real-world coordinates (CRS, datum, epoch)? | `domains/geospatial-foundation` |
+| Publishing or consuming geospatial data via OGC formats/services (GeoJSON, GeoPackage, WMS/WFS, OGC API)? | `domains/geospatial-exchange` |
+| Pinning a federated BIM/IFC model to real-world coordinates (IfcMapConversion, survey point)? | `domains/geospatial-bim-georeference` (first cross-family dependency; also requires `domains/aec-openbim-exchange`) |
 | Handles any personal or sensitive data? (default: yes) | `management/privacy-by-design` (default-on; opt out only with a documented `regime: none` exemption) |
 | Models a real-world system / runs scenarios / publishes decision-support? | `management/digital-twin` (default-off; declare maturity in `docs/twin/twin-profile.md`) |
 

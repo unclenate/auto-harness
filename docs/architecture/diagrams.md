@@ -16,7 +16,7 @@ need the picture in context.
 > repository view. Edit a diagram by editing the Mermaid block in this
 > file — there is no separate image to regenerate.
 
-Fourteen diagrams below, grouped by what they answer:
+Fifteen diagrams below, grouped by what they answer:
 
 | # | Question the diagram answers | Section |
 |---|------------------------------|---------|
@@ -34,6 +34,7 @@ Fourteen diagrams below, grouped by what they answer:
 | 12 | *How does a deep-domain module family compose, and where does jurisdiction belong?* | [Healthcare Domain Family](#12-healthcare-domain-family) |
 | 13 | *What is the AEC module family composition, and where do standards, jurisdiction, and security belong?* | [AEC Domain Family](#13-aec-domain-family) |
 | 14 | *How does the digital-twin overlay compose, and what does its forcing artifact gate?* | [Digital Twin Overlay Family](#14-digital-twin-overlay-family) |
+| 15 | *What is the geospatial family composition, where does the CRS forcing artifact belong, and how does it bridge to AEC?* | [Geospatial Domain Family](#15-geospatial-domain-family) |
 
 ---
 
@@ -53,7 +54,7 @@ flowchart TD
     Manifest["<b>harness.manifest.yaml</b><br/>project-local activation"]
 
     subgraph CATALOG["Active Catalog (per project)"]
-        Manifest --> Modules["<b>Modules</b><br/>core · profiles · agents<br/>(52 total in-tree)"]
+        Manifest --> Modules["<b>Modules</b><br/>core · profiles · agents<br/>(55 total in-tree)"]
     end
 
     subgraph CONTRACT["Per-Module Contract (module.yaml)"]
@@ -73,7 +74,7 @@ flowchart TD
 
     subgraph SURFACE["Consumer-Facing Surfaces"]
         Skills["<b>Skills</b><br/>governance, onboarding,<br/>testing, web3, tools,<br/>agentic-interfaces, mcp,<br/>digital-twin"]
-        Templates["<b>Templates</b><br/>84 scaffolding files<br/>(tokenized headers)"]
+        Templates["<b>Templates</b><br/>88 scaffolding files<br/>(tokenized headers)"]
         Workflows["<b>Workflows</b><br/>19 guides:<br/>bootstrap, discovery,<br/>distillation, etc."]
     end
 
@@ -941,3 +942,30 @@ built-environment planning-twin stack (`aec-iso19650-im` × `digital-twin` ×
 `privacy-by-design`); it is institutionally coherent because CDBB authored both the
 Gemini Principles and the UK ISO 19650 transition. This is the **second discipline overlay**
 after `privacy-by-design`, and the template for future cross-cutting disciplines.
+
+## 15. Geospatial Domain Family
+
+**Question:** *What is the geospatial module family composition, where does the CRS forcing artifact belong, and how does it bridge to AEC?*
+
+```mermaid
+graph TD
+    KB[kernel/base]
+    FND["domains/geospatial-foundation<br/>(CRS • datum • epoch • units)"]
+    EX["domains/geospatial-exchange<br/>(OGC formats/services • publisher/consumer)"]
+    GR["domains/geospatial-bim-georeference<br/>(IfcMapConversion • survey point)"]
+    AEC["domains/aec-openbim-exchange<br/>(IFC exchange — other family)"]
+    SRP[["spatial-reference-profile.md<br/>horizontal CRS × vertical datum × epoch × units"]]
+
+    KB --> FND
+    FND --> EX
+    FND --> GR
+    AEC -.cross-family.-> GR
+    FND -.forces.-> SRP
+```
+
+The substrate (`geospatial-foundation`) carries the compound, temporal
+spatial-reference forcing artifact and is depended on by both the exchange layer
+and the georeference bridge. The bridge is the catalog's first **cross-family
+dependency** — it also depends on `domains/aec-openbim-exchange` to govern the
+BIM↔GIS seam. This is the fourth deep-domain vertical (after healthcare #12,
+AEC #13) and the first to compose two domain families.

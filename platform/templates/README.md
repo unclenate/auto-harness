@@ -389,6 +389,15 @@ decision-support. Copy the files you need into the project's `docs/twin/` tree.
 | Sensitivity Assessment | `domains/aec-iso19650-5-security` | `templates/aec/sensitivity-assessment.md` |
 | Security Management Plan | `domains/aec-iso19650-5-security` | `templates/aec/security-management-plan.md` |
 
+### Geospatial
+
+| Template | Required By Module | Path |
+| -------- | ------------------ | ---- |
+| Spatial Reference Profile | `domains/geospatial-foundation` | `templates/geospatial/spatial-reference-profile.md` |
+| Dataset Inventory | `domains/geospatial-foundation` | `templates/geospatial/dataset-inventory.md` |
+| Exchange Profile | `domains/geospatial-exchange` | `templates/geospatial/exchange-profile.md` |
+| Georeference Map | `domains/geospatial-bim-georeference` | `templates/geospatial/georeference-map.md` |
+
 ### Agentic Interface
 
 Templates for projects shipping an in-product copilot / generative-UI / conversational-primary

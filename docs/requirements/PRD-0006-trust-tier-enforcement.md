@@ -8,7 +8,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 **Version:** 1.0 | **Owner:** @unclenate | **Last Updated:** 2026-05-23 | **Review Cycle:** On-change
 
-**Status:** Proposed
+**Status:** Accepted *(v1 shipped — `validate-trust-tier.sh` + optional `tier` schema field + sensitivePaths inference + dogfood tier declarations, Wave 5.1, commit `9daf533`)*
 **Date:** 2026-05-23 (filed)
 **Author:** @unclenate
 **Reviewers:** @unclenate

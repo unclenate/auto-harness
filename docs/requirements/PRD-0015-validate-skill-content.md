@@ -8,7 +8,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 **Version:** 1.0 | **Owner:** @unclenate | **Last Updated:** 2026-05-28 | **Review Cycle:** On-change
 
-**Status:** Proposed
+**Status:** Accepted *(v1 shipped — `validate-skill-content.sh`, Wave 5.2)*
 **Date:** 2026-05-28 (filed)
 **Author:** @unclenate
 **Reviewers:** @unclenate

@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0033 — Content-Safety Validator (`validate-skill-content.sh`)
 
-**Status:** exploring
+**Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-05-27
-**Last Updated:** 2026-05-28
+**Last Updated:** 2026-06-15 *(accepted and implemented in Wave 5.2)*
 **Confidence:** medium-high
 
 > **Promoted to PRD-0015 on 2026-05-28.** This OPP captures the
@@ -123,3 +123,11 @@ keeps the prose *describing* those guarantees honest).
    parallel-but-related closure for V4. Bias: file as a separate OPP
    if v1's deny-list approach proves insufficient against tier-bypass
    wording; do not pre-bundle.
+
+## Disposition
+
+**2026-06-15 (exploring → accepted):** Accepted and fully implemented in Wave 5.2 (PRD-0015, commit `907a5af`) via the new `validate-skill-content.sh` validator and adversarial corpus.
+
+## Promotion
+
+- See [PRD-0015](../requirements/PRD-0015-validate-skill-content.md) — accepted and implemented in Wave 5.2 (commit `907a5af`).

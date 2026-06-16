@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0045 — Geospatial / GIS Domain Family (decomposed `domains/geospatial-*`)
 
-**Status:** proposed
+**Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-06-12
-**Last Updated:** 2026-06-12 *(proposed — wedge contract to be promoted via PRD-0024 in the same cycle; see Disposition)*
+**Last Updated:** 2026-06-15 *(accepted (partial promotion) and implemented in Phase 2)*
 **Confidence:** high
 
 ---
@@ -152,14 +152,11 @@ PRD-0024 in the same cycle; on PRD acceptance this OPP updates to
 `geospatial-realtime-sensor`, `geospatial-routing-network`) stay `proposed`
 pending consumer demand.
 
+**2026-06-15 (partial promotion accepted):** The three wedge sub-modules were accepted and fully implemented in Phase 2 (PRD-0024, commit `35ddb52`). Sibling modules remain proposed.
+
 ## Promotion
 
-Pending. On PRD-0024 acceptance: promoted sub-modules =
-`domains/geospatial-foundation`, `domains/geospatial-exchange`,
-`domains/geospatial-bim-georeference`. The first domain × domain composition and
-the temporal forcing-artifact axis are the two enrichments contributed to the
-deep-domain framework harvest (a separate later cycle; see
-`project-deep-industry-domains` memory).
+- See [PRD-0024](../requirements/PRD-0024-geospatial-gis-wedge.md) — accepted and implemented in Phase 2 (commit `35ddb52`). Promoted sub-modules: `domains/geospatial-foundation`, `domains/geospatial-exchange`, `domains/geospatial-bim-georeference`.
 
 ## Related
 

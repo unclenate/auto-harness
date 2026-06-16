@@ -170,8 +170,8 @@ complete greenfield projects specifically."
   declarations. Generalizes to any adopter-≠-owner context (contractors,
   internal platform teams, upstream contributors).
 
-- [OPP-0006](OPP-0006-trust-tier-enforcement.md) *(exploring;
-  PRD-0006 in flight, drafted 2026-05-23)* — Make the kernel-doctrine
+- [OPP-0006](OPP-0006-trust-tier-enforcement.md) *(accepted 2026-05-23;
+  PRD-0006 v1 fully shipped — validate-trust-tier.sh + optional tier schema + dogfood declarations)* — Make the kernel-doctrine
   trust tier model machine-checkable. Six tiers are referenced
   everywhere (every agent pack, PR template, operating-principles)
   but zero machinery enforces them. The harness's most-cited safety
@@ -438,14 +438,14 @@ roadmap (5.1 → 5.3 → 5.5 → 5.2 → 5.4 per ADR-0017's amortized-risk
 ordering). All four OPPs use the §9 design-then-enforce pattern: ship
 the contract at v1; defer per-rule extensions to v2 if scope bloats.
 
-- [OPP-0033](OPP-0033-validate-skill-content.md) *(exploring
-  2026-05-28; PRD-0015 filed)* — Content-safety validator
+- [OPP-0033](OPP-0033-validate-skill-content.md) *(accepted 2026-05-28;
+  PRD-0015; Wave 5.2 shipped)* — Content-safety validator
   (`validate-skill-content.sh`) scanning SKILL.md and `module.yaml`
   text fields against a deny-list of prompt-injection and tier-bypass
   patterns. Closes red-team attack vectors V1, V2, V4, V6 from
   safety-security-sweep §3. Wave 5.2.
-- [OPP-0034](OPP-0034-validate-sensitive-paths.md) *(proposed
-  2026-05-27)* — Sensitive-paths overlap validator (`validate-
+- [OPP-0034](OPP-0034-validate-sensitive-paths.md) *(accepted 2026-05-27;
+  Wave 5.3 shipped)* — Sensitive-paths overlap validator (`validate-
   sensitive-paths.sh`) asserting every declared `sensitivePaths`
   pattern is overlapped by at least one `companionRules.triggerPaths`
   regex. Closes safety-security-sweep §2 claim 12 (Asserted-only →
@@ -459,8 +459,8 @@ the contract at v1; defer per-rule extensions to v2 if scope bloats.
   machinery inspecting agent-generated code). Filed explicitly as a
   child OPP under [OPP-0020](OPP-0020-evaluation-tooling-in-harness-toolchain.md).
   Wave 5.4.
-- [OPP-0036](OPP-0036-validate-knowledge-redaction.md) *(proposed
-  2026-05-27)* — Knowledge-redaction validator
+- [OPP-0036](OPP-0036-validate-knowledge-redaction.md) *(accepted 2026-05-27;
+  Wave 5.5 shipped)* — Knowledge-redaction validator
   (`validate-knowledge-redaction.sh`) + CODEOWNERS rule on
   `docs/knowledge/` and `docs/operating-principles.md`. Closes
   safety-security-sweep §8 cross-pollination findings and §9 reverse-
@@ -476,7 +476,7 @@ ships the design contract as an OPP; the implementation (the
 the §9 split-design-from-implementation discipline.
 
 - [OPP-0037](OPP-0037-classify-before-enforcing-as-operating-principle.md)
-  *(exploring 2026-05-28)* — Promote claim-vs-enforcement classification
+  *(accepted 2026-05-28; promoted directly to §10)* — Promote claim-vs-enforcement classification
   to a new §10 operating principle. Four documented instances
   (refresh-2 audit, Wave 2b safety sweep, Wave 5.1 mechanizing-doctrine,
   Wave 5.5 posture-design) exceed the §9 three-instance bar by one.
@@ -524,7 +524,7 @@ publisher/consumer role axis, and the first cross-family bridge module
 (geospatial × AEC). The CRS forcing artifact is the purest instance of the
 jurisdiction-profile primitive — geodetically *and* temporally bound.
 
-- [OPP-0045](OPP-0045-domain-family-geospatial-decomposed.md) *(proposed 2026-06-12; PRD-0024)*
+- [OPP-0045](OPP-0045-domain-family-geospatial-decomposed.md) *(accepted 2026-06-12; PRD-0024; Phase 2 shipped)*
   — decomposed `domains/geospatial-*`: a `geospatial-foundation` +
   `geospatial-exchange` + `geospatial-bim-georeference` wedge,
   `templates/geospatial/`, the `geospatial-bim-twin.yaml` 4-way composition, and

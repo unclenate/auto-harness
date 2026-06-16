@@ -95,6 +95,7 @@ originating opportunity records.
 | [0022](requirements/PRD-0022-cybersec-osint-maltego-wedge.md) | Cybersecurity OSINT / Maltego Wedge | Proposed | [OPP-0043](opportunities/OPP-0043-domain-family-cybersecurity-decomposed.md) |
 | [0023](requirements/PRD-0023-digital-twin-scenario-runtime-overlay.md) | Digital Twin / Scenario Runtime Overlay | Accepted | [OPP-0044](opportunities/OPP-0044-digital-twin-scenario-runtime.md) |
 | [0024](requirements/PRD-0024-geospatial-gis-wedge.md) | Geospatial / GIS Wedge (CRS + OGC exchange + BIM↔GIS georeferencing) | Accepted | [OPP-0045](opportunities/OPP-0045-domain-family-geospatial-decomposed.md) |
+| [0025](requirements/PRD-0025-work-package-lane-contract.md) | Work-Package Lane Contract (`management/work-package`) | Accepted | [OPP-0046](opportunities/OPP-0046-parallel-multi-agent-work-package-lane-contract.md) |
 
 ---
 
@@ -151,7 +152,7 @@ clustered backlog with framing.
 | [0043](opportunities/OPP-0043-domain-family-cybersecurity-decomposed.md) | Cybersecurity Domain Family (decomposed) | accepted (partial promotion) |
 | [0044](opportunities/OPP-0044-digital-twin-scenario-runtime.md) | Digital Twin / Scenario Runtime Governance Overlay | accepted |
 | [0045](opportunities/OPP-0045-domain-family-geospatial-decomposed.md) | Geospatial / GIS Domain Family (decomposed) | proposed |
-| [0046](opportunities/OPP-0046-parallel-multi-agent-work-package-lane-contract.md) | Parallel Multi-Agent Work-Package Lane Contract | proposed |
+| [0046](opportunities/OPP-0046-parallel-multi-agent-work-package-lane-contract.md) | Parallel Multi-Agent Work-Package Lane Contract | accepted (partial promotion) |
 | [0047](opportunities/OPP-0047-delivery-cost-unit-economics-governance.md) | Delivery-Cost & Unit-Economics Governance | proposed |
 
 ---

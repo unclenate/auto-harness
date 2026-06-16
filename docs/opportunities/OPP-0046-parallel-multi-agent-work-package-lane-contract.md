@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0046 — Parallel Multi-Agent Work-Package Lane Contract
 
-**Status:** proposed
+**Status:** accepted (partial promotion)
 **Owner:** @unclenate
 **Created:** 2026-06-15
-**Last Updated:** 2026-06-15 *(triage of issues #121 + #122 into a single opportunity record)*
+**Last Updated:** 2026-06-15 *(accepted — partial promotion: the lane (scope) wedge is promoted via PRD-0025; memory-bus / contract-stub / project-specific sub-components remain proposed)*
 **Confidence:** high
 
 ---
@@ -105,13 +105,17 @@ harvested from the real multi-agent cycles, not a speculative full framework.
 
 ## Disposition
 
-**Proposed 2026-06-15.** Triaged from issues #121 + #122 into one opportunity. No
-promotion yet. Recommended next step: a PRD promoting a **thin wedge** — the WP
-lane-contract schema, a lane-vs-diff lint validator, the idempotent worktree
-runbook, and the conflict-protocol onboarding rule — harvested from the real
-PlanAtlas / `central-city-web` lane specs. The cross-agent memory-bus auto-load,
-the interface-first contract-stub phase, and project-specific rules stay
-`proposed` pending that wedge and a harness-scope decision.
+**Accepted — partial promotion (2026-06-15).** Triaged from issues #121 + #122
+into one opportunity, then promoted the same cycle:
+[PRD-0025](../requirements/PRD-0025-work-package-lane-contract.md) ratifies the
+**lane (scope) wedge** — the lane-contract schema, `validate-lane-integrity.sh`,
+the idempotent worktree runbook, and the conflict-protocol onboarding rule — as a
+new `management/work-package` module (design-only per § 9; the implementing PR
+builds it). The cross-agent memory-bus auto-load, the interface-first
+contract-stub phase, and project-specific rules stay `proposed`; the **economic
+contract** ([OPP-0047](OPP-0047-delivery-cost-unit-economics-governance.md)) is
+folded into the same module as its deferred **v2 phase** (lane = scope, cost =
+economics; one object, staged depth).
 
 ## Related
 

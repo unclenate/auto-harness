@@ -540,7 +540,7 @@ worktrees): a machine-checkable work-package lane contract, a normalized worktre
 runbook, and the shared-observations ledger as an explicit cross-agent memory bus.
 The multi-agent analog of the module declare-then-enforce contract.
 
-- [OPP-0046](OPP-0046-parallel-multi-agent-work-package-lane-contract.md) *(proposed 2026-06-15; triage of issues #121 + #122)*
+- [OPP-0046](OPP-0046-parallel-multi-agent-work-package-lane-contract.md) *(accepted — partial promotion 2026-06-15; PRD-0025 promotes the lane wedge as `management/work-package`; triaged from issues #121 + #122)*
   — decomposed: a WP lane schema (`allowedFiles` / `requiredChecks` /
   `forbiddenCommands` / `prMode`) + a lane-vs-diff lint validator + a conflict
   protocol + an idempotent worktree runbook (wedge candidates); cross-agent

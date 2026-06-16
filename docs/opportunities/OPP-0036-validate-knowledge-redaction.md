@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0036 — Knowledge-Redaction Validator + CODEOWNERS on `docs/knowledge/`
 
-**Status:** proposed
+**Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-05-27
-**Last Updated:** 2026-05-27
+**Last Updated:** 2026-06-15 *(accepted and implemented in Wave 5.5)*
 **Confidence:** medium-high
 
 ---
@@ -141,3 +141,11 @@ remedy to structural enforcement).
    validator + CODEOWNERS as the structural-enforcement layer; the
    discipline-restructure is a parallel operating-principle change
    that can land separately if v1's surfacing reveals it's needed.
+
+## Disposition
+
+**2026-06-15 (proposed → accepted):** Accepted and fully implemented in Wave 5.5 (commit `41de239`) via the new `validate-knowledge-redaction.sh` validator and CODEOWNERS configuration.
+
+## Promotion
+
+- See [platform/validators/validate-knowledge-redaction.sh](../../platform/validators/validate-knowledge-redaction.sh) — implemented in Wave 5.5 (commit `41de239`).

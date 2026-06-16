@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0037 — Classify-Before-Enforcing as Operating Principle
 
-**Status:** exploring
+**Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-05-28
-**Last Updated:** 2026-05-28
+**Last Updated:** 2026-06-15 *(accepted and promoted directly to Operating Principle)*
 **Confidence:** medium-high
 
 ---
@@ -208,6 +208,8 @@ The implementation outcome:
   body — no companion rule; auto-harness self-application named
   explicitly; generalizability paragraph included; honor-code only —
   no validator; status flipped same-commit per Risk 6 bias).
+
+**2026-06-15 (exploring → accepted):** Accepted and promoted directly as §10 in [operating-principles.md](../operating-principles.md) (since it carries no PRD, as per design-only workflow).
 
 ## Promotion
 

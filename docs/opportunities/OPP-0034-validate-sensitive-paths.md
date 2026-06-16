@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0034 — Sensitive-Paths Overlap Validator (`validate-sensitive-paths.sh`)
 
-**Status:** proposed
+**Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-05-27
-**Last Updated:** 2026-05-27
+**Last Updated:** 2026-06-15 *(accepted and implemented in Wave 5.3)*
 **Confidence:** high
 
 ---
@@ -114,3 +114,11 @@ roadmap (half-day work).
    claim 12 (sensitive-paths). Together they convert three of the seven
    Asserted-only items to Enforced. They are orthogonal scopes; no
    integration work needed between Wave 5.1 and Wave 5.3.
+
+## Disposition
+
+**2026-06-15 (proposed → accepted):** Accepted and implemented in Wave 5.3 (commit `ef472d9`) via the new `validate-sensitive-paths.sh` validator.
+
+## Promotion
+
+- See [platform/validators/validate-sensitive-paths.sh](../../platform/validators/validate-sensitive-paths.sh) — implemented in Wave 5.3 (commit `ef472d9`).

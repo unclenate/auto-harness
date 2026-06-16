@@ -11,6 +11,22 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-15 — OPP/PRD backlog status reconciliation
+
+Reconciled backlog records that had drifted from shipped reality (status is prose,
+not validator-enforced, so it lags after each implementation wave). Flipped six OPPs
+from proposed/exploring to accepted — OPP-0006 (trust-tier, Wave 5.1), OPP-0033
+(skill-content, Wave 5.2), OPP-0034 (sensitive-paths, Wave 5.3), OPP-0036
+(knowledge-redaction, Wave 5.5), OPP-0037 (classify-before-enforcing → §10), and
+OPP-0045 (geospatial, **accepted — partial promotion**, siblings still proposed) —
+plus their stale implementation PRDs PRD-0006 and PRD-0015. Updated `candidates.md`
+annotations to match. Each flip was verified against disk (validator present / §10
+present / modules on `main`). PRD-0003 and PRD-0022 were left unchanged pending a
+maintainer call on the design-only / superseded status convention. The structural
+learning — un-validated status drifts, so the flip belongs in the implementing-PR
+checklist — is captured as a distillation observation and as live evidence for a
+backlog-review cadence (OPP-0032). Surfaced during a four-agent backlog retrospective.
+
 ## 2026-06-15 — OPP-0047: delivery-cost & unit-economics governance (+ research brief)
 
 Captured a new opportunity — governing the **token cost of agentic delivery** (what

@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0006 — Trust-Tier Enforcement (Doctrine → Machinery)
 
-**Status:** exploring
+**Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-05-23
-**Last Updated:** 2026-05-23 *(promoted to exploring; PRD-0006 drafted same day)*
+**Last Updated:** 2026-06-15 *(accepted and implemented in Wave 5.1)*
 **Confidence:** high
 
 ---
@@ -212,7 +212,7 @@ v1 small enough to actually ship.
 ## Disposition
 
 **2026-05-23 (proposed → exploring):** Same-day flip per established
-maintainer-priority cadence (audit's #1 finding; named explicitly in
+maintainer-priority cadence (audit's #1 finding; caused explicitly in
 the doctrine-without-enforcement observation; threat-model.md A5
 mitigation gap). Direction set on **Option E (Hybrid)** from the five
 candidates in the OPP. PRD-0006 drafted same day with the v1 scope
@@ -223,9 +223,9 @@ predicted that pursuing trust-tier enforcement would surface
 additional gap candidates as a side effect — that hypothesis is now
 testable, with this OPP/PRD pair the first instance.
 
+**2026-06-15 (exploring → accepted):** Accepted and fully implemented in Wave 5.1 (PRD-0006, commit `9daf533`) via the new `validate-trust-tier.sh` validator.
+
 ## Promotion
 
 - See [PRD-0006](../requirements/PRD-0006-trust-tier-enforcement.md) —
-  drafted 2026-05-23; status `Proposed` (acceptance contingent on
-  landing the v1 implementation: optional `tier` field + inference
-  for sensitivePaths + `validate-trust-tier.sh` + skill update).
+  accepted and implemented in Wave 5.1 (commit `9daf533`).

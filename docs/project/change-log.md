@@ -11,6 +11,20 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-15 — PRD-0025: promote OPP-0046 lane wedge (`management/work-package`)
+
+Promoted the unanimous #1 elevation from the four-agent backlog retrospective.
+PRD-0025 (Work-Package Lane Contract) ratifies a thin wedge — a machine-readable
+lane schema (`allowedFiles` / `requiredChecks` / `forbiddenCommands` / `prMode`), a
+module-gated `validate-lane-integrity.sh` that lints a branch's diff against its
+declared lane, an idempotent worktree runbook, and a conflict-protocol onboarding
+rule — as a new `management/work-package` module. Design-only per § 9; the
+implementing PR builds it. Resolves the combine-vs-sequence fork as **"one home,
+staged depth":** v1 governs scope (the lane); the economic contract (OPP-0047)
+folds in as the module's deferred v2 phase (lane = scope, cost = economics).
+OPP-0046 → accepted (partial promotion), applying the status-flip-in-the-promoting-PR
+discipline distilled in the hygiene pass.
+
 ## 2026-06-15 — OPP/PRD backlog status reconciliation
 
 Reconciled backlog records that had drifted from shipped reality (status is prose,

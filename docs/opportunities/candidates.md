@@ -465,6 +465,17 @@ the contract at v1; defer per-rule extensions to v2 if scope bloats.
   `docs/knowledge/` and `docs/operating-principles.md`. Closes
   safety-security-sweep §8 cross-pollination findings and §9 reverse-
   direction prompt-leakage pathways 1–4. Wave 5.5.
+- [OPP-0048](OPP-0048-redaction-scope-and-publication-boundary-hardening.md)
+  *(proposed 2026-06-17)* — **Redaction-scope & publication-boundary
+  hardening.** Follow-up to OPP-0036: its scanner covers only the two
+  knowledge files against a hardcoded denylist, while a public repo parks
+  **untracked** private design material under `docs/superpowers/specs/`
+  (excluded from placeholder + markdownlint) with zero publish-time gate.
+  Proposes (1) a file-level `do-not-publish` frontmatter marker + a
+  **blocking** validator that fails if a marked file becomes tracked (needs
+  no name list), and (2) a configurable, wider-scope extension of the
+  content scanner. Forcing case: the parked Digital Twin seed brief, guarded
+  today only by agent memory and manual `git add` discipline.
 
 ### Doctrine codification — operating-principle promotions (2026-05-28)
 

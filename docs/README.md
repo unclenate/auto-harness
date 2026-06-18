@@ -154,6 +154,7 @@ clustered backlog with framing.
 | [0045](opportunities/OPP-0045-domain-family-geospatial-decomposed.md) | Geospatial / GIS Domain Family (decomposed) | proposed |
 | [0046](opportunities/OPP-0046-parallel-multi-agent-work-package-lane-contract.md) | Parallel Multi-Agent Work-Package Lane Contract | accepted (partial promotion) |
 | [0047](opportunities/OPP-0047-delivery-cost-unit-economics-governance.md) | Delivery-Cost & Unit-Economics Governance | proposed |
+| [0048](opportunities/OPP-0048-redaction-scope-and-publication-boundary-hardening.md) | Redaction-Scope & Publication-Boundary Hardening | proposed |
 
 ---
 

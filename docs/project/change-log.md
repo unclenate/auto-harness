@@ -11,6 +11,21 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-17 — OPP-0048: redaction-scope & publication-boundary hardening (filed, proposed)
+
+Filed the OPP-0036 follow-up after the 2026-06-17 GitBook / documentation pass
+re-confirmed a live coverage gap: this public repo parks **untracked** private
+design material under `docs/superpowers/specs/` (excluded from both the
+placeholder validator and markdownlint), and `validate-knowledge-redaction.sh`
+scans only the two knowledge files against a hardcoded denylist — so the
+standing "do-not-publish" decision on the parked Digital Twin seed brief is
+guarded by nothing machine-checkable. OPP-0048 proposes a file-level
+`do-not-publish` blocking marker (needs no name corpus) plus a configurable
+wider-scope extension of the OPP-0036 scanner. Status: proposed (design-only per
+§ 9; the promoting PR carries the PRD). Audit-trail satisfier for the
+knowledge-capture + opportunity-capture companion rules fired by the new OPP and
+the shared-observations distillation entry. Reviewer: @unclenate.
+
 ## 2026-06-17 — GitBook TOC + front-door enumeration sync (routine maintenance)
 
 Mechanical documentation-accuracy pass, no governance decision. The GitBook

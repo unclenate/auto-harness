@@ -260,6 +260,10 @@ Pre-built manifests for common project types. Copy the closest match to
 * [Agentic UI SaaS](platform/compositions/agentic-ui-saas.yaml) — Node/TS SaaS shipping an in-product copilot or generative UI
 * [MCP Server (TypeScript)](platform/compositions/mcp-server-typescript.yaml) — projects that produce their own MCP server
 * [MCP Server (TypeScript, OSS)](platform/compositions/mcp-server-typescript-oss.yaml) — OSS-released MCP server with `delivery/self-hosted-oss` + project-standard + knowledge-capture
+* [Healthcare FHIR App](platform/compositions/healthcare-fhir-app.yaml) — FHIR + SMART-on-FHIR application; healthcare data layer + app-launch/scope overlay
+* [AEC BIM Project](platform/compositions/aec-bim-project.yaml) — ISO 19650 / openBIM delivery; information-management substrate + openBIM exchange + ISO 19650-5 security
+* [Digital Twin Prototype](platform/compositions/digital-twin-prototype.yaml) — scenario-driven digital-twin overlay with privacy-by-design on a built stack
+* [Geospatial BIM Twin](platform/compositions/geospatial-bim-twin.yaml) — BIM + GIS twin of a place; spatial-reference substrate + OGC exchange + BIM↔GIS georeferencing
 
 ### Examples
 
@@ -455,6 +459,50 @@ A complete sample project with all governance artifacts filled in.
 * [Prompt-Injection Test Plan](platform/templates/mcp/prompt-injection-test-plan.md)
 * [Transport and Auth](platform/templates/mcp/transport-and-auth.md)
 
+### Healthcare
+
+* [Jurisdiction Profile](platform/templates/healthcare/jurisdiction-profile.md)
+* [FHIR Resource Map](platform/templates/healthcare/fhir-resource-map.md)
+* [SMART Scope Map](platform/templates/healthcare/smart-scope-map.md)
+
+### AEC
+
+* [Jurisdiction Profile](platform/templates/aec/jurisdiction-profile.md)
+* [Information Management Plan](platform/templates/aec/information-management-plan.md)
+* [Exchange Requirements](platform/templates/aec/exchange-requirements.md)
+* [Security Management Plan](platform/templates/aec/security-management-plan.md)
+* [Sensitivity Assessment](platform/templates/aec/sensitivity-assessment.md)
+
+### Geospatial
+
+* [Spatial Reference Profile](platform/templates/geospatial/spatial-reference-profile.md)
+* [Exchange Profile](platform/templates/geospatial/exchange-profile.md)
+* [Dataset Inventory](platform/templates/geospatial/dataset-inventory.md)
+* [Georeference Map](platform/templates/geospatial/georeference-map.md)
+
+### Digital Twin
+
+* [Overview](platform/templates/digital-twin/overview.md)
+* [Twin Profile](platform/templates/digital-twin/twin-profile.md)
+* [Model Registry](platform/templates/digital-twin/model-registry.md)
+* [Agent Registry](platform/templates/digital-twin/agent-registry.md)
+* [Scenario Manifest Spec](platform/templates/digital-twin/scenario-manifest-spec.md)
+* [Run-Log Spec](platform/templates/digital-twin/run-log-spec.md)
+* [Data Provenance](platform/templates/digital-twin/data-provenance.md)
+* [Uncertainty Policy](platform/templates/digital-twin/uncertainty-policy.md)
+* [Publication Policy](platform/templates/digital-twin/publication-policy.md)
+* [Security Boundaries](platform/templates/digital-twin/security-boundaries.md)
+
+### Privacy
+
+* [Privacy Profile](platform/templates/privacy/privacy-profile.md)
+* [Data Inventory](platform/templates/privacy/data-inventory.md)
+* [Privacy Impact Assessment](platform/templates/privacy/privacy-impact-assessment.md)
+
+### Security
+
+* [SAST Coverage Declaration](platform/templates/security/sast-coverage.md)
+
 ### Documentation
 
 * [Project GitBook Stub (SUMMARY.md)](platform/templates/docs/SUMMARY.md)
@@ -496,6 +544,7 @@ Open-source-cut metadata: license, contribution flow, community standards, and t
 * [ADR-0016: Documentation IA — Phase 3–4 Target Structure](docs/adr/ADR-0016-documentation-ia-phase-3-4-target-structure.md)
 * [ADR-0017: Safety Hardening Roadmap](docs/adr/ADR-0017-safety-hardening-roadmap.md)
 * [ADR-0018: Privacy by Default Posture](docs/adr/ADR-0018-privacy-by-default-posture.md)
+* [ADR-0019: Adopt Digital Twin / Scenario Runtime as a Management Overlay](docs/adr/ADR-0019-digital-twin-scenario-runtime-overlay.md)
 
 ### Product Requirements Documents (this project)
 
@@ -522,6 +571,10 @@ Specifications for substantive new capabilities, paired with their originating o
 * [PRD-0019: AEC ISO 19650 + openBIM Wedge](docs/requirements/PRD-0019-aec-iso19650-openbim-wedge.md)
 * [PRD-0020: Bootstrap Hardening — Guards + Dependency Preflight](docs/requirements/PRD-0020-bootstrap-hardening-guards-and-preflight.md)
 * [PRD-0021: Greenfield Onboarding Conservatism](docs/requirements/PRD-0021-greenfield-onboarding-conservatism.md)
+* [PRD-0022: Cybersecurity OSINT / Maltego Wedge](docs/requirements/PRD-0022-cybersec-osint-maltego-wedge.md)
+* [PRD-0023: Digital Twin / Scenario Runtime Governance Overlay](docs/requirements/PRD-0023-digital-twin-scenario-runtime-overlay.md)
+* [PRD-0024: Geospatial / GIS Wedge (CRS Foundation + OGC Exchange + BIM↔GIS Georeferencing)](docs/requirements/PRD-0024-geospatial-gis-wedge.md)
+* [PRD-0025: Work-Package Lane Contract](docs/requirements/PRD-0025-work-package-lane-contract.md)
 
 ### Opportunity Records (this project)
 
@@ -570,3 +623,8 @@ Forward-looking pre-PRD candidates managed by the `opportunity-capture` module.
 * [OPP-0040: Cross-Platform Install Prerequisites](docs/opportunities/OPP-0040-cross-platform-install-prerequisites.md) — Surface + preflight install deps at first contact (accepted; PRD-0020)
 * [OPP-0041: Onboarding Containment Safety](docs/opportunities/OPP-0041-onboarding-containment-safety.md) — Refuse bootstrapping a consumer inside the platform / nested in another repo (accepted; PRD-0020)
 * [OPP-0042: Greenfield Onboarding Conservatism](docs/opportunities/OPP-0042-greenfield-onboarding-conservatism.md) — Route contextless greenfield to discovery, not a guessed enforced manifest (accepted; PRD-0021)
+* [OPP-0043: Cybersecurity Domain Family (decomposed `domains/cybersec-*`)](docs/opportunities/OPP-0043-domain-family-cybersecurity-decomposed.md) — Third built deep-domain vertical; OSINT + engagement-charter wedge promoted via PRD-0022
+* [OPP-0044: Digital Twin / Scenario Runtime Governance Overlay](docs/opportunities/OPP-0044-digital-twin-scenario-runtime.md) — Cross-cutting management overlay (ADR-0019); twin-profile maturity ladder + scenario epistemic-discipline, promoted via PRD-0023
+* [OPP-0045: Geospatial / GIS Domain Family (decomposed `domains/geospatial-*`)](docs/opportunities/OPP-0045-domain-family-geospatial-decomposed.md) — Fourth built deep-domain vertical; CRS foundation + OGC exchange + BIM↔GIS georeferencing wedge promoted via PRD-0024
+* [OPP-0046: Parallel Multi-Agent Work-Package Lane Contract](docs/opportunities/OPP-0046-parallel-multi-agent-work-package-lane-contract.md) — Lintable lane contract for concurrent multi-agent worktrees; lane (scope) wedge promoted via PRD-0025 (accepted — partial promotion)
+* [OPP-0047: Delivery-Cost & Unit-Economics Governance](docs/opportunities/OPP-0047-delivery-cost-unit-economics-governance.md) — Token/cost attribution per delivery unit for build-vs-buy decisions; folded into PRD-0025 as a deferred v2 phase (proposed)

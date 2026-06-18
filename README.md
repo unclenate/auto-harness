@@ -63,7 +63,7 @@ harness provides:
 
 - **Solo founder vibecoding an MVP** — you want guardrails so your AI agents don't merge themselves into a corner. Adopt the smallest composition (`brownfield-lite` or `interview-driven-discovery`), wire one CI job, and grow from there.
 - **Senior dev adding discipline to a growing project** — you want module governance you can opt into incrementally without rewriting your repo. Pick the composition closest to your stack, run the validators, and tune `disabledValidations` until you're ready to enable each one.
-- **AI agent (Claude Code, Cursor, Copilot, OpenClaw, Gemini)** — read [`AGENTS.md`](AGENTS.md) first; it states the trust tier model, what you can and cannot do, when to stop, and the first-session workflow.
+- **AI agent (Claude Code, Cursor, Copilot, Codex, OpenClaw, Gemini)** — read [`AGENTS.md`](AGENTS.md) first; it states the trust tier model, what you can and cannot do, when to stop, and the first-session workflow.
 
 ---
 
@@ -548,12 +548,12 @@ The bootstrap is brownfield-safe — it never overwrites pre-existing files from
 │   ├── core/                        # Kernel doctrine, trust model, schemas, registry
 │   │   └── kernel/base/             # trust-model.md, doctrine.md, lifecycle-controls.md
 │   ├── profiles/                    # All module definitions
-│   │   ├── stacks/                  # node-typescript, python
-│   │   ├── architectures/           # web-app, api-service, event-driven
-│   │   ├── data/                    # relational-postgres, document-store, object-storage
-│   │   ├── delivery/                # prototype, production-saas, internal-platform
-│   │   ├── management/              # discovery-intake, interview-driven, product-lite, project-standard, program-lite, testing-standard, eval-gated-testing, knowledge-capture, opportunity-capture, security-static-analysis, privacy-by-design
-│   │   └── domains/                 # supabase, web3, media-pipeline, gitbook, agentic-interfaces, cryptographic-identity, healthcare-fhir, healthcare-smart-on-fhir
+│   │   ├── stacks/                  # node-typescript, node-javascript, python, coffeescript
+│   │   ├── architectures/           # web-app, api-service, event-driven, mcp-server, agent-skill-pack, agentic-ui
+│   │   ├── data/                    # relational-postgres, document-store, object-storage, browser-storage, embedded-key-value
+│   │   ├── delivery/                # prototype, production-saas, internal-platform, self-hosted-oss, managed-fleet
+│   │   ├── management/              # discovery-intake, interview-driven, product-lite, project-standard, program-lite, testing-standard, eval-gated-testing, knowledge-capture, opportunity-capture, security-static-analysis, privacy-by-design, digital-twin
+│   │   └── domains/                 # supabase, web3, media-pipeline, gitbook, agentic-interfaces, cryptographic-identity, healthcare-fhir, healthcare-smart-on-fhir, aec-iso19650-im, aec-iso19650-5-security, aec-openbim-exchange, geospatial-foundation, geospatial-exchange, geospatial-bim-georeference
 │   ├── agents/                      # Agent operating packs: base, claude-code, codex-cli, copilot-cli, cursor, gemini-cli, generic-llm, openclaw
 │   ├── skills/                      # Agent Skills: harness-governance, harness-testing, harness-web3, harness-onboarding, harness-tools, harness-agentic-interfaces, harness-mcp, harness-digital-twin
 │   ├── templates/                   # Artifact skeletons for every required file

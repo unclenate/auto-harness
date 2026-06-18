@@ -11,6 +11,21 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-17 — GitBook TOC + front-door enumeration sync (routine maintenance)
+
+Mechanical documentation-accuracy pass, no governance decision. The GitBook
+`SUMMARY.md` had drifted four delivery waves behind shipped reality — it is not
+in `validate-list-completeness`'s coverage set, so its OPP/PRD/ADR rows,
+compositions, and template families fell silently out of date. Synced
+`SUMMARY.md` (added ADR-0019, PRD-0022..0025, OPP-0043..0047, four deep-domain
+starter compositions, and six missing template families), completed the
+`README.md` platform-structure tree comments and its agent list (added Codex),
+and corrected the `HARNESS.md` diagram-topic prose (claimed "fifteen" but
+enumerated only fourteen — added the geospatial domain-family composition).
+The `HARNESS.md` touch trips the `kernel/base` governance-entrypoint companion;
+this entry is the routine-maintenance satisfier (no ADR/PRD warranted — the edit
+adds no decision, only restores accuracy). Reviewer: @unclenate.
+
 ## 2026-06-15 — PRD-0025: promote OPP-0046 lane wedge (`management/work-package`)
 
 Promoted the unanimous #1 elevation from the four-agent backlog retrospective.

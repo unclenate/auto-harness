@@ -108,12 +108,12 @@ clustered backlog with framing.
 
 | # | Title | Status |
 |---|-------|--------|
-| [0001](opportunities/OPP-0001-exportable-governance-contract-for-runtime-harnesses.md) | Exportable Governance Contract for Runtime Harnesses | accepted |
+| [0001](opportunities/OPP-0001-exportable-governance-contract-for-runtime-harnesses.md) | Exportable Governance Contract for Runtime Harnesses | proposed |
 | [0002](opportunities/OPP-0002-agentic-interface-awareness.md) | Agentic Interface Awareness | accepted |
 | [0003](opportunities/OPP-0003-mcp-producer-and-exportable-governance-via-mcp.md) | MCP Producer and Exportable Governance via MCP | accepted |
 | [0004](opportunities/OPP-0004-distillation-triggers.md) | Distillation Triggers | accepted |
 | [0005](opportunities/OPP-0005-consumer-header-hygiene.md) | Consumer Header Hygiene | accepted |
-| [0006](opportunities/OPP-0006-trust-tier-enforcement.md) | Trust-Tier Enforcement | exploring |
+| [0006](opportunities/OPP-0006-trust-tier-enforcement.md) | Trust-Tier Enforcement | accepted |
 | [0007](opportunities/OPP-0007-canonical-position-artifact.md) | Canonical-Position Artifact | exploring |
 | [0008](opportunities/OPP-0008-stack-module-node-javascript-and-coffeescript.md) | Stack Module — Node-JavaScript + CoffeeScript | accepted |
 | [0009](opportunities/OPP-0009-data-module-embedded-key-value.md) | Data Module — Embedded Key-Value | accepted |
@@ -130,7 +130,7 @@ clustered backlog with framing.
 | [0020](opportunities/OPP-0020-evaluation-tooling-in-harness-toolchain.md) | Evaluation & Safety Tooling in Toolchain (Tula) | proposed |
 | [0021](opportunities/OPP-0021-delivery-self-hosted-oss.md) | Delivery — Self-Hosted OSS (Tula) | accepted |
 | [0022](opportunities/OPP-0022-patient-facing-health-agent-safety.md) | Patient-Facing Health-Agent Safety (Tula) | proposed |
-| [0023](opportunities/OPP-0023-doc-references-consumer-scan.md) | `validate-doc-references` Consumer-Aware Scan | proposed |
+| [0023](opportunities/OPP-0023-doc-references-consumer-scan.md) | `validate-doc-references` Consumer-Aware Scan | accepted |
 | [0025](opportunities/OPP-0025-consumer-integration-smoke-test.md) | Consumer-Side Integration Smoke Test | proposed |
 | [0026](opportunities/OPP-0026-distilled-learnings-disposition.md) | `distilled-learnings.md` Disposition (Sunset/Revive/Clarify) | accepted |
 | [0027](opportunities/OPP-0027-frontier-agent-posture.md) | Frontier-Agent Posture (Management Overlay; Cluster Anchor) | proposed |
@@ -139,11 +139,11 @@ clustered backlog with framing.
 | [0030](opportunities/OPP-0030-intelligent-model-routing.md) | Intelligent Model Routing as Architectural Primitive | proposed |
 | [0031](opportunities/OPP-0031-agent-defense-in-depth.md) | Agent Defense-in-Depth (Microsoft's Four Patterns) | proposed |
 | [0032](opportunities/OPP-0032-session-cycle-orchestration.md) | Session-Cycle Orchestration and Review-Trigger Taxonomy | exploring |
-| [0033](opportunities/OPP-0033-validate-skill-content.md) | Content-Safety Validator (`validate-skill-content.sh`) | exploring |
-| [0034](opportunities/OPP-0034-validate-sensitive-paths.md) | Sensitive-Paths Overlap Validator (`validate-sensitive-paths.sh`) | proposed |
+| [0033](opportunities/OPP-0033-validate-skill-content.md) | Content-Safety Validator (`validate-skill-content.sh`) | accepted |
+| [0034](opportunities/OPP-0034-validate-sensitive-paths.md) | Sensitive-Paths Overlap Validator (`validate-sensitive-paths.sh`) | accepted |
 | [0035](opportunities/OPP-0035-security-static-analysis.md) | Security Static Analysis Module (`management/security-static-analysis`) | accepted |
-| [0036](opportunities/OPP-0036-validate-knowledge-redaction.md) | Knowledge-Redaction Validator + CODEOWNERS | proposed |
-| [0037](opportunities/OPP-0037-classify-before-enforcing-as-operating-principle.md) | Classify-Before-Enforcing as Operating Principle | exploring |
+| [0036](opportunities/OPP-0036-validate-knowledge-redaction.md) | Knowledge-Redaction Validator + CODEOWNERS | accepted |
+| [0037](opportunities/OPP-0037-classify-before-enforcing-as-operating-principle.md) | Classify-Before-Enforcing as Operating Principle | accepted |
 | [0038](opportunities/OPP-0038-adopter-artifact-attribution-boundary.md) | Adopter Artifact Attribution: Signing Governance Without Asserting Rights | proposed |
 | [0039](opportunities/OPP-0039-domain-family-aec-decomposed.md) | AEC Domain Family (decomposed) | accepted (partial promotion) |
 | [0040](opportunities/OPP-0040-cross-platform-install-prerequisites.md) | Cross-Platform Install Prerequisites: Surface and Preflight Them at First Contact | accepted |
@@ -151,7 +151,7 @@ clustered backlog with framing.
 | [0042](opportunities/OPP-0042-greenfield-onboarding-conservatism.md) | Greenfield Onboarding Conservatism: Route Contextless Greenfield to Discovery | accepted |
 | [0043](opportunities/OPP-0043-domain-family-cybersecurity-decomposed.md) | Cybersecurity Domain Family (decomposed) | accepted (partial promotion) |
 | [0044](opportunities/OPP-0044-digital-twin-scenario-runtime.md) | Digital Twin / Scenario Runtime Governance Overlay | accepted |
-| [0045](opportunities/OPP-0045-domain-family-geospatial-decomposed.md) | Geospatial / GIS Domain Family (decomposed) | proposed |
+| [0045](opportunities/OPP-0045-domain-family-geospatial-decomposed.md) | Geospatial / GIS Domain Family (decomposed) | accepted |
 | [0046](opportunities/OPP-0046-parallel-multi-agent-work-package-lane-contract.md) | Parallel Multi-Agent Work-Package Lane Contract | accepted (partial promotion) |
 | [0047](opportunities/OPP-0047-delivery-cost-unit-economics-governance.md) | Delivery-Cost & Unit-Economics Governance | proposed |
 | [0048](opportunities/OPP-0048-redaction-scope-and-publication-boundary-hardening.md) | Redaction-Scope & Publication-Boundary Hardening | proposed |

@@ -11,6 +11,21 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-19 — Index/source status reconciliation (routine maintenance)
+
+Mechanical status-accuracy pass, no governance decision. `validate-list-completeness.sh`
+enforces that every OPP/PRD has a `docs/README.md` index row but not that the row's
+**status column** matches the source file, so statuses drift silently each delivery
+wave. Swept every OPP/PRD/ADR index row against its source `**Status:**` line and
+reconciled the mismatches: eight `docs/README.md` OPP rows that lagged their files
+(OPP-0006/0023/0033/0034/0036/0037/0045 → `accepted`; OPP-0001 → `proposed`, the index
+had been wrong-ahead), and one reverse case where the source file lagged — `PRD-0003`
+(`opportunity-capture`) had shipped and gone active (ADR-0004 Accepted, module in
+`harness.manifest.yaml`) but its own status line still read `Proposed`; flipped the file
+to `Accepted` to match the index. Source `**Status:**` lines are canonical for the OPP
+rows; the PRD-0003 index entry was canonical for that file. No OPP/ADR/module bodies were
+touched, so no distillation trigger fires. Reviewer: @unclenate.
+
 ## 2026-06-17 — OPP-0048: redaction-scope & publication-boundary hardening (filed, proposed)
 
 Filed the OPP-0036 follow-up after the 2026-06-17 GitBook / documentation pass

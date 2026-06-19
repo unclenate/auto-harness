@@ -33,6 +33,7 @@ cp platform/compositions/node-web-saas-postgres.yaml harness.manifest.yaml
 | [aec-bim-project.yaml](aec-bim-project.yaml) | ISO 19650 IM + openBIM exchange + ISO 19650-5 security + privacy-by-design | Delivering built-environment information under ISO 19650 with openBIM model exchange |
 | [digital-twin-prototype.yaml](digital-twin-prototype.yaml) | digital-twin + privacy-by-design + ISO 19650 IM | Scenario-driven digital-twin / decision-support project (municipal, real-estate, datacenter, civic) |
 | [geospatial-bim-twin.yaml](geospatial-bim-twin.yaml) | geospatial foundation + exchange + BIM↔GIS georeference + openBIM exchange + digital-twin + privacy-by-design | BIM + GIS digital twin — first 4-way domain × domain × cross-cutting × cross-cutting composition |
+| [work-package-lane.yaml](work-package-lane.yaml) | work-package + node-typescript | Parallel multi-agent delivery — per-task lane (allowedFiles / readOnlyFiles) checked against the agent's actual diff |
 
 ---
 

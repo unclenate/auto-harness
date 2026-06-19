@@ -107,6 +107,9 @@ bash $PLATFORM/validators/validate-skill-content.sh      harness.manifest.yaml .
 bash $PLATFORM/validators/validate-knowledge-redaction.sh .                    main
 bash $PLATFORM/validators/validate-sast-coverage.sh      harness.manifest.yaml .
 bash $PLATFORM/validators/validate-privacy-by-design.sh  harness.manifest.yaml .
+bash $PLATFORM/validators/validate-twin-profile.sh       harness.manifest.yaml .
+bash $PLATFORM/validators/validate-scenario-manifest.sh  harness.manifest.yaml .
+bash $PLATFORM/validators/validate-lane-integrity.sh     harness.manifest.yaml . main
 bash $PLATFORM/validators/validate-companions.sh         harness.manifest.yaml . main
 ```
 
@@ -220,6 +223,20 @@ A few signature notes worth highlighting:
   claim sites. When you add a new doc that cites a catalog count, append
   a row to the script's `ASSERTIONS` table so the drift class stays
   closed.
+- **`validate-lane-integrity.sh`** takes
+  `[<manifest>] [<project-root>] [<base-branch>]` (or
+  `--scan-file <lane-spec> [<changed-path>...]`). Opt-in — when the
+  `management/work-package` module is not active, exits 0 (predict-clean;
+  the harness's own CI is a no-op pass). When active, parses the fenced
+  `lane` block in `docs/work-package/lane.md`, asserts the schema is
+  well-formed (`branch` / `base` / `prMode` in `{draft,ready}` / non-empty
+  `allowedFiles` / list-typed `readOnlyFiles` / `requiredChecks` /
+  `forbiddenCommands`), then diffs the branch against `<base-branch>` and
+  fails if any changed file is outside `allowedFiles` or touches
+  `readOnlyFiles`. The `--scan-file` mode runs the schema check (and, given
+  an explicit changed-path list, the lane-vs-diff check) without git, for
+  fixture-firing tests. Per PRD-0025. The multi-agent re-targeting of the
+  module declare-then-enforce contract.
 
 ## Required Artifacts
 

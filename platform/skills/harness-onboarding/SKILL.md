@@ -546,6 +546,7 @@ No required artifacts for `delivery/prototype`. Required artifacts for `delivery
 | `management/security-static-analysis` | Project ships software (not only docs) and SAST coverage of agent-generated code is a structural quality gate; consumer CI runs the tool, the harness validates the declaration (tool / scanPaths / severityThreshold) | `docs/security/sast-coverage.md` |
 | `management/privacy-by-design` | Default-active for all projects. Encodes the 7 Cavoukian principles as governance. Opt out only by declaring `regime: none` with a documented reason. | `docs/privacy/privacy-profile.md` |
 | `management/digital-twin` | Project models real-world systems, runs scenarios, or publishes decision-support (municipal/real-estate/datacenter/civic twins) | `docs/twin/twin-profile.md` |
+| `management/work-package` | Dispatching two or more agents in parallel on isolated work-packages and want each agent's diff checked against its declared lane (allowedFiles / readOnlyFiles) | `docs/work-package/lane.md` |
 
 Dependency: `management/program-lite` requires `management/project-standard`. `management/knowledge-capture` and `management/opportunity-capture` both depend on `management/project-standard`. `management/opportunity-capture` does not require `management/knowledge-capture` to be active, but its Origin / Evidence field is most useful when paired with `shared-observations.md` from `knowledge-capture`.
 

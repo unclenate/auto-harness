@@ -865,6 +865,7 @@ VALIDATOR_SCRIPTS = %w[
   validate-privacy-by-design.sh
   validate-twin-profile.sh
   validate-scenario-manifest.sh
+  validate-lane-integrity.sh
 ].freeze
 
 class TestValidatorHelpFlag < Minitest::Test
@@ -1869,5 +1870,72 @@ class TestValidateScenarioManifest < Minitest::Test
                    "#{fixture_name} expected exit #{expected_code}, got #{code}. " \
                    "stdout: #{out} stderr: #{err}"
     end
+  end
+end
+
+# ---------------------------------------------------------------------------
+# validate-lane-integrity.sh
+#
+# PRD-0025 Phase 2. The validator is opt-in: when the management/work-package
+# module is not in the active set, the validator exits 0 ("module inactive";
+# predict-clean). The --scan-file seam runs the schema check always, and the
+# lane-vs-diff check when changed-path arguments are supplied — the same checker
+# main mode feeds its git diff into.
+# ---------------------------------------------------------------------------
+class TestValidateLaneIntegrity < Minitest::Test
+  HARNESS_ROOT      = File.expand_path("..", PLATFORM_DIR)
+  LANE_FIXTURES_DIR = File.join(PLATFORM_DIR, "validators", "test", "fixtures", "work-package")
+
+  def lane_fixture(name)
+    File.join(LANE_FIXTURES_DIR, name)
+  end
+
+  def test_runs_clean_against_harness_repo
+    # The harness does not activate management/work-package — the validator must
+    # exit 0 with the "not active" message (predict-clean).
+    manifest = File.join(HARNESS_ROOT, "harness.manifest.yaml")
+    out, err, code = run_validator("validate-lane-integrity.sh", manifest, HARNESS_ROOT, "main")
+    assert_equal 0, code, "Module-inactive path must exit 0. stderr: #{err}"
+    assert_match(/skipped/, out)
+    assert_match(/not active/, out)
+  end
+
+  def test_scan_file_schema_only
+    # clean lane, no changed paths → schema check passes
+    out, err, code = run_validator(
+      "validate-lane-integrity.sh", "--scan-file", lane_fixture("clean-lane.md")
+    )
+    assert_equal 0, code, "clean schema must pass. stdout: #{out} stderr: #{err}"
+
+    # malformed lane (bad prMode + empty allowedFiles) → schema check fails
+    _o, _e, bad = run_validator(
+      "validate-lane-integrity.sh", "--scan-file", lane_fixture("malformed-lane.md")
+    )
+    assert_equal 1, bad, "malformed schema must fail"
+  end
+
+  def test_lane_vs_diff_detection
+    spec = lane_fixture("clean-lane.md")
+    # allowedFiles: src/feature/** , docs/feature/*.md ; readOnlyFiles: src/core/**
+
+    # in-lane changed set → pass
+    _o, _e, in_lane = run_validator(
+      "validate-lane-integrity.sh", "--scan-file", spec,
+      "src/feature/widget.ts", "docs/feature/notes.md"
+    )
+    assert_equal 0, in_lane, "in-lane changes must pass"
+
+    # an out-of-lane file → fail
+    out, _e, out_of_lane = run_validator(
+      "validate-lane-integrity.sh", "--scan-file", spec,
+      "src/feature/widget.ts", "src/other/thing.ts"
+    )
+    assert_equal 1, out_of_lane, "out-of-lane change must fail. stdout: #{out}"
+
+    # a readOnlyFiles change → fail
+    _o, _e, readonly = run_validator(
+      "validate-lane-integrity.sh", "--scan-file", spec, "src/core/kernel.ts"
+    )
+    assert_equal 1, readonly, "readOnlyFiles change must fail"
   end
 end

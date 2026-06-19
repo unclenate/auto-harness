@@ -1,0 +1,36 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+id: work-package
+type: management
+version: 1.0.0
+summary: Parallel multi-agent work-package lane contract — gives a dispatched agent a machine-checkable lane (allowedFiles / readOnlyFiles / requiredChecks / prMode) on a work-package spec, a lane-vs-diff validator that checks the agent's actual changes against its declared scope, an idempotent worktree runbook, and a stop-and-report conflict protocol. The multi-agent re-targeting of the module declare-then-enforce contract. Default-off, opt-in.
+dependsOn:
+  - kernel/base
+conflictsWith: []
+requiredArtifacts:
+  - docs/work-package/lane.md
+sensitivePaths:
+  - description: Work-package lane specifications declaring the scope, read-only set, and execution contract for a dispatched agent
+    patterns:
+      - ^docs/work-package/
+companionRules:
+  - description: Changes to a work-package lane spec require a docs/project/change-log.md entry or an ADR under docs/adr/
+    triggerPaths:
+      - ^docs/work-package/
+    requiredAny:
+      - ^docs/project/change-log\.md$
+      - ^docs/adr/ADR-
+    humanReview: Reviewers confirm the lane change (allowedFiles / readOnlyFiles / requiredChecks scope) is intentional and that the dispatched scope still matches the acceptance criteria the agent was given.
+validators:
+  - validate-lane-integrity
+  - validate-companions
+reviewGates:
+  - Human review required before merging any agent-produced work-package whose diff was not checked against its declared lane.
+  - An out-of-lane requirement (a named symbol or acceptance criterion outside allowedFiles) must be resolved by stop-and-report, never by silently widening or narrowing the lane.
+  - ADR required for material changes to the lane schema or the conflict protocol.
+agentAdapters:
+  - platform/agents/base
+compiledFragments:
+  - platform/profiles/management/work-package/README.md
+recommendedSkills:
+  - harness-governance     # trust tiers, companion rules, the declare-then-enforce contract the lane mirrors

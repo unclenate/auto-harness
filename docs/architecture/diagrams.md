@@ -16,7 +16,7 @@ need the picture in context.
 > repository view. Edit a diagram by editing the Mermaid block in this
 > file — there is no separate image to regenerate.
 
-Fifteen diagrams below, grouped by what they answer:
+Sixteen diagrams below, grouped by what they answer:
 
 | # | Question the diagram answers | Section |
 |---|------------------------------|---------|
@@ -35,6 +35,7 @@ Fifteen diagrams below, grouped by what they answer:
 | 13 | *What is the AEC module family composition, and where do standards, jurisdiction, and security belong?* | [AEC Domain Family](#13-aec-domain-family) |
 | 14 | *How does the digital-twin overlay compose, and what does its forcing artifact gate?* | [Digital Twin Overlay Family](#14-digital-twin-overlay-family) |
 | 15 | *What is the geospatial family composition, where does the CRS forcing artifact belong, and how does it bridge to AEC?* | [Geospatial Domain Family](#15-geospatial-domain-family) |
+| 16 | *How does a dispatched agent's actual diff get checked against the work-package scope it was given?* | [Work-Package Lane Contract](#16-work-package-lane-contract) |
 
 ---
 
@@ -54,7 +55,7 @@ flowchart TD
     Manifest["<b>harness.manifest.yaml</b><br/>project-local activation"]
 
     subgraph CATALOG["Active Catalog (per project)"]
-        Manifest --> Modules["<b>Modules</b><br/>core · profiles · agents<br/>(55 total in-tree)"]
+        Manifest --> Modules["<b>Modules</b><br/>core · profiles · agents<br/>(56 total in-tree)"]
     end
 
     subgraph CONTRACT["Per-Module Contract (module.yaml)"]
@@ -65,7 +66,7 @@ flowchart TD
     end
 
     subgraph ENFORCE["Enforcement (CI)"]
-        Validators["<b>Validators</b><br/>17 scripts"]
+        Validators["<b>Validators</b><br/>18 scripts"]
         Validators -.reads.-> Manifest
         Validators -.reads.-> Required
         Validators -.reads.-> Companions
@@ -74,8 +75,8 @@ flowchart TD
 
     subgraph SURFACE["Consumer-Facing Surfaces"]
         Skills["<b>Skills</b><br/>governance, onboarding,<br/>testing, web3, tools,<br/>agentic-interfaces, mcp,<br/>digital-twin"]
-        Templates["<b>Templates</b><br/>88 scaffolding files<br/>(tokenized headers)"]
-        Workflows["<b>Workflows</b><br/>20 guides:<br/>bootstrap, discovery,<br/>distillation, etc."]
+        Templates["<b>Templates</b><br/>89 scaffolding files<br/>(tokenized headers)"]
+        Workflows["<b>Workflows</b><br/>21 guides:<br/>bootstrap, discovery,<br/>distillation, etc."]
     end
 
     Modules -.supports.-> Skills
@@ -358,7 +359,7 @@ flowchart TD
     Write --> Headers["<b>Fill template headers</b><br/>bash .harness/platform/bootstrap/<br/>set-consumer-headers.sh"]
     Headers --> Config["Writes .harness-headers.yaml<br/>(owner_name, owner_email,<br/>year, spdx_license, project_name)"]
 
-    Config --> Validate["Run validator chain locally<br/>(17 validators)"]
+    Config --> Validate["Run validator chain locally<br/>(18 validators)"]
     Validate --> Pass{"All exit 0?"}
 
     Pass -->|"no"| Troubleshoot["See workflow/troubleshooting.md<br/>or harness-onboarding skill"]
@@ -969,3 +970,38 @@ and the georeference bridge. The bridge is the catalog's first **cross-family
 dependency** — it also depends on `domains/aec-openbim-exchange` to govern the
 BIM↔GIS seam. This is the fourth deep-domain vertical (after healthcare #12,
 AEC #13) and the first to compose two domain families.
+
+## 16. Work-Package Lane Contract
+
+**Question:** *How does a dispatched agent's actual diff get checked against the work-package scope it was given?*
+
+```mermaid
+graph TD
+    DISP["Dispatcher<br/>(multi-agent)"]
+    LANE[["docs/work-package/lane.md<br/>allowedFiles · readOnlyFiles · prMode · requiredChecks"]]
+    WT["isolated git worktree<br/>(one per work-package)"]
+    AGENT["executing agent<br/>(Claude / Codex / Gemini)"]
+    DIFF["branch diff vs base"]
+    VAL["validate-lane-integrity.sh<br/>(module-gated • predict-clean)"]
+    REVIEW{"in lane?"}
+    STOP["stop-and-report<br/>(re-scope is a reviewed change)"]
+
+    DISP --> LANE
+    DISP --> WT
+    WT --> AGENT
+    LANE -. declares scope .-> AGENT
+    AGENT --> DIFF
+    LANE --> VAL
+    DIFF --> VAL
+    VAL --> REVIEW
+    REVIEW -- "changed ⊆ allowedFiles<br/>readOnlyFiles untouched" --> PASS["PR proceeds"]
+    REVIEW -- "out-of-lane file" --> STOP
+```
+
+The lane is the multi-agent re-targeting of the module declare-then-enforce
+contract: declare a boundary (`allowedFiles` / `readOnlyFiles`), then mechanically
+check the agent's diff against it (`validate-lane-integrity.sh`), leaving judgment
+to review. The validator is module-gated and predict-clean — a no-op on any
+project (including the harness itself) that has not activated
+`management/work-package`. An out-of-lane requirement is resolved by
+stop-and-report, never by the executing agent silently widening its own scope.

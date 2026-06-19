@@ -53,7 +53,7 @@ harness provides:
 - **Artifact requirements** — the files that must exist for a module to be considered active
   and governed (problem statement, ADRs, risk register, release checklist, etc.)
 - **Sensitive path governance** — patterns that trigger elevated human review when changed
-- **Validator chain** — seventeen shell scripts you run locally or in CI that enforce all of the above
+- **Validator chain** — eighteen shell scripts you run locally or in CI that enforce all of the above
 - **Agent adapters** — `CLAUDE.md`, `AGENTS.md`, and `.claude/settings.json` shims that load
   the governance rules into agent context at session start
 
@@ -143,7 +143,7 @@ flowchart TD
     end
 
     subgraph ENFORCE["Enforcement (CI)"]
-        Validators["<b>Validators</b><br/>17 scripts"]
+        Validators["<b>Validators</b><br/>18 scripts"]
         Validators -.reads.-> Manifest
         Validators -.reads.-> Companions
         Validators --> CIGate["<b>CI gates merge</b>"]
@@ -160,7 +160,7 @@ flowchart TD
     Modules -.documented in.-> Workflows
 ```
 
-For the full set of architecture diagrams (fifteen in total — covering trust tier flow, companion rule firing, the OPP/PRD/ADR lifecycle, and more) see [`docs/architecture/diagrams.md`](docs/architecture/diagrams.md).
+For the full set of architecture diagrams (sixteen in total — covering trust tier flow, companion rule firing, the OPP/PRD/ADR lifecycle, and more) see [`docs/architecture/diagrams.md`](docs/architecture/diagrams.md).
 
 ### 1. Declare your modules
 
@@ -264,7 +264,7 @@ declares its governance contract. You compose them to match your project.
 | **Architectures** | Deployment and interaction patterns | `web-app`, `api-service`, `event-driven`, `mcp-server` |
 | **Data** | Storage overlays | `relational-postgres`, `document-store`, `object-storage` |
 | **Delivery** | Lifecycle posture | `prototype`, `production-saas`, `internal-platform`, `self-hosted-oss`, `managed-fleet` |
-| **Management** | Product, project, program, knowledge, opportunity, and testing governance | `discovery-intake`, `interview-driven`, `product-lite`, `project-standard`, `program-lite`, `testing-standard`, `eval-gated-testing`, `knowledge-capture`, `opportunity-capture`, `security-static-analysis`, `privacy-by-design`, `digital-twin` |
+| **Management** | Product, project, program, knowledge, opportunity, and testing governance | `discovery-intake`, `interview-driven`, `product-lite`, `project-standard`, `program-lite`, `testing-standard`, `eval-gated-testing`, `knowledge-capture`, `opportunity-capture`, `security-static-analysis`, `privacy-by-design`, `digital-twin`, `work-package` |
 | **Domains** | Vendor or specialist overlays | `supabase`, `web3`, `media-pipeline`, `gitbook`, `agentic-interfaces`, `cryptographic-identity`, `healthcare-fhir`, `healthcare-smart-on-fhir`, `aec-iso19650-im`, `aec-openbim-exchange`, `aec-iso19650-5-security`, `geospatial-foundation`, `geospatial-exchange`, `geospatial-bim-georeference` |
 | **Agents** | AI-tool operating packs | `base`, `claude-code`, `codex-cli`, `copilot-cli`, `cursor`, `gemini-cli`, `generic-llm`, `openclaw` |
 
@@ -325,6 +325,7 @@ Pre-built manifests for common project types. Copy the closest match and adjust:
 | [`aec-bim-project.yaml`](platform/compositions/aec-bim-project.yaml) | Any | ISO 19650 IM + openBIM exchange + ISO 19650-5 security + privacy-by-design — built-environment information delivery with openBIM model exchange |
 | [`digital-twin-prototype.yaml`](platform/compositions/digital-twin-prototype.yaml) | Any | Scenario-driven digital-twin / decision-support project (municipal, real-estate, datacenter, civic) — digital-twin + privacy-by-design + ISO 19650 IM |
 | [`geospatial-bim-twin.yaml`](platform/compositions/geospatial-bim-twin.yaml) | Any | BIM + GIS digital twin — first 4-way domain × domain × cross-cutting × cross-cutting composition (geospatial foundation + exchange + BIM↔GIS georeference + openBIM exchange + digital-twin + privacy-by-design) |
+| [`work-package-lane.yaml`](platform/compositions/work-package-lane.yaml) | Any | Parallel multi-agent delivery — per-work-package lane (allowedFiles / readOnlyFiles / prMode) checked against the dispatched agent's actual diff (work-package + node-typescript) |
 
 ```bash
 cp platform/compositions/node-web-saas-postgres.yaml harness.manifest.yaml
@@ -407,7 +408,7 @@ bash .harness/platform/bootstrap/link-skills.sh \
 
 ## Validators
 
-Seventeen validators, each targeting a specific governance layer:
+Eighteen validators, each targeting a specific governance layer:
 
 | Validator | What It Checks |
 | --------- | -------------- |
@@ -552,7 +553,7 @@ The bootstrap is brownfield-safe — it never overwrites pre-existing files from
 │   │   ├── architectures/           # web-app, api-service, event-driven, mcp-server, agent-skill-pack, agentic-ui
 │   │   ├── data/                    # relational-postgres, document-store, object-storage, browser-storage, embedded-key-value
 │   │   ├── delivery/                # prototype, production-saas, internal-platform, self-hosted-oss, managed-fleet
-│   │   ├── management/              # discovery-intake, interview-driven, product-lite, project-standard, program-lite, testing-standard, eval-gated-testing, knowledge-capture, opportunity-capture, security-static-analysis, privacy-by-design, digital-twin
+│   │   ├── management/              # discovery-intake, interview-driven, product-lite, project-standard, program-lite, testing-standard, eval-gated-testing, knowledge-capture, opportunity-capture, security-static-analysis, privacy-by-design, digital-twin, work-package
 │   │   └── domains/                 # supabase, web3, media-pipeline, gitbook, agentic-interfaces, cryptographic-identity, healthcare-fhir, healthcare-smart-on-fhir, aec-iso19650-im, aec-iso19650-5-security, aec-openbim-exchange, geospatial-foundation, geospatial-exchange, geospatial-bim-georeference
 │   ├── agents/                      # Agent operating packs: base, claude-code, codex-cli, copilot-cli, cursor, gemini-cli, generic-llm, openclaw
 │   ├── skills/                      # Agent Skills: harness-governance, harness-testing, harness-web3, harness-onboarding, harness-tools, harness-agentic-interfaces, harness-mcp, harness-digital-twin

@@ -18,6 +18,13 @@ trigger mechanisms compose*.
 > shows how the active hook + passive companion rule + trigger signals +
 > knowledge destinations all compose.
 
+> **Umbrella taxonomy:** this doc covers the **PR-boundary slice** of a larger
+> picture. See [`session-shape.md`](session-shape.md) for the full session-arc
+> taxonomy — the seven session-boundary checkpoints, the six trigger-classes, and
+> the audit of declared-but-unfired reviews. The cycle-end rule is the one fully
+> wired (PR-boundary) trigger; `session-shape.md` is where the unfired ones are
+> catalogued.
+
 This document is the canonical home for the "heartbeat with Knowledge
 Contribution step" pattern that earlier module READMEs reference as
 aspirational prose. The pattern is now grounded in actionable machinery:

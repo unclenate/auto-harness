@@ -49,6 +49,7 @@ How to use the harness during normal development on a project that has already a
 * [CI Integration](platform/workflow/ci-integration.md)
 * [Standards Pattern](platform/workflow/standards-pattern.md)
 * [Cycle-End Distillation](platform/workflow/cycle-end-distillation.md) — when and where to capture institutional learning
+* [Session Shape and Review-Trigger Taxonomy](platform/workflow/session-shape.md) — the session-boundary checkpoints, the six trigger-classes, and the audit of declared-but-unfired reviews
 * [Modify Composition Mid-Project](platform/workflow/modify-composition-mid-project.md) — add / change / remove modules in an active manifest
 * [Incident Response](platform/workflow/incident-response.md) — operational workflow for production incidents and postmortems
 * [Agentic Interface Integration](platform/workflow/agentic-interface-integration.md) — operator workflow for in-product agent surfaces

@@ -6,9 +6,9 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # PRD-0013: Session-Cycle Orchestration and Review-Trigger Taxonomy
 
-**Version:** 1.0 | **Owner:** @unclenate | **Last Updated:** 2026-05-25 | **Review Cycle:** On-change
+**Version:** 1.0 | **Owner:** @unclenate | **Last Updated:** 2026-06-19 *(`Proposed` → `Accepted`: FR-001..FR-009 (Must Have) + FR-010..FR-011 (Should Have) implemented as `platform/workflow/session-shape.md`; OPP-0032 flipped to `accepted`.)* | **Review Cycle:** On-change
 
-**Status:** Proposed
+**Status:** Accepted
 **Date:** 2026-05-25 (filed)
 **Author:** @unclenate
 **Reviewers:** @unclenate

@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0032 — Session-Cycle Orchestration and Review-Trigger Taxonomy
 
-**Status:** exploring
+**Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-05-25
-**Last Updated:** 2026-05-25 *(promoted from candidate-stub in `candidates.md` after a second concrete instance accumulated. Same-day flip `proposed` → `exploring` per the established maintainer-priority cadence; [PRD-0013](../requirements/PRD-0013-session-cycle-orchestration.md) drafted committing to the workflow-doc-only v1 scope.)*
+**Last Updated:** 2026-06-19 *(`exploring` → `accepted`: PRD-0013 flipped to Accepted and its FR-001..FR-009 implemented — the workflow-doc-only v1 shipped as [`platform/workflow/session-shape.md`](../../platform/workflow/session-shape.md) (checkpoint taxonomy + six trigger-classes + the audit of declared-but-unfired reviews). Per-rule companion-rule machinery for the unfired reviews stays deferred to follow-up OPPs per the v1 scope. Prior: 2026-05-25 promoted from candidate-stub in `candidates.md` after a second concrete instance accumulated; same-day flip `proposed` → `exploring`; PRD-0013 drafted committing to the workflow-doc-only v1 scope.)*
 **Confidence:** medium-high *(diagnosis); high (on the workflow-doc-only v1 scope; per-rule companion-rule decisions deferred to follow-up OPPs/PRDs)*
 
 ---

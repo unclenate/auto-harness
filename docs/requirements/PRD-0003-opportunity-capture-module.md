@@ -6,9 +6,9 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # PRD-0003: Opportunity Capture — Forward-Looking Candidate Module
 
-**Version:** 1.0 | **Owner:** @unclenate | **Last Updated:** 2026-05-12 | **Review Cycle:** On-change
+**Version:** 1.0 | **Owner:** @unclenate | **Last Updated:** 2026-06-19 *(status reconciled `Proposed` → `Accepted`: the `management/opportunity-capture` module shipped and is active in `harness.manifest.yaml`; ADR-0004 Accepted; all FRs delivered. The `docs/README.md` index already recorded this PRD as Accepted — this corrects the stale source-file status line.)* | **Review Cycle:** On-change
 
-**Status:** Proposed
+**Status:** Accepted
 **Date:** 2026-05-12
 **Author:** @unclenate
 **Reviewers:** @unclenate

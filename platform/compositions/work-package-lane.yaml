@@ -1,0 +1,29 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+# Starter composition for parallel multi-agent delivery. Activates the
+# work-package lane overlay on a node-typescript substrate — the shape a
+# dispatcher uses when running several agents on concurrent work-packages in
+# isolated worktrees, each agent's diff verifiable against its declared lane.
+# The lane-vs-diff Enforced claim is demonstrated by the validator fixtures
+# under platform/validators/test/fixtures/work-package/ (an out-of-lane change
+# is flagged by validate-lane-integrity.sh).
+# References:
+#   - platform/profiles/management/work-package/README.md
+#   - platform/workflow/work-package-worktree-runbook.md
+#   - docs/requirements/PRD-0025-work-package-lane-contract.md
+schemaVersion: 1
+project:
+  id: example-work-package-lane
+  name: Example Parallel Multi-Agent Delivery
+  maturity: prototype
+  criticality: medium
+modules:
+  core:
+    - kernel/base
+  stacks:
+    - node-typescript
+  management:
+    - work-package
+overrides:
+  requiredArtifacts: []
+  disabledValidations: []

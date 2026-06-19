@@ -15,7 +15,7 @@ Run locally during development and in CI on every pull request.
 
 - **Ruby 3.0+** — all validators use inline Ruby for YAML parsing and logic
 - **ripgrep (`rg`)** — required by `validate-placeholders.sh` only; other validators work without it
-- **Bash** — the seventeen `validate-*.sh` scripts delegate to Ruby and work with Bash 3.2 (macOS default) and 4+. The bootstrap scripts (`install.sh`, `link-skills.sh`, `add-license-headers.sh`) require Bash 4+ (use `declare -A` and other 4+ features); macOS users must `brew install bash` for those.
+- **Bash** — the eighteen `validate-*.sh` scripts delegate to Ruby and work with Bash 3.2 (macOS default) and 4+. The bootstrap scripts (`install.sh`, `link-skills.sh`, `add-license-headers.sh`) require Bash 4+ (use `declare -A` and other 4+ features); macOS users must `brew install bash` for those.
 
 ---
 
@@ -44,6 +44,7 @@ below).
 | `validate-privacy-by-design.sh` | `[--block] [<manifest>] [<project-root>]` (or `--scan-file <path>`) | Opt-in validator for the `management/privacy-by-design` overlay. When the module is not active, exits 0 (module-gated no-op). When active, validates the privacy-profile presence/consistency (FAIL layer) and WARN-surfaces privacy-risk patterns; `--block` escalates WARN hits to a non-zero exit. PRD-0018 / §11 |
 | `validate-twin-profile.sh` | `[--block] [<manifest>] [<project-root>]` (or `--scan-file <path>`) | Opt-in validator for the `management/digital-twin` overlay. When the module is not active, exits 0. When active, parses `docs/twin/twin-profile.md` frontmatter and asserts `maturity` / `conformance` / `governingPrinciples` are populated and no emerging standard (ISO 23247-5/-6, ISO/IEC 30188) is marked `published`. Advisory WARN (exit 0); `--block` escalates. PRD-0023 / ADR-0019 |
 | `validate-scenario-manifest.sh` | `[--block] [<manifest>] [<project-root>]` (or `--scan-file <path>`) | Opt-in validator for the `management/digital-twin` overlay. When the module is not active, exits 0. When active, scans scenario manifests for the required epistemic-discipline sections (`scenario` / `datasets` / `assumptions` / `outputs` / `uncertainty` / `provenance`), per-dataset `source`+`version`+`asOf`+`confidence`, per-assumption `sensitivity`, and publication-approval gating. Advisory WARN (exit 0); `--block` escalates. PRD-0023 / ADR-0019 |
+| `validate-lane-integrity.sh` | `[<manifest>] [<project-root>] [<base-branch>]` (or `--scan-file <lane-spec> [<changed-path>...]`) | Opt-in validator for the `management/work-package` overlay. When the module is not active, exits 0 (predict-clean). When active, parses the fenced `lane` block in `docs/work-package/lane.md`, asserts the schema is well-formed (`branch` / `base` / `prMode` / non-empty `allowedFiles`), then diffs the branch against `base` and fails if any changed file is outside `allowedFiles` or touches `readOnlyFiles`. PRD-0025 |
 
 ### `--help` / `-h`
 
@@ -171,8 +172,8 @@ ruby -I platform/validators/lib platform/validators/test/test_harness_registry.r
 
 ### Integration tests
 
-**`test/test_validators_integration.rb`** — hard-coded tests + 51 dynamically
-generated `--help` / `-h` coverage tests (3 per validator × 17 validators) that
+**`test/test_validators_integration.rb`** — hard-coded tests + 54 dynamically
+generated `--help` / `-h` coverage tests (3 per validator × 18 validators) that
 shell out to the actual validator scripts against fixture projects:
 
 - `validate-manifest.sh` — valid pass, bad schema fail, missing file → exit 2

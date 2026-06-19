@@ -151,6 +151,7 @@ Product, project, and program governance overlays.
 * [Privacy by Design](platform/profiles/management/privacy-by-design/README.md) — default-on privacy-by-design overlay; Cavoukian's 7 principles + a consumer-declared legal regime
 * [Security Static Analysis](platform/profiles/management/security-static-analysis/README.md) — opt-in SAST coverage posture for agent-generated code (Wave 5.4; PRD-0016)
 * [Digital Twin / Scenario Runtime](platform/profiles/management/digital-twin/README.md) — default-off overlay for scenario-driven twins; maturity-gated twin-profile + dual-spine standards anchor (interoperability + Gemini Principles)
+* [Work Package](platform/profiles/management/work-package/README.md) — default-off overlay for parallel multi-agent delivery; a per-task lane (allowedFiles / readOnlyFiles / prMode) checked against the dispatched agent's actual diff by `validate-lane-integrity.sh`
 
 ### Domains
 
@@ -186,7 +187,7 @@ AI-tool packs and operating adapters.
 
 ## Validator Reference
 
-The seventeen validator scripts and their shared Ruby library. CI wiring and troubleshooting live in the workflow sections above.
+The eighteen validator scripts and their shared Ruby library. CI wiring and troubleshooting live in the workflow sections above.
 
 * [Validators Overview](platform/validators/README.md)
 * [validate-manifest.sh](platform/validators/validate-manifest.sh)

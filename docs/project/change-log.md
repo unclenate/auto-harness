@@ -11,6 +11,25 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-19 — PRD-0025 implementation: `management/work-package` lane contract (Phase 2)
+
+Implemented the accepted, design-only PRD-0025 (origin OPP-0046). Shipped the
+`management/work-package` module (`module.yaml` + `README.md`), the
+`validate-lane-integrity.sh` validator (chain 17→18), the work-package lane
+template, the idempotent worktree runbook, a sample composition
+(`work-package-lane.yaml`), and architecture diagram #16 — with full catalog-count
+and enumeration propagation across SUMMARY/README/HARNESS/onboarding-skill/
+discovery-to-composition/templates-and-compositions indexes. The module is
+**default-off and not activated by the harness**, so `validate-lane-integrity.sh`
+is predict-clean (a no-op on the harness's own CI), mirroring the digital-twin
+module-gated validators. v1 governs **scope** (the lane: `allowedFiles` /
+`readOnlyFiles` / `prMode` / `requiredChecks`); the economic contract
+(`tokenBudget` + delivery-cost record, OPP-0047) remains the module's deferred v2
+phase. The new `module.yaml` fires the PRD-0004 distillation rule — satisfied by a
+shared-observations entry (the diff-source/diff-checker split that keeps the
+lane-vs-diff validator fixture-testable without a live branch). Reviewer:
+@unclenate.
+
 ## 2026-06-19 — Index/source status reconciliation (routine maintenance)
 
 Mechanical status-accuracy pass, no governance decision. `validate-list-completeness.sh`

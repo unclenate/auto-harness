@@ -379,6 +379,15 @@ decision-support. Copy the files you need into the project's `docs/twin/` tree.
 | Publication policy | `management/digital-twin` | `templates/digital-twin/publication-policy.md` |
 | Security boundaries | `management/digital-twin` | `templates/digital-twin/security-boundaries.md` |
 
+### Work Package
+
+Template for one parallel multi-agent work-package. Copy into the project's
+`docs/work-package/` tree; fill the prose and the fenced lane block.
+
+| Template | Required By Module | Path |
+| -------- | ------------------ | ---- |
+| Work-package lane (forcing artifact) | `management/work-package` | `templates/work-package/lane.md` |
+
 ### AEC
 
 | Template | Required By Module | Path |

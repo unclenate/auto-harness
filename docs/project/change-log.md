@@ -11,6 +11,26 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-20 — OPP-0049: deep-governance-vertical authoring-pattern harvest (filed, proposed)
+
+Filed the design-only OPP that harvests the harness's six-times-proven
+deep-governance-vertical authoring skeleton — jurisdiction-neutral core + a
+single forcing artifact + a default-deny bias guardrail + single-concern
+decomposition + one of three composition shapes (intra-family / domain×overlay /
+cross-family bridge) + a predict-clean module-gated validator — into a committed
+promotion plan: a §12 operating principle (Phase 2), a
+`deep-governance-vertical-authoring.md` playbook (Phase 3), and a deferred
+meta-template (Phase 4). The pattern is proven across four domain families
+(healthcare, AEC, cybersec, geospatial) and two cross-cutting overlays (privacy,
+digital-twin), doubling the §9 three-instance bar; the OPP scopes the codified
+pattern to the superclass "deep governance vertical" (domains **and** overlays)
+and names the inclusion test (neutral-core + forcing-artifact + standards-anchor)
+that separates it from a thin overlay like work-package. Resolves the dangling
+forward reference in `operating-principles.md` §11. Status: proposed (design-only
+per §9; no PRD required until the §12 phase). Audit-trail satisfier for the
+opportunity-capture companion rule + the PRD-0004 distillation entry in
+shared-observations.md. Reviewer: @unclenate.
+
 ## 2026-06-19 — PRD-0013 implementation: session-shape workflow doc + review-trigger taxonomy
 
 Implemented the accepted, workflow-doc-only PRD-0013 (origin OPP-0032). Shipped

@@ -83,7 +83,7 @@ originating opportunity records.
 | [0010](requirements/PRD-0010-self-hosted-oss-delivery.md) | Self-Hosted OSS Delivery | Accepted | [OPP-0021](opportunities/OPP-0021-delivery-self-hosted-oss.md) |
 | [0011](requirements/PRD-0011-distilled-learnings-disposition.md) | Sunset `distilled-learnings.md` | Accepted | [OPP-0026](opportunities/OPP-0026-distilled-learnings-disposition.md) |
 | [0012](requirements/PRD-0012-doc-references-consumer-aware.md) | `validate-doc-references` Consumer-Aware Scan | Accepted | [OPP-0023](opportunities/OPP-0023-doc-references-consumer-scan.md) |
-| [0013](requirements/PRD-0013-session-cycle-orchestration.md) | Session-Cycle Orchestration and Review-Trigger Taxonomy | Proposed | [OPP-0032](opportunities/OPP-0032-session-cycle-orchestration.md) |
+| [0013](requirements/PRD-0013-session-cycle-orchestration.md) | Session-Cycle Orchestration and Review-Trigger Taxonomy | Accepted | [OPP-0032](opportunities/OPP-0032-session-cycle-orchestration.md) |
 | [0014](requirements/PRD-0014-agent-observability.md) | Agent Observability with OpenTelemetry Semantic Conventions | Proposed | [OPP-0029](opportunities/OPP-0029-agent-observability.md) |
 | [0015](requirements/PRD-0015-validate-skill-content.md) | Skill Content Safety Validator (`validate-skill-content.sh`) | Accepted | [OPP-0033](opportunities/OPP-0033-validate-skill-content.md) |
 | [0016](requirements/PRD-0016-security-static-analysis-module.md) | Security Static Analysis Module (`management/security-static-analysis`) | Accepted | [OPP-0035](opportunities/OPP-0035-security-static-analysis.md) |
@@ -138,7 +138,7 @@ clustered backlog with framing.
 | [0029](opportunities/OPP-0029-agent-observability.md) | Agent Observability with OpenTelemetry Semantic Conventions | exploring |
 | [0030](opportunities/OPP-0030-intelligent-model-routing.md) | Intelligent Model Routing as Architectural Primitive | proposed |
 | [0031](opportunities/OPP-0031-agent-defense-in-depth.md) | Agent Defense-in-Depth (Microsoft's Four Patterns) | proposed |
-| [0032](opportunities/OPP-0032-session-cycle-orchestration.md) | Session-Cycle Orchestration and Review-Trigger Taxonomy | exploring |
+| [0032](opportunities/OPP-0032-session-cycle-orchestration.md) | Session-Cycle Orchestration and Review-Trigger Taxonomy | accepted |
 | [0033](opportunities/OPP-0033-validate-skill-content.md) | Content-Safety Validator (`validate-skill-content.sh`) | accepted |
 | [0034](opportunities/OPP-0034-validate-sensitive-paths.md) | Sensitive-Paths Overlap Validator (`validate-sensitive-paths.sh`) | accepted |
 | [0035](opportunities/OPP-0035-security-static-analysis.md) | Security Static Analysis Module (`management/security-static-analysis`) | accepted |

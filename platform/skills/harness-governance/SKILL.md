@@ -65,7 +65,11 @@ Active companion rules for the current project are declared in each module's `mo
 > the `humanReview` text demands substantive connection between the trigger
 > work and the distillation, not a tangential entry appended to pass CI. See
 > [`platform/workflow/cycle-end-distillation.md`](../../workflow/cycle-end-distillation.md)
-> for the canonical workflow.
+> for the canonical workflow, and
+> [`platform/workflow/session-shape.md`](../../workflow/session-shape.md) for the
+> umbrella **review-trigger taxonomy** — the six trigger-classes (PR-boundary,
+> session-boundary, time-boundary, count-boundary, audit-boundary,
+> external-event-driven) and the audit of declared-but-unfired reviews.
 
 ## Lifecycle Stages
 

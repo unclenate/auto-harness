@@ -11,6 +11,27 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-19 — PRD-0013 implementation: session-shape workflow doc + review-trigger taxonomy
+
+Implemented the accepted, workflow-doc-only PRD-0013 (origin OPP-0032). Shipped
+`platform/workflow/session-shape.md` — the umbrella taxonomy peer to
+`cycle-end-distillation.md`: the seven session-boundary checkpoints, the six
+trigger-classes (PR-/session-/time-/count-/audit-/external-event-boundary), the
+positive baseline of currently-fired reviews, and the FR-004 audit of
+declared-but-unfired reviews (operating-principles promotion scan, second-pass
+onboarding, back-pressure audit, periodic §10 doctrine audit, candidate-stub
+promotion-criterion gate) — each with a `file:line` citation, a trigger-class
+classification, and an advisory follow-up sequencing. Flipped OPP-0032
+`exploring` → `accepted` and PRD-0013 `Proposed` → `Accepted`; reconciled their
+`docs/README.md` index rows in the same PR. Per § 9 / § 7 the doc is design-only:
+no new companion rule, validator, or schema — per-rule machinery for each unfired
+review stays deferred to follow-up OPPs. The small checkpoint diagram lives inside
+the workflow doc (not the architecture-diagram catalog), so the diagram count is
+unchanged; workflow count 21→22. The OPP-0032 edit fires the PRD-0004 distillation
+rule — satisfied by a shared-observations entry (all fired reviews are PR-boundary;
+every unfired review wants one of the five trigger-classes the harness never
+built). Reviewer: @unclenate.
+
 ## 2026-06-19 — PRD-0025 implementation: `management/work-package` lane contract (Phase 2)
 
 Implemented the accepted, design-only PRD-0025 (origin OPP-0046). Shipped the

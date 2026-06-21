@@ -11,6 +11,23 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-21 — Operating-principle § 12: deep governance verticals (OPP-0049 Phase 2)
+
+Promoted the six-times-proven deep-governance-vertical authoring skeleton to a new
+**operating-principle § 12** — the doctrine that codifies the six ingredients
+(neutral core + forcing artifact + bias guardrail + decomposition + composition
+shape + predict-clean validator), the three composition shapes, the
+domains-vs-overlays dual-spine divergence, and the **inclusion test** (with
+`management/work-package` as the canonical negative case). Resolves the dangling
+forward reference in § 11. This is OPP-0049 Phase 2; flipped OPP-0049 `proposed` →
+`accepted` and reconciled its `docs/README.md` + `candidates.md` index entries.
+Half-day section impl, no separate PRD, mirroring the OPP-0037 → § 10 promotion.
+The OPP-0049 status flip fires the PRD-0004 distillation rule — satisfied by the
+§ 12 section itself (a new operating-principles entry is a valid distillation
+destination); this change-log entry is the opportunity-capture audit-trail
+satisfier. Phase 3 (the `deep-governance-vertical-authoring.md` playbook) and
+Phase 4 (meta-template, deferred) remain open. Reviewer: @unclenate.
+
 ## 2026-06-20 — OPP-0049: deep-governance-vertical authoring-pattern harvest (filed, proposed)
 
 Filed the design-only OPP that harvests the harness's six-times-proven

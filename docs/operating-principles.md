@@ -385,7 +385,85 @@ rules *enforce* that privacy artifacts update when data-handling paths change; r
 (Asserted-only per §10); artifact presence and the data-handling companion rule are Enforced; risk-pattern detection is
 Half-enforced.
 
-This principle is the first cross-vertical reuse of the deep-domain
-jurisdiction-neutral-core / forcing-artifact / bias-guardrail pattern: the same machinery
-that keeps `domains/healthcare-*` from assuming a jurisdiction keeps privacy from assuming
-a legal regime.
+This principle is the first cross-vertical reuse of the **deep governance vertical**
+authoring skeleton codified in [§ 12](#12-author-deep-governance-verticals-from-the-shared-skeleton):
+the same machinery that keeps `domains/healthcare-*` from assuming a jurisdiction keeps
+privacy from assuming a legal regime. Privacy is one of the two cross-cutting *overlays*
+(with `management/digital-twin`) that proved the skeleton generalizes off subject-matter
+domains.
+
+## 12. Author Deep Governance Verticals from the Shared Skeleton
+
+A **deep governance vertical** is a focused, standards-anchored governance
+capability layered onto the kernel — whether it governs a *subject-matter
+domain* (healthcare, AEC, cybersecurity, geospatial) or a *cross-cutting
+discipline* (privacy, digital twins). The harness has built six of them on **one
+shared skeleton**. Author the next one *from* that skeleton — do not re-derive it
+— and codify any extension back into this principle.
+
+**The skeleton — six ingredients every deep governance vertical carries:**
+
+- **Jurisdiction-neutral core.** The universal floor assumes no jurisdiction,
+  legal regime, or standard *version*. The applicable specific is
+  consumer-declared at initialization, never assumed (FHIR-neutral healthcare;
+  ISO-19650-neutral AEC; Cavoukian's 7 as the neutral privacy floor).
+- **One forcing artifact.** A single required file turns the vertical into a
+  governed conformance question; it declares the consumer's specific choices and
+  is what the validator reads (`jurisdiction-profile.md`, `twin-profile.md`,
+  `spatial-reference-profile.md`, `privacy-profile.md`, the engagement-charter).
+- **A default-deny bias guardrail.** You may not claim a maturity, conformance,
+  or coverage your evidence does not support; emerging standards are cited as
+  emerging, not ratified. Overclaiming is the failure mode the guardrail blocks.
+- **Single-concern decomposition.** A family splits into focused sub-modules,
+  each governing one seam, composed by `dependsOn` (`aec-{im, openbim, security}`;
+  `geospatial-{foundation, exchange, georeference}`).
+- **One of three composition shapes.** **Intra-family** (sub-modules depend
+  within the family), **domain × cross-cutting overlay** (a domain composes with
+  privacy or digital-twin), or **cross-family bridge** (a module depends across
+  two families — `geospatial-bim-georeference` × `aec-openbim-exchange`).
+- **A predict-clean, module-gated validator.** The vertical's machine enforcement
+  no-ops when the module is inactive, so the harness's own CI is a clean pass and
+  consumer CI honors it (the § 10 Half-enforced posture).
+
+**Where domains and overlays diverge — the one documented difference.** A
+cross-cutting *overlay* carries a **dual-spine** standards anchor: a technical /
+interoperability spine *and* a governance-values spine (digital-twin =
+interoperability standards + the Gemini Principles; privacy = data-protection
+regimes + Cavoukian's 7). A subject-matter *domain* carries a single spine.
+Everything else in the skeleton is identical across the two.
+
+**The inclusion test — what is *not* a deep governance vertical.** A module is a
+deep governance vertical only if it has a **neutral core + a forcing artifact + a
+standards anchor**. Thin management overlays that lack these are not — and the
+skeleton must not be over-applied to them. `management/work-package` is the
+canonical negative case: it reuses only the predict-clean-validator ingredient
+(a lane validator) and has no neutral core, forcing artifact, or standards
+anchor, so it is a thin overlay, not a deep vertical.
+
+**Proven across six instances** (doubling the § 9 three-instance bar): four
+subject-matter domain families — `domains/healthcare-*`
+([PRD-0017](requirements/PRD-0017-healthcare-fhir-smart-wedge.md)),
+`domains/aec-*` ([PRD-0019](requirements/PRD-0019-aec-iso19650-openbim-wedge.md)),
+`domains/cybersec-*` ([PRD-0022](requirements/PRD-0022-cybersec-osint-maltego-wedge.md)),
+`domains/geospatial-*` ([PRD-0024](requirements/PRD-0024-geospatial-gis-wedge.md)) —
+and two cross-cutting overlays — `management/privacy-by-design`
+([§ 11](#11-privacy-by-design-by-default)) and `management/digital-twin`
+([PRD-0023](requirements/PRD-0023-digital-twin-scenario-runtime-overlay.md)). The
+geospatial bridge contributed the cross-family composition shape; the two overlays
+contributed the dual-spine divergence.
+
+[OPP-0049](opportunities/OPP-0049-deep-governance-vertical-harvest.md) is the
+design contract under which this section was promoted. The skeleton was built
+concrete-first (one vertical at a time) and harvested only after six instances —
+the same harvest-after-evidence discipline § 9 and § 10 followed. The OPP's
+Phase 3 ships the step-by-step authoring playbook
+(`platform/workflow/deep-governance-vertical-authoring.md`); this section is the
+doctrine the playbook implements.
+
+**When proposing a new domain or cross-cutting overlay, ask:** *does it pass the
+inclusion test (neutral core + forcing artifact + standards anchor)?* If yes,
+author it from the six-ingredient skeleton, pick one of the three composition
+shapes, and add the second spine if it is an overlay. If no, it is a thinner
+module — build it as such, and do not borrow the vertical scaffold it does not
+need. Either way, if the vertical needs a *seventh* ingredient or a *fourth*
+composition shape, that extends this principle — record it here.

@@ -466,7 +466,9 @@ the contract at v1; defer per-rule extensions to v2 if scope bloats.
   safety-security-sweep §8 cross-pollination findings and §9 reverse-
   direction prompt-leakage pathways 1–4. Wave 5.5.
 - [OPP-0048](OPP-0048-redaction-scope-and-publication-boundary-hardening.md)
-  *(proposed 2026-06-17)* — **Redaction-scope & publication-boundary
+  *(accepted 2026-06-24; PRD-0026 ratifies mechanism 1 — the always-on
+  `do-not-publish` blocking validator; mechanism 2 staged as a phase-2 follow-up)* —
+  **Redaction-scope & publication-boundary
   hardening.** Follow-up to OPP-0036: its scanner covers only the two
   knowledge files against a hardcoded denylist, while a public repo parks
   **untracked** private design material under `docs/superpowers/specs/`

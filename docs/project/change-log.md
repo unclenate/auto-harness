@@ -11,6 +11,31 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-24 — PRD-0026: publication-boundary marker (OPP-0048 wedge, design-only)
+
+Backlog triage (three independent ranking passes over the 19 open OPPs) converged
+on **OPP-0048** as the highest risk × readiness item — the only open opportunity
+with a live, daily-compounding, irreversible failure mode (a public repo parks an
+untracked private brief guarded only by `git add` discipline across a
+shared-identity multi-agent workspace).
+
+Filed **PRD-0026** ratifying OPP-0048's **thin wedge** (mechanism 1): an always-on,
+kernel-level `validate-publication-boundary.sh` that fails CI / pre-commit if any
+**git-tracked** file declares a `do-not-publish` marker. The check needs no name
+corpus — it protects a file by declared intent and is invisible while the file
+stays untracked. Flipped OPP-0048 `proposed` → `accepted`; carried mechanism 2
+(configurable content-denylist scan-scope) forward as a named phase-2 follow-up.
+
+Design-only per § 9 — the implementing PR ships the validator + ignore-file +
+template + always-on wiring + the 18 → 19 validator-count bump + tests, and applies
+the marker to the parked brief (a local edit; the brief stays untracked). Key
+design fact: a directory-glob rule is wrong because **ten already-tracked,
+published specs coexist with the one untracked unpublishable brief** in
+`docs/superpowers/specs/` — publication intent is a per-file property.
+
+Distillation (PRD-0004): paired shared-observations entry (publish-time gate =
+inverse of `requiredArtifacts`; on-disk reality disproved the dir-glob design).
+
 ## 2026-06-24 — Deep-governance-vertical authoring playbook (OPP-0049 Phase 3)
 
 Shipped the step-by-step authoring playbook that operating-principle § 12

@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0048 — Redaction-Scope & Publication-Boundary Hardening
 
-**Status:** proposed
+**Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-06-17
-**Last Updated:** 2026-06-17 *(filed)*
+**Last Updated:** 2026-06-24 *(`proposed` → `accepted`: [PRD-0026](../requirements/PRD-0026-publication-boundary-marker.md) ratifies the thin wedge — mechanism 1, the always-on file-level `do-not-publish` blocking validator. Mechanism 2 (configurable content-denylist scan-scope) carried forward as a named phase-2 follow-up. Prior: 2026-06-17 filed.)*
 **Confidence:** high
 
 ---
@@ -127,6 +127,19 @@ had to be careful not to publish). Recommended next step: a brainstorm → PRD t
 ratifies a thin wedge — the file-level `do-not-publish` blocking check first (it
 needs no name corpus), with the configurable-denylist scan-scope extension as the
 second mechanism.
+
+**Accepted (2026-06-24).** [PRD-0026](../requirements/PRD-0026-publication-boundary-marker.md)
+ratifies mechanism 1 as an **always-on, kernel-level** safety validator
+(`validate-publication-boundary.sh`) that fails CI / pre-commit if any git-tracked
+file declares a `do-not-publish` marker — the check needs no name corpus and
+distinguishes the lone untracked unpublishable brief from the **ten already-tracked,
+legitimately-published** specs that share `docs/superpowers/specs/` (which is why a
+directory glob is wrong and a per-file intent marker is right). Mechanism 2 (the
+configurable content-denylist scan-scope extension) is carried forward as a named
+**phase-2 follow-up** under this OPP — its gitignored-denylist source-of-truth
+design (Open Question 1) is the hard part and is not on the critical path to
+closing the live leak. Design-only per § 9; the implementing PR ships the
+validator + wiring + the marker on the parked brief.
 
 ## Related
 

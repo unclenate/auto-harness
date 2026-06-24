@@ -11,6 +11,26 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-24 — Deep-governance-vertical authoring playbook (OPP-0049 Phase 3)
+
+Shipped the step-by-step authoring playbook that operating-principle § 12
+forward-references: `platform/workflow/deep-governance-vertical-authoring.md`. It
+turns the § 12 doctrine into procedure — a Step 0 inclusion-test gate, six build
+steps (one per skeleton ingredient), a worked-examples matrix mapping each
+ingredient to a real on-disk artifact per vertical, the composition-shape and
+dual-spine decisions, a catalog-wide propagation checklist, and a definition of
+done. Flipped OPP-0049 Phase 3 → done (only Phase 4, the deferred meta-template,
+remains) and propagated the workflow count 22 → 23 across `how-to-read.md` (two
+sites), `diagrams.md`, `cover-back.svg`, and the SUMMARY row.
+
+**Corrected § 12 in the same pass.** Authoring the matrix *from disk* surfaced
+that § 12's "built six" was an overstatement: cybersec is **designed, not built**
+(PRD-0022 `Proposed`; no `domains/cybersec-*` module or
+`validate-engagement-charter.sh` on disk). § 12 now reads **five built + one
+designed (cybersec)**, which still clears the § 9 three-instance bar. The drift
+was prose-only — every catalog-count and list-completeness validator passed
+because cybersec was never counted as a module.
+
 ## 2026-06-21 — Operating-principle § 12: deep governance verticals (OPP-0049 Phase 2)
 
 Promoted the six-times-proven deep-governance-vertical authoring skeleton to a new

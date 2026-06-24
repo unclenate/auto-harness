@@ -71,6 +71,7 @@ How to keep the harness itself healthy after adoption — upgrades, version pinn
 Authoring new modules, validators, skills, templates, and agent packs.
 
 * [Extending the Harness](platform/workflow/extending-the-harness.md) — module / validator / skill / template / agent-pack author guide
+* [Authoring a Deep Governance Vertical](platform/workflow/deep-governance-vertical-authoring.md) — the step-by-step playbook for building the next domain/overlay from the six-ingredient skeleton (operating-principles § 12)
 * [Threat Model](docs/threat-model.md) — what auto-harness protects against; what it doesn't; mitigations in place
 
 ## Kernel — Governance Foundation

@@ -397,9 +397,10 @@ domains.
 A **deep governance vertical** is a focused, standards-anchored governance
 capability layered onto the kernel — whether it governs a *subject-matter
 domain* (healthcare, AEC, cybersecurity, geospatial) or a *cross-cutting
-discipline* (privacy, digital twins). The harness has built six of them on **one
-shared skeleton**. Author the next one *from* that skeleton — do not re-derive it
-— and codify any extension back into this principle.
+discipline* (privacy, digital twins). The harness has built five of them on **one
+shared skeleton**, with a sixth (cybersec) designed against the same skeleton and
+pending build. Author the next one *from* that skeleton — do not re-derive it —
+and codify any extension back into this principle.
 
 **The skeleton — six ingredients every deep governance vertical carries:**
 
@@ -440,25 +441,29 @@ canonical negative case: it reuses only the predict-clean-validator ingredient
 (a lane validator) and has no neutral core, forcing artifact, or standards
 anchor, so it is a thin overlay, not a deep vertical.
 
-**Proven across six instances** (doubling the § 9 three-instance bar): four
-subject-matter domain families — `domains/healthcare-*`
+**Proven across six applications of the skeleton** — five carried through to built
+modules, comfortably clearing the § 9 three-instance bar: three subject-matter
+domain families — `domains/healthcare-*`
 ([PRD-0017](requirements/PRD-0017-healthcare-fhir-smart-wedge.md)),
 `domains/aec-*` ([PRD-0019](requirements/PRD-0019-aec-iso19650-openbim-wedge.md)),
-`domains/cybersec-*` ([PRD-0022](requirements/PRD-0022-cybersec-osint-maltego-wedge.md)),
 `domains/geospatial-*` ([PRD-0024](requirements/PRD-0024-geospatial-gis-wedge.md)) —
 and two cross-cutting overlays — `management/privacy-by-design`
 ([§ 11](#11-privacy-by-design-by-default)) and `management/digital-twin`
-([PRD-0023](requirements/PRD-0023-digital-twin-scenario-runtime-overlay.md)). The
-geospatial bridge contributed the cross-family composition shape; the two overlays
-contributed the dual-spine divergence.
+([PRD-0023](requirements/PRD-0023-digital-twin-scenario-runtime-overlay.md)). A
+sixth — `domains/cybersec-*`
+([PRD-0022](requirements/PRD-0022-cybersec-osint-maltego-wedge.md), designed; module
+pending) — was authored *against* the skeleton at design time, evidence the
+skeleton generalizes before a line of the module exists. The geospatial bridge
+contributed the cross-family composition shape; the two overlays contributed the
+dual-spine divergence.
 
 [OPP-0049](opportunities/OPP-0049-deep-governance-vertical-harvest.md) is the
 design contract under which this section was promoted. The skeleton was built
-concrete-first (one vertical at a time) and harvested only after six instances —
-the same harvest-after-evidence discipline § 9 and § 10 followed. The OPP's
-Phase 3 ships the step-by-step authoring playbook
-(`platform/workflow/deep-governance-vertical-authoring.md`); this section is the
-doctrine the playbook implements.
+concrete-first (one vertical at a time) and harvested only after five built
+instances (plus a sixth designed) — the same harvest-after-evidence discipline
+§ 9 and § 10 followed. The OPP's Phase 3 ships the step-by-step authoring playbook
+([`platform/workflow/deep-governance-vertical-authoring.md`](../platform/workflow/deep-governance-vertical-authoring.md));
+this section is the doctrine the playbook implements.
 
 **When proposing a new domain or cross-cutting overlay, ask:** *does it pass the
 inclusion test (neutral core + forcing artifact + standards anchor)?* If yes,

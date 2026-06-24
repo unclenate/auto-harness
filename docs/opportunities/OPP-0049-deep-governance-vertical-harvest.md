@@ -9,8 +9,8 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 **Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-06-20
-**Last Updated:** 2026-06-21 *(`proposed` → `accepted`: Phase 2 landed — operating-principle [§ 12](../operating-principles.md#12-author-deep-governance-verticals-from-the-shared-skeleton) codifies the six-ingredient skeleton and resolves the § 11 dangling reference. Phase 3 (the authoring playbook) and Phase 4 (meta-template, deferred) remain. Mirrors the OPP-0037 → § 10 promotion. Prior: 2026-06-20 filed.)*
-**Confidence:** high *(the pattern is proven six times; the open question is the form of the harvest, not whether the pattern exists)*
+**Last Updated:** 2026-06-24 *(Phase 3 landed — the authoring playbook ships at [`platform/workflow/deep-governance-vertical-authoring.md`](../../platform/workflow/deep-governance-vertical-authoring.md), and the same pass corrects § 12's "built six" to the accurate "five built + one designed (cybersec)". Phase 4 (meta-template) remains deferred. Prior: 2026-06-21 `proposed` → `accepted` (Phase 2 § 12 landed). Prior: 2026-06-20 filed.)*
+**Confidence:** high *(the pattern is proven five times in built modules plus a sixth at design time; the open question is the form of the harvest, not whether the pattern exists)*
 
 ---
 
@@ -156,12 +156,26 @@ reference. Half-day section impl per the no-PRD-for-half-day-OPP pattern (as
 OPP-0037 → § 10). Phase 3 (the authoring playbook) and Phase 4 (meta-template,
 deferred) remain open.
 
+**2026-06-24 — Phase 3 landed.** The step-by-step authoring playbook ships at
+[`platform/workflow/deep-governance-vertical-authoring.md`](../../platform/workflow/deep-governance-vertical-authoring.md):
+Step 0 inclusion-test gate, the six build steps (one per skeleton ingredient), a
+worked-examples matrix (five built columns + cybersec as the designed reference),
+the composition-shape and dual-spine decisions, a catalog-wide propagation
+checklist, and a definition of done. The same pass corrected § 12's "built six"
+overstatement to the accurate **five built + one designed (cybersec, PRD-0022)** —
+authoring an accurate playbook surfaced that cybersec is designed-not-built on
+disk (no `domains/cybersec-*` module, no `validate-engagement-charter.sh`), a
+non-validator prose drift the catalog-count and list-completeness validators do
+not see. Only Phase 4 (the meta-template, YAGNI-deferred) now remains.
+
 ## Promotion
 
 - **Phase 2 (done):** operating-principle
   [§ 12](../operating-principles.md#12-author-deep-governance-verticals-from-the-shared-skeleton).
-- **Phase 3 (open):** `platform/workflow/deep-governance-vertical-authoring.md`
-  — the step-by-step playbook § 12 references.
+- **Phase 3 (done):** [`platform/workflow/deep-governance-vertical-authoring.md`](../../platform/workflow/deep-governance-vertical-authoring.md)
+  — the step-by-step playbook § 12 references (six build steps, worked-examples
+  matrix, composition-shape and dual-spine decisions, propagation checklist,
+  definition of done).
 - **Phase 4 (deferred):** meta-template / onboarding-skill hook (YAGNI revisit-bar).
 
 ## Related

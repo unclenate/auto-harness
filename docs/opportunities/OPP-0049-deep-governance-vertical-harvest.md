@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0049 — Deep Governance Vertical: Authoring-Pattern Harvest
 
-**Status:** proposed
+**Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-06-20
-**Last Updated:** 2026-06-20 *(filed)*
+**Last Updated:** 2026-06-21 *(`proposed` → `accepted`: Phase 2 landed — operating-principle [§ 12](../operating-principles.md#12-author-deep-governance-verticals-from-the-shared-skeleton) codifies the six-ingredient skeleton and resolves the § 11 dangling reference. Phase 3 (the authoring playbook) and Phase 4 (meta-template, deferred) remain. Mirrors the OPP-0037 → § 10 promotion. Prior: 2026-06-20 filed.)*
 **Confidence:** high *(the pattern is proven six times; the open question is the form of the harvest, not whether the pattern exists)*
 
 ---
@@ -147,10 +147,22 @@ doctrine + Phase 3 playbook; Phase 4 deferred). Status flips to `accepted` when
 Phase 2 (the § 12 PRD/section) lands, mirroring the OPP-0037 → § 10 recipe. No
 PRD is required in this commit because the OPP is `proposed`, not `accepted`.
 
+**2026-06-21 — `proposed` → `accepted`.** Phase 2 landed: operating-principle
+[§ 12 — Author Deep Governance Verticals from the Shared Skeleton](../operating-principles.md#12-author-deep-governance-verticals-from-the-shared-skeleton)
+codifies the six-ingredient skeleton, the three composition shapes, the
+domains-vs-overlays dual-spine divergence, and the inclusion test (with
+`management/work-package` as the negative case), and resolves the § 11 dangling
+reference. Half-day section impl per the no-PRD-for-half-day-OPP pattern (as
+OPP-0037 → § 10). Phase 3 (the authoring playbook) and Phase 4 (meta-template,
+deferred) remain open.
+
 ## Promotion
 
-Phase 2 (operating-principle § 12) and Phase 3 (the authoring playbook) are the
-implementing artifacts; this section will link them as they land.
+- **Phase 2 (done):** operating-principle
+  [§ 12](../operating-principles.md#12-author-deep-governance-verticals-from-the-shared-skeleton).
+- **Phase 3 (open):** `platform/workflow/deep-governance-vertical-authoring.md`
+  — the step-by-step playbook § 12 references.
+- **Phase 4 (deferred):** meta-template / onboarding-skill hook (YAGNI revisit-bar).
 
 ## Related
 

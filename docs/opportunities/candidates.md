@@ -493,13 +493,13 @@ the §9 split-design-from-implementation discipline.
   Wave 5.5 posture-design) exceed the §9 three-instance bar by one.
   Design-only OPP; implementation PR adds the §10 section.
 - [OPP-0049](OPP-0049-deep-governance-vertical-harvest.md)
-  *(proposed 2026-06-20)* — Harvest the deep-governance-vertical authoring
-  skeleton (neutral-core + forcing-artifact + bias-guardrail + decomposition +
-  composition-shape + predict-clean validator) into a new §12 operating principle
-  and an authoring playbook. Six proven instances (healthcare, AEC, cybersec,
-  geospatial + the privacy & digital-twin overlays) double the §9 three-instance
-  bar. Design-only OPP; Phase 2 adds §12, Phase 3 adds the playbook, Phase 4
-  (meta-template) deferred.
+  *(accepted 2026-06-21; Phase 2 promoted to §12)* — Harvest the
+  deep-governance-vertical authoring skeleton (neutral-core + forcing-artifact +
+  bias-guardrail + decomposition + composition-shape + predict-clean validator)
+  into a §12 operating principle and an authoring playbook. Six proven instances
+  (healthcare, AEC, cybersec, geospatial + the privacy & digital-twin overlays)
+  double the §9 three-instance bar. Phase 2 (§12 doctrine) shipped; Phase 3 (the
+  playbook) and Phase 4 (meta-template) remain.
 
 ### Cybersecurity deep-domain vertical — OSINT / Maltego (2026-06-05)
 

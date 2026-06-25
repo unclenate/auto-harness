@@ -96,6 +96,7 @@ originating opportunity records.
 | [0023](requirements/PRD-0023-digital-twin-scenario-runtime-overlay.md) | Digital Twin / Scenario Runtime Overlay | Accepted | [OPP-0044](opportunities/OPP-0044-digital-twin-scenario-runtime.md) |
 | [0024](requirements/PRD-0024-geospatial-gis-wedge.md) | Geospatial / GIS Wedge (CRS + OGC exchange + BIM↔GIS georeferencing) | Accepted | [OPP-0045](opportunities/OPP-0045-domain-family-geospatial-decomposed.md) |
 | [0025](requirements/PRD-0025-work-package-lane-contract.md) | Work-Package Lane Contract (`management/work-package`) | Accepted | [OPP-0046](opportunities/OPP-0046-parallel-multi-agent-work-package-lane-contract.md) |
+| [0026](requirements/PRD-0026-publication-boundary-marker.md) | Publication-Boundary Marker (`validate-publication-boundary.sh`) | Accepted | [OPP-0048](opportunities/OPP-0048-redaction-scope-and-publication-boundary-hardening.md) |
 
 ---
 
@@ -154,7 +155,7 @@ clustered backlog with framing.
 | [0045](opportunities/OPP-0045-domain-family-geospatial-decomposed.md) | Geospatial / GIS Domain Family (decomposed) | accepted |
 | [0046](opportunities/OPP-0046-parallel-multi-agent-work-package-lane-contract.md) | Parallel Multi-Agent Work-Package Lane Contract | accepted (partial promotion) |
 | [0047](opportunities/OPP-0047-delivery-cost-unit-economics-governance.md) | Delivery-Cost & Unit-Economics Governance | proposed |
-| [0048](opportunities/OPP-0048-redaction-scope-and-publication-boundary-hardening.md) | Redaction-Scope & Publication-Boundary Hardening | proposed |
+| [0048](opportunities/OPP-0048-redaction-scope-and-publication-boundary-hardening.md) | Redaction-Scope & Publication-Boundary Hardening | accepted |
 | [0049](opportunities/OPP-0049-deep-governance-vertical-harvest.md) | Deep Governance Vertical: Authoring-Pattern Harvest | accepted |
 
 ---

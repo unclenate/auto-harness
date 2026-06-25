@@ -128,12 +128,16 @@ is_ignored() {
 }
 
 # Enumerate candidate files
+# Bash 3.2 (macOS default) has no `mapfile`/`readarray`; use a portable read loop.
+CANDIDATES=()
 if [[ ${STAGED} -eq 1 ]]; then
-  mapfile -t CANDIDATES < <(git diff --cached --name-only --diff-filter=ACMR 2>/dev/null || true)
   SCOPE="staged"
+  while IFS= read -r _f; do CANDIDATES+=("${_f}"); done \
+    < <(git diff --cached --name-only --diff-filter=ACMR 2>/dev/null || true)
 else
-  mapfile -t CANDIDATES < <(git ls-files 2>/dev/null || true)
   SCOPE="tracked"
+  while IFS= read -r _f; do CANDIDATES+=("${_f}"); done \
+    < <(git ls-files 2>/dev/null || true)
 fi
 
 if [[ ${#CANDIDATES[@]} -eq 0 ]]; then

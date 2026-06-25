@@ -107,6 +107,13 @@ jobs:
         # end-to-end enforcement).
         run: bash platform/validators/validate-privacy-by-design.sh harness.manifest.yaml .
 
+      - name: Validate publication boundary
+        # Always-on safety gate (PRD-0026 / OPP-0048): fails if any git-tracked
+        # file declares a do-not-publish marker. Protects untracked private
+        # material (parked specs/briefs) against an accidental commit on a
+        # public remote. Not module-gated — every harnessed project gets it.
+        run: bash platform/validators/validate-publication-boundary.sh .
+
       - name: Validate companion rules
         if: github.event_name == 'pull_request'
         env:

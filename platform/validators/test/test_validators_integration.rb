@@ -358,6 +358,83 @@ class TestValidatePlaceholders < Minitest::Test
 end
 
 # ---------------------------------------------------------------------------
+# validate-publication-boundary.sh
+# Always-on publication-boundary gate (PRD-0026 / OPP-0048): fails if any
+# git-TRACKED file declares a do-not-publish marker. --scan-file is a no-git
+# seam (the pure checker); git-tracked behavior runs in a throwaway repo.
+# ---------------------------------------------------------------------------
+GIT_AVAILABLE = system("bash -c 'command -v git >/dev/null 2>&1'")
+
+class TestValidatePublicationBoundary < Minitest::Test
+  def test_scan_file_clean_passes
+    Dir.mktmpdir do |tmp|
+      f = File.join(tmp, "clean.md")
+      File.write(f, "just public text\n")
+      out, err, code = run_validator("validate-publication-boundary.sh", "--scan-file", f)
+      assert_equal 0, code, "Expected exit 0 for clean file. stderr: #{err}"
+      assert_match(/✓/, out)
+    end
+  end
+
+  def test_scan_file_html_marker_fails
+    Dir.mktmpdir do |tmp|
+      f = File.join(tmp, "parked.md")
+      File.write(f, "<!-- do-not-publish: true -->\nprivate\n")
+      out, _err, code = run_validator("validate-publication-boundary.sh", "--scan-file", f)
+      assert_equal 1, code, "Expected exit 1 for HTML-comment marker"
+      assert_match(/do-not-publish/, out)
+    end
+  end
+
+  def test_scan_file_frontmatter_marker_fails
+    Dir.mktmpdir do |tmp|
+      f = File.join(tmp, "fm.md")
+      File.write(f, "---\ndo-not-publish: true\n---\n")
+      _out, _err, code = run_validator("validate-publication-boundary.sh", "--scan-file", f)
+      assert_equal 1, code, "Expected exit 1 for frontmatter marker"
+    end
+  end
+
+  def test_scan_file_midsentence_mention_does_not_trip
+    Dir.mktmpdir do |tmp|
+      f = File.join(tmp, "doc.md")
+      File.write(f, "We discuss the `do-not-publish: true` marker here.\n")
+      out, _err, code = run_validator("validate-publication-boundary.sh", "--scan-file", f)
+      assert_equal 0, code, "A mid-sentence mention must not trip the line-start marker"
+      assert_match(/✓/, out)
+    end
+  end
+
+  def test_scan_file_missing_arg_is_usage_error
+    _out, _err, code = run_validator("validate-publication-boundary.sh", "--scan-file")
+    assert_equal 2, code, "Expected exit 2 when --scan-file has no path"
+  end
+
+  def test_tracked_marked_file_fails_and_ignore_exempts
+    skip "git not installed" unless GIT_AVAILABLE
+    Dir.mktmpdir do |tmp|
+      system("git -C #{tmp} init -q && git -C #{tmp} config user.email t@t.t && git -C #{tmp} config user.name t")
+      File.write(File.join(tmp, "parked.md"), "<!-- do-not-publish: true -->\n")
+      system("git -C #{tmp} add parked.md")
+      _out, _err, code = run_validator("validate-publication-boundary.sh", tmp)
+      assert_equal 1, code, "Expected exit 1 when a marked file is tracked"
+
+      File.write(File.join(tmp, ".publication-boundary-ignore"), "^parked\\.md$\n")
+      _out2, _err2, code2 = run_validator("validate-publication-boundary.sh", tmp)
+      assert_equal 0, code2, "Expected exit 0 when the marked file is exempted"
+    end
+  end
+
+  def test_outside_git_tree_passes
+    Dir.mktmpdir do |tmp|
+      out, _err, code = run_validator("validate-publication-boundary.sh", tmp)
+      assert_equal 0, code, "Expected exit 0 outside a git work tree"
+      assert_match(/✓/, out)
+    end
+  end
+end
+
+# ---------------------------------------------------------------------------
 # validate-agent-pack.sh
 # ---------------------------------------------------------------------------
 class TestValidateAgentPack < Minitest::Test
@@ -866,6 +943,7 @@ VALIDATOR_SCRIPTS = %w[
   validate-twin-profile.sh
   validate-scenario-manifest.sh
   validate-lane-integrity.sh
+  validate-publication-boundary.sh
 ].freeze
 
 class TestValidatorHelpFlag < Minitest::Test

@@ -88,6 +88,12 @@ The harness governs itself using its own module system.
 - Validators run against this repo's own artifacts
 - Disabled validations are documented and justified — not silently skipped
 - The gap between declared governance and practiced governance should be zero
+- Self-governance includes the harness's *own publication hygiene*: as a public
+  repo that parks untracked private working material, it gates its own
+  publication boundary with an always-on validator
+  (`validate-publication-boundary.sh`, PRD-0026) that fails CI / pre-commit if any
+  git-tracked file declares a `do-not-publish` marker — the same declare-then-enforce
+  contract the harness imposes on consumers, turned on itself.
 
 ---
 

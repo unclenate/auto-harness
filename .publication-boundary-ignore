@@ -1,0 +1,7 @@
+# Publication-boundary exemptions — path regexes (one per line; # for comments).
+# These files legitimately DISCUSS the do-not-publish marker, so the line-start
+# marker grammar would otherwise self-trip on their examples. Per PRD-0026 FR-003.
+^platform/validators/validate-publication-boundary\.sh$
+^platform/templates/governance/do-not-publish-marker\.md$
+^docs/requirements/PRD-0026-publication-boundary-marker\.md$
+^docs/opportunities/OPP-0048-redaction-scope-and-publication-boundary-hardening\.md$

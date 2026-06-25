@@ -11,6 +11,34 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-25 — Implement PRD-0026: `validate-publication-boundary.sh` (OPP-0048)
+
+Shipped the always-on, kernel-level publication-boundary gate the PRD designed.
+`validate-publication-boundary.sh` enumerates git-tracked files (default), staged
+files (`--staged`, for a pre-commit hook), or explicit paths (`--scan-file`, a
+no-git test seam) and exits 1 if any declares a `do-not-publish` marker — a YAML
+frontmatter key or an `<!-- do-not-publish: true -->` HTML-comment sentinel,
+matched only at line start so a mid-sentence mention does not trip. Path regexes
+in `.publication-boundary-ignore` exempt the files that legitimately discuss the
+marker (the validator, the template, the PRD, OPP-0048).
+
+Wired always-on (not module-gated): `kernel/base` validators list, `harness.yml`
+CI, `AGENTS.md` run-order, the `harness-governance` chain + signature note,
+`platform/validators/README.md`, and the root `README.md` table. Validator count
+18 → 19 and template count 89 → 90 (the new `templates/governance/` subdir +
+`do-not-publish-marker.md`) reconciled at every documented site; integration tests
+added (`TestValidatePublicationBoundary` + the help-coverage entry).
+
+**The live forcing case is now protected:** the parked Digital-Twin seed brief
+carries the marker locally and stays untracked, so CI passes today; the instant it
+is staged or committed, the gate fails. Operating-principle § 5 (Self-Governance)
+now names the publication boundary as the harness turning its own
+declare-then-enforce contract on itself — which also satisfies the AGENTS.md
+governance-entrypoint companion and the `kernel/base` module distillation.
+
+This closes OPP-0048 mechanism 1. Mechanism 2 (configurable content-denylist
+scan-scope) remains the named phase-2 follow-up.
+
 ## 2026-06-24 — PRD-0026: publication-boundary marker (OPP-0048 wedge, design-only)
 
 Backlog triage (three independent ranking passes over the 19 open OPPs) converged

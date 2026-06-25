@@ -114,6 +114,7 @@ bash $PLATFORM/validators/validate-privacy-by-design.sh  harness.manifest.yaml .
 bash $PLATFORM/validators/validate-twin-profile.sh       harness.manifest.yaml .
 bash $PLATFORM/validators/validate-scenario-manifest.sh  harness.manifest.yaml .
 bash $PLATFORM/validators/validate-lane-integrity.sh     harness.manifest.yaml . main
+bash $PLATFORM/validators/validate-publication-boundary.sh .
 bash $PLATFORM/validators/validate-companions.sh         harness.manifest.yaml . main
 ```
 
@@ -241,6 +242,19 @@ A few signature notes worth highlighting:
   an explicit changed-path list, the lane-vs-diff check) without git, for
   fixture-firing tests. Per PRD-0025. The multi-agent re-targeting of the
   module declare-then-enforce contract.
+- **`validate-publication-boundary.sh`** takes `[<project-root>]`, or
+  `--staged [<project-root>]`, or `--scan-file <path>...`. **Always-on** (not
+  module-gated): it enumerates git-tracked files (or staged files, or the given
+  paths) and exits 1 if any declares a `do-not-publish` marker — a YAML
+  frontmatter key or an HTML-comment sentinel (`<!-- do-not-publish: true -->`),
+  matched only at line start so a mid-sentence mention does not trip. Path
+  regexes in `.publication-boundary-ignore` exempt files that legitimately discuss
+  the marker. The steady state (marker in an *untracked* file) is invisible to
+  `git ls-files` and passes; the gate fires the instant a marked file is
+  tracked/staged. Outside a git work tree it exits 0. The inverse of a
+  required-artifact check — a must-NOT-be-tracked assertion that needs no name
+  corpus. Per PRD-0026 / OPP-0048; run it as a pre-commit hook (`--staged`) for
+  prevention, with CI as the backstop.
 
 ## Required Artifacts
 

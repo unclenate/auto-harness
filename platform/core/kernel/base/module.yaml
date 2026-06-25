@@ -60,6 +60,7 @@ validators:
   - validate-skill-content
   - validate-knowledge-redaction
   - validate-sast-coverage
+  - validate-publication-boundary
 reviewGates:
   - Human review is mandatory for governance entrypoint changes.
   - Validator success never replaces ownership review for protected governance files.

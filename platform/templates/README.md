@@ -293,6 +293,7 @@ Jump to: [Discovery](#discovery) | [Product](#product) | [Project](#project) |
 | Operating principles | `core/kernel/base` | `templates/operating-principles.md` |
 | Tools registry (TOOLS.md) | `agents/openclaw` | `templates/tools.md` |
 | Project SUMMARY.md (GitBook TOC) | `domains/gitbook` | `templates/docs/SUMMARY.md` |
+| do-not-publish marker | `core/kernel/base` | `templates/governance/do-not-publish-marker.md` |
 
 ### Standards
 

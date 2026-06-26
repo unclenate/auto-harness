@@ -615,18 +615,33 @@ cite-the-evidence rule), not the extraction; composes with the OPP-0046 lane
 
 ### Canonical direction & strategic alignment
 
-- [OPP-0007](OPP-0007-canonical-position-artifact.md) *(exploring;
-  PRD-0007 in flight, drafted 2026-05-24; renumbered from OPP-0006
-  after the trust-tier-enforcement OPP took that slot)* —
-  Introduce a canonical-position artifact as a first-class harness
+- [OPP-0007](OPP-0007-canonical-position-artifact.md) *(accepted + SHIPPED
+  2026-06-26 — `management/canonical-position` module + templates + citation/
+  ratification rules live on main; PRD-0007 finalized & accepted)* —
+  Introduced the canonical-position artifact as a first-class harness
   primitive. Every other strategy / product / GTM / partnership artifact
-  cites it and cannot contradict it. Anchors four sibling observations
-  filed in the same session (validator opt-out staleness;
-  opportunity-capture backlog re-audit on canonical change; formal
-  review/reconciliation artifact type; intake-vs-canonical-direction
-  staleness). Identified as the highest-leverage single gap in the
-  harness's artifact catalog by the four-lens project alignment audit
-  (MB-REV-003) of `bdits/municipal-brain`.
+  cites it and cannot contradict it. Anchored four sibling observations
+  (validator opt-out staleness; opportunity-capture backlog re-audit on
+  canonical change; formal review/reconciliation artifact type;
+  intake-vs-canonical-direction staleness) — now follow-up OPPs, joined by
+  Observation E (reconciliation-load patterns → a future § 13). Identified
+  as the highest-leverage single gap in the harness's artifact catalog by
+  the four-lens project alignment audit (MB-REV-003) of `bdits/municipal-brain`.
+
+- [OPP-0050](OPP-0050-module-stability-tiers-parity.md) *(proposed
+  2026-06-26)* — **Module stability tiers & parity normalization.** The
+  catalog has uniform structural metadata (6 fields in 57/57 modules) and
+  anti-sprawl gates (§ 12 inclusion test), but **no module-readiness
+  signal** — `stability`/`maturity` is in 0/57. Add a per-module
+  `stability: {experimental | beta | stable}` field (distinct from trust
+  tier = *risk* and § 10 = *per-claim enforcement*), backfill it across all
+  57 modules against a rubric, surface it in onboarding + an honest
+  stack-parity note (`stacks/` is 3/4 JS-family), and assert presence +
+  enum with a light validator. Extends § 10 honesty from *claims* to
+  *modules*; makes the platform's blanket "alpha" granular. The distilled,
+  field-verified signal from a 2026-06-26 external review that was otherwise
+  ~70% already-built. Deferred: behavior-gating on stability, a module
+  deprecation/lifecycle policy, stack build-out.
 
 ---
 

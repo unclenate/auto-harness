@@ -11,6 +11,31 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-26 — OPP-0050: module stability tiers & parity normalization (filed, proposed)
+
+Evaluated an external (ChatGPT-lane) leadership review of the platform against the
+actual repo. Most of it was already solved — required module metadata is uniform
+(6 fields in 57/57 module.yaml), compatibility declarations exist (`dependsOn` +
+`conflictsWith`), composition is governed (§ 12 + `validate-module-graph`), and a
+new-module-justification gate exists (the § 12 inclusion test). Recorded the verdict
+honestly: the review was a generic outside-in template, ~70% already-built.
+
+Filed **OPP-0050** as the one structural gap that survived the audit: the catalog
+has **no module-readiness signal** (`stability`/`maturity` in **0/57** modules).
+Trust tier answers *risk* and § 10 answers *per-claim enforcement* — neither is
+readiness. The OPP proposes a per-module `stability: {experimental | beta | stable}`
+field, a rubric-driven backfill across all 57 modules, an enum-presence validator,
+and an honest stack-parity note (`stacks/` is 3/4 JS-family). It extends § 10's
+honesty doctrine from *claims* to *modules*. Design-only per § 9; deferred:
+behavior-gating, deprecation/lifecycle policy, stack build-out (separate
+change-classes). Also corrected the now-stale OPP-0007 candidate-index line (it read
+"exploring/in-flight"; OPP-0007 shipped earlier today) — a fitting instance of the
+design-artifact-staleness class.
+
+Distillation (PRD-0004): paired shared-observations entry (evaluate outside-in
+reviews against the controls that actually exist; module stability is a third,
+independent axis from trust tier and § 10).
+
 ## 2026-06-26 — Implement PRD-0007: `management/canonical-position` overlay (OPP-0007)
 
 Shipped the canonical-position v1 the finalized PRD designed — a new opt-in

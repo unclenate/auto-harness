@@ -157,6 +157,7 @@ clustered backlog with framing.
 | [0047](opportunities/OPP-0047-delivery-cost-unit-economics-governance.md) | Delivery-Cost & Unit-Economics Governance | proposed |
 | [0048](opportunities/OPP-0048-redaction-scope-and-publication-boundary-hardening.md) | Redaction-Scope & Publication-Boundary Hardening | accepted |
 | [0049](opportunities/OPP-0049-deep-governance-vertical-harvest.md) | Deep Governance Vertical: Authoring-Pattern Harvest | accepted |
+| [0050](opportunities/OPP-0050-module-stability-tiers-parity.md) | Module Stability Tiers & Parity Normalization | proposed |
 
 ---
 

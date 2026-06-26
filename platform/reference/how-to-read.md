@@ -7,7 +7,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 # How to Use This Documentation
 
 This page helps you find the right starting point based on what you are trying to do.
-The harness documentation is large — 47 modules, 90 templates, 19 validators, 8 skills, 23 workflows —
+The harness documentation is large — 48 modules, 92 templates, 19 validators, 8 skills, 23 workflows —
 but most readers need only a narrow slice at any given time.
 
 <!--
@@ -100,7 +100,7 @@ precedence.
                               │
                     ┌─────────▼───────────┐
                     │   module.yaml tree   │  Contractual: each module's machine-
-                    │   (47 modules)       │  readable governance declaration.
+                    │   (48 modules)       │  readable governance declaration.
                     │                      │  Validators enforce these.
                     └─────────┬───────────┘
                               │
@@ -108,7 +108,7 @@ precedence.
               │               │               │
     ┌─────────▼─────┐ ┌──────▼──────┐ ┌──────▼──────┐
     │  validators   │ │  templates  │ │  workflows  │
-    │  (19 scripts)  │ │  (90 files) │ │ (23 guides) │
+    │  (19 scripts)  │ │  (92 files) │ │ (23 guides) │
     │               │ │             │ │             │
     │  Operational: │ │  Generative:│ │  Procedural:│
     │  enforce the  │ │  produce    │ │  how to use │

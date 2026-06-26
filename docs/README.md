@@ -115,7 +115,7 @@ clustered backlog with framing.
 | [0004](opportunities/OPP-0004-distillation-triggers.md) | Distillation Triggers | accepted |
 | [0005](opportunities/OPP-0005-consumer-header-hygiene.md) | Consumer Header Hygiene | accepted |
 | [0006](opportunities/OPP-0006-trust-tier-enforcement.md) | Trust-Tier Enforcement | accepted |
-| [0007](opportunities/OPP-0007-canonical-position-artifact.md) | Canonical-Position Artifact | exploring |
+| [0007](opportunities/OPP-0007-canonical-position-artifact.md) | Canonical-Position Artifact | accepted |
 | [0008](opportunities/OPP-0008-stack-module-node-javascript-and-coffeescript.md) | Stack Module — Node-JavaScript + CoffeeScript | accepted |
 | [0009](opportunities/OPP-0009-data-module-embedded-key-value.md) | Data Module — Embedded Key-Value | accepted |
 | [0010](opportunities/OPP-0010-domain-module-cryptographic-identity.md) | Domain Module — Cryptographic Identity | accepted |

@@ -264,7 +264,7 @@ declares its governance contract. You compose them to match your project.
 | **Architectures** | Deployment and interaction patterns | `web-app`, `api-service`, `event-driven`, `mcp-server` |
 | **Data** | Storage overlays | `relational-postgres`, `document-store`, `object-storage` |
 | **Delivery** | Lifecycle posture | `prototype`, `production-saas`, `internal-platform`, `self-hosted-oss`, `managed-fleet` |
-| **Management** | Product, project, program, knowledge, opportunity, and testing governance | `discovery-intake`, `interview-driven`, `product-lite`, `project-standard`, `program-lite`, `testing-standard`, `eval-gated-testing`, `knowledge-capture`, `opportunity-capture`, `security-static-analysis`, `privacy-by-design`, `digital-twin`, `work-package` |
+| **Management** | Product, project, program, knowledge, opportunity, and testing governance | `discovery-intake`, `interview-driven`, `product-lite`, `project-standard`, `program-lite`, `testing-standard`, `eval-gated-testing`, `knowledge-capture`, `opportunity-capture`, `security-static-analysis`, `privacy-by-design`, `digital-twin`, `work-package`, `canonical-position` |
 | **Domains** | Vendor or specialist overlays | `supabase`, `web3`, `media-pipeline`, `gitbook`, `agentic-interfaces`, `cryptographic-identity`, `healthcare-fhir`, `healthcare-smart-on-fhir`, `aec-iso19650-im`, `aec-openbim-exchange`, `aec-iso19650-5-security`, `geospatial-foundation`, `geospatial-exchange`, `geospatial-bim-georeference` |
 | **Agents** | AI-tool operating packs | `base`, `claude-code`, `codex-cli`, `copilot-cli`, `cursor`, `gemini-cli`, `generic-llm`, `openclaw` |
 
@@ -555,7 +555,7 @@ The bootstrap is brownfield-safe — it never overwrites pre-existing files from
 │   │   ├── architectures/           # web-app, api-service, event-driven, mcp-server, agent-skill-pack, agentic-ui
 │   │   ├── data/                    # relational-postgres, document-store, object-storage, browser-storage, embedded-key-value
 │   │   ├── delivery/                # prototype, production-saas, internal-platform, self-hosted-oss, managed-fleet
-│   │   ├── management/              # discovery-intake, interview-driven, product-lite, project-standard, program-lite, testing-standard, eval-gated-testing, knowledge-capture, opportunity-capture, security-static-analysis, privacy-by-design, digital-twin, work-package
+│   │   ├── management/              # discovery-intake, interview-driven, product-lite, project-standard, program-lite, testing-standard, eval-gated-testing, knowledge-capture, opportunity-capture, security-static-analysis, privacy-by-design, digital-twin, work-package, canonical-position
 │   │   └── domains/                 # supabase, web3, media-pipeline, gitbook, agentic-interfaces, cryptographic-identity, healthcare-fhir, healthcare-smart-on-fhir, aec-iso19650-im, aec-iso19650-5-security, aec-openbim-exchange, geospatial-foundation, geospatial-exchange, geospatial-bim-georeference
 │   ├── agents/                      # Agent operating packs: base, claude-code, codex-cli, copilot-cli, cursor, gemini-cli, generic-llm, openclaw
 │   ├── skills/                      # Agent Skills: harness-governance, harness-testing, harness-web3, harness-onboarding, harness-tools, harness-agentic-interfaces, harness-mcp, harness-digital-twin

@@ -11,6 +11,39 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-26 — Implement PRD-0007: `management/canonical-position` overlay (OPP-0007)
+
+Shipped the canonical-position v1 the finalized PRD designed — a new opt-in
+management overlay giving a project a single ratified strategic north-star every
+strategy-shaped artifact must cite, revised only via a paired review-artifact.
+
+- **Module** `platform/profiles/management/canonical-position/{module.yaml,README.md}`
+  — `dependsOn: [kernel/base, project-standard]`, requiredArtifact
+  `docs/canonical-position.md`, optionalArtifact `docs/reviews/`, two companion
+  rules (citation + ratification), `validate-required-artifacts` +
+  `validate-companions`.
+- **Templates** `platform/templates/canonical-position/{canonical-position.md,review.md}`
+  — adaptive north-star sections + the review-artifact type.
+- **Citation rule** — strategy-shaped artifacts (requirements/release-intent/
+  mvp-scope/problem-statement, `docs/discovery/`, `OPP-*`, partnerships/gtm) must
+  touch `docs/canonical-position.md` in the same PR (path-only satisfier at v1).
+- **Ratification rule** — editing `docs/canonical-position.md` requires a paired
+  `docs/reviews/REVIEW-*.md`; the kernel-base rule supplies the change-log pairing.
+- Propagation: SUMMARY, harness-onboarding catalog, discovery-to-composition
+  rubric, templates/README, root README module table + tree. Counts:
+  `modules_profiles` 47→48, `modules_all` 56→57, templates 90→92.
+
+Opt-in / predict-clean: auto-harness does **not** activate the module, so its
+companion rules never fire on the harness's own PRs. Two implementation
+reconciliations of the finalized PRD: module id is bare (`canonical-position`, not
+`management/canonical-position`) per convention, and templates live under the
+concern-named `templates/canonical-position/` (there is no type-grouped
+`templates/management/` subdir in the catalog). **OPP-0007 flips
+`exploring → accepted`** — its acceptance criteria are now met.
+
+Distillation (PRD-0004): paired shared-observations entry (the staleness-pressure
+gap canonical-position closes, and the dependsOn/id convention reconciliation).
+
 ## 2026-06-26 — Finalize + accept PRD-0007 (canonical-position artifact)
 
 Picked OPP-0007 (canonical-position) as the next backlog thread and finalized its

@@ -1,0 +1,46 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+id: canonical-position
+type: management
+version: 1.0.0
+summary: Strategic north-star overlay — a single ratified canonical-position artifact every strategy-shaped artifact must cite, revised only via a paired review-artifact ratification trail. Opt-in; PRD-0007 / OPP-0007.
+tier:
+  declared: 2
+dependsOn:
+  - kernel/base
+  - project-standard
+conflictsWith: []
+requiredArtifacts:
+  - docs/canonical-position.md
+optionalArtifacts:
+  - docs/reviews/
+sensitivePaths: []
+companionRules:
+  - description: Strategy-shaped artifacts must cite the canonical-position artifact. When these artifacts are edited, the same PR must touch docs/canonical-position.md (the citation is created or updated against the current ratified position). v1 uses a path-only satisfier; the content-citation check is deferred to v2.
+    triggerPaths:
+      - ^docs/product/requirements\.md$
+      - ^docs/product/release-intent\.md$
+      - ^docs/product/mvp-scope\.md$
+      - ^docs/product/problem-statement\.md$
+      - ^docs/discovery/.*\.md$
+      - ^docs/opportunities/OPP-
+      - ^docs/partnerships/.*\.md$
+      - ^docs/gtm/.*\.md$
+    requiredAny:
+      - ^docs/canonical-position\.md$
+    humanReview: Reviewers verify the cited canonical-position section actually grounds the change. Citation must be substantive (the change references a specific canonical section), not ornamental.
+  - description: Editing the canonical-position artifact requires a paired ratification trail — a review-artifact under docs/reviews/REVIEW-*.md documenting the review that produced the revision. The kernel-base change-log rule already requires the change-log entry; the two rules compose. This codifies the "you cannot silently revise the north star" discipline.
+    triggerPaths:
+      - ^docs/canonical-position\.md$
+    requiredAny:
+      - ^docs/reviews/REVIEW-[0-9]+-.+\.md$
+    humanReview: Reviewers verify the review artifact's recommendations actually correspond to the canonical-position changes proposed in the same PR. A review artifact that doesn't reference the canonical revisions is cargo-cult; reviewers push back.
+validators:
+  - validate-required-artifacts
+  - validate-companions
+reviewGates:
+  - Human review must confirm a canonical-position revision is intentional and ratified (a paired review-artifact accompanies it), never a silent drift.
+agentAdapters:
+  - platform/agents/base
+compiledFragments:
+  - platform/profiles/management/canonical-position/README.md

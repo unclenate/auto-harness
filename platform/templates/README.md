@@ -310,6 +310,16 @@ duplicating inline. Absorbed from governance patterns observed in adsclaw.
 | -------- | ------------------ | ---- |
 | SAST coverage declaration | `management/security-static-analysis` | `templates/security/sast-coverage.md` |
 
+### Canonical Position
+
+The ratified strategic north-star and its ratification trail. Part of the
+`management/canonical-position` overlay (PRD-0007 / OPP-0007).
+
+| Template | Required By Module | Path |
+| -------- | ------------------ | ---- |
+| Canonical position (north-star) | `management/canonical-position` | `templates/canonical-position/canonical-position.md` |
+| Review-artifact (ratification trail) | `management/canonical-position` | `templates/canonical-position/review.md` |
+
 ### Architecture and Operations
 
 | Template | Required By Module | Path |

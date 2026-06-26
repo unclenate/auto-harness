@@ -154,6 +154,7 @@ Product, project, and program governance overlays.
 * [Security Static Analysis](platform/profiles/management/security-static-analysis/README.md) — opt-in SAST coverage posture for agent-generated code (Wave 5.4; PRD-0016)
 * [Digital Twin / Scenario Runtime](platform/profiles/management/digital-twin/README.md) — default-off overlay for scenario-driven twins; maturity-gated twin-profile + dual-spine standards anchor (interoperability + Gemini Principles)
 * [Work Package](platform/profiles/management/work-package/README.md) — default-off overlay for parallel multi-agent delivery; a per-task lane (allowedFiles / readOnlyFiles / prMode) checked against the dispatched agent's actual diff by `validate-lane-integrity.sh`
+* [Canonical Position](platform/profiles/management/canonical-position/README.md) — opt-in strategic north-star overlay; a single ratified `docs/canonical-position.md` every strategy-shaped artifact must cite, revised only via a paired review-artifact ratification trail (PRD-0007 / OPP-0007)
 
 ### Domains
 

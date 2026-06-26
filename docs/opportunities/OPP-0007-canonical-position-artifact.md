@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0007 — Canonical-Position Artifact as Harness Primitive
 
-**Status:** exploring
+**Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-05-22
-**Last Updated:** 2026-06-26 *(PRD-0007 finalized + accepted (v1.1); Observation E split out of v1 to a follow-up. Prior: 2026-05-24 promoted to exploring; PRD-0007 drafted.)*
+**Last Updated:** 2026-06-26 *(`exploring` → `accepted`: v1 implementation shipped — the `management/canonical-position` module + canonical-position & review templates + citation/ratification companion rules + propagation, satisfying PRD-0007's acceptance criteria. Prior: 2026-06-26 PRD-0007 finalized + accepted (v1.1), Observation E split out. Prior: 2026-05-24 promoted to exploring; PRD-0007 drafted.)*
 **Confidence:** high
 
 ---

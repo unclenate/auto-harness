@@ -233,6 +233,7 @@ modules. Use it to populate `harness.manifest.yaml`.
 | Handles any personal or sensitive data? (default: yes) | `management/privacy-by-design` (default-on; opt out only with a documented `regime: none` exemption) |
 | Models a real-world system / runs scenarios / publishes decision-support? | `management/digital-twin` (default-off; declare maturity in `docs/twin/twin-profile.md`) |
 | Dispatching parallel multi-agent work-packages in isolated worktrees? | `management/work-package` (default-off; declare the lane in `docs/work-package/lane.md`) |
+| Does the project have strategic positioning concerns (a wedge, a buyer, a thesis) that must stay coherent across many docs over time? | `management/canonical-position` (opt-in; one ratified `docs/canonical-position.md` every strategy-shaped artifact cites) |
 
 **Starter manifest for a project in discovery** (before stack is chosen):
 

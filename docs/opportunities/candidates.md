@@ -105,6 +105,35 @@ underspecified.
   missing reviews that could be triggering these powerful
   automations we've designed."*
 
+- **Design-artifact staleness — finalize-before-accept reconciliation**
+  *(candidate stub, 1 instance, 2026-06-26)* — A drafted-but-unaccepted
+  design artifact (a `Proposed` PRD, an `exploring` OPP) accumulates
+  **silent drift** while it waits: catalog/validator counts go stale, ADR
+  and diagram numbers it *reserved* get reassigned to other work,
+  operating-principle section numbers it targets get taken, and version
+  plans ship out from under it. **No validator catches this** — PRDs/OPPs
+  sit on no count or `validate-list-completeness` surface — so a
+  rubber-stamp acceptance carries every stale claim into the
+  implementation PR as a spec a builder follows faithfully (and wrongly).
+  This is a **declared-but-unfired review** in the
+  [OPP-0032](OPP-0032-session-cycle-orchestration.md) taxonomy: the
+  "finalize-before-accept" reconciliation wants a **PR-boundary** trigger
+  (fires when a PRD diff flips `Proposed → Accepted`) and/or a
+  **time-boundary** staleness cadence over long-`Proposed`/`exploring`
+  artifacts. It is also the third member of the staleness-pressure family
+  anchored by [OPP-0007](OPP-0007-canonical-position-artifact.md) (siblings
+  A: validator-opt-out staleness; D: intake-canonical-SHA staleness) —
+  here the *design artifact itself* is the thing with no staleness pressure.
+  **One documented instance:** PRD-0007's 2026-06-26 finalization (drift
+  across validator count `8→19`, catalog counts, a reassigned
+  "Diagram 10"/"ADR-0013", an obsolete v0.6.0/v0.7.0 plan, and an FR
+  targeting a now-taken `§ 9`). **Promotion criterion:** a second
+  documented stale-design-artifact reconciliation → file the OPP (the
+  candidate-stub-with-promotion-criterion discipline OPP-0032 itself used).
+  A possible v1 mechanism: a `validate-companions` rule that, when a PRD's
+  status line flips to `Accepted` in a diff, requires a "reconciled-against-
+  main" finalization note — cheaper than a general freshness validator.
+
 ### Consumer onboarding & project hygiene
 
 - [OPP-0040](OPP-0040-cross-platform-install-prerequisites.md) *(accepted

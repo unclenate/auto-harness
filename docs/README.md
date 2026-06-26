@@ -97,6 +97,7 @@ originating opportunity records.
 | [0024](requirements/PRD-0024-geospatial-gis-wedge.md) | Geospatial / GIS Wedge (CRS + OGC exchange + BIM↔GIS georeferencing) | Accepted | [OPP-0045](opportunities/OPP-0045-domain-family-geospatial-decomposed.md) |
 | [0025](requirements/PRD-0025-work-package-lane-contract.md) | Work-Package Lane Contract (`management/work-package`) | Accepted | [OPP-0046](opportunities/OPP-0046-parallel-multi-agent-work-package-lane-contract.md) |
 | [0026](requirements/PRD-0026-publication-boundary-marker.md) | Publication-Boundary Marker (`validate-publication-boundary.sh`) | Accepted | [OPP-0048](opportunities/OPP-0048-redaction-scope-and-publication-boundary-hardening.md) |
+| [0027](requirements/PRD-0027-module-stability-tiers.md) | Module Stability Tiers (`validate-module-stability.sh`) | Accepted | [OPP-0050](opportunities/OPP-0050-module-stability-tiers-parity.md) |
 
 ---
 
@@ -157,7 +158,7 @@ clustered backlog with framing.
 | [0047](opportunities/OPP-0047-delivery-cost-unit-economics-governance.md) | Delivery-Cost & Unit-Economics Governance | proposed |
 | [0048](opportunities/OPP-0048-redaction-scope-and-publication-boundary-hardening.md) | Redaction-Scope & Publication-Boundary Hardening | accepted |
 | [0049](opportunities/OPP-0049-deep-governance-vertical-harvest.md) | Deep Governance Vertical: Authoring-Pattern Harvest | accepted |
-| [0050](opportunities/OPP-0050-module-stability-tiers-parity.md) | Module Stability Tiers & Parity Normalization | proposed |
+| [0050](opportunities/OPP-0050-module-stability-tiers-parity.md) | Module Stability Tiers & Parity Normalization | accepted |
 
 ---
 

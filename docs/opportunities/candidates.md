@@ -628,8 +628,10 @@ cite-the-evidence rule), not the extraction; composes with the OPP-0046 lane
   as the highest-leverage single gap in the harness's artifact catalog by
   the four-lens project alignment audit (MB-REV-003) of `bdits/municipal-brain`.
 
-- [OPP-0050](OPP-0050-module-stability-tiers-parity.md) *(proposed
-  2026-06-26)* — **Module stability tiers & parity normalization.** The
+- [OPP-0050](OPP-0050-module-stability-tiers-parity.md) *(accepted
+  2026-06-26; PRD-0027 ratifies the v1 wedge — `stability` field + always-on
+  `validate-module-stability.sh` + 57-module backfill)* — **Module stability
+  tiers & parity normalization.** The
   catalog has uniform structural metadata (6 fields in 57/57 modules) and
   anti-sprawl gates (§ 12 inclusion test), but **no module-readiness
   signal** — `stability`/`maturity` is in 0/57. Add a per-module

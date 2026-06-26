@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0050 — Module Stability Tiers & Parity Normalization
 
-**Status:** proposed
+**Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-06-26
-**Last Updated:** 2026-06-26 *(filed)*
+**Last Updated:** 2026-06-26 *(`proposed` → `accepted`: [PRD-0027](../requirements/PRD-0027-module-stability-tiers.md) ratifies the v1 wedge — the `stability: {experimental|beta|stable}` field + an always-on `validate-module-stability.sh` + the 57-module backfill rubric. Behavior-gating, a `deprecated` lifecycle value, and stack build-out deferred. Prior: 2026-06-26 filed.)*
 **Confidence:** high *(the gap is field-verified: `stability`/`maturity` in 0/57 modules)*
 
 ---

@@ -11,6 +11,28 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-26 — PRD-0027: module stability tiers (OPP-0050 wedge, design-only)
+
+Filed **PRD-0027** ratifying OPP-0050's v1 — a per-module
+`stability: {experimental | beta | stable}` field plus an **always-on, structural**
+`validate-module-stability.sh` that enumerates every `module.yaml` and blocks any
+that omits `stability` or declares a value outside the enum. Because it runs against
+the harness's own 57 modules (not predict-clean — it is a catalog check like
+`validate-list-completeness`), the implementing PR **backfills all 57 modules**
+against a coarse three-tier rubric (stable = shipped + enforced + dogfooded/founded;
+beta = shipped, thin enforcement or no consumer yet; experimental = scaffold /
+niche). The validator checks presence + enum only, never the correctness of the
+judgment — honesty is an authoring act, as § 10 classification is.
+
+Stability is a **third axis, independent** of trust tier (risk) and § 10 (per-claim
+enforcement). Flipped OPP-0050 `proposed → accepted`. Design-only per § 9; deferred:
+behavior-gating on `experimental`, a `deprecated` value + lifecycle policy, and the
+stack build-out (separate change-classes).
+
+Distillation (PRD-0004): paired shared-observations entry (an always-on structural
+validator forces its own backfill — the harness's own modules must all comply, so
+v1 cannot ship the field without populating it everywhere).
+
 ## 2026-06-26 — OPP-0050: module stability tiers & parity normalization (filed, proposed)
 
 Evaluated an external (ChatGPT-lane) leadership review of the platform against the

@@ -11,6 +11,28 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-26 — Finalize + accept PRD-0007 (canonical-position artifact)
+
+Picked OPP-0007 (canonical-position) as the next backlog thread and finalized its
+month-old drafted PRD. Reviewing PRD-0007 (drafted 2026-05-24) against current
+`main` surfaced substantial drift: it cited "8 validators" (now 19), stale catalog
+counts (`modules_profiles` 26→27 / templates 56→58 vs. the real 47 / 90), an
+anticipated "Diagram 10" and "ADR-0013" that were both reassigned, and a stale
+v0.6.0/v0.7.0 sequencing (both already shipped).
+
+The core design is sound and unchanged — a `management/canonical-position` overlay
+that depends on `project-standard`, with citation + ratification companion rules
+and a review-artifact type. Reconciled the drift and accepted PRD-0007 as the v1
+design contract (v1.1). **FR-006 split out**: the three orthogonal
+"reconciliation-load" patterns it bundled (Observation E) no longer ship with
+canonical-position — § 9 is now *"Split Design from Implementation"*, and bundling
+an unrelated operating-principle promotion violates § 7 (Align File Boundaries with
+Change-Class Boundaries). They move to a separate follow-up (a future § 13).
+
+Design-only per § 9 — a separate PR implements the module + templates + rules.
+OPP-0007 stays `exploring` (flips to `accepted` at implementation-merge per the
+PRD's acceptance criteria).
+
 ## 2026-06-25 — Implement PRD-0026: `validate-publication-boundary.sh` (OPP-0048)
 
 Shipped the always-on, kernel-level publication-boundary gate the PRD designed.

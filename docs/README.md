@@ -77,7 +77,7 @@ originating opportunity records.
 | [0004](requirements/PRD-0004-distillation-triggers.md) | Distillation Triggers | Accepted | [OPP-0004](opportunities/OPP-0004-distillation-triggers.md) |
 | [0005](requirements/PRD-0005-consumer-header-hygiene.md) | Consumer Header Hygiene | Accepted | [OPP-0005](opportunities/OPP-0005-consumer-header-hygiene.md) |
 | [0006](requirements/PRD-0006-trust-tier-enforcement.md) | Trust-Tier Enforcement | Accepted | [OPP-0006](opportunities/OPP-0006-trust-tier-enforcement.md) |
-| [0007](requirements/PRD-0007-canonical-position-artifact.md) | Canonical-Position Artifact | Proposed | [OPP-0007](opportunities/OPP-0007-canonical-position-artifact.md) |
+| [0007](requirements/PRD-0007-canonical-position-artifact.md) | Canonical-Position Artifact | Accepted | [OPP-0007](opportunities/OPP-0007-canonical-position-artifact.md) |
 | [0008](requirements/PRD-0008-agent-skill-pack-architecture.md) | Agent Skill-Pack Architecture | Accepted | [OPP-0018](opportunities/OPP-0018-architecture-eval-gated-skill-pack.md) |
 | [0009](requirements/PRD-0009-eval-gated-testing-module.md) | Eval-Gated Testing Module | Accepted | [OPP-0019](opportunities/OPP-0019-eval-gated-testing-posture.md) |
 | [0010](requirements/PRD-0010-self-hosted-oss-delivery.md) | Self-Hosted OSS Delivery | Accepted | [OPP-0021](opportunities/OPP-0021-delivery-self-hosted-oss.md) |

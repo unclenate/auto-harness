@@ -6,27 +6,47 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # PRD-0007: Canonical-Position Artifact as Harness Primitive
 
-**Version:** 1.0 | **Owner:** @unclenate | **Last Updated:** 2026-05-24 | **Review Cycle:** On-change
+**Version:** 1.1 | **Owner:** @unclenate | **Last Updated:** 2026-06-26 | **Review Cycle:** On-change
 
-**Status:** Proposed
-**Date:** 2026-05-24 (filed)
+**Status:** Accepted
+**Date:** 2026-05-24 (filed) | 2026-06-26 (finalized + accepted)
 **Author:** @unclenate
 **Reviewers:** @unclenate
+
+> **2026-06-26 finalization (v1.1).** Reconciled month-old drift against current
+> `main` and accepted as the v1 design contract. Changes: (1) **FR-006 split out** —
+> the three orthogonal "reconciliation-load" patterns no longer ship with
+> canonical-position v1; § 9 is now *"Split Design from Implementation"* and bundling
+> an unrelated operating-principle promotion into the module PR violates § 7
+> (Align File Boundaries with Change-Class Boundaries). They move to a separate
+> follow-up that can place them at the next free section (§ 13). (2) Validator count
+> corrected **8 → 19**. (3) Catalog counts in FR-007 are illustrative — recompute at
+> implementation against `main` (`modules_profiles` is 47, templates 90). (4) The
+> anticipated "Diagram 10" is dropped — **no new diagram in v1** (avoids the
+> diagram-count cascade); the flow is prose. (5) ADR ref corrected (ADR-0013 was
+> reassigned to *Documentation IA*; a canonical-position ADR, if warranted, is the
+> next free ADR-0020 and is optional). (6) Versioning section refreshed (the
+> v0.6.0/v0.7.0 plan already shipped). The core design — a `management/canonical-position`
+> overlay with citation + ratification companion rules and a review-artifact type —
+> is unchanged.
 
 ## Cross-references
 
 - Related OPP: [OPP-0007](../opportunities/OPP-0007-canonical-position-artifact.md) — `exploring`; this PRD is its promotion candidate
-- Related ADRs (anticipated, may spawn during implementation):
-  - ADR-0013 — Canonical-position artifact as harness primitive (decision record formalizing the new module + companion-rule contract)
+- Related ADRs: a canonical-position ADR is **optional, not required for v1** — the
+  decision is captured in this PRD + OPP-0007. If the implementation surfaces a
+  structural governance decision worth a record, file it as the next free ADR
+  (ADR-0020). *(The PRD originally anticipated "ADR-0013"; that number was since
+  reassigned to Documentation IA.)*
 - Related observations (the five sibling observations in `docs/knowledge/shared-observations.md`, all dated 2026-05-22):
   - *"Validator opt-out has no staleness pressure"* (A) — **deferred to follow-up OPP**
   - *"Opportunity-capture has no backlog-reconciliation trigger when canonical direction changes"* (B) — **deferred to follow-up OPP**
   - *"No formal review/reconciliation artifact type — and the ad-hoc one proved high-value"* (C) — **bundled into v1**
   - *"Discovery-intake treats the intake as one-shot; canonical-direction-changed → intake-stale path is missing"* (D) — **deferred to follow-up OPP**
-  - *"Three positive patterns from a heavy-load reconciliation worth promoting to harness conventions"* (E) — **bundled into v1 as operating-principles § 9 additions**
+  - *"Three positive patterns from a heavy-load reconciliation worth promoting to harness conventions"* (E) — **split out of v1 (2026-06-26)**; orthogonal to canonical-position, moves to a separate follow-up (a future operating-principle § 13)
 - Field-evidence repo: `bdits/municipal-brain` at commit `ff953c1` — see OPP-0007 § Related for the specific artifacts that motivated the OPP
-- Related operating-principles: § 5 (Self-Governance), § 7 (Align File Boundaries with Change-Class Boundaries), § 8 (Prefer Text Representations)
-- Visual reference: [Diagram 10 — Canonical-Position Artifact Flow](../architecture/diagrams.md#10-canonical-position-artifact-flow) — visualizes the citation rule + ratification rule + review-artifact composition
+- Related operating-principles: § 5 (Self-Governance), § 7 (Align File Boundaries with Change-Class Boundaries — the principle that motivates the FR-006 split), § 8 (Prefer Text Representations), § 9 (Split Design from Implementation — this PRD is the design contract; a separate PR implements)
+- Visual reference: **none in v1.** The citation + ratification + review-artifact composition is described in prose (FR-003–FR-005); a catalog diagram is deferred to avoid the diagram-count cascade. *(The draft anticipated a "Diagram 10" that was never created.)*
 
 ## Overview
 
@@ -43,7 +63,7 @@ hand-rolled "canonical position" doc + a multi-day reconciliation.
 
 This PRD specifies the v1 mechanism as **a new lightweight overlay
 module** (`management/canonical-position`) that depends on
-`project-standard` and adds five coordinated pieces:
+`project-standard` and adds four coordinated pieces:
 
 1. **The canonical-position artifact itself** — `docs/canonical-position.md`,
    required by the new module, scaffolded from a new template, with
@@ -68,15 +88,13 @@ module** (`management/canonical-position`) that depends on
    pattern in `docs/reviews/REVIEW-NNNN-slug.md`; companion-rule
    semantics defined.
 
-5. **Three operating-principle additions** (Observation E patterns) —
-   change-log as commit-grouping spec, companion-rules discipline
-   under load, salvage-before-archive + ARCHIVE-INDEX — added to
-   `docs/operating-principles.md` as § 9 *"Patterns from
-   Reconciliation Loads"*.
-
-The three remaining sibling observations (A, B, D) are deferred to
-separate follow-up OPPs that will anchor on OPP-0007 as their
-prerequisite.
+The four sibling observations not bundled here (A, B, D — and E as of the
+2026-06-26 finalization) are deferred to separate follow-up OPPs that anchor on
+OPP-0007 as their prerequisite. Observation E's three reconciliation-load patterns
+are orthogonal to the canonical-position artifact (they describe *how the harness
+runs heavy reconciliation work*, not *what a consumer project ships*); promoting
+them belongs in its own change-class, at the next free operating-principle section
+(§ 13), not inside this module's PR.
 
 ## Goals & Non-Goals
 
@@ -99,8 +117,6 @@ prerequisite.
   - **Ratification rule** — when `docs/canonical-position.md`
     changes, the same PR must include a `docs/reviews/REVIEW-*.md`
     file AND a `docs/project/change-log.md` entry.
-- Update to `docs/operating-principles.md` adding § 9 with the three
-  patterns from Observation E.
 - Update to the `harness-governance` SKILL.md mentioning the new
   module + rules.
 - Update to `SUMMARY.md` Module Library (new row under Management).
@@ -108,8 +124,11 @@ prerequisite.
   this is opt-in for projects that have strategic positioning
   concerns. The new module appears in catalogs but is not active in
   auto-harness itself unless we decide to dogfood it.
-- Catalog-count assertions in `validate-catalog-counts.sh` bumped
-  (modules_profiles 26→27, templates likely +2).
+- Catalog-count assertions in `validate-catalog-counts.sh` reconciled
+  (`modules_profiles` +1 and `templates` +2 for the two new templates).
+  *Recompute against `main` at implementation — as of 2026-06-26
+  `modules_profiles` is 47 and `templates` is 90, so the bumps are 47→48 and
+  90→92; the validator names every stale site deterministically.*
 - One paired architectural observation capturing v1's design pressure
   per the OPP→PRD cascade pattern.
 
@@ -278,53 +297,34 @@ review work a first-class template + directory + numbering scheme.
 Other modules can reference the type in their own companion rules
 (e.g., a future periodic-audit module might require a review entry).
 
-### FR-006 — Operating-principles § 9 (Observation E patterns)
+### FR-006 — *(split out of v1, 2026-06-26)*
 
-Add a new section to `docs/operating-principles.md`:
+**Removed from canonical-position v1.** The original FR-006 promoted three
+"reconciliation-load" patterns (change-log as commit-grouping spec,
+companion-rules discipline under load, salvage-before-archive + ARCHIVE-INDEX) to
+a new operating-principle section. Two reasons to split it out:
 
-```markdown
-## 9. Patterns from Reconciliation Loads
+1. **It is orthogonal to canonical-position.** Those patterns describe *how the
+   harness runs heavy reconciliation work* — a different change-class from *what a
+   consumer project ships* (which the canonical-position artifact governs). Bundling
+   them into this module's PR mixes change-classes, which § 7 (Align File Boundaries
+   with Change-Class Boundaries) — added *after* this PRD was drafted — warns against.
+2. **Its section number is stale.** The draft targeted "§ 9," now *"Split Design
+   from Implementation"*; §§ 10–12 are also taken.
 
-When the harness experiences heavy concurrent work (large
-reconciliation passes, audit-closure sprints, multi-PR refactors),
-three patterns consistently produce coherent outcomes:
+The three patterns remain worth promoting. They move to a **separate follow-up**
+(its own design-only OPP → a new operating-principle § 13), tracked in OPP-0007's
+Related/Promotion notes. This keeps canonical-position v1 a single coherent system.
 
-### Change-log as commit-grouping spec
-Drafting the `docs/project/change-log.md` entry first, then making
-the commits structured to match the entry's grouping, produces
-PRs that are reviewable as one coherent change rather than a
-chronological audit of edits.
+### FR-007 — Catalog-count assertion reconciliation
 
-### Companion-rules discipline under load
-When PR scope grows (10+ files, multiple modules touched), companion
-rules continue to fire correctly because they operate on path
-patterns, not on diff size. The PR-load doesn't degrade the gate;
-reviewers can lean on the rules to enforce that satisfiers are
-present even when manually inspecting every file is impractical.
-
-### Salvage-before-archive + ARCHIVE-INDEX
-When retiring artifacts (superseded plans, obsolete OPPs,
-deprecated modules), move them to `docs/archive/` with an
-`ARCHIVE-INDEX.md` row documenting the salvage rationale rather
-than deleting. The archive is a recoverable record; deletion is
-not.
-```
-
-These additions are non-binding observations (operating-principles
-isn't a contract surface), but they codify what worked during
-`bdits/municipal-brain`'s reconciliation so future heavy-load passes
-can be deliberate about adopting the same patterns.
-
-### FR-007 — Catalog-count assertion bumps
-
-Adding the new module bumps `modules_profiles` 26 → 27. Adding two
-new templates (`management/canonical-position.md`,
-`management/review.md`) bumps `templates` 56 → 58.
-
-The catalog-counts validator catches drift at all four assertion
-sites (`platform/reference/how-to-read.md` × 2,
-`docs/architecture/diagrams.md` × 1, `docs/_assets/cover-back.svg`).
-All bumped in the same PR.
+Adding the new module bumps `modules_profiles` by 1; adding the two new templates
+(`management/canonical-position.md`, `management/review.md`) bumps `templates` by 2.
+**Recompute against `main` at implementation** — `validate-catalog-counts.sh`
+auto-derives the canonical numbers and names every stale documented site
+deterministically. *(As of 2026-06-26: `modules_profiles` 47 → 48, `templates`
+90 → 92. No new validator ships in v1 — the rules are companion-rule additions —
+so the validator count stays 19.)*
 
 ### FR-008 — Documentation updates
 
@@ -343,18 +343,19 @@ All bumped in the same PR.
 OPP-0007 flips from `exploring` to `accepted` when **all** of the
 following are met:
 
-1. PRD-0007 status flips to `Accepted`
-2. FR-001 through FR-008 implemented and merged to `main`
-3. All 8 validators pass on the implementation PR (including
-   `validate-catalog-counts.sh` after the FR-007 bumps land)
+1. PRD-0007 status `Accepted` *(done — 2026-06-26 finalization)*
+2. FR-001 through FR-005, FR-007, FR-008 implemented and merged to `main`
+   (FR-006 split out of v1)
+3. The full validator chain (19 validators) passes on the implementation PR
+   (including `validate-catalog-counts.sh` after the FR-007 bumps land)
 4. The new module is reachable from the `harness-onboarding` skill's
    catalog and from `discovery-to-composition.md`'s decision rubric
 5. At least one downstream consumer (or a sample-project fixture)
    demonstrates the citation + ratification flow end-to-end
 
-The five sibling observations remain *open* observations after
-OPP-0007 → `accepted` — the deferred ones (A, B, D) become
-follow-up OPPs that anchor on OPP-0007; the bundled ones (C, E) are
+The sibling observations remain *open* observations after
+OPP-0007 → `accepted` — the deferred ones (A, B, D, and now E) become
+follow-up OPPs that anchor on OPP-0007; the bundled one (C) is
 considered closed by the v1 work.
 
 ## Out of Scope
@@ -364,6 +365,8 @@ Reproduced from Non-Goals above:
 - Validator opt-out staleness machinery (Observation A → follow-up OPP)
 - Opportunity-capture backlog re-audit (Observation B → follow-up OPP)
 - Discovery-intake canonical-SHA pinning (Observation D → follow-up OPP)
+- Reconciliation-load operating-principle promotion (Observation E → follow-up; the
+  former FR-006, split out 2026-06-26 as an orthogonal change-class)
 - Dogfooding the module in auto-harness itself
 - Required canonical-position for all `project-standard` consumers
 - Per-section ratification
@@ -560,7 +563,8 @@ The OPP-0007 open questions are resolved as follows:
 
 ## CI / CD Gates
 
-- All 8 existing validators must pass on the implementation PR.
+- The full validator chain (19 validators) must pass on the
+  implementation PR.
 - `validate-catalog-counts.sh` must pass after FR-007's bumps to the
   documented counts.
 - `sample-projects` CI job must continue to pass — the new module
@@ -572,18 +576,16 @@ The OPP-0007 open questions are resolved as follows:
 
 ## Versioning Implications
 
-- Canonical-position v1 is a **MINOR bump** to v0.6.0 (additive
-  module; new templates; new companion rules; no breaking change).
-- v0.6.0 is the canonical-position release-marker; trust-tier
-  enforcement implementation (PRD-0006) becomes v0.7.0. The order
-  was swapped 2026-05-24 after the OPP-0007 field evidence from
-  `bdits/municipal-brain` proved a higher signal than the audit-
-  identified trust-tier gap. See `docs/project/change-log.md` for
-  the prioritization rationale.
-- CHANGELOG.md `## [v0.6.0]` will document:
+- Canonical-position v1 is an additive **MINOR bump** (new module; two
+  new templates; two new companion rules; no breaking change). It lands
+  in the next minor release after current `main`. *(The draft's
+  v0.6.0/v0.7.0 sequencing — canonical-position before trust-tier —
+  is obsolete: trust-tier enforcement (PRD-0006) already shipped, as did
+  v0.6.0.)*
+- The release CHANGELOG entry documents:
   - **Added:** `management/canonical-position` module, two new
-    templates, § 9 operating-principle additions
+    templates (`canonical-position.md`, `review.md`), two companion rules
   - **Changed:** SUMMARY.md catalogs, `validate-catalog-counts.sh`
-    assertion table
+    assertion table, `harness-governance` SKILL.md
 - Module-level versioning: the new module starts at `1.0.0` per
   established convention.

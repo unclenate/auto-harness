@@ -9,7 +9,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 **Status:** exploring
 **Owner:** @unclenate
 **Created:** 2026-05-22
-**Last Updated:** 2026-05-24 *(promoted to exploring; PRD-0007 drafted)*
+**Last Updated:** 2026-06-26 *(PRD-0007 finalized + accepted (v1.1); Observation E split out of v1 to a follow-up. Prior: 2026-05-24 promoted to exploring; PRD-0007 drafted.)*
 **Confidence:** high
 
 ---
@@ -278,11 +278,19 @@ update.
 ## Promotion
 
 - See [PRD-0007](../requirements/PRD-0007-canonical-position-artifact.md) —
-  drafted 2026-05-24; status `Proposed` (acceptance contingent on
-  landing the v1 implementation: new `management/canonical-position`
-  module + artifact template + citation companion rule + ratification
-  flow + review-artifact type from Observation C + § 9 operating-
-  principle additions from Observation E).
+  drafted 2026-05-24; **finalized + accepted 2026-06-26** (v1.1). The v1
+  design contract is the new `management/canonical-position` module +
+  artifact template + citation companion rule + ratification flow +
+  review-artifact type (Observation C). OPP-0007 itself flips
+  `exploring → accepted` when the implementation lands (per the PRD's
+  acceptance criteria).
+- **Observation E split out of v1 (2026-06-26).** The three
+  reconciliation-load patterns the draft bundled (as "operating-principle
+  § 9 additions") are orthogonal to the canonical-position artifact and
+  the § 9 slot is now taken by *"Split Design from Implementation."* They
+  move to a **separate follow-up** — a design-only OPP promoting them to
+  the next free operating-principle section (§ 13) — which will anchor on
+  OPP-0007, joining the already-deferred siblings A, B, D.
 
 ## Related
 

@@ -6,12 +6,30 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # PRD-0014: Agent Observability with OpenTelemetry Semantic Conventions
 
-**Version:** 1.0 | **Owner:** @unclenate | **Last Updated:** 2026-05-26 | **Review Cycle:** On-change
+**Version:** 1.1 | **Owner:** @unclenate | **Last Updated:** 2026-06-27 | **Review Cycle:** On-change
 
-**Status:** Proposed
-**Date:** 2026-05-26 (filed)
+**Status:** Accepted
+**Date:** 2026-05-26 (filed) | 2026-06-27 (finalized + accepted)
 **Author:** @unclenate
 **Reviewers:** @unclenate
+
+> **2026-06-27 finalization (v1.1).** Reconciled month-old drift against current
+> `main` and accepted as the v1 design contract. The core design — a new opt-in
+> `architectures/agent-observability` module declaring an OTel-multi-agent
+> trace contract via two required-artifact templates, no v1 enforcement — is
+> unchanged. Changes: (1) **`type: architecture`** (singular), not `architectures`
+> — the family directory is plural, the `type` value is singular (FR-001). (2) The
+> module **must declare `stability: beta`** — a required field added *after* this
+> PRD was drafted (PRD-0027 / OPP-0050, 2026-06-26); `validate-module-stability.sh`
+> now blocks any module without it. `beta` is correct per the rubric (shipped, no
+> consumer instance yet). (3) Validator count **8 → 20**. (4) The deferred
+> *rationale-expansion* operating-principle promotion targets **§ 13** (next free),
+> not § 9 (now "Split Design from Implementation"). (5) FR-012's Mermaid diagram
+> stays **Should-Have and is biased to defer** — no new diagram in v1, to avoid the
+> diagram-count cascade (consistent with the canonical-position v1). (6) The OTel
+> semantic-conventions version pin (FR-003 / Technical Constraints) is **re-verified
+> at implementation** against the current published conventions, not assumed from
+> the draft's 2026-05-15 example.
 
 ## Cross-references
 
@@ -102,10 +120,11 @@ observation. v1 establishes the declarative contract; v2 enforces it.
   doesn't adopt the module; a frontier-agent-posture project per
   OPP-0027 does.)*
 - **Promoting the *rationale-expansion-without-rule-change* discipline
-  to operating-principles § 9 in this PRD.** *(Why excluded: PRD-0014
+  to a new operating-principle section in this PRD.** *(Why excluded: PRD-0014
   is itself an instance of the discipline applied to a *new* contract
-  surface — the discipline is exercised here; promotion to § 9 is a
-  separate discipline-codification PR.)*
+  surface — the discipline is exercised here; promotion to the next free
+  section (§ 13; the draft said "§ 9", since taken by "Split Design from
+  Implementation") is a separate discipline-codification PR.)*
 
 > Distinction from `Functional Requirements > Out of Scope` below: the
 > bullets above are *outcomes* this PRD does not commit to delivering;
@@ -134,7 +153,7 @@ observation. v1 establishes the declarative contract; v2 enforces it.
 
 | ID | Requirement | Acceptance Criteria | Notes |
 |----|-------------|---------------------|-------|
-| FR-001 | Create `platform/profiles/architectures/agent-observability/module.yaml` | File exists; valid per module schema; declares `id: agent-observability`, `type: architectures`, `version: 1.0.0`; depends on `kernel/base`; lists the two required artifacts; no companion rules in v1 | The canonical module declaration |
+| FR-001 | Create `platform/profiles/architectures/agent-observability/module.yaml` | File exists; valid per module schema; declares `id: agent-observability`, `type: architecture` (singular — matches the family convention), `version: 1.0.0`, `stability: beta` (required since PRD-0027 / `validate-module-stability.sh`); depends on `kernel/base`; lists the two required artifacts; no companion rules in v1 | The canonical module declaration |
 | FR-002 | Create `platform/profiles/architectures/agent-observability/README.md` as the compiled fragment | File exists; SPDX header; describes the module's role, the upstream OTel multi-agent semantic conventions citation, the two required artifacts, and the deferred-to-v2 enforcement note | Compiled fragment loaded into agent context |
 | FR-003 | Create `platform/templates/observability/trace-contract.md` template | File exists; sections for *Spans* (per agent-action), *Attributes* (cross-cutting), *Events* (notable runtime events), *OTel-semantic-conventions version pin*, *Examples* with realistic span shapes; all placeholder tokens (the harness's `[[…]]` convention) are valid per `validate-placeholders.sh` | The trace-contract starter |
 | FR-004 | Create `platform/templates/observability/exporters.md` template | File exists; sections for *supported exporters*, *required-vs-optional per deployment tier*, *foundry-side notes* (Azure Monitor / Application Insights / Datadog / Honeycomb / OTLP collector / OpenSearch), *configuration-shape examples* | The exporters starter |
@@ -178,7 +197,7 @@ observation. v1 establishes the declarative contract; v2 enforces it.
 | Gate | Required? | Notes |
 |------|-----------|-------|
 | Lint passes | Yes | markdownlint clean across all new files |
-| Validator chain passes | Yes | All 8 validators; the catalog-counts bump must be reflected in every assertion site or the validator fails |
+| Validator chain passes | Yes | The full validator chain (20 validators); the catalog-counts bump must be reflected in every assertion site or the validator fails; `validate-module-stability.sh` requires the new module's `stability` field |
 | Companion-rule check passes | Yes | Touches OPP-0029 + new PRD file → cycle-end distillation rule fires; satisfier is the paired observation in `shared-observations.md` |
 | Change-log updated | Yes | Bundle entry citing PRD-0014, OPP-0029 |
 | Module-graph passes | Yes | New module declared properly; depends on kernel/base; no conflicts |
@@ -213,9 +232,10 @@ observation. v1 establishes the declarative contract; v2 enforces it.
 
 OPP-0029 flips from `exploring` → `accepted` when:
 
-- PRD-0014 Status flips to `Accepted` (this document)
+- PRD-0014 Status flips to `Accepted` (this document) *(done — 2026-06-27 finalization)*
 - FR-001..FR-011 merged (Must Have)
-- All 8 validators green on the implementing PR
+- The full validator chain (20 validators) green on the implementing PR, including
+  `validate-module-stability.sh` (the new module declares `stability: beta`)
 - The implementing PR includes a paired observation in `shared-observations.md` confirming the module *exists and is referenced* by the harness's own onboarding skill
 - At least one consumer (Tula or any agent-native consumer) demonstrates trace emission against the contract within 30 days of merge (validates the contract is *load-bearing* and not just descriptive prose — if no consumer adopts in 30 days, the contract may be misaligned with field needs and a revision pass is warranted)
 

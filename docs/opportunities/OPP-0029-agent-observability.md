@@ -9,7 +9,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 **Status:** exploring
 **Owner:** @unclenate
 **Created:** 2026-05-25
-**Last Updated:** 2026-05-26 *(promoted `proposed` → `exploring` same-day per the established maintainer-priority cadence. [PRD-0014](../requirements/PRD-0014-agent-observability.md) drafted committing to a workflow-doc + trace-contract-template v1 scope; companion-rule machinery deferred to a follow-up OPP/PRD pair per the deferred-implementations discipline named in PRD-0013's paired observation.)*
+**Last Updated:** 2026-06-27 *(PRD-0014 finalized + accepted (v1.1) — month-old drift reconciled against `main`: `type: architecture` (singular), the new module now declares `stability: beta` (a field added by PRD-0027 since the draft), validator count 8→20, and the deferred rationale-expansion promotion retargeted § 9 → § 13. OPP-0029 stays `exploring`; flips to `accepted` when the implementation merges. Prior: 2026-05-26 promoted `proposed` → `exploring`; PRD-0014 drafted (a new `architectures/agent-observability` module + two trace-contract/exporters templates; companion-rule machinery deferred to a v2 follow-up).)*
 **Confidence:** medium-high *(diagnosis); high (on the v1 scope; OTel semantic conventions are stable; healthcare-specific routing models are GA)*
 
 ---

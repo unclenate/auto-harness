@@ -11,6 +11,35 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-27 — Finalize + accept PRD-0014 (agent observability)
+
+Picked OPP-0029 (agent observability) as the next thread and finalized its
+month-old drafted PRD. Less drift than PRD-0007 — the ADR-0013 reference is correct
+(it really is the visual-program ADR) and the catalog counts were relative — but
+three real corrections: `type: architectures` → **`architecture`** (the family dir
+is plural, the `type` value singular), validator count **8 → 20**, and the deferred
+*rationale-expansion* operating-principle promotion retargeted **§ 9 → § 13**
+(§ 9 is now "Split Design from Implementation"). One new requirement that *postdates*
+the PRD: the new `architectures/agent-observability` module must declare
+**`stability: beta`** — a field `validate-module-stability.sh` (PRD-0027, shipped
+2026-06-26) now enforces on every module. A nice demonstration that yesterday's
+stability validator already governs tomorrow's modules.
+
+The core design is unchanged: an opt-in `architectures/agent-observability` module
+declaring an OTel multi-agent trace contract via two required-artifact templates
+(`trace-contract.md`, `exporters.md`), with no v1 enforcement (the
+trace-contract-update companion rule + a `validate-trace-contract.sh` are the v2
+follow-up). FR-012's Mermaid diagram stays Should-Have / deferred (no new diagram in
+v1). The OTel semantic-conventions version pin is re-verified at implementation.
+
+Design-only per § 9 — a separate PR implements the module. OPP-0029 stays
+`exploring` (flips to `accepted` at implementation-merge per the PRD's acceptance
+criteria).
+
+Distillation (PRD-0004): paired shared-observations entry (a freshly-shipped
+always-on structural validator immediately constrains the next module's PRD — the
+finalization had to add a `stability` requirement the draft couldn't have known).
+
 ## 2026-06-26 — Implement PRD-0027: `validate-module-stability.sh` + 57-module backfill (OPP-0050)
 
 Shipped module stability tiers end-to-end. `validate-module-stability.sh` is an

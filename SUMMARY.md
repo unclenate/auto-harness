@@ -55,6 +55,7 @@ How to use the harness during normal development on a project that has already a
 * [Agentic Interface Integration](platform/workflow/agentic-interface-integration.md) — operator workflow for in-product agent surfaces
 * [MCP Server Build](platform/workflow/mcp-server-build.md) — operator workflow for projects that ship an MCP server
 * [Multi-Agent Tool Coordination](platform/workflow/multi-agent-tool-coordination.md)
+* [Work-Package Worktree Runbook](platform/workflow/work-package-worktree-runbook.md) — idempotent isolated-worktree setup for dispatching parallel multi-agent work-packages (`management/work-package`)
 
 ## Maintenance & Operations
 
@@ -70,6 +71,7 @@ How to keep the harness itself healthy after adoption — upgrades, version pinn
 
 Authoring new modules, validators, skills, templates, and agent packs.
 
+* [Operating Principles](docs/operating-principles.md) — the harness platform's own doctrine (§§ 1–12): ownership, review discipline, self-governance, split-design-from-implementation, classify-claims-before-enforcing, privacy-by-default, and authoring deep governance verticals from the shared skeleton
 * [Extending the Harness](platform/workflow/extending-the-harness.md) — module / validator / skill / template / agent-pack author guide
 * [Authoring a Deep Governance Vertical](platform/workflow/deep-governance-vertical-authoring.md) — the step-by-step playbook for building the next domain/overlay from the six-ingredient skeleton (operating-principles § 12)
 * [Threat Model](docs/threat-model.md) — what auto-harness protects against; what it doesn't; mitigations in place
@@ -191,7 +193,7 @@ AI-tool packs and operating adapters.
 
 ## Validator Reference
 
-The eighteen validator scripts and their shared Ruby library. CI wiring and troubleshooting live in the workflow sections above.
+The twenty validator scripts and their shared Ruby library. CI wiring and troubleshooting live in the workflow sections above.
 
 * [Validators Overview](platform/validators/README.md)
 * [validate-manifest.sh](platform/validators/validate-manifest.sh)
@@ -211,6 +213,9 @@ The eighteen validator scripts and their shared Ruby library. CI wiring and trou
 * [validate-privacy-by-design.sh](platform/validators/validate-privacy-by-design.sh)
 * [validate-twin-profile.sh](platform/validators/validate-twin-profile.sh)
 * [validate-scenario-manifest.sh](platform/validators/validate-scenario-manifest.sh)
+* [validate-lane-integrity.sh](platform/validators/validate-lane-integrity.sh)
+* [validate-publication-boundary.sh](platform/validators/validate-publication-boundary.sh)
+* [validate-module-stability.sh](platform/validators/validate-module-stability.sh)
 * [Shared Library: harness\_registry.rb](platform/validators/lib/harness_registry.rb)
 
 ### Test Suite

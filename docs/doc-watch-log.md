@@ -16,6 +16,103 @@ force.
 
 ---
 
+## 2026-06-27 — doc-watch — DRIFT FOUND + FIXED (governance-machinery wave #135–#148; GitBook front-door stale)
+
+**Window:** 2026-06-22 → 2026-06-27 (since last watch). ~14 PRs (#135–#148). This
+was a heavy development run, and — unlike every prior "ALL CLEAR" entry — the watch
+found **real drift in the non-validator-enforced prose surfaces** and fixed it in
+the same pass. Three parallel agents audited the GitBook docs (TOC completeness /
+front-door freshness / render-hygiene + cadence); findings were verified against
+disk before acting (two agents disagreed on the SUMMARY validator section; the
+disk was authoritative).
+
+**What landed in the window:** OPP-0049 §12 harvest (playbook); OPP-0048 →
+`validate-publication-boundary.sh` (#139); OPP-0050 → `validate-module-stability.sh`
+with a 57-module backfill (#145); canonical-position implemented (#142);
+agent-observability implemented (#147); PRD-0028 ai-foundry-target designed (#148).
+Validators 18 → 20;
+two new modules; operating-principle § 10 gained a module-stability bullet.
+
+**Drift found (validator-blind prose) — all fixed in this PR:**
+
+- `SUMMARY.md` validator section read "**eighteen** validator scripts" and listed
+  only **17** — missing `validate-lane-integrity`, `validate-publication-boundary`,
+  `validate-module-stability`. (Not in the catalog-counts assertion table, so it
+  drifted silently.) → corrected to twenty + the three added.
+- `docs/roadmap.md` was **severely stale** (Updated 2026-05-25): it listed
+  canonical-position (shipped #142) and trust-tier (shipped Wave 5.1) as "PRD
+  Proposed; ready to pick up," and treated the entire post-v0.5.0 governance +
+  deep-domain wave as "Planned." → status lines corrected, a **Shipped since v0.5.0**
+  record added; release-version re-tagging explicitly flagged as a maintainer task.
+- Two nav gaps in the TOC: the canonical `docs/operating-principles.md` (the
+  platform's own §§ 1–12 doctrine) and `platform/workflow/work-package-worktree-runbook.md`
+  were not reachable from `SUMMARY.md`. → both added.
+
+**Verified clean (no action):** `validate-doc-references.sh` → 0 (no GitBook-fragile
+links); `docs/README.md` indexes current through PRD-0028 / OPP-0050 / ADR-0019;
+`docs/architecture/diagrams.md` captions current; the three dated `QUALITY-AUDIT-*`
+pages correctly excluded from the TOC (historical snapshots); catalog counts in
+`how-to-read.md` correct.
+
+**Live counts:** profiles 49 · modules-all 58 · agents 8 · validators 20 · skills 8 ·
+compositions 15 · arch diagrams 16 · templates 94 · ADRs 19 · PRDs 28 · OPPs 50
+(through OPP-0050).
+
+**Escalation assessment:** This window **crossed the re-audit threshold** (2 new
+modules + 2 new validators + new doctrine surface) — hence the 3-agent audit was run.
+The lesson for the cadence: validator-enforced surfaces (index rows, numeric counts)
+stayed green throughout, but the *enumerated-prose* surfaces (the SUMMARY validator
+list, the roadmap narrative) drifted because they sit in no assertion table — exactly
+the class the periodic doc-watch exists to catch. Going forward, a doc-watch after a
+≥ 2-validator wave should explicitly re-read the SUMMARY validator list and the
+roadmap against reality.
+
+---
+
+## 2026-06-22 — Weekly doc-watch (Monday) — ALL CLEAR (new work-package module + PRD-0025 + 4 OPPs, zero drift)
+
+**Window:** 2026-06-15 14:28 → 2026-06-22 (since last watch commit `22daf24`).
+Branch `feat/op-principle-12-deep-governance`. Working tree dirty (one
+untracked file `docs/superpowers/specs/2026-06-09-digital-twin-seed-brief.md`;
+analysis was read-only). 11 doc-relevant commits in window (#125–#134).
+
+**What landed:**
+
+- New module **`management/work-package`** (#132 / PRD-0025) — parallel
+  multi-agent work-package lane contract. Ships `module.yaml` + sibling
+  `README.md` + `platform/templates/work-package/lane.md` template subdir +
+  validator fixtures + `work-package-worktree-runbook.md`.
+- **PRD-0013** session-cycle orchestration implemented (#133) — adds
+  `session-shape.md` workflow + review-trigger taxonomy.
+- **Operating-principle § 12** (#134) — deep-governance-vertical authoring
+  pattern; OPP-0049 harvest filed.
+- New design-only OPPs: **0046, 0047, 0048, 0049**. GitBook front-door /
+  SUMMARY TOC resynced (#129); OPP/PRD index↔source status drift reconciled
+  twice (#127, #131).
+
+**Live counts:** profiles 47 · agents 8 · validators 18 · skills 8 ·
+compositions 15 · arch diagrams 16 · templates 95 · ADRs 19 · PRDs 25 · OPPs 48.
+
+**Drift checks — all green:**
+
+- `validate-catalog-counts.sh` → ✓ 26/26 assertions match.
+- `validate-doc-references.sh` → ✓ all link targets resolve.
+- `validate-list-completeness.sh` → ✓ 249/249 assertions match.
+- Index completeness: new entities (OPP-0046–0049, PRD-0025, work-package
+  module, work-package template subdir) all indexed in `docs/README.md`,
+  `SUMMARY.md`, and `platform/templates/README.md`. Module has sibling README.
+- `markdownlint-cli2` → ✓ 0 errors across 404 files.
+
+**Escalation assessment:** Structural growth was real (1 new module, 1 new
+implemented PRD lane, op-principle §12, 4 new OPPs) but does NOT cross the
+re-audit threshold: only 1 new module (<3), no new architecture family, 1
+genuinely-new PRD this window, and zero drift in zero places. The Wave 1
+list-completeness validator continues to catch index drift at CI time — every
+new entity this week landed with its canonical index row already present. No
+full multi-agent re-audit recommended.
+
+---
+
 ## 2026-06-15 — Weekly doc-watch — ALL CLEAR (full deep-domain expansion + consumer tooling, zero drift)
 
 **Window:** 2026-06-09 → 2026-06-15. Branch `main`. Doc-relevant merges: the

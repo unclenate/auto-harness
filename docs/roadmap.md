@@ -15,9 +15,14 @@ OPP backlog).
 **Maturity:** Alpha; pre-1.0. Versions are semver-disciplined per
 [`platform/workflow/release-and-versioning.md`](../platform/workflow/release-and-versioning.md).
 
-> **Updated:** 2026-05-25 *(post-prioritization-examination; v0.5.1
-> YouBase patch surfaced; OpenEMR Phase 1 anchored at v0.8.0; v0.5.2 Tula
-> agent-native catalog patch added, in review as PR #55)*
+> **Updated:** 2026-06-27 *(factual-freshness pass — a large governance +
+> catalog wave shipped to `main` since the 2026-05-25 revision but was never
+> release-tagged, so the "Planned" section below described shipped work as
+> proposed. The now-shipped items are flagged inline and summarized under
+> **Shipped since v0.5.0** below. **The release-version sequencing — which tag
+> (v0.6.0 / v0.7.0 / …) covers which shipped work — is a maintainer decision and
+> has not been re-assigned here;** this pass corrects facts, not the version plan.
+> Prior: 2026-05-25 post-prioritization-examination.)*
 
 ---
 
@@ -44,6 +49,51 @@ Headline additions:
 
 Full release notes:
 <https://github.com/unclenate/auto-harness/releases/tag/v0.5.0>
+
+---
+
+## Shipped since v0.5.0 (not yet release-tagged)
+
+A large governance-machinery and deep-domain-catalog wave merged to `main` after
+the v0.5.0 tag. It is **not yet assigned to release tags** (a maintainer pass owns
+that). Summarized here so the roadmap reflects reality; several items below appear
+as "Planned" further down because that text predates their shipping.
+
+**Governance machinery (validators 8 → 20):**
+
+- Trust-tier enforcement — `validate-trust-tier.sh` (PRD-0006). Listed as "v0.7.0
+  planned" below; **shipped.**
+- The safety-hardening validators — `validate-skill-content.sh`,
+  `validate-sensitive-paths.sh`, `validate-sast-coverage.sh`,
+  `validate-knowledge-redaction.sh` (Wave 5 / ADR-0017).
+- `validate-publication-boundary.sh` (PRD-0026) — always-on `do-not-publish` leak gate.
+- `validate-module-stability.sh` (PRD-0027) — per-module `stability` tier across all
+  modules; a third governance axis distinct from trust tier and § 10.
+- `validate-lane-integrity.sh` (PRD-0025) — the `management/work-package` parallel
+  multi-agent lane contract.
+
+**Deep-domain catalog (the § 12 skeleton, six instances):**
+
+- Domain families: `domains/healthcare-*` (PRD-0017), `domains/aec-*` (PRD-0019),
+  `domains/geospatial-*` (PRD-0024); cross-cutting overlays
+  `management/privacy-by-design` (PRD-0018) and `management/digital-twin` (PRD-0023).
+  Cybersec (PRD-0022) is designed, not built.
+- The harvest: operating-principle **§ 12** + the authoring playbook (OPP-0049).
+
+**Strategic + agent-native overlays:**
+
+- `management/canonical-position` (PRD-0007) — ratified north-star. "v0.6.0 planned"
+  below; **shipped.**
+- `architectures/agent-observability` (PRD-0014) — OpenTelemetry trace contract; the
+  first frontier-agent-cluster satellite. `architectures/ai-foundry-target` (PRD-0028)
+  is designed (the second satellite).
+
+**Doctrine:** operating-principles §§ 9 (Split Design from Implementation), 10
+(Classify Claims Before Enforcing Them), 11 (Privacy by Design), 12 (Author Deep
+Governance Verticals).
+
+> **Release-tagging is the open maintainer task here** — deciding which of the above
+> lands under v0.6.0 / v0.7.0 / a consolidated tag, and cutting the GitHub releases.
 
 ---
 
@@ -107,7 +157,11 @@ the v0.6/v0.7 governance-machinery sequencing.
 
 ### v0.6.0 — Canonical-Position Artifact (PRD-0007)
 
-**Status:** PRD `Proposed`; OPP `exploring`; ready to pick up.
+**Status:** ✅ **SHIPPED to `main` 2026-06-26** (PRD-0007 `Accepted`; OPP-0007
+`accepted`; module + templates + citation/ratification rules live) — **not yet
+release-tagged.** Two FRs below changed at implementation: FR-006 (the § 9
+reconciliation-load promotion) was **split out** to a § 13 follow-up as orthogonal,
+and FR-007's counts were recomputed against `main`. The rest shipped as specified.
 
 The v0.6.0 release-marker is the **canonical-position artifact** —
 the highest-leverage single addition identified by the
@@ -139,10 +193,10 @@ citation companion rule plus a ratification flow.
 
 ### v0.7.0 — Trust-Tier Enforcement (PRD-0006)
 
-**Status:** PRD `Proposed`; OPP `exploring`; was originally planned
-as v0.6.0; **re-prioritized 2026-05-24** to v0.7.0 after the
-OPP-0007 field evidence proved a higher signal than the audit-
-identified trust-tier gap.
+**Status:** ✅ **SHIPPED to `main`** (PRD-0006 `Accepted`; `validate-trust-tier.sh`
+live since the Wave 5.1 safety-hardening sprint) — **not yet release-tagged.** Was
+originally planned as v0.6.0, re-prioritized 2026-05-24 to v0.7.0 after the OPP-0007
+field evidence; both have since shipped.
 
 The v0.7.0 release-marker is **machine-checkable trust-tier
 enforcement**. The trust-tier model (six tiers, kernel-doctrined in

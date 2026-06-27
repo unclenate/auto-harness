@@ -460,6 +460,20 @@ Do not produce Artifact C under any other circumstance. If no absorption candida
 
 Use this catalog for Steps 2 and 3. Do not select modules not listed here.
 
+> **Read each module's stability tier.** Every `module.yaml` declares
+> `stability: {experimental | beta | stable}` (PRD-0027) — a readiness signal
+> independent of trust tier and § 10 enforcement. Prefer `stable` modules for a
+> project's load-bearing governance; treat `beta` as usable-but-unproven and
+> `experimental` as adopt-with-eyes-open. v1 is informational — the harness does not
+> block activating a `beta`/`experimental` module, it just makes the readiness honest.
+>
+> **Stack-parity note (be honest in onboarding).** The `stacks/` family is currently
+> JS-skewed: `node-typescript` (the most exercised), `node-javascript`,
+> `coffeescript` (`experimental`), and `python`. PHP / Go / Ruby / Rust / Java are
+> not yet built (PHP is tracked in OPP-0011). For a non-JS/Python stack, onboard
+> with the closest architecture/data/delivery overlays (which are stack-agnostic)
+> and flag the missing stack module rather than forcing a poor fit.
+
 ---
 
 ### core (always required)

@@ -3,6 +3,7 @@
 id: web3
 type: domain
 version: 2.0.0
+stability: beta
 summary: Web3 domain overlay for blockchain-integrated systems — chain data access, smart contract boundaries, token and governance layers, UNKNOWN state propagation, and irreversibility governance.
 dependsOn:
   - kernel/base

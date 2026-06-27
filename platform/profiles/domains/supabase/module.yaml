@@ -3,6 +3,7 @@
 id: supabase
 type: domain
 version: 1.0.0
+stability: beta
 summary: Supabase domain overlay for project refs, auth boundaries, migrations, and hosted service integration records.
 dependsOn:
   - kernel/base

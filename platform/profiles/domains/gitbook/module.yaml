@@ -3,6 +3,7 @@
 id: gitbook
 type: domain
 version: 1.0.0
+stability: beta
 summary: GitBook documentation overlay for projects that publish human-navigable docs with table of contents, chapter structure, and index navigation.
 dependsOn:
   - kernel/base

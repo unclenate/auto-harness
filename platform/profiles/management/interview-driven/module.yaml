@@ -3,6 +3,7 @@
 id: interview-driven
 type: management
 version: 1.0.0
+stability: beta
 summary: Monolithic-docs management overlay for small teams and hackathon-tier projects. Recognizes a single PRD, a decision-complete plan, and an interview-driven downstream prompt instead of the canonical product-lite + project-standard file set. Designed for interoperability — co-exists with product-lite / project-standard so projects can upgrade later without ripping out governance.
 dependsOn:
   - kernel/base

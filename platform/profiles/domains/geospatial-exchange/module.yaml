@@ -3,6 +3,7 @@
 id: geospatial-exchange
 type: domain
 version: 1.0.0
+stability: beta
 summary: Geospatial exchange overlay — governs OGC exchange formats and services (GeoJSON, GeoPackage, CityGML/CityJSON, shapefile; WMS/WFS/WMTS, OGC API), the publisher / consumer role axis, and a CRS-on-the-wire preservation policy on top of the spatial-reference substrate.
 dependsOn:
   - kernel/base

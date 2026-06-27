@@ -11,6 +11,37 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-26 — Implement PRD-0027: `validate-module-stability.sh` + 57-module backfill (OPP-0050)
+
+Shipped module stability tiers end-to-end. `validate-module-stability.sh` is an
+always-on structural validator (like `validate-list-completeness`) that asserts
+every `module.yaml` declares `stability: {experimental | beta | stable}` — presence
+and enum membership only, never the correctness of the judgment.
+
+Backfilled all **57** modules against the rubric:
+
+- **stable (10):** the harness-dogfooded core — `kernel/base`, agents
+  `base`/`generic-llm`/`openclaw`/`claude-code`, `delivery/internal-platform`,
+  management `project-standard`/`product-lite`/`knowledge-capture`/`opportunity-capture`.
+- **experimental (2):** `stacks/coffeescript`, `domains/agentic-interfaces` (niche / R&D).
+- **beta (45):** everything else — shipped and complete, but thin enforcement or no
+  real consumer instance yet (honest for an alpha platform; an inflated `stable` is
+  worse than an accurate `beta`).
+
+Wired always-on (kernel/base validators, `harness.yml`, `AGENTS.md`,
+`harness-governance` chain + signature note, `validators/README.md`, root `README.md`
+table; validator count 19 → 20). Rubric documented in `extending-the-harness.md` +
+the validator `--help`. Onboarding catalog surfaces stability + an honest
+stack-parity note (`stacks/` is 3/4 JS-family). Operating-principle § 10 gains a
+bullet: stability is § 10's classify-before-enforcing applied at the module level —
+a third axis, independent of trust tier (risk) and the Enforced/Half-enforced/
+Asserted-only ladder (per-claim enforcement). Integration tests: 180 runs, 0 failures.
+**OPP-0050 complete** (accepted at PRD-0027; implementation now merged).
+
+Distillation (PRD-0004): the § 10 bullet + a paired shared-observations entry
+(an always-on structural validator is self-forcing — it cannot ship without the
+backfill that satisfies it).
+
 ## 2026-06-26 — PRD-0027: module stability tiers (OPP-0050 wedge, design-only)
 
 Filed **PRD-0027** ratifying OPP-0050's v1 — a per-module

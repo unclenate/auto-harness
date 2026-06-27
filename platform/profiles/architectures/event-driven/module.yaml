@@ -3,6 +3,7 @@
 id: event-driven
 type: architecture
 version: 1.0.0
+stability: beta
 summary: Event-driven overlay for publishers, consumers, and asynchronous workflow governance.
 dependsOn:
   - kernel/base

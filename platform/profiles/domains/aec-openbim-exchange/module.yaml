@@ -3,6 +3,7 @@
 id: aec-openbim-exchange
 type: domain
 version: 1.0.0
+stability: beta
 summary: openBIM exchange overlay — IDS-style exchange requirements, an enforced pinned IFC version, and the producer / receiver / reviewer role axis (ISO 19650-4) on top of the information-management substrate.
 dependsOn:
   - kernel/base

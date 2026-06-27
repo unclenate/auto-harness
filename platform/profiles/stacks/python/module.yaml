@@ -3,6 +3,7 @@
 id: python
 type: stack
 version: 1.0.0
+stability: beta
 summary: Python overlay for interpreter pinning, dependency governance, packaging choices, and test/lint expectations.
 dependsOn:
   - kernel/base

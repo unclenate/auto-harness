@@ -3,6 +3,7 @@
 id: product-lite
 type: management
 version: 1.1.0
+stability: stable
 summary: Small-team product overlay for problem framing, personas, requirements, and release intent. Designed to work with or without upstream discovery artifacts.
 tier:
   declared: 2

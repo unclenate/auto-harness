@@ -3,6 +3,7 @@
 id: healthcare-smart-on-fhir
 type: domain
 version: 1.0.0
+stability: beta
 summary: SMART-on-FHIR app-launch and OAuth-scope domain overlay — models provider-launch and patient-access trust roles as a documented axis on top of the FHIR data layer.
 dependsOn:
   - kernel/base

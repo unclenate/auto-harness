@@ -3,6 +3,7 @@
 id: opportunity-capture
 type: management
 version: 1.1.0
+stability: stable
 summary: "Forward-looking opportunity capture module. Provides docs/opportunities/ as a per-project surface for pre-PRD candidate records — one structured file per candidate (OPP-NNNN-slug.md) with explicit status, evidence-linkage to shared-observations.md, and a binding promotion contract (status=accepted requires a PRD in the same commit). The structural policy lives in README.md (ADR-gated); the optional organizational candidate index lives in a sibling candidates.md (no ADR required)."
 tier:
   declared: 2

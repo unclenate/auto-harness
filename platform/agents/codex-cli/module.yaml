@@ -3,6 +3,7 @@
 id: codex-cli
 type: agent
 version: 0.2.0
+stability: beta
 summary: OpenAI Codex CLI operating pack. Maps approval_policy and sandbox_mode settings to harness trust tiers and forbids AGENTS.override.md from entering the repository.
 
 dependsOn:

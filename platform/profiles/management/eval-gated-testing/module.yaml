@@ -3,6 +3,7 @@
 id: eval-gated-testing
 type: management
 version: 1.0.0
+stability: beta
 summary: "Testing overlay for projects whose primary quality gate is binary-graded evaluation of model/agent outputs rather than line/branch coverage. Sibling to management/testing-standard (which is percentage-coverage shaped): a project may activate either or both. Governs the eval strategy, grader-threshold definitions, the eval task taxonomy (basic / edge / should-not-trigger / domain-override), the synthetic-fixture discipline, and the spec-gate-in-CI contract. Tool-neutral — the strategy names the runner (e.g. Microsoft Waza, GAIA, UK-AISI Inspect); see the (separate) harness eval-tooling toolchain work for invoking those runners from the harness."
 dependsOn:
   - kernel/base

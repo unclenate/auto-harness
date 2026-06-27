@@ -3,6 +3,7 @@
 id: copilot-cli
 type: agent
 version: 0.1.0
+stability: beta
 summary: GitHub Copilot CLI operating pack. Manages multi-instruction-file precedence (AGENTS.md, .github/copilot-instructions.md, .github/instructions/) to prevent non-deterministic conflict resolution.
 
 dependsOn:

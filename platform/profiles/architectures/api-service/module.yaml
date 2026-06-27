@@ -3,6 +3,7 @@
 id: api-service
 type: architecture
 version: 1.0.0
+stability: beta
 summary: API service overlay for request handlers, contracts, service boundaries, and backend topology records.
 dependsOn:
   - kernel/base

@@ -3,6 +3,7 @@
 id: browser-storage
 type: data
 version: 1.0.0
+stability: beta
 summary: Browser-side data overlay for IndexedDB, localStorage, OPFS, and other in-browser persistence APIs. Distinct from server-side embedded-KV because browser storage has tab-isolation, quota, and user-clear-data semantics that don't apply server-side.
 dependsOn:
   - kernel/base

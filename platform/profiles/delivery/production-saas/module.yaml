@@ -3,6 +3,7 @@
 id: production-saas
 type: delivery
 version: 1.0.0
+stability: beta
 summary: Production SaaS delivery posture with environment, release, rollback, and risk artifacts required.
 dependsOn:
   - kernel/base

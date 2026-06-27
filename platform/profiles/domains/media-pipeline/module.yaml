@@ -3,6 +3,7 @@
 id: media-pipeline
 type: domain
 version: 1.0.0
+stability: beta
 summary: Media and photogrammetry domain overlay for derived artifacts, storage workflows, and operational traceability.
 dependsOn:
   - kernel/base

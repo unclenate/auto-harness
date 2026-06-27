@@ -3,6 +3,7 @@
 id: geospatial-bim-georeference
 type: domain
 version: 1.0.0
+stability: beta
 summary: BIM↔GIS georeferencing bridge — governs the map conversion that pins a federated IFC/BIM model into a declared real-world CRS (IfcMapConversion parameters, survey-point origin, target georeferencing level). The catalog's first cross-family dependency.
 dependsOn:
   - kernel/base

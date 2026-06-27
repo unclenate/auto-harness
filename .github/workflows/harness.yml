@@ -114,6 +114,13 @@ jobs:
         # public remote. Not module-gated — every harnessed project gets it.
         run: bash platform/validators/validate-publication-boundary.sh .
 
+      - name: Validate module stability
+        # Always-on structural check (PRD-0027 / OPP-0050): every module.yaml must
+        # declare a stability tier (experimental | beta | stable). A catalog check
+        # like list-completeness — not module-gated — so it runs against the
+        # harness's own modules.
+        run: bash platform/validators/validate-module-stability.sh .
+
       - name: Validate companion rules
         if: github.event_name == 'pull_request'
         env:

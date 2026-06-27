@@ -3,6 +3,7 @@
 id: agentic-interfaces
 type: domain
 version: 1.0.0
+stability: experimental
 summary: Domain overlay for products that ship an in-product agentic interface — copilots (CopilotKit-style), generative UI (A2UI-style), or conversational-primary surfaces (MCP Apps, ChatGPT Apps). Governs prompt-injection defense, action-approval gating, renderer contracts, agent-callable tool registry, and model-update regression risk. Vendor-neutral — the design doc declares the flavor and the renderer contract; templates carry vendor-specific guidance.
 dependsOn:
   - kernel/base

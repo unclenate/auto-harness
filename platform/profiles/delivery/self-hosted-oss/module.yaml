@@ -3,6 +3,7 @@
 id: self-hosted-oss
 type: delivery
 version: 1.0.0
+stability: beta
 summary: "Delivery posture for published open-source software that ships as a self-hosted deployment the end user operates — between delivery/prototype (undersells: live software, real data, a security model, a release cadence) and delivery/production-saas (oversells: mandates hosted-infrastructure ops artifacts that do not exist when every user self-hosts). The operator is the user, not the team; artifacts are oriented to a distributable-the-user-runs (self-hosting guide, inherited security posture, release/versioning intent), not a service-the-team-operates. Like delivery/internal-platform it declares no hard conflicts, but a project should carry exactly one delivery posture; see README for the single-posture expectation."
 dependsOn:
   - kernel/base

@@ -3,6 +3,7 @@
 id: agentic-ui
 type: architecture
 version: 1.0.0
+stability: beta
 summary: Architecture overlay for products where the agentic surface is the dominant topology decision — conversational-primary products (the chat IS the product), MCP-host shells, and Open-ended generative-UI products. Adds an architecture-overview requirement that the agent runtime location, action-surface boundary, and renderer contract are explicitly named at the topology level (not only at the design-doc level). For the common case — copilot bolted onto a SaaS web-app — use architectures/web-app + domains/agentic-interfaces and skip this overlay.
 dependsOn:
   - kernel/base

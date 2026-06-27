@@ -3,6 +3,7 @@
 id: testing-standard
 type: management
 version: 1.0.0
+stability: beta
 summary: Testing governance overlay — test strategy, coverage thresholds, and agent testing discipline for projects where quality is a delivery requirement.
 dependsOn:
   - kernel/base

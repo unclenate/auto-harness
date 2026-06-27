@@ -115,6 +115,7 @@ bash $PLATFORM/validators/validate-twin-profile.sh       harness.manifest.yaml .
 bash $PLATFORM/validators/validate-scenario-manifest.sh  harness.manifest.yaml .
 bash $PLATFORM/validators/validate-lane-integrity.sh     harness.manifest.yaml . main
 bash $PLATFORM/validators/validate-publication-boundary.sh .
+bash $PLATFORM/validators/validate-module-stability.sh   .
 bash $PLATFORM/validators/validate-companions.sh         harness.manifest.yaml . main
 ```
 
@@ -255,6 +256,17 @@ A few signature notes worth highlighting:
   required-artifact check — a must-NOT-be-tracked assertion that needs no name
   corpus. Per PRD-0026 / OPP-0048; run it as a pre-commit hook (`--staged`) for
   prevention, with CI as the backstop.
+- **`validate-module-stability.sh`** takes `[<project-root>]` or
+  `--scan-file <module.yaml>`. **Always-on** structural catalog check (like
+  `validate-list-completeness`, not module-gated): every `module.yaml` under
+  `platform/` must declare `stability:` ∈ `{experimental, beta, stable}`. It
+  asserts **presence + enum membership only** — never the correctness of the
+  human judgment (honesty is an authoring act). Stability is a third axis,
+  independent of trust tier (*risk*) and § 10 (*per-claim enforcement*): how
+  proven the module itself is. `--scan-file` validates one module without
+  enumerating, for fixtures. The rubric (stable / beta / experimental) is
+  authoring guidance in [`extending-the-harness.md`](../../workflow/extending-the-harness.md)
+  and the validator `--help`. Per PRD-0027 / OPP-0050.
 
 ## Required Artifacts
 

@@ -46,6 +46,7 @@ below).
 | `validate-scenario-manifest.sh` | `[--block] [<manifest>] [<project-root>]` (or `--scan-file <path>`) | Opt-in validator for the `management/digital-twin` overlay. When the module is not active, exits 0. When active, scans scenario manifests for the required epistemic-discipline sections (`scenario` / `datasets` / `assumptions` / `outputs` / `uncertainty` / `provenance`), per-dataset `source`+`version`+`asOf`+`confidence`, per-assumption `sensitivity`, and publication-approval gating. Advisory WARN (exit 0); `--block` escalates. PRD-0023 / ADR-0019 |
 | `validate-lane-integrity.sh` | `[<manifest>] [<project-root>] [<base-branch>]` (or `--scan-file <lane-spec> [<changed-path>...]`) | Opt-in validator for the `management/work-package` overlay. When the module is not active, exits 0 (predict-clean). When active, parses the fenced `lane` block in `docs/work-package/lane.md`, asserts the schema is well-formed (`branch` / `base` / `prMode` / non-empty `allowedFiles`), then diffs the branch against `base` and fails if any changed file is outside `allowedFiles` or touches `readOnlyFiles`. PRD-0025 |
 | `validate-publication-boundary.sh` | `[<project-root>]`, `--staged [<project-root>]`, or `--scan-file <path>...` | **Always-on** (not module-gated). Fails (exit 1) if any git-tracked file declares a `do-not-publish` marker (frontmatter key or `<!-- do-not-publish: true -->` sentinel, matched only at line start). A marker in an *untracked* file is invisible to `git ls-files` and passes — the intended steady state. Path regexes in `.publication-boundary-ignore` exempt files that discuss the marker. `--staged` scans staged files (pre-commit); `--scan-file` is a no-git test seam. Outside a git tree exits 0. PRD-0026 / OPP-0048 |
+| `validate-module-stability.sh` | `[<project-root>]` or `--scan-file <module.yaml>` | **Always-on** structural check (not module-gated). Asserts every `module.yaml` under `platform/` declares `stability:` ∈ `{experimental, beta, stable}` — presence + enum only, never the correctness of the judgment. A third axis, independent of trust tier (*risk*) and § 10 (*per-claim enforcement*): how proven the module is. Rubric is authoring guidance in `extending-the-harness.md` + `--help`. PRD-0027 / OPP-0050 |
 
 ### `--help` / `-h`
 
@@ -92,6 +93,7 @@ bash platform/validators/validate-skill-content.sh harness.manifest.yaml .
 bash platform/validators/validate-knowledge-redaction.sh . main
 bash platform/validators/validate-sast-coverage.sh harness.manifest.yaml .
 bash platform/validators/validate-publication-boundary.sh .
+bash platform/validators/validate-module-stability.sh .
 # Companion rules — only meaningful when comparing branches:
 bash platform/validators/validate-companions.sh harness.manifest.yaml . main
 ```
@@ -198,6 +200,8 @@ shell out to the actual validator scripts against fixture projects:
   frontmatter marker fail, mid-sentence mention no-trip, missing-arg → exit 2;
   git-tracked marker fail + `.publication-boundary-ignore` exemption pass (skipped
   without git); outside-git-tree pass
+- `validate-module-stability.sh` — `--scan-file` valid-tier pass, missing-field
+  fail, out-of-enum fail, missing-arg → exit 2; enumerate-mode all-valid pass
 - Uniform `--help` / `-h` — every validator exits 0 with a "Usage:" + "Exit codes:"
   block on `--help` and `-h`, and works from any cwd without invoking Ruby
 - Typed usage-error exit codes — empty manifest, malformed YAML, missing manifest

@@ -53,7 +53,7 @@ harness provides:
 - **Artifact requirements** — the files that must exist for a module to be considered active
   and governed (problem statement, ADRs, risk register, release checklist, etc.)
 - **Sensitive path governance** — patterns that trigger elevated human review when changed
-- **Validator chain** — nineteen shell scripts you run locally or in CI that enforce all of the above
+- **Validator chain** — twenty shell scripts you run locally or in CI that enforce all of the above
 - **Agent adapters** — `CLAUDE.md`, `AGENTS.md`, and `.claude/settings.json` shims that load
   the governance rules into agent context at session start
 
@@ -143,7 +143,7 @@ flowchart TD
     end
 
     subgraph ENFORCE["Enforcement (CI)"]
-        Validators["<b>Validators</b><br/>19 scripts"]
+        Validators["<b>Validators</b><br/>20 scripts"]
         Validators -.reads.-> Manifest
         Validators -.reads.-> Companions
         Validators --> CIGate["<b>CI gates merge</b>"]
@@ -408,7 +408,7 @@ bash .harness/platform/bootstrap/link-skills.sh \
 
 ## Validators
 
-Nineteen validators, each targeting a specific governance layer:
+Twenty validators, each targeting a specific governance layer:
 
 | Validator | What It Checks |
 | --------- | -------------- |
@@ -431,6 +431,7 @@ Nineteen validators, each targeting a specific governance layer:
 | `validate-scenario-manifest.sh` | Digital Twin overlay — gated; validates scenario manifests carry the required epistemic-discipline sections (datasets with source/version/asOf/confidence, assumptions with sensitivity, provenance, publication-approval gating) |
 | `validate-lane-integrity.sh` | Work-package overlay — gated; parses the `docs/work-package/lane.md` contract and fails if the branch's diff strays outside `allowedFiles` or touches `readOnlyFiles` |
 | `validate-publication-boundary.sh` | Always-on publication gate — fails if any git-tracked file declares a `do-not-publish` marker; protects untracked private working material against an accidental commit on a public remote (needs no name corpus) |
+| `validate-module-stability.sh` | Always-on structural check — every module declares a `stability` tier (`experimental`/`beta`/`stable`); a third axis from trust tier (risk) and §10 (per-claim enforcement), surfacing module readiness honestly |
 
 All validators are pure shell + Ruby (no external service calls). Ruby 3.0+ and ripgrep
 are the only runtime requirements.

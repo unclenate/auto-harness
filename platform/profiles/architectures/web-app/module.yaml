@@ -3,6 +3,7 @@
 id: web-app
 type: architecture
 version: 1.0.0
+stability: beta
 summary: Web application overlay covering browser/server boundaries, UI surfaces, and topology documentation expectations.
 dependsOn:
   - kernel/base

@@ -3,6 +3,7 @@
 id: embedded-key-value
 type: data
 version: 1.0.0
+stability: beta
 summary: Embedded key-value data overlay for server-side LevelDB-family stores (LevelDB, LMDB, RocksDB, SQLite-as-KV, Bun-KV, Deno-KV). Covers schema-on-code projects where the database is a library dependency, not a network service.
 dependsOn:
   - kernel/base

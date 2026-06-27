@@ -11,6 +11,38 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-27 — PRD-0028: AI foundry target awareness (OPP-0028, design-only)
+
+Continued the frontier-agent cluster. Filed **PRD-0028** ratifying OPP-0028's v1 —
+an opt-in `architectures/ai-foundry-target` module declaring which enterprise AI
+foundries a project targets and the portable evidence per foundry. It mirrors the
+just-shipped `agent-observability` sibling: declarative v1, no companion
+rule/validator (enforcement is v2).
+
+Two agents did the groundwork (one web-verified the foundry landscape, one mapped
+the build) and — as with PRD-0014 — the build-map agent's *facts* needed
+verification: its template counts were garbled (it claimed 100/101; the real count
+is 94 → 95). The web research was reliable and load-bearing: Microsoft rebranded
+Azure AI Foundry → "Microsoft Foundry"; AWS Bedrock AgentCore (GA 2025-10) is the
+most-portable target and Palantir AIP the least; the `create_agent`/`invoke_agent`
+OTel spans are the cross-foundry conformance anchor.
+
+Key design resolutions: the `foundries` enum lives **in the `foundry-targets.md`
+artifact** (frontmatter), not as a `module.yaml` field (the schema rejects arbitrary
+fields); v1 requires `foundry-targets.md` + `trace-contract.md` (reusing OPP-0029's
+shipped artifact), with `model-routing.md` **optional** until OPP-0030 ships — a
+deferred-dependency model that unblocks v1 without building OPP-0030 first. v1 enum:
+`azure-ai-foundry`, `nvidia-ai-foundry`, `palantir-aip`, `aws-bedrock-agentcore`,
+`google-vertex-agent-engine`, `custom`.
+
+Design-only per § 9 — a separate PR implements. OPP-0028 promoted `proposed →
+exploring` (flips `accepted` at implementation-merge).
+
+Distillation (PRD-0004): paired shared-observations entry (a satellite module's
+cross-module artifact dependency is resolved by requiring the *shipped* artifact and
+making the *unbuilt* one optional — the deferred-dependency model lets a cluster
+build incrementally without a strict dependency chain).
+
 ## 2026-06-27 — Implement PRD-0014: `architectures/agent-observability` (OPP-0029)
 
 Shipped the agent-observability v1 — a new opt-in `architectures/agent-observability`

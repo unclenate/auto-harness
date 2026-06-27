@@ -98,6 +98,7 @@ originating opportunity records.
 | [0025](requirements/PRD-0025-work-package-lane-contract.md) | Work-Package Lane Contract (`management/work-package`) | Accepted | [OPP-0046](opportunities/OPP-0046-parallel-multi-agent-work-package-lane-contract.md) |
 | [0026](requirements/PRD-0026-publication-boundary-marker.md) | Publication-Boundary Marker (`validate-publication-boundary.sh`) | Accepted | [OPP-0048](opportunities/OPP-0048-redaction-scope-and-publication-boundary-hardening.md) |
 | [0027](requirements/PRD-0027-module-stability-tiers.md) | Module Stability Tiers (`validate-module-stability.sh`) | Accepted | [OPP-0050](opportunities/OPP-0050-module-stability-tiers-parity.md) |
+| [0028](requirements/PRD-0028-ai-foundry-target.md) | Enterprise AI Foundry Target Awareness (`architectures/ai-foundry-target`) | Accepted | [OPP-0028](opportunities/OPP-0028-ai-foundry-target.md) |
 
 ---
 
@@ -136,7 +137,7 @@ clustered backlog with framing.
 | [0025](opportunities/OPP-0025-consumer-integration-smoke-test.md) | Consumer-Side Integration Smoke Test | proposed |
 | [0026](opportunities/OPP-0026-distilled-learnings-disposition.md) | `distilled-learnings.md` Disposition (Sunset/Revive/Clarify) | accepted |
 | [0027](opportunities/OPP-0027-frontier-agent-posture.md) | Frontier-Agent Posture (Management Overlay; Cluster Anchor) | proposed |
-| [0028](opportunities/OPP-0028-ai-foundry-target.md) | Enterprise AI Foundry Target Awareness | proposed |
+| [0028](opportunities/OPP-0028-ai-foundry-target.md) | Enterprise AI Foundry Target Awareness | exploring |
 | [0029](opportunities/OPP-0029-agent-observability.md) | Agent Observability with OpenTelemetry Semantic Conventions | accepted |
 | [0030](opportunities/OPP-0030-intelligent-model-routing.md) | Intelligent Model Routing as Architectural Primitive | proposed |
 | [0031](opportunities/OPP-0031-agent-defense-in-depth.md) | Agent Defense-in-Depth (Microsoft's Four Patterns) | proposed |

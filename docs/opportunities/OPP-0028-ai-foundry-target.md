@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0028 — Enterprise AI Foundry Target Awareness (`architectures/ai-foundry-target`)
 
-**Status:** proposed
+**Status:** exploring
 **Owner:** @unclenate
 **Created:** 2026-05-25
-**Last Updated:** 2026-05-25
+**Last Updated:** 2026-06-27 *(promoted `proposed` → `exploring`: [PRD-0028](../requirements/PRD-0028-ai-foundry-target.md) drafted + accepted. v1 is a declarative `architectures/ai-foundry-target` module mirroring the just-shipped `agent-observability` sibling — requires `foundry-targets.md` (with the web-verified `foundries` enum + 3 portable evidence axes) + `trace-contract.md` (reused from OPP-0029), with `model-routing.md` optional until OPP-0030 ships. OPP-0028 flips `accepted` at implementation-merge.)*
 **Confidence:** medium-high
 
 ---
@@ -150,12 +150,24 @@ together substantiate the umbrella posture in
 
 ## Disposition
 
-<!--
-Empty while Status: proposed. Satellite of OPP-0027.
--->
+**2026-06-27 (proposed → exploring).** Promoted with [PRD-0028](../requirements/PRD-0028-ai-foundry-target.md)
+drafted + accepted — the second frontier-agent satellite to reach a design
+contract (after OPP-0029 / agent-observability shipped). The open questions above
+resolved at PRD-time: `foundries` is an **enum in the artifact** (not a module.yaml
+field) with a `custom` hatch; foundries may be `live` or `roadmap`; the module is
+**standalone** in the `architectures/` family; and the three required artifacts
+became **two required + one optional** — `foundry-targets.md` + `trace-contract.md`
+required, `model-routing.md` optional until OPP-0030 ships (deferred-dependency
+model). The v1 `foundries` enum was **web-verified** at PRD-time
+(`azure-ai-foundry`, `nvidia-ai-foundry`, `palantir-aip`, `aws-bedrock-agentcore`,
+`google-vertex-agent-engine`, `custom`).
 
 ## Promotion
 
-<!--
-Empty until accepted. Anchor: OPP-0027.
--->
+- **PRD:** [PRD-0028](../requirements/PRD-0028-ai-foundry-target.md) — Accepted
+  2026-06-27 (design-only per § 9). v1 declarative; enforcement (companion rule +
+  validator) is the v2 follow-up, as with `agent-observability`.
+- **Anchor:** [OPP-0027](OPP-0027-frontier-agent-posture.md) — the frontier-agent
+  posture cluster. Sibling satellites: OPP-0029 (shipped), OPP-0030 / OPP-0031
+  (proposed).
+- OPP-0028 flips `exploring → accepted` when the implementation merges.

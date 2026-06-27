@@ -11,6 +11,30 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-27 — GitBook doc-watch sweep: front-door drift found + fixed (routine maintenance)
+
+A three-agent audit of the GitBook documentation after the #135–#148 governance wave
+found **real drift in the validator-blind prose surfaces** (findings verified against
+disk — two agents disagreed; the disk was authoritative):
+
+- `SUMMARY.md` validator section read "eighteen validator scripts" and listed only 17
+  (missing `lane-integrity` / `publication-boundary` / `module-stability`) — corrected
+  to twenty + the three added.
+- `docs/roadmap.md` was stuck at v0.5.0 (Updated 2026-05-25): canonical-position
+  (shipped) and trust-tier (shipped) were still listed "PRD Proposed; ready to pick
+  up." Corrected the status lines, added a **Shipped since v0.5.0** record, and flagged
+  the release-version re-tagging as a maintainer task (not invented here).
+- TOC nav gaps: the canonical `docs/operating-principles.md` and
+  `work-package-worktree-runbook.md` were unreachable from `SUMMARY.md` — both added.
+
+Verified clean (no action): doc-references (no GitBook-fragile links), the README
+indexes (current through PRD-0028 / OPP-0050 / ADR-0019), diagram captions, and the
+catalog counts. The watch entry is recorded in `docs/doc-watch-log.md`. Lesson logged
+there: enumerated-prose surfaces (the SUMMARY validator list, the roadmap narrative)
+drift silently because they sit in no count/list assertion table — the periodic
+doc-watch is what catches them, and should re-read them explicitly after any
+≥ 2-validator wave.
+
 ## 2026-06-27 — PRD-0028: AI foundry target awareness (OPP-0028, design-only)
 
 Continued the frontier-agent cluster. Filed **PRD-0028** ratifying OPP-0028's v1 —

@@ -11,6 +11,38 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-27 — Implement PRD-0014: `architectures/agent-observability` (OPP-0029)
+
+Shipped the agent-observability v1 — a new opt-in `architectures/agent-observability`
+module declaring a project's OpenTelemetry multi-agent **trace contract** via two
+required-artifact templates, with no v1 enforcement (the trace-contract-update
+companion rule + `validate-trace-contract.sh` are the v2 follow-up).
+
+- **Module** `platform/profiles/architectures/agent-observability/{module.yaml,README.md}`
+  — `type: architecture`, `stability: beta`, `dependsOn: [kernel/base]`,
+  requiredArtifacts `docs/observability/{trace-contract.md,exporters.md}`, **no
+  companion rules in v1** (deferred per the PRD).
+- **Templates** `platform/templates/observability/{trace-contract.md,exporters.md}`,
+  grounded in the **current** OTel GenAI semantic conventions (web-verified
+  2026-06-27): the conventions are still Development/Experimental and now live in
+  `open-telemetry/semantic-conventions-genai`; the template pins a version and flags
+  the live churn (`gen_ai.system`→`gen_ai.provider.name`,
+  `gen_ai.prompt`→`gen_ai.input.messages`) and the privacy-sensitive, opt-in nature
+  of content attributes (pairs with `management/privacy-by-design`).
+- Propagation: SUMMARY, harness-onboarding catalog, templates/README, root README
+  table + tree. Counts: modules_profiles 48→49, modules_all 57→58, templates 92→94.
+- **OPP-0029 flips `exploring → accepted`** (FR-001..FR-011 met).
+
+Method note: two agents did the groundwork (one web-verified the OTel conventions,
+one mapped the build) — but the build-map agent invented module details that
+contradicted the PRD (companion rules the PRD defers, three wrongly-named templates).
+Followed the PRD over the agent; the OTel research and the propagation/count map were
+the reliable parts. Verify agent output against the source of truth.
+
+Distillation (PRD-0004): paired shared-observations entry (web-grounding a
+fast-moving external standard at impl time beats copying a months-old draft pin;
+agent output must be checked against the PRD, not trusted wholesale).
+
 ## 2026-06-27 — Finalize + accept PRD-0014 (agent observability)
 
 Picked OPP-0029 (agent observability) as the next thread and finalized its

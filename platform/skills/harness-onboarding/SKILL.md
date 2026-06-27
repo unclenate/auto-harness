@@ -506,8 +506,11 @@ prefer separate manifests over a combined polyglot manifest.
 | `architectures/api-service` | `src/routes/`, `src/api/`, OpenAPI spec, REST or GraphQL endpoint structure found |
 | `architectures/event-driven` | Queue consumers, worker processes, background job scheduler, or event bus config found |
 | `architectures/agent-skill-pack` | Authored skill collection (`skills/<name>/SKILL.md` + references + scripts) deployed to an agent runtime (OpenClaw / ClawHub, Claude Code, Cursor); eval-gated; the skills ARE the product — not an app, service, MCP server, or in-product agent UI |
+| `architectures/agent-observability` | Agent activity is a first-class observable surface — the project emits OpenTelemetry agent traces a foundry or observability backend consumes (opt-in; v1 declarative) |
 
-Required artifact (all four): `docs/architecture/overview.md`
+Required artifact (web-app / api-service / event-driven / agent-skill-pack):
+`docs/architecture/overview.md`. `agent-observability` instead requires
+`docs/observability/trace-contract.md` + `docs/observability/exporters.md`.
 
 ---
 

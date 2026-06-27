@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0029 — Agent Observability with OpenTelemetry Semantic Conventions (`architectures/agent-observability`)
 
-**Status:** exploring
+**Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-05-25
-**Last Updated:** 2026-06-27 *(PRD-0014 finalized + accepted (v1.1) — month-old drift reconciled against `main`: `type: architecture` (singular), the new module now declares `stability: beta` (a field added by PRD-0027 since the draft), validator count 8→20, and the deferred rationale-expansion promotion retargeted § 9 → § 13. OPP-0029 stays `exploring`; flips to `accepted` when the implementation merges. Prior: 2026-05-26 promoted `proposed` → `exploring`; PRD-0014 drafted (a new `architectures/agent-observability` module + two trace-contract/exporters templates; companion-rule machinery deferred to a v2 follow-up).)*
+**Last Updated:** 2026-06-27 *(`exploring` → `accepted`: v1 implementation shipped — the `architectures/agent-observability` module + `trace-contract.md`/`exporters.md` templates (grounded in the current OTel GenAI semconv, web-verified) + propagation + counts (49/58/94). v1 is declarative (no companion rule / validator — deferred to v2). Prior: 2026-06-27 PRD-0014 finalized + accepted (v1.1) — drift reconciled (`type: architecture`, new `stability: beta` field, validator count 8→20, deferred promotion § 9 → § 13). Prior: 2026-05-26 promoted `proposed` → `exploring`; PRD-0014 drafted.)*
 **Confidence:** medium-high *(diagnosis); high (on the v1 scope; OTel semantic conventions are stable; healthcare-specific routing models are GA)*
 
 ---

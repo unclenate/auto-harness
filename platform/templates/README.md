@@ -339,6 +339,17 @@ The ratified strategic north-star and its ratification trail. Part of the
 | Change control | `delivery/managed-fleet` | `templates/ops/change-control.md` |
 | Config rollback | `delivery/managed-fleet` | `templates/ops/config-rollback.md` |
 
+### Observability
+
+The OpenTelemetry multi-agent trace contract and exporter posture for projects where
+agent activity is a first-class observable surface (`architectures/agent-observability`,
+PRD-0014 / OPP-0029).
+
+| Template | Required By Module | Path |
+| -------- | ------------------ | ---- |
+| Trace contract | `architectures/agent-observability` | `templates/observability/trace-contract.md` |
+| Trace exporters | `architectures/agent-observability` | `templates/observability/exporters.md` |
+
 ### Database
 
 | Template | Required By Module | Path |

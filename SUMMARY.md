@@ -116,6 +116,7 @@ Interaction and deployment patterns.
 * [Agentic UI](platform/profiles/architectures/agentic-ui/README.md) — conversational-primary or MCP-host-shell products where the agent surface is the dominant topology
 * [MCP Server](platform/profiles/architectures/mcp-server/README.md) — projects that ship their own MCP server (npm/pip package, hosted endpoint, internal service)
 * [Agent Skill Pack](platform/profiles/architectures/agent-skill-pack/README.md) — products whose unit of delivery is an authored, eval-gated skill pack loaded by an agent runtime (OpenClaw / ClawHub, Claude Code, Cursor)
+* [Agent Observability](platform/profiles/architectures/agent-observability/README.md) — opt-in overlay declaring the project's OpenTelemetry multi-agent trace contract (spans/attributes/exporters) for foundry/observability-backend consumption; v1 declarative (PRD-0014)
 
 ### Data
 

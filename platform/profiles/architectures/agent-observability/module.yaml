@@ -1,0 +1,25 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+id: agent-observability
+type: architecture
+version: 1.0.0
+stability: beta
+summary: Agent-observability overlay — declares the project's OpenTelemetry multi-agent trace contract (which spans/attributes/events agents emit) and its exporter posture. Opt-in; v1 is declarative (no enforcement); PRD-0014 / OPP-0029.
+dependsOn:
+  - kernel/base
+conflictsWith: []
+requiredArtifacts:
+  - docs/observability/trace-contract.md
+  - docs/observability/exporters.md
+optionalArtifacts: []
+sensitivePaths: []
+companionRules: []
+validators:
+  - validate-required-artifacts
+  - validate-companions
+reviewGates:
+  - Human review confirms the declared trace contract pins an explicit OpenTelemetry semantic-conventions version (the GenAI conventions are Development/Experimental and churn) and that any trace content carrying user data is opt-in, not default-on.
+agentAdapters:
+  - platform/agents/base
+compiledFragments:
+  - platform/profiles/architectures/agent-observability/README.md

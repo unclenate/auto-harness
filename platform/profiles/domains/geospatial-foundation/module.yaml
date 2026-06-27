@@ -3,6 +3,7 @@
 id: geospatial-foundation
 type: domain
 version: 1.0.0
+stability: beta
 summary: Geospatial spatial-reference substrate — governs the coordinate reference system (horizontal datum, vertical datum, epoch, units) and per-dataset provenance via a compound, temporal forcing artifact.
 dependsOn:
   - kernel/base

@@ -3,6 +3,7 @@
 id: program-lite
 type: management
 version: 1.0.0
+stability: beta
 summary: Program coordination overlay for multi-workstream dependencies, stakeholder reporting, and governance cadence.
 dependsOn:
   - kernel/base

@@ -3,6 +3,7 @@
 id: healthcare-fhir
 type: domain
 version: 1.0.0
+stability: beta
 summary: FHIR data-layer domain overlay — governs FHIR resources, the API surface, and PHI exposure, with a jurisdiction-neutral core and a forcing jurisdiction-profile artifact.
 dependsOn:
   - kernel/base

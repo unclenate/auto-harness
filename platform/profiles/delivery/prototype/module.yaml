@@ -3,6 +3,7 @@
 id: prototype
 type: delivery
 version: 1.0.0
+stability: beta
 summary: Lightweight delivery posture for experiments and early validation without production operational burden.
 dependsOn:
   - kernel/base

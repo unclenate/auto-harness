@@ -3,6 +3,7 @@
 id: gemini-cli
 type: agent
 version: 0.1.0
+stability: beta
 summary: Gemini CLI operating pack. Translates GEMINI.md hierarchical context loading and approval-mode semantics into harness trust tiers.
 
 dependsOn:

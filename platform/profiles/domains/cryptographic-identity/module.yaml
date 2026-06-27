@@ -3,6 +3,7 @@
 id: cryptographic-identity
 type: domain
 version: 1.0.0
+stability: beta
 summary: Cryptographic identity overlay covering non-Ethereum identity primitives — BIP32/BIP39 HD wallets, DID/SSI methods, key custody, signature schemes. Orthogonal to domains/web3 (which is Ethereum smart-contract-specific). Activate when the project handles cryptographic keys, derivation paths, or identity attestations without being an Ethereum smart-contract project.
 dependsOn:
   - kernel/base

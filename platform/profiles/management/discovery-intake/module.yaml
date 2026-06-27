@@ -3,6 +3,7 @@
 id: discovery-intake
 type: management
 version: 1.0.0
+stability: beta
 summary: Discovery and intake overlay for projects starting from an idea, mockup, or informal requirements. Structures the path from problem space to MVP scope and harness composition.
 dependsOn:
   - kernel/base

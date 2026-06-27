@@ -324,6 +324,15 @@ classification IS the next-phase roadmap.
   against its own claims. Auto-harness ships the governance contract;
   consumer projects can apply this principle to their own honor-code
   surfaces.
+- **The same discipline applies at the *module* level.** A module's
+  readiness is a load-bearing claim too — "is this overlay proven enough to
+  build on?" Per-module **stability tiers** (`stability: {experimental |
+  beta | stable}`, PRD-0027 / `validate-module-stability.sh`) classify *that*
+  claim, authored honestly per a rubric and enforced-present by a validator —
+  the module-level analog of classifying a behavioral claim. Stability is a
+  distinct axis from trust tier (*risk*) and from the Enforced/Half-enforced/
+  Asserted-only ladder above (*per-claim enforcement*); a module can be
+  high-tier and `experimental`, or low-tier and `stable`.
 
 **First applied** across four instances in the 2026-05-27 / 28 audit
 sprint, documented in `docs/knowledge/shared-observations.md`:

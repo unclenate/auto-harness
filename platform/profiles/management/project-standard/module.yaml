@@ -3,6 +3,7 @@
 id: project-standard
 type: management
 version: 1.0.0
+stability: stable
 summary: Project management overlay for scope, dependencies, milestones, owners, change tracking, and completion criteria.
 tier:
   declared: 2

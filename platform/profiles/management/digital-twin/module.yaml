@@ -3,6 +3,7 @@
 id: digital-twin
 type: management
 version: 1.0.0
+stability: beta
 summary: Digital Twin / Scenario Runtime overlay — governs projects that model real-world systems, run scenarios, and publish decision-support. A maturity-gated twin-profile forcing artifact, a dual-spine standards anchor (interoperability/digital-thread + the Gemini Principles), and a WARN+validate floor for scenario/provenance changes. Default-off, opt-in.
 dependsOn:
   - kernel/base

@@ -3,6 +3,7 @@
 id: node-typescript
 type: stack
 version: 1.0.0
+stability: beta
 summary: Node.js and TypeScript overlay for runtime pinning, package governance, CI expectations, and tool permissions.
 dependsOn:
   - kernel/base

@@ -3,6 +3,7 @@
 id: object-storage
 type: data
 version: 1.0.0
+stability: beta
 summary: Object storage overlay for bucket layout, retention, and artifact-lifecycle governance.
 dependsOn:
   - kernel/base

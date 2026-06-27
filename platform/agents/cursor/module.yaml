@@ -3,6 +3,7 @@
 id: cursor
 type: agent
 version: 0.1.0
+stability: beta
 summary: Cursor IDE operating pack. Governs .cursor/rules, legacy .cursorrules, and Auto-Run allowlist policy so Cursor sessions stay aligned with AGENTS.md.
 
 dependsOn:

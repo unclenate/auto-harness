@@ -3,6 +3,7 @@
 id: privacy-by-design
 type: management
 version: 1.0.0
+stability: beta
 summary: Privacy-by-design overlay — Cavoukian's 7 principles as a jurisdiction-neutral spine, a consumer-declared legal regime, and a warn+validate floor for data-handling changes. Default-active, opt-out via a documented exemption.
 dependsOn:
   - kernel/base

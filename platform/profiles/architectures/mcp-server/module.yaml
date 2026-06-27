@@ -3,6 +3,7 @@
 id: mcp-server
 type: architecture
 version: 1.0.0
+stability: beta
 summary: Architecture overlay for projects that ship a Model Context Protocol (MCP) server — governs the declared capability set, the per-tool consumer tier mapping, prompt-injection defense surface, and transport/authorization posture. Designed around the MCP 2025-06-18 spec revision; consumers should note the revision their server targets in server-spec.md.
 dependsOn:
   - kernel/base

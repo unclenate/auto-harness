@@ -435,6 +435,75 @@ class TestValidatePublicationBoundary < Minitest::Test
 end
 
 # ---------------------------------------------------------------------------
+# validate-module-stability.sh
+# Always-on structural check (PRD-0027 / OPP-0050): every module.yaml declares
+# stability ∈ {experimental, beta, stable}. --scan-file is a single-file seam.
+# ---------------------------------------------------------------------------
+class TestValidateModuleStability < Minitest::Test
+  def write_module(dir, stability_line)
+    FileUtils.mkdir_p(dir)
+    path = File.join(dir, "module.yaml")
+    body = +"id: x/y\ntype: management\nversion: 1.0.0\n"
+    body << "#{stability_line}\n" unless stability_line.nil?
+    body << "summary: \"t\"\n"
+    File.write(path, body)
+    path
+  end
+
+  def test_scan_file_valid_tier_passes
+    Dir.mktmpdir do |tmp|
+      path = write_module(tmp, "stability: stable")
+      out, err, code = run_validator("validate-module-stability.sh", "--scan-file", path)
+      assert_equal 0, code, "Expected exit 0 for valid stability. stderr: #{err}"
+      assert_match(/✓/, out)
+    end
+  end
+
+  def test_scan_file_missing_field_fails
+    Dir.mktmpdir do |tmp|
+      path = write_module(tmp, nil)
+      _out, err, code = run_validator("validate-module-stability.sh", "--scan-file", path)
+      assert_equal 1, code, "Expected exit 1 for missing stability"
+      assert_match(/missing/, err)
+    end
+  end
+
+  def test_scan_file_out_of_enum_fails
+    Dir.mktmpdir do |tmp|
+      path = write_module(tmp, "stability: bogus")
+      _out, err, code = run_validator("validate-module-stability.sh", "--scan-file", path)
+      assert_equal 1, code, "Expected exit 1 for out-of-enum stability"
+      assert_match(/invalid stability/, err)
+    end
+  end
+
+  def test_scan_file_missing_arg_is_usage_error
+    _out, _err, code = run_validator("validate-module-stability.sh", "--scan-file")
+    assert_equal 2, code, "Expected exit 2 when --scan-file has no path"
+  end
+
+  def test_enumerate_all_valid_passes
+    Dir.mktmpdir do |tmp|
+      write_module(File.join(tmp, "platform", "profiles", "x", "a"), "stability: beta")
+      write_module(File.join(tmp, "platform", "profiles", "y", "b"), "stability: experimental")
+      out, err, code = run_validator("validate-module-stability.sh", tmp)
+      assert_equal 0, code, "Expected exit 0 when all modules valid. stderr: #{err}"
+      assert_match(/✓/, out)
+    end
+  end
+
+  def test_enumerate_one_missing_fails
+    Dir.mktmpdir do |tmp|
+      write_module(File.join(tmp, "platform", "profiles", "x", "a"), "stability: beta")
+      write_module(File.join(tmp, "platform", "profiles", "y", "b"), nil)
+      _out, err, code = run_validator("validate-module-stability.sh", tmp)
+      assert_equal 1, code, "Expected exit 1 when one module omits stability"
+      assert_match(/violations/, err)
+    end
+  end
+end
+
+# ---------------------------------------------------------------------------
 # validate-agent-pack.sh
 # ---------------------------------------------------------------------------
 class TestValidateAgentPack < Minitest::Test
@@ -944,6 +1013,7 @@ VALIDATOR_SCRIPTS = %w[
   validate-scenario-manifest.sh
   validate-lane-integrity.sh
   validate-publication-boundary.sh
+  validate-module-stability.sh
 ].freeze
 
 class TestValidatorHelpFlag < Minitest::Test

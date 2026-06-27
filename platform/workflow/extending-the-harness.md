@@ -75,6 +75,7 @@ is a particularly well-developed example.
 id: family/module-slug          # required — must match directory path
 type: management                # required — one of: core, management, stack, architecture, data, delivery, domain, agent
 version: 1.0.0                  # required — semver; bump for breaking changes
+stability: beta                 # required — readiness tier: experimental | beta | stable (see rubric below)
 summary: "One-line purpose."    # required — surfaces in catalogs
 
 dependsOn: []                   # other modules required for this one to work
@@ -117,6 +118,25 @@ compiledFragments:              # READMEs that get composed into agent context
 The full schema is enforced by `validate-manifest.sh` and
 `validate-module-graph.sh`. Run them locally before opening a PR; both
 fail loud on contract violations.
+
+### Stability tier (the `stability` field)
+
+Every module declares its **readiness** — a third axis, independent of trust tier
+(*risk*) and the § 10 enforcement ladder (*per-claim enforcement*): *how proven is
+this module?* `validate-module-stability.sh` (always-on) asserts the field is
+present and from the enum; it does **not** judge whether your assignment is correct
+— that is an honest authoring act, like § 10 claim classification. Assign against
+this rubric:
+
+| Tier | Use when |
+| ---- | -------- |
+| `stable` | Shipped **and** machine-enforced (a dedicated validator or companion rule) **and** foundational (kernel) **or** with ≥ 1 real consumer / dogfood instance |
+| `beta` | Shipped and structurally complete, but enforcement is thin/companion-only **or** it has no real consumer instance yet |
+| `experimental` | A scaffold, a speculative single-consumer overlay, or a niche module not battle-tested |
+
+Be honest and lean conservative: an inflated `stable` is worse than an accurate
+`beta`. There is no `deprecated` tier in v1 (module lifecycle/deprecation is a
+separate, not-yet-designed concern).
 
 ### README.md content
 

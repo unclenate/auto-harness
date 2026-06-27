@@ -3,6 +3,7 @@
 id: agent-skill-pack
 type: architecture
 version: 1.0.0
+stability: beta
 summary: "Architecture overlay for products whose unit of delivery is an authored agent skill pack — a collection of conventioned skills (SKILL.md + progressive-disclosure references + deterministic scripts) authored to a spec, gated by evals, and deployed to an agent runtime (OpenClaw / ClawHub, Claude Code, Cursor, agentskills.io). Distinct from architectures/agentic-ui (in-product agent UIs) and architectures/mcp-server (a server exposing a tool surface): here the skills ARE the product, loaded by a runtime the consumer does not own. Vendor-neutral — the overview names the runtime, the skill-loading model, and the workspace/permission boundary; agents/openclaw carries OpenClaw-specific workspace-file specifics when that runtime is the target."
 dependsOn:
   - kernel/base

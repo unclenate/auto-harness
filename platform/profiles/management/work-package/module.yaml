@@ -3,6 +3,7 @@
 id: work-package
 type: management
 version: 1.0.0
+stability: beta
 summary: Parallel multi-agent work-package lane contract — gives a dispatched agent a machine-checkable lane (allowedFiles / readOnlyFiles / requiredChecks / prMode) on a work-package spec, a lane-vs-diff validator that checks the agent's actual changes against its declared scope, an idempotent worktree runbook, and a stop-and-report conflict protocol. The multi-agent re-targeting of the module declare-then-enforce contract. Default-off, opt-in.
 dependsOn:
   - kernel/base

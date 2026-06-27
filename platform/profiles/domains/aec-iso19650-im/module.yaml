@@ -3,6 +3,7 @@
 id: aec-iso19650-im
 type: domain
 version: 1.0.0
+stability: beta
 summary: ISO 19650 information-management substrate — governs the Common Data Environment, information-container status codes (S0–S7), the appointing / lead-appointed / appointed-party actor model, and a compound jurisdiction-profile forcing artifact.
 dependsOn:
   - kernel/base

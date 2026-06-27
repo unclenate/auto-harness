@@ -3,6 +3,7 @@
 id: canonical-position
 type: management
 version: 1.0.0
+stability: beta
 summary: Strategic north-star overlay — a single ratified canonical-position artifact every strategy-shaped artifact must cite, revised only via a paired review-artifact ratification trail. Opt-in; PRD-0007 / OPP-0007.
 tier:
   declared: 2

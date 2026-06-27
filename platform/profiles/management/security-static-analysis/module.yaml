@@ -3,6 +3,7 @@
 id: security-static-analysis
 type: management
 version: 1.0.0
+stability: beta
 summary: "Opt-in overlay for projects that adopt SAST coverage as a structural quality gate on agent-generated code. The harness validates the consumer's sast-coverage.md declaration (tool from a recommended set; scan paths; severity threshold) and binds source-path changes to a SAST evidence trail via companion rule. Tool-neutral: the artifact names which SAST runner is configured (Semgrep, CodeQL, Bandit, gosec, ESLint security plugins, Snyk Code); the harness does not invoke the tool — running SAST stays in consumer CI per OPP-0020 boundary. Addresses safety-security-sweep section 11 (underhanded code in agent output)."
 dependsOn:
   - kernel/base

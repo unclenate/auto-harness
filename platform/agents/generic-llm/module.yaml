@@ -3,6 +3,7 @@
 id: generic-llm
 type: agent
 version: 1.0.0
+stability: stable
 summary: Generic LLM agent pack for non-Claude tools that still need kernel-aligned trust and escalation rules.
 tier:
   declared: 2

@@ -3,6 +3,7 @@
 id: coffeescript
 type: stack
 version: 1.0.0
+stability: experimental
 summary: CoffeeScript overlay for legacy projects compiling .coffee to JavaScript — covers the 2010-2016 Node ecosystem patterns where CoffeeScript was a first-class source language.
 dependsOn:
   - kernel/base

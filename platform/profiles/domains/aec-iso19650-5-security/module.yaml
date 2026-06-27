@@ -3,6 +3,7 @@
 id: aec-iso19650-5-security
 type: domain
 version: 1.0.0
+stability: beta
 summary: ISO 19650-5 security-minded overlay — a sensitivity assessment and a security-management plan governing built-asset and infrastructure sensitivity. Composes with management/privacy-by-design for occupant personal data.
 dependsOn:
   - kernel/base

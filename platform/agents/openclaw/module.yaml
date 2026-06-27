@@ -3,6 +3,7 @@
 id: openclaw
 type: agent
 version: 1.0.0
+stability: stable
 summary: "OpenClaw operating pack. Declares workspace file requirements, maps harness
   trust tiers to OpenClaw permissions, and wires MCP developer tools into governance."
 

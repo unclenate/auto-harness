@@ -3,6 +3,7 @@
 id: relational-postgres
 type: data
 version: 1.0.0
+stability: beta
 summary: Relational data overlay for schema migrations, rollback discipline, and migration records.
 dependsOn:
   - kernel/base

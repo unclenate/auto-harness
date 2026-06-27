@@ -3,6 +3,7 @@
 id: node-javascript
 type: stack
 version: 1.0.0
+stability: beta
 summary: Node.js (plain JavaScript) overlay for projects without TypeScript — pre-TypeScript-era codebases, Bun/Deno projects that decline TS, projects that have chosen ESM-only plain-JS.
 dependsOn:
   - kernel/base

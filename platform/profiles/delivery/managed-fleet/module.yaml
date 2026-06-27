@@ -3,6 +3,7 @@
 id: managed-fleet
 type: delivery
 version: 1.0.0
+stability: beta
 summary: >
   Delivery posture for a team that OPERATES configuration managing a live fleet
   of hosts (or hosting estate) — real production blast radius, but no external

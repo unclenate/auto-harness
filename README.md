@@ -261,7 +261,7 @@ declares its governance contract. You compose them to match your project.
 | ------ | ------- | ------- |
 | **Core** | Universal doctrine — always active | `kernel/base` |
 | **Stacks** | Language and framework adaptations | `node-typescript`, `python` |
-| **Architectures** | Deployment and interaction patterns | `web-app`, `api-service`, `event-driven`, `mcp-server`, `agent-observability`, `ai-foundry-target` |
+| **Architectures** | Deployment and interaction patterns | `web-app`, `api-service`, `event-driven`, `mcp-server`, `agent-observability`, `ai-foundry-target`, `intelligent-model-routing` |
 | **Data** | Storage overlays | `relational-postgres`, `document-store`, `object-storage` |
 | **Delivery** | Lifecycle posture | `prototype`, `production-saas`, `internal-platform`, `self-hosted-oss`, `managed-fleet` |
 | **Management** | Product, project, program, knowledge, opportunity, and testing governance | `discovery-intake`, `interview-driven`, `product-lite`, `project-standard`, `program-lite`, `testing-standard`, `eval-gated-testing`, `knowledge-capture`, `opportunity-capture`, `security-static-analysis`, `privacy-by-design`, `digital-twin`, `work-package`, `canonical-position` |
@@ -553,7 +553,7 @@ The bootstrap is brownfield-safe — it never overwrites pre-existing files from
 │   │   └── kernel/base/             # trust-model.md, doctrine.md, lifecycle-controls.md
 │   ├── profiles/                    # All module definitions
 │   │   ├── stacks/                  # node-typescript, node-javascript, python, coffeescript
-│   │   ├── architectures/           # web-app, api-service, event-driven, mcp-server, agent-skill-pack, agentic-ui, agent-observability, ai-foundry-target
+│   │   ├── architectures/           # web-app, api-service, event-driven, mcp-server, agent-skill-pack, agentic-ui, agent-observability, ai-foundry-target, intelligent-model-routing
 │   │   ├── data/                    # relational-postgres, document-store, object-storage, browser-storage, embedded-key-value
 │   │   ├── delivery/                # prototype, production-saas, internal-platform, self-hosted-oss, managed-fleet
 │   │   ├── management/              # discovery-intake, interview-driven, product-lite, project-standard, program-lite, testing-standard, eval-gated-testing, knowledge-capture, opportunity-capture, security-static-analysis, privacy-by-design, digital-twin, work-package, canonical-position

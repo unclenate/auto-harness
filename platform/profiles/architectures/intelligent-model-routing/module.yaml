@@ -1,0 +1,25 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+id: intelligent-model-routing
+type: architecture
+version: 1.0.0
+stability: beta
+summary: Intelligent model-routing overlay — declares that a project routes different tasks to different models deliberately, via a structured task→model routing table with routing criteria (capability/cost/privacy/regulatory/deployment-context), a free-form providers-in-scope list, and foundry-routing seams. Opt-in; v1 is declarative (no enforcement); PRD-0029 / OPP-0030.
+dependsOn:
+  - kernel/base
+conflictsWith: []
+requiredArtifacts:
+  - docs/architecture/model-routing.md
+optionalArtifacts:
+  - docs/architecture/model-routing-rationale.md
+sensitivePaths: []
+companionRules: []
+validators:
+  - validate-required-artifacts
+  - validate-companions
+reviewGates:
+  - Human review confirms the routing table names real models for real tasks (not aspirational), that the routing criteria (capability / cost / privacy / regulatory / deployment-context) are stated per non-obvious choice, and that any privacy- or regulation-driven routing (e.g. air-gapped/local inference for sensitive data) is consistent with the project's privacy-by-design and deployment posture.
+agentAdapters:
+  - platform/agents/base
+compiledFragments:
+  - platform/profiles/architectures/intelligent-model-routing/README.md

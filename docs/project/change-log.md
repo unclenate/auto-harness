@@ -11,6 +11,34 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-28 — PRD-0029 implementation: `architectures/intelligent-model-routing` shipped (OPP-0030 accepted)
+
+Implemented the third frontier-agent-cluster satellite (anchor OPP-0027). Shipped the
+opt-in **`architectures/intelligent-model-routing`** module + `README.md` and a new
+`templates/architecture/model-routing.md` template (joining the existing
+`templates/architecture/` subdir, so no new list-completeness row). The module declares
+a project's **task→model routing table** (structured `task · model · rationale ·
+constraints`), the routing criteria (capability / cost / privacy / regulatory /
+deployment-context), a **free-form** providers-in-scope list (an enum was rejected — the
+provider landscape keeps expanding), and the foundry-routing seams. `model-routing.md`
+required; `model-routing-rationale.md` optional. Like its siblings, **v1 is declarative —
+no companion rule, no validator** (a `validate-model-routing.sh` is the v2 follow-up).
+
+This **closes the deferred-dependency loop**: the module owns the `model-routing.md`
+that the shipped `ai-foundry-target` lists as optional. Notably, shipping the owner did
+**not** flip foundry-target's optional→required — that would be a breaking change for
+existing consumers and is a separate, version-gated change-class (§ 7). The loop closes
+in capability (the artifact now has an owning module + template) without closing in
+enforcement.
+
+Propagation: SUMMARY architectures list, root README module table + tree,
+`templates/README.md` (new **Model Routing** subsection), `harness-onboarding` SKILL, and
+the catalog-count prose sites (modules 50→51, all 59→60, templates 95→96). **OPP-0030**
+flipped `exploring` → `accepted`; the roadmap records model-routing as the third shipped
+satellite. The full validator chain (20) passes; the new module is predict-clean on the
+harness (not activated). One paired distillation observation in
+`docs/knowledge/shared-observations.md`.
+
 ## 2026-06-27 — PRD-0029 + PRD-0030 design pass: the frontier-agent cluster's design surface is complete
 
 Authored the two remaining frontier-agent-cluster satellite **design contracts** in one

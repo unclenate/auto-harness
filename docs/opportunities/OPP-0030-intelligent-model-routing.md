@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0030 — Intelligent Model Routing as Architectural Primitive (`architectures/intelligent-model-routing`)
 
-**Status:** exploring
+**Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-05-25
-**Last Updated:** 2026-06-27 *(promoted `proposed` → `exploring`: [PRD-0029](../requirements/PRD-0029-intelligent-model-routing.md) drafted + accepted as the v1 design contract. v1 is a declarative `architectures/intelligent-model-routing` module mirroring the shipped `ai-foundry-target` / `agent-observability` siblings — requires `docs/architecture/model-routing.md` (structured task→model table, free-form provider list), `model-routing-rationale.md` optional; NO companion rule / validator at v1 (deferred to v2 — a declarative overlay has no fixed code path). Closes the deferred-dependency loop: this module owns the `model-routing.md` that `ai-foundry-target` lists optional. OPP-0030 flips `accepted` at implementation-merge.)*
+**Last Updated:** 2026-06-28 *(flipped `exploring` → `accepted` at implementation-merge: the declarative `architectures/intelligent-model-routing` module + `templates/architecture/model-routing.md` shipped, mirroring the `ai-foundry-target` sibling — requires `docs/architecture/model-routing.md` (structured task→model table, free-form provider list), `model-routing-rationale.md` optional; NO companion rule / validator at v1 (a `validate-model-routing.sh` + companion rule are the v2 follow-up). Closes the deferred-dependency loop: this module owns the `model-routing.md` that `ai-foundry-target` lists optional. Prior: 2026-06-27 promoted `proposed` → `exploring` when [PRD-0029](../requirements/PRD-0029-intelligent-model-routing.md) was drafted + accepted.)*
 **Confidence:** medium-high
 
 ---

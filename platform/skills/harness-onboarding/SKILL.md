@@ -509,6 +509,7 @@ prefer separate manifests over a combined polyglot manifest.
 | `architectures/agent-observability` | Agent activity is a first-class observable surface — the project emits OpenTelemetry agent traces a foundry or observability backend consumes (opt-in; v1 declarative) |
 | `architectures/ai-foundry-target` | The project is built to drop into an enterprise AI foundry — Microsoft/Azure AI Foundry, NVIDIA, Palantir AIP, AWS Bedrock AgentCore, Google Vertex Agent Engine — and declares portable foundry-agnostic evidence (opt-in; v1 declarative) |
 | `architectures/intelligent-model-routing` | The project routes different tasks to different models deliberately (capability / cost / privacy / regulatory / deployment-context) — a task→model routing table is an architectural fact, not a chatbot setting (opt-in; v1 declarative) |
+| `architectures/agent-defense-in-depth` | The project runs autonomous agents and adopts Microsoft's four defense-in-depth patterns (scope-containment, least-permissions, human-in-the-loop on consequential actions, agent identity); composes with patient-facing health-agent safety in healthcare projects (opt-in; v1 declarative) |
 
 Required artifact (web-app / api-service / event-driven / agent-skill-pack):
 `docs/architecture/overview.md`. `agent-observability` instead requires
@@ -517,7 +518,9 @@ Required artifact (web-app / api-service / event-driven / agent-skill-pack):
 `docs/observability/trace-contract.md` (with `docs/architecture/model-routing.md`
 optional). `intelligent-model-routing` instead requires
 `docs/architecture/model-routing.md` (with `docs/architecture/model-routing-rationale.md`
-optional).
+optional). `agent-defense-in-depth` instead requires
+`docs/security/agent-defense-in-depth.md` (with `docs/security/append-only-action-log.md`
+optional, required-by-convention when any autonomous action is declared).
 
 ---
 

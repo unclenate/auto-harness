@@ -121,6 +121,7 @@ Interaction and deployment patterns.
 * [Agent Observability](platform/profiles/architectures/agent-observability/README.md) — opt-in overlay declaring the project's OpenTelemetry multi-agent trace contract (spans/attributes/exporters) for foundry/observability-backend consumption; v1 declarative (PRD-0014)
 * [AI Foundry Target](platform/profiles/architectures/ai-foundry-target/README.md) — opt-in overlay declaring which enterprise AI foundries (Microsoft/Azure AI Foundry, NVIDIA, Palantir AIP, AWS Bedrock AgentCore, Google Vertex Agent Engine, custom) a project targets and the portable foundry-agnostic evidence for each; v1 declarative (PRD-0028)
 * [Intelligent Model Routing](platform/profiles/architectures/intelligent-model-routing/README.md) — opt-in overlay declaring a project's task→model routing table (routing criteria, free-form provider list, foundry-routing seams); v1 declarative (PRD-0029)
+* [Agent Defense-in-Depth](platform/profiles/architectures/agent-defense-in-depth/README.md) — opt-in overlay declaring how a project realizes Microsoft's four autonomous-agent patterns (scope-containment, least-permissions, human-in-the-loop, agent identity) + an operator-owned append-only action log; v1 declarative (PRD-0030)
 
 ### Data
 

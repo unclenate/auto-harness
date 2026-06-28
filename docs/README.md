@@ -100,7 +100,7 @@ originating opportunity records.
 | [0027](requirements/PRD-0027-module-stability-tiers.md) | Module Stability Tiers (`validate-module-stability.sh`) | Accepted | [OPP-0050](opportunities/OPP-0050-module-stability-tiers-parity.md) |
 | [0028](requirements/PRD-0028-ai-foundry-target.md) | Enterprise AI Foundry Target Awareness (`architectures/ai-foundry-target`) | Accepted | [OPP-0028](opportunities/OPP-0028-ai-foundry-target.md) |
 | [0029](requirements/PRD-0029-intelligent-model-routing.md) | Intelligent Model Routing (`architectures/intelligent-model-routing`) | Accepted | [OPP-0030](opportunities/OPP-0030-intelligent-model-routing.md) |
-| [0030](requirements/PRD-0030-agent-defense-in-depth.md) | Agent Defense-in-Depth (`architectures/agent-defense-in-depth`) | Accepted *(design-only)* | [OPP-0031](opportunities/OPP-0031-agent-defense-in-depth.md) |
+| [0030](requirements/PRD-0030-agent-defense-in-depth.md) | Agent Defense-in-Depth (`architectures/agent-defense-in-depth`) | Accepted | [OPP-0031](opportunities/OPP-0031-agent-defense-in-depth.md) |
 
 ---
 
@@ -142,7 +142,7 @@ clustered backlog with framing.
 | [0028](opportunities/OPP-0028-ai-foundry-target.md) | Enterprise AI Foundry Target Awareness | accepted |
 | [0029](opportunities/OPP-0029-agent-observability.md) | Agent Observability with OpenTelemetry Semantic Conventions | accepted |
 | [0030](opportunities/OPP-0030-intelligent-model-routing.md) | Intelligent Model Routing as Architectural Primitive | accepted |
-| [0031](opportunities/OPP-0031-agent-defense-in-depth.md) | Agent Defense-in-Depth (Microsoft's Four Patterns) | exploring |
+| [0031](opportunities/OPP-0031-agent-defense-in-depth.md) | Agent Defense-in-Depth (Microsoft's Four Patterns) | accepted |
 | [0032](opportunities/OPP-0032-session-cycle-orchestration.md) | Session-Cycle Orchestration and Review-Trigger Taxonomy | accepted |
 | [0033](opportunities/OPP-0033-validate-skill-content.md) | Content-Safety Validator (`validate-skill-content.sh`) | accepted |
 | [0034](opportunities/OPP-0034-validate-sensitive-paths.md) | Sensitive-Paths Overlap Validator (`validate-sensitive-paths.sh`) | accepted |

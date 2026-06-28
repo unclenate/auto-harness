@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0051 — Frontier-Agent Cluster v2 Enforcement: Artifact-Content Validators
 
-**Status:** proposed
+**Status:** exploring
 **Owner:** @unclenate
 **Created:** 2026-06-28
-**Last Updated:** 2026-06-28
+**Last Updated:** 2026-06-28 *(promoted `proposed` → `exploring`: [PRD-0031](../requirements/PRD-0031-validate-trace-contract.md) drafted + accepted, ratifying the **first concrete deliverable** — the artifact-content half, anchored on `validate-trace-contract.sh` (module-gated/predict-clean, mirrors `validate-sast-coverage`; asserts the trace contract pins a semconv version + declares a conventional span + states its content-capture posture; presence + shape only). The code-cross-reference half + companion rule stay deferred. OPP-0051 flips `accepted` at that validator's implementation-merge; the foundry-target / model-routing / defense-in-depth content validators are follow-on phases reusing the shape-assertion skeleton.)*
 **Confidence:** medium
 
 ---

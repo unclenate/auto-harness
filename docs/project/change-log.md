@@ -11,6 +11,32 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-28 — PRD-0031: trace-contract content validator design contract (OPP-0051 first deliverable, design-only)
+
+Authored **PRD-0031**, ratifying OPP-0051's first concrete deliverable: **`validate-trace-contract.sh`**,
+the artifact-content half's anchor validator. It mirrors the shipped `validate-sast-coverage.sh`
+exactly — module-gated and predict-clean (no-op on the harness's own CI), parses a small
+YAML frontmatter block on `docs/observability/trace-contract.md`, Bash 3.2 + inline Ruby
+`YAML.safe_load`, 3-state exit, and a `--scan-file` fixture seam. It asserts three
+load-bearing invariants (presence + shape only, never exhaustive correctness):
+`semconv_version` pinned, at least one span in a conventional GenAI operation shape, and a
+`content_capture` posture from `{opt-in, none}`.
+
+Two design choices worth recording: (1) the **activation gate spans both modules that
+require the artifact** — `agent-observability` (owns it) and `ai-foundry-target` (reuses it
+via the deferred-dependency model) — so a consumer activating either gets the check; and
+(2) the § 10 table **decomposes PRD-0014's single Half-enforced claim into two sub-axes** —
+C-TRACE-1 (artifact-shape → now Enforced, buildable today) and C-TRACE-2
+(runtime-conformance → stays Asserted, needs a consumer code path). The implementing PR adds
+a frontmatter block to the trace-contract template and bumps the validator count 20 → 21.
+
+Design-only per § 9 — the validator + template frontmatter + propagation ship in the
+implementing PR (no catalog-count change this PR). Propagation: `docs/README.md` PRD index
+row + OPP-0051 index flip (`proposed` → `exploring`); OPP-0051 flipped with a Last-Updated
+note; one paired distillation observation (§ 10 sub-axis decomposition). OPP-0051 flips
+`accepted` at the validator's implementation-merge; the foundry-target / model-routing /
+defense-in-depth content validators are follow-on phases reusing the shape-assertion skeleton.
+
 ## 2026-06-28 — OPP-0051: opened the frontier-agent cluster v2-enforcement thread (design-only)
 
 With the cluster fully built, filed **OPP-0051** to open the v2-enforcement thread each of

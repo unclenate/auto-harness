@@ -1,0 +1,26 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+id: agent-defense-in-depth
+type: architecture
+version: 1.0.0
+stability: beta
+summary: Agent defense-in-depth overlay — declares how a project realizes Microsoft's four mutually-reinforcing patterns for autonomous agents (agents-as-microservices, least-permissions, deterministic human-in-the-loop on consequential actions, agent identity) in one artifact, plus an operator-owned append-only action log. Opt-in; v1 is declarative (no enforcement); PRD-0030 / OPP-0031.
+dependsOn:
+  - kernel/base
+conflictsWith: []
+requiredArtifacts:
+  - docs/security/agent-defense-in-depth.md
+optionalArtifacts:
+  - docs/security/append-only-action-log.md
+sensitivePaths: []
+companionRules: []
+validators:
+  - validate-required-artifacts
+  - validate-companions
+reviewGates:
+  - Human review confirms the four patterns are realized concretely, not asserted in prose — scope-containment names real per-agent capability boundaries, the least-permissions model states what each agent can and cannot do, the human-in-the-loop section lists which actions are drafts vs. autonomous, and identity-binding describes how each action is attributed.
+  - "When the project declares any autonomous (non-draft) action, docs/security/append-only-action-log.md is required-by-convention (the audit-substantiation of pattern #4): human review confirms the action log is present and declares an append-only, identity-tagged, snapshot-able, secret-scan-gated shape. A non-autonomous product (only ever drafts) may treat the action log as not-applicable."
+agentAdapters:
+  - platform/agents/base
+compiledFragments:
+  - platform/profiles/architectures/agent-defense-in-depth/README.md

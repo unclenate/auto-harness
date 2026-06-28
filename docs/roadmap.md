@@ -84,12 +84,13 @@ as "Planned" further down because that text predates their shipping.
 
 - `management/canonical-position` (PRD-0007) — ratified north-star. "v0.6.0 planned"
   below; **shipped.**
-- `architectures/agent-observability` (PRD-0014) — OpenTelemetry trace contract; the
-  first frontier-agent-cluster satellite. `architectures/ai-foundry-target` (PRD-0028)
-  is **shipped** (the second satellite); `architectures/intelligent-model-routing`
-  (PRD-0029 / OPP-0030) is **shipped** (the third). The last satellite,
-  `architectures/agent-defense-in-depth` (PRD-0030 / OPP-0031), is **designed
-  (design-only PRD accepted, not yet built).**
+- **The frontier-agent cluster (anchor OPP-0027) is fully built** — all four
+  `architectures/*` satellites shipped: `agent-observability` (PRD-0014),
+  `ai-foundry-target` (PRD-0028), `intelligent-model-routing` (PRD-0029), and
+  `agent-defense-in-depth` (PRD-0030). Each is a declarative v1 (no enforcement);
+  pattern/contract validators + companion rules are the per-module **v2 enforcement
+  follow-ups** (each a future OPP). The OPP-0027 anchor itself remains a conceptual
+  umbrella (the satellites carry the value).
 
 **Doctrine:** operating-principles §§ 9 (Split Design from Implementation), 10
 (Classify Claims Before Enforcing Them), 11 (Privacy by Design), 12 (Author Deep

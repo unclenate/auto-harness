@@ -309,6 +309,8 @@ duplicating inline. Absorbed from governance patterns observed in adsclaw.
 | Template | Required By Module | Path |
 | -------- | ------------------ | ---- |
 | SAST coverage declaration | `management/security-static-analysis` | `templates/security/sast-coverage.md` |
+| Agent defense-in-depth | `architectures/agent-defense-in-depth` | `templates/security/agent-defense-in-depth.md` |
+| Append-only action log | `architectures/agent-defense-in-depth` | `templates/security/append-only-action-log.md` |
 
 ### Canonical Position
 

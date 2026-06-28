@@ -11,6 +11,38 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-28 — PRD-0030 implementation: `architectures/agent-defense-in-depth` shipped — the frontier-agent cluster is complete (OPP-0031 accepted)
+
+Implemented the **fourth and final** frontier-agent-cluster satellite (anchor OPP-0027).
+Shipped the opt-in **`architectures/agent-defense-in-depth`** module + `README.md` and
+**two** templates in the existing `templates/security/` subdir (no new list-completeness
+row): `agent-defense-in-depth.md` (a single artifact with four named sections, one per
+Microsoft pattern — scope-containment, least-permissions, human-in-the-loop, agent
+identity) and `append-only-action-log.md` (the operator-owned audit log substantiating
+pattern #4).
+
+The action log is **optional in the schema but required-by-convention via a review gate
+when the project declares any autonomous (non-draft) action** — a conditional requirement
+the `module.yaml` schema cannot express and the harness cannot observe, so it is encoded
+as `optionalArtifacts` + a `reviewGates` entry (schema-permissive, human-enforced).
+Composes with OPP-0022 (healthcare patient-facing safety as the domain instantiation) and
+is orthogonal to the OPP-0006 trust-tier model; the pre-LLM transport gate is **named** as
+a related-but-distinct future template. Like its siblings, **v1 is declarative — no
+companion rule, no validator** (pattern-specific validators are the v2 follow-up).
+
+Propagation: SUMMARY architectures list, root README module table + tree,
+`templates/README.md` (two Security rows), `harness-onboarding` SKILL, and the
+catalog-count prose sites (modules 51→52, all 60→61, templates 96→98). **OPP-0031**
+flipped `exploring` → `accepted`; the roadmap now records the **cluster as fully built —
+all four OPP-0027 satellites shipped.** The full validator chain (20) passes; the new
+module is predict-clean on the harness (not activated). One paired distillation
+observation in `docs/knowledge/shared-observations.md`.
+
+**Cluster status:** the frontier-agent posture (OPP-0027) is realized end-to-end across
+`agent-observability` (PRD-0014), `ai-foundry-target` (PRD-0028),
+`intelligent-model-routing` (PRD-0029), and `agent-defense-in-depth` (PRD-0030). Remaining
+cluster work is the per-module **v2 enforcement** follow-ups (each a future OPP).
+
 ## 2026-06-28 — PRD-0029 implementation: `architectures/intelligent-model-routing` shipped (OPP-0030 accepted)
 
 Implemented the third frontier-agent-cluster satellite (anchor OPP-0027). Shipped the

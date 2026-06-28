@@ -350,6 +350,16 @@ PRD-0014 / OPP-0029).
 | Trace contract | `architectures/agent-observability` | `templates/observability/trace-contract.md` |
 | Trace exporters | `architectures/agent-observability` | `templates/observability/exporters.md` |
 
+### Foundry Target
+
+The enterprise-AI-foundry target declaration — which foundries a project commits to
+landing in and the portable, foundry-agnostic evidence for each — for projects with
+the `architectures/ai-foundry-target` overlay (PRD-0028 / OPP-0028).
+
+| Template | Required By Module | Path |
+| -------- | ------------------ | ---- |
+| Foundry targets | `architectures/ai-foundry-target` | `templates/architecture/foundry-targets.md` |
+
 ### Database
 
 | Template | Required By Module | Path |

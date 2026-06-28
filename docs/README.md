@@ -162,6 +162,7 @@ clustered backlog with framing.
 | [0048](opportunities/OPP-0048-redaction-scope-and-publication-boundary-hardening.md) | Redaction-Scope & Publication-Boundary Hardening | accepted |
 | [0049](opportunities/OPP-0049-deep-governance-vertical-harvest.md) | Deep Governance Vertical: Authoring-Pattern Harvest | accepted |
 | [0050](opportunities/OPP-0050-module-stability-tiers-parity.md) | Module Stability Tiers & Parity Normalization | accepted |
+| [0051](opportunities/OPP-0051-frontier-agent-cluster-v2-enforcement.md) | Frontier-Agent Cluster v2 Enforcement: Artifact-Content Validators | proposed |
 
 ---
 

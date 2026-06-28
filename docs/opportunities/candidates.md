@@ -645,6 +645,25 @@ cite-the-evidence rule), not the extraction; composes with the OPP-0046 lane
   ~70% already-built. Deferred: behavior-gating on stability, a module
   deprecation/lifecycle policy, stack build-out.
 
+- [OPP-0051](OPP-0051-frontier-agent-cluster-v2-enforcement.md) *(proposed
+  2026-06-28)* — **Frontier-Agent Cluster v2 Enforcement: Artifact-Content
+  Validators.** The four cluster satellites (observability / foundry-target /
+  model-routing / defense-in-depth) shipped declarative-v1 — they require
+  their artifact to *exist* but never check its *content*, leaving every § 10
+  central claim Half-enforced. Open the deferred v2 thread by drawing the line
+  between the two enforcement halves: **artifact-content / shape conformance**
+  (assert the declared artifact is internally well-formed — e.g.
+  `trace-contract.md` pins a semconv version + declares a span in the
+  conventional shape) is fixture-testable today, like `validate-sast-coverage`;
+  **code-cross-reference** (the declaration matches the running code) still
+  needs a fixed consumer code path and stays deferred. Ship the content half,
+  anchored on `validate-trace-contract.sh` (the cross-foundry conformance
+  anchor), module-gated / predict-clean; the other three content validators
+  reuse its shape-assertion skeleton as follow-on phases. Asserts load-bearing
+  invariants only (presence + shape), never exhaustive correctness, mirroring
+  `validate-module-stability`. Harvests the identical v2 deferral from PRD-0014
+  / 0028 / 0029 / 0030.
+
 ---
 
 ## References

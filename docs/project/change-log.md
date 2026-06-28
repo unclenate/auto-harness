@@ -11,6 +11,28 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-28 — OPP-0051: opened the frontier-agent cluster v2-enforcement thread (design-only)
+
+With the cluster fully built, filed **OPP-0051** to open the v2-enforcement thread each of
+the four satellite PRDs (PRD-0014 / 0028 / 0029 / 0030) deferred. Rather than re-defer the
+whole thing or over-commit to four validators + four companion rules, the OPP **splits
+"enforcement" on the exact predicate that caused the v1 deferral:**
+
+- **Artifact-content / shape conformance** (is the declared artifact internally
+  well-formed?) — needs no consumer code, **fixture-testable today** like the shipped
+  `validate-sast-coverage`. **Proposed to build**, anchored on `validate-trace-contract.sh`
+  (OTel trace conformance is the cross-foundry anchor the other three lean on),
+  module-gated / predict-clean; the other three content validators reuse its
+  shape-assertion skeleton as follow-on phases.
+- **Code-cross-reference** (does the declaration match the running code?) — still needs a
+  consumer's fixed code path to anchor a companion rule, so it **stays deferred**.
+
+The validators assert load-bearing invariants only (presence + shape — a version pin
+exists, a span is declared in the conventional form), never exhaustive correctness,
+mirroring `validate-module-stability`'s "presence + enum only." Propagation:
+`docs/README.md` OPP index row, `docs/opportunities/candidates.md` entry, one paired
+distillation observation. OPP-0051 is `proposed` — no PRD or implementation yet.
+
 ## 2026-06-28 — PRD-0030 implementation: `architectures/agent-defense-in-depth` shipped — the frontier-agent cluster is complete (OPP-0031 accepted)
 
 Implemented the **fourth and final** frontier-agent-cluster satellite (anchor OPP-0027).

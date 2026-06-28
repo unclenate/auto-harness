@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0031 — Agent Defense-in-Depth (Microsoft's Four Patterns) (`architectures/agent-defense-in-depth`)
 
-**Status:** proposed
+**Status:** exploring
 **Owner:** @unclenate
 **Created:** 2026-05-25
-**Last Updated:** 2026-05-25
+**Last Updated:** 2026-06-27 *(promoted `proposed` → `exploring`: [PRD-0030](../requirements/PRD-0030-agent-defense-in-depth.md) drafted + accepted as the v1 design contract. v1 is a declarative `architectures/agent-defense-in-depth` module mirroring the shipped siblings — requires `docs/security/agent-defense-in-depth.md` (single artifact, four named sections), `append-only-action-log.md` optional but required-by-convention via review gate when any autonomous action is declared (ships its own template); NO companion rule / validator at v1 (deferred to v2). Composes with OPP-0022 (healthcare overlay) + OPP-0006 (trust-tier, orthogonal). OPP-0031 flips `accepted` at implementation-merge.)*
 **Confidence:** medium-high
 
 ---

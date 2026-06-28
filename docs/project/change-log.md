@@ -11,6 +11,39 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-27 — PRD-0029 + PRD-0030 design pass: the frontier-agent cluster's design surface is complete
+
+Authored the two remaining frontier-agent-cluster satellite **design contracts** in one
+pass (design-only per § 9 — modules + templates ship in later implementation PRs):
+
+- **PRD-0029** ratifies **`architectures/intelligent-model-routing`** (OPP-0030) — a
+  declarative module declaring a project's task→model routing table (structured markdown,
+  free-form provider list with a suggested set), routing criteria
+  (capability/cost/privacy/regulatory/deployment-context), and foundry-routing seams.
+  Required artifact `docs/architecture/model-routing.md`; `model-routing-rationale.md`
+  optional. It **closes the deferred-dependency loop** — this module owns the
+  `model-routing.md` that the shipped `ai-foundry-target` lists as optional.
+- **PRD-0030** ratifies **`architectures/agent-defense-in-depth`** (OPP-0031) — Microsoft's
+  four patterns (agents-as-microservices, least-permissions, human-in-the-loop, agent
+  identity) as a single artifact with four named sections, plus an optional
+  `append-only-action-log.md` that is required-by-convention (review gate) when any
+  autonomous action is declared. Composes with OPP-0022 (healthcare overlay) and is
+  orthogonal to the OPP-0006 trust-tier model.
+
+Both are **declarative v1** mirroring the shipped siblings (`agent-observability`,
+`ai-foundry-target`): no companion rule, no validator. The notable ratification judgment:
+each OPP *proposed* a companion rule, but both were **deferred to v2** — the shipped
+siblings are declarative-v1 (enforcing v1 would break cluster consistency) and a
+declarative architecture overlay has no fixed consumer code path to anchor a companion
+rule's `triggerPaths` on. Both new templates reuse **existing** subdirs
+(`templates/architecture/`, `templates/security/`), so no new list-completeness rows.
+
+Propagation: `docs/README.md` PRD index (two rows) + OPP index (OPP-0030 / OPP-0031
+`proposed` → `exploring`); the two OPP files flipped with Last-Updated notes; the roadmap
+satellite line records both as designed-not-built. One paired distillation observation in
+`docs/knowledge/shared-observations.md`. No catalog-count change (design-only). OPP-0030 /
+OPP-0031 flip `accepted` at their respective implementation-merges.
+
 ## 2026-06-27 — PRD-0028 implementation: `architectures/ai-foundry-target` shipped (OPP-0028 accepted)
 
 Implemented the second frontier-agent-cluster satellite (anchor OPP-0027). Shipped the

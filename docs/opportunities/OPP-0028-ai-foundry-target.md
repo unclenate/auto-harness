@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0028 — Enterprise AI Foundry Target Awareness (`architectures/ai-foundry-target`)
 
-**Status:** exploring
+**Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-05-25
-**Last Updated:** 2026-06-27 *(promoted `proposed` → `exploring`: [PRD-0028](../requirements/PRD-0028-ai-foundry-target.md) drafted + accepted. v1 is a declarative `architectures/ai-foundry-target` module mirroring the just-shipped `agent-observability` sibling — requires `foundry-targets.md` (with the web-verified `foundries` enum + 3 portable evidence axes) + `trace-contract.md` (reused from OPP-0029), with `model-routing.md` optional until OPP-0030 ships. OPP-0028 flips `accepted` at implementation-merge.)*
+**Last Updated:** 2026-06-27 *(flipped `exploring` → `accepted` at implementation-merge: the declarative `architectures/ai-foundry-target` module + `foundry-targets.md` template — web-verified `foundries` enum + 3 portable evidence axes — shipped, mirroring the `agent-observability` sibling; requires `foundry-targets.md` + `trace-contract.md` (reused from OPP-0029), with `model-routing.md` optional until OPP-0030 ships. Companion rule + `validate-foundry-target.sh` are the v2 follow-up. Prior: 2026-06-27 promoted `proposed` → `exploring` when [PRD-0028](../requirements/PRD-0028-ai-foundry-target.md) was drafted + accepted.)*
 **Confidence:** medium-high
 
 ---

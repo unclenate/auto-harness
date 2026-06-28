@@ -119,6 +119,7 @@ Interaction and deployment patterns.
 * [MCP Server](platform/profiles/architectures/mcp-server/README.md) — projects that ship their own MCP server (npm/pip package, hosted endpoint, internal service)
 * [Agent Skill Pack](platform/profiles/architectures/agent-skill-pack/README.md) — products whose unit of delivery is an authored, eval-gated skill pack loaded by an agent runtime (OpenClaw / ClawHub, Claude Code, Cursor)
 * [Agent Observability](platform/profiles/architectures/agent-observability/README.md) — opt-in overlay declaring the project's OpenTelemetry multi-agent trace contract (spans/attributes/exporters) for foundry/observability-backend consumption; v1 declarative (PRD-0014)
+* [AI Foundry Target](platform/profiles/architectures/ai-foundry-target/README.md) — opt-in overlay declaring which enterprise AI foundries (Microsoft/Azure AI Foundry, NVIDIA, Palantir AIP, AWS Bedrock AgentCore, Google Vertex Agent Engine, custom) a project targets and the portable foundry-agnostic evidence for each; v1 declarative (PRD-0028)
 
 ### Data
 

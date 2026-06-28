@@ -507,10 +507,14 @@ prefer separate manifests over a combined polyglot manifest.
 | `architectures/event-driven` | Queue consumers, worker processes, background job scheduler, or event bus config found |
 | `architectures/agent-skill-pack` | Authored skill collection (`skills/<name>/SKILL.md` + references + scripts) deployed to an agent runtime (OpenClaw / ClawHub, Claude Code, Cursor); eval-gated; the skills ARE the product — not an app, service, MCP server, or in-product agent UI |
 | `architectures/agent-observability` | Agent activity is a first-class observable surface — the project emits OpenTelemetry agent traces a foundry or observability backend consumes (opt-in; v1 declarative) |
+| `architectures/ai-foundry-target` | The project is built to drop into an enterprise AI foundry — Microsoft/Azure AI Foundry, NVIDIA, Palantir AIP, AWS Bedrock AgentCore, Google Vertex Agent Engine — and declares portable foundry-agnostic evidence (opt-in; v1 declarative) |
 
 Required artifact (web-app / api-service / event-driven / agent-skill-pack):
 `docs/architecture/overview.md`. `agent-observability` instead requires
 `docs/observability/trace-contract.md` + `docs/observability/exporters.md`.
+`ai-foundry-target` instead requires `docs/architecture/foundry-targets.md` +
+`docs/observability/trace-contract.md` (with `docs/architecture/model-routing.md`
+optional until OPP-0030 ships).
 
 ---
 

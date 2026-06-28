@@ -11,6 +11,33 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-27 — PRD-0028 implementation: `architectures/ai-foundry-target` shipped (OPP-0028 accepted)
+
+Implemented the second frontier-agent-cluster satellite (anchor OPP-0027). Shipped the
+opt-in **`architectures/ai-foundry-target`** module + `README.md` and a new
+`templates/architecture/foundry-targets.md` template. The module declares which
+enterprise AI foundries a project is built to drop into — the web-verified enum
+`azure-ai-foundry` / `nvidia-ai-foundry` / `palantir-aip` / `aws-bedrock-agentcore` /
+`google-vertex-agent-engine` / `custom`, carried **in the artifact** (not as a
+`module.yaml` field) — plus the three portable, foundry-agnostic evidence axes
+(OpenTelemetry GenAI trace conformance, a portable eval suite, an open-protocol
+routing/MCP/A2A seam).
+
+Per the **deferred-dependency model**, it requires `foundry-targets.md` +
+`docs/observability/trace-contract.md` (reused from the shipped `agent-observability`
+sibling, OPP-0029) and lists `docs/architecture/model-routing.md` as **optional** until
+its owning module (`architectures/intelligent-model-routing`, OPP-0030) ships. Like its
+sibling, **v1 is declarative — no companion rule, no validator** (a
+`validate-foundry-target.sh` plus companion rule is the v2 follow-up).
+
+Propagation: SUMMARY architectures list, root README module table + tree,
+`templates/README.md` (new **Foundry Target** subsection + list-completeness row),
+`harness-onboarding` SKILL, and the catalog-count prose sites (modules 49 to 50, all
+58 to 59, templates 94 to 95). **OPP-0028** flipped `exploring` to `accepted` and the
+roadmap satellite line `designed` to `shipped`. The full validator chain (20) passes;
+the new module is predict-clean on the harness (not activated). One paired distillation
+observation recorded in `docs/knowledge/shared-observations.md`.
+
 ## 2026-06-27 — GitBook doc-watch sweep: front-door drift found + fixed (routine maintenance)
 
 A three-agent audit of the GitBook documentation after the #135–#148 governance wave

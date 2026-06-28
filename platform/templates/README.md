@@ -360,6 +360,16 @@ the `architectures/ai-foundry-target` overlay (PRD-0028 / OPP-0028).
 | -------- | ------------------ | ---- |
 | Foundry targets | `architectures/ai-foundry-target` | `templates/architecture/foundry-targets.md` |
 
+### Model Routing
+
+The task→model routing table — which models a project routes which tasks to, and why —
+for projects with the `architectures/intelligent-model-routing` overlay
+(PRD-0029 / OPP-0030).
+
+| Template | Required By Module | Path |
+| -------- | ------------------ | ---- |
+| Model routing | `architectures/intelligent-model-routing` | `templates/architecture/model-routing.md` |
+
 ### Database
 
 | Template | Required By Module | Path |

@@ -86,9 +86,10 @@ as "Planned" further down because that text predates their shipping.
   below; **shipped.**
 - `architectures/agent-observability` (PRD-0014) — OpenTelemetry trace contract; the
   first frontier-agent-cluster satellite. `architectures/ai-foundry-target` (PRD-0028)
-  is **shipped** (the second satellite). The remaining two satellites are **designed
-  (design-only PRDs accepted, not yet built):** `architectures/intelligent-model-routing`
-  (PRD-0029 / OPP-0030) and `architectures/agent-defense-in-depth` (PRD-0030 / OPP-0031).
+  is **shipped** (the second satellite); `architectures/intelligent-model-routing`
+  (PRD-0029 / OPP-0030) is **shipped** (the third). The last satellite,
+  `architectures/agent-defense-in-depth` (PRD-0030 / OPP-0031), is **designed
+  (design-only PRD accepted, not yet built).**
 
 **Doctrine:** operating-principles §§ 9 (Split Design from Implementation), 10
 (Classify Claims Before Enforcing Them), 11 (Privacy by Design), 12 (Author Deep

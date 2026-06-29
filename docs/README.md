@@ -101,7 +101,7 @@ originating opportunity records.
 | [0028](requirements/PRD-0028-ai-foundry-target.md) | Enterprise AI Foundry Target Awareness (`architectures/ai-foundry-target`) | Accepted | [OPP-0028](opportunities/OPP-0028-ai-foundry-target.md) |
 | [0029](requirements/PRD-0029-intelligent-model-routing.md) | Intelligent Model Routing (`architectures/intelligent-model-routing`) | Accepted | [OPP-0030](opportunities/OPP-0030-intelligent-model-routing.md) |
 | [0030](requirements/PRD-0030-agent-defense-in-depth.md) | Agent Defense-in-Depth (`architectures/agent-defense-in-depth`) | Accepted | [OPP-0031](opportunities/OPP-0031-agent-defense-in-depth.md) |
-| [0031](requirements/PRD-0031-validate-trace-contract.md) | Trace-Contract Content Validator (`validate-trace-contract.sh`) | Accepted *(design-only)* | [OPP-0051](opportunities/OPP-0051-frontier-agent-cluster-v2-enforcement.md) |
+| [0031](requirements/PRD-0031-validate-trace-contract.md) | Trace-Contract Content Validator (`validate-trace-contract.sh`) | Accepted | [OPP-0051](opportunities/OPP-0051-frontier-agent-cluster-v2-enforcement.md) |
 
 ---
 
@@ -163,7 +163,7 @@ clustered backlog with framing.
 | [0048](opportunities/OPP-0048-redaction-scope-and-publication-boundary-hardening.md) | Redaction-Scope & Publication-Boundary Hardening | accepted |
 | [0049](opportunities/OPP-0049-deep-governance-vertical-harvest.md) | Deep Governance Vertical: Authoring-Pattern Harvest | accepted |
 | [0050](opportunities/OPP-0050-module-stability-tiers-parity.md) | Module Stability Tiers & Parity Normalization | accepted |
-| [0051](opportunities/OPP-0051-frontier-agent-cluster-v2-enforcement.md) | Frontier-Agent Cluster v2 Enforcement: Artifact-Content Validators | exploring |
+| [0051](opportunities/OPP-0051-frontier-agent-cluster-v2-enforcement.md) | Frontier-Agent Cluster v2 Enforcement: Artifact-Content Validators | accepted |
 
 ---
 

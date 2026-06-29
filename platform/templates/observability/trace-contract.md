@@ -1,3 +1,12 @@
+---
+semconv_version: "OpenTelemetry GenAI semantic conventions (Development), semconv v1.42.0"
+spans:
+  - invoke_agent
+  - execute_tool
+  - chat
+content_capture: opt-in
+---
+
 <!--
 Copyright {{YEAR}} {{AUTHOR}} <{{AUTHOR_EMAIL}}>
 SPDX-License-Identifier: MIT OR Apache-2.0
@@ -10,6 +19,13 @@ Part of {{PROJECT_NAME}} — see LICENSE-MIT and LICENSE-APACHE at repository ro
 > agent activity. Foundries and observability backends consume *this* shape — fill
 > it in for your project, pin the conventions version, and keep it current. Part of
 > the `architectures/agent-observability` overlay (PRD-0014).
+>
+> The **YAML frontmatter above** is the machine-checkable mirror of the prose below,
+> parsed by `validate-trace-contract.sh` (PRD-0031): `semconv_version` (the version
+> pin), `spans` (the conventional GenAI operations you emit — name at least one of
+> `chat` / `invoke_agent` / `execute_tool` / `create_agent` / `embeddings` /
+> `invoke_workflow`), and `content_capture` (`opt-in` or `none`). Keep it in sync with
+> the detail below.
 
 ## Semantic-conventions version pin
 

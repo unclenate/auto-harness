@@ -157,8 +157,8 @@ ASSERTIONS=(
   "docs/_assets/cover-back.svg|>([0-9]+) diagrams<|diagrams"
 
   # README.md — prose count claims (word-form caught via normalize_count)
-  "README.md|Validator chain\*\* — ([a-z]+) shell scripts|validators"
-  "README.md|^([A-Z][a-z]+) validators, each targeting|validators"
+  "README.md|Validator chain\*\* — ([a-z-]+) shell scripts|validators"
+  "README.md|^([A-Z][a-z-]+) validators, each targeting|validators"
   "README.md|The harness provides ([a-z]+) skills|skills"
   "README.md|architecture diagrams \(([a-z]+) in total|diagrams"
 
@@ -218,6 +218,16 @@ normalize_count() {
     eighteen) echo 18 ;;
     nineteen) echo 19 ;;
     twenty) echo 20 ;;
+    twenty-one) echo 21 ;;
+    twenty-two) echo 22 ;;
+    twenty-three) echo 23 ;;
+    twenty-four) echo 24 ;;
+    twenty-five) echo 25 ;;
+    twenty-six) echo 26 ;;
+    twenty-seven) echo 27 ;;
+    twenty-eight) echo 28 ;;
+    twenty-nine) echo 29 ;;
+    thirty) echo 30 ;;
     *) echo "$1" ;;
   esac
 }

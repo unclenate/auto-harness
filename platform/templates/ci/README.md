@@ -40,6 +40,26 @@ validator's recipes and assertions are specific to the auto-harness
 repository structure. Consumers can add it if their project also makes
 catalog-count claims.
 
+## Submodule Smoke Test
+
+Both templates also include a **separate `submodule-smoke-test` job** that
+guards the consumer-side of the submodule integration (OPP-0025). It runs on a
+clean runner and:
+
+1. Checks out the repo with recursive submodules (fresh-clone semantics).
+2. Asserts `.harness/` actually materialized — failing with an actionable
+   message if the submodule is empty or its pinned SHA is unreachable upstream.
+3. Smoke-runs one validator against your manifest to prove the integration is live.
+
+It is a *separate* job (not a step in the validator chain) on purpose: a failure
+here means "the submodule integration is broken" — distinct from "a validator
+found drift" — and the clean-checkout semantics are what give the smoke test its
+value. These are the two failure modes that are silent on the first developer's
+machine and only surface for the second developer or in a teammate's clone; the
+harness's own CI cannot see them, because the harness *is* the upstream. See
+[`platform/workflow/submodule-integration.md`](../../workflow/submodule-integration.md)
+§ 6 for the manual one-liner version.
+
 ## Customization
 
 | Need | How |

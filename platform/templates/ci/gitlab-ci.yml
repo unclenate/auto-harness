@@ -24,6 +24,32 @@ variables:
 stages:
   - validate
 
+# Consumer-side integration smoke test (OPP-0025). Catches the two silent
+# submodule-integration failure modes the harness's own CI cannot see:
+#   1. a fresh clone without recursive submodules leaves .harness/ empty;
+#   2. the pinned submodule SHA is no longer reachable upstream (force-push,
+#      deleted branch, archived/auth-gated remote) — the clone itself fails.
+# Kept a SEPARATE job so a failure here reads as "submodule integration is
+# broken", distinct from "a validator found drift". GIT_SUBMODULE_STRATEGY is
+# recursive (set globally above), so the runner clones the submodule fresh.
+submodule-smoke-test:
+  stage: validate
+  image: ruby:3.3
+  script:
+    - |
+      if [ ! -f .harness/platform/validators/validate-manifest.sh ]; then
+        echo "✗ .harness submodule did not materialize."
+        echo "  → ensure GIT_SUBMODULE_STRATEGY: recursive, and confirm the"
+        echo "    pinned SHA is reachable in the harness remote."
+        exit 1
+      fi
+      echo "✓ .harness submodule materialized."
+    # Proves the integration is live: the materialized submodule runs a validator.
+    - bash .harness/platform/validators/validate-manifest.sh harness.manifest.yaml
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == "main"
+
 validate:
   stage: validate
   image: ruby:3.3

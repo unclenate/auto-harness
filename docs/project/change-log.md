@@ -11,6 +11,34 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-28 — PRD-0032: cluster content validators, phases 2–4 design contract (OPP-0051, design-only)
+
+Authored **PRD-0032**, ratifying the **three remaining** artifact-content validators of
+OPP-0051's family (phase 1, `validate-trace-contract.sh`, shipped via PRD-0031):
+
+- `validate-foundry-target.sh` — `foundry-targets.md`: ≥1 foundry from the enum, each with
+  a `live`/`roadmap` status.
+- `validate-model-routing.sh` — `model-routing.md`: ≥1 task→model route (providers
+  free-form, no enum).
+- `validate-agent-defense-in-depth.sh` — `agent-defense-in-depth.md`: all four pattern keys
+  present.
+
+Each mirrors the shipped `validate-trace-contract.sh` skeleton **exactly** — the
+requirement-set activation gate, Bash 3.2 + Ruby `YAML.safe_load`, 3-state exit,
+`--scan-file` seam, predict-clean — and adds a machine-checkable frontmatter block to its
+template. The three are folded into **one** PRD rather than three near-copies because, per
+§ 7, they are a single change-class (the artifact-content-shape pattern instantiated three
+times); the PRD references the skeleton once and tabulates the per-instance invariants.
+Implementation may land in one PR or staged; validator count 21 → 24 across the three. The
+code-cross-reference half and companion rules stay deferred for all three.
+
+Design-only per § 9 — validators + template frontmatter + propagation ship in the
+implementing PR(s); no catalog-count change this PR. Propagation: `docs/README.md` PRD
+index row; OPP-0051 updated with a PRD-0032 traceability note; one paired distillation
+observation (one change-class = one PRD even for N instances). On completion of these
+phases, the cluster's artifact-content v2 enforcement is fully built across all four
+satellites.
+
 ## 2026-06-28 — PRD-0031 implementation: `validate-trace-contract.sh` shipped — the cluster's first v2-enforcement validator (OPP-0051 accepted)
 
 Implemented **PRD-0031**, shipping the frontier-agent cluster's first **v2-enforcement**

@@ -63,6 +63,9 @@ bash platform/validators/validate-skill-content.sh harness.manifest.yaml .
 bash platform/validators/validate-knowledge-redaction.sh . main
 bash platform/validators/validate-sast-coverage.sh harness.manifest.yaml .
 bash platform/validators/validate-trace-contract.sh harness.manifest.yaml .
+bash platform/validators/validate-foundry-target.sh harness.manifest.yaml .
+bash platform/validators/validate-model-routing.sh harness.manifest.yaml .
+bash platform/validators/validate-agent-defense-in-depth.sh harness.manifest.yaml .
 bash platform/validators/validate-privacy-by-design.sh harness.manifest.yaml .
 bash platform/validators/validate-publication-boundary.sh .
 bash platform/validators/validate-module-stability.sh .

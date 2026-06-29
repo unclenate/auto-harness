@@ -1,8 +1,18 @@
+---
+foundries:
+  - id: azure-ai-foundry
+    status: roadmap
+---
+
 <!--
 Copyright {{YEAR}} {{AUTHOR}} <{{AUTHOR_EMAIL}}>
 SPDX-License-Identifier: MIT OR Apache-2.0
 Part of {{PROJECT_NAME}} — see LICENSE-MIT and LICENSE-APACHE at repository root.
 -->
+
+<!-- The YAML frontmatter above is the machine-checkable mirror of the prose below,
+parsed by validate-foundry-target.sh (PRD-0032): one entry per targeted foundry, each
+with an `id` from the enum and a `status` of `live` or `roadmap`. Keep it in sync. -->
 
 # Foundry Targets
 

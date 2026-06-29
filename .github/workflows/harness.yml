@@ -106,6 +106,27 @@ jobs:
         # frontier-agent cluster's v2 enforcement (PRD-0031 / OPP-0051).
         run: bash platform/validators/validate-trace-contract.sh harness.manifest.yaml .
 
+      - name: Validate foundry target
+        # Opt-in (OPP-0051 phase 2): when no active module requires
+        # docs/architecture/foundry-targets.md (architectures/ai-foundry-target), exits 0.
+        # When one does, asserts the foundries frontmatter declares >=1 foundry from the
+        # enum, each with a live/roadmap status. Artifact-content shape check.
+        run: bash platform/validators/validate-foundry-target.sh harness.manifest.yaml .
+
+      - name: Validate model routing
+        # Opt-in (OPP-0051 phase 3): when no active module requires
+        # docs/architecture/model-routing.md (architectures/intelligent-model-routing),
+        # exits 0. When one does, asserts the routes frontmatter declares >=1 task->model
+        # route (providers free-form). Artifact-content shape check.
+        run: bash platform/validators/validate-model-routing.sh harness.manifest.yaml .
+
+      - name: Validate agent defense-in-depth
+        # Opt-in (OPP-0051 phase 4): when no active module requires
+        # docs/security/agent-defense-in-depth.md (architectures/agent-defense-in-depth),
+        # exits 0. When one does, asserts the patterns frontmatter names all four
+        # defense-in-depth patterns. Artifact-content shape check.
+        run: bash platform/validators/validate-agent-defense-in-depth.sh harness.manifest.yaml .
+
       - name: Validate privacy-by-design
         # Opt-in: when management/privacy-by-design is not active in the
         # consumer manifest, the validator exits 0 with a "module inactive"

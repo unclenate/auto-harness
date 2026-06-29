@@ -1,8 +1,18 @@
+---
+routes:
+  - task: complex reasoning
+    model: claude-sonnet-4-6
+---
+
 <!--
 Copyright {{YEAR}} {{AUTHOR}} <{{AUTHOR_EMAIL}}>
 SPDX-License-Identifier: MIT OR Apache-2.0
 Part of {{PROJECT_NAME}} — see LICENSE-MIT and LICENSE-APACHE at repository root.
 -->
+
+<!-- The YAML frontmatter above is the machine-checkable mirror of the routing table
+below, parsed by validate-model-routing.sh (PRD-0032): one entry per task class, each
+with a non-empty `task` and `model`. Providers are free-form (no enum). Keep it in sync. -->
 
 # Model Routing
 

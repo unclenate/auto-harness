@@ -62,6 +62,9 @@ validators:
   - validate-knowledge-redaction
   - validate-sast-coverage
   - validate-trace-contract
+  - validate-foundry-target
+  - validate-model-routing
+  - validate-agent-defense-in-depth
   - validate-publication-boundary
   - validate-module-stability
 reviewGates:

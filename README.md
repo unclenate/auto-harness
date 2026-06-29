@@ -53,7 +53,7 @@ harness provides:
 - **Artifact requirements** — the files that must exist for a module to be considered active
   and governed (problem statement, ADRs, risk register, release checklist, etc.)
 - **Sensitive path governance** — patterns that trigger elevated human review when changed
-- **Validator chain** — twenty-one shell scripts you run locally or in CI that enforce all of the above
+- **Validator chain** — twenty-four shell scripts you run locally or in CI that enforce all of the above
 - **Agent adapters** — `CLAUDE.md`, `AGENTS.md`, and `.claude/settings.json` shims that load
   the governance rules into agent context at session start
 
@@ -143,7 +143,7 @@ flowchart TD
     end
 
     subgraph ENFORCE["Enforcement (CI)"]
-        Validators["<b>Validators</b><br/>21 scripts"]
+        Validators["<b>Validators</b><br/>24 scripts"]
         Validators -.reads.-> Manifest
         Validators -.reads.-> Companions
         Validators --> CIGate["<b>CI gates merge</b>"]
@@ -408,7 +408,7 @@ bash .harness/platform/bootstrap/link-skills.sh \
 
 ## Validators
 
-Twenty-one validators, each targeting a specific governance layer:
+Twenty-four validators, each targeting a specific governance layer:
 
 | Validator | What It Checks |
 | --------- | -------------- |
@@ -427,6 +427,9 @@ Twenty-one validators, each targeting a specific governance layer:
 | `validate-knowledge-redaction.sh` | Surfaces consumer-name hits in new lines added to `docs/knowledge/shared-observations.md` and `docs/operating-principles.md` (default WARN; `--block` for hard fail) — closes the §8 cross-pollination + §9 upstream-propagation pathways |
 | `validate-sast-coverage.sh` | Opt-in: when `management/security-static-analysis` is active, validates `docs/security/sast-coverage.md` declares a recommended-set tool (`semgrep` / `codeql` / `bandit` / `gosec` / `eslint-plugin-security` / `snyk-code`), scan paths, and a severity threshold — half-enforces sweep §11 (consumer CI honors the contract for end-to-end enforcement) |
 | `validate-trace-contract.sh` | Opt-in: when any active module requires `docs/observability/trace-contract.md` (`architectures/agent-observability` or `architectures/ai-foundry-target`), validates the trace contract pins a semconv version, declares a conventional GenAI span, and states a content-capture posture — the artifact-content half of the frontier-agent cluster's v2 enforcement (PRD-0031) |
+| `validate-foundry-target.sh` | Opt-in: when `architectures/ai-foundry-target` is active, validates `docs/architecture/foundry-targets.md` declares ≥1 foundry from the enum, each with a `live`/`roadmap` status — cluster v2 enforcement phase 2 (PRD-0032) |
+| `validate-model-routing.sh` | Opt-in: when `architectures/intelligent-model-routing` is active, validates `docs/architecture/model-routing.md` declares ≥1 task→model route (providers free-form) — cluster v2 enforcement phase 3 (PRD-0032) |
+| `validate-agent-defense-in-depth.sh` | Opt-in: when `architectures/agent-defense-in-depth` is active, validates `docs/security/agent-defense-in-depth.md` names all four defense-in-depth patterns — cluster v2 enforcement phase 4 (PRD-0032) |
 | `validate-privacy-by-design.sh` | Privacy-by-design overlay — gated; validates privacy-profile presence/consistency, WARN-surfaces privacy-risk patterns |
 | `validate-twin-profile.sh` | Digital Twin overlay — gated; validates the `docs/twin/twin-profile.md` contract (maturity, conformance, governing principles) and WARN-surfaces standards-overclaim (emerging ISO 23247-5/-6, ISO/IEC 30188 marked published) |
 | `validate-scenario-manifest.sh` | Digital Twin overlay — gated; validates scenario manifests carry the required epistemic-discipline sections (datasets with source/version/asOf/confidence, assumptions with sensitivity, provenance, publication-approval gating) |

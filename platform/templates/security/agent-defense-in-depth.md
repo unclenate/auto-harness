@@ -1,8 +1,20 @@
+---
+patterns:
+  - scope-containment
+  - least-permissions
+  - human-in-the-loop
+  - agent-identity
+---
+
 <!--
 Copyright {{YEAR}} {{AUTHOR}} <{{AUTHOR_EMAIL}}>
 SPDX-License-Identifier: MIT OR Apache-2.0
 Part of {{PROJECT_NAME}} — see LICENSE-MIT and LICENSE-APACHE at repository root.
 -->
+
+<!-- The YAML frontmatter above is the machine-checkable mirror of the four sections
+below, parsed by validate-agent-defense-in-depth.sh (PRD-0032): all four patterns must
+be named. Keep it in sync with the sections. -->
 
 # Agent Defense-in-Depth
 

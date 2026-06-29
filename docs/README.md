@@ -102,7 +102,7 @@ originating opportunity records.
 | [0029](requirements/PRD-0029-intelligent-model-routing.md) | Intelligent Model Routing (`architectures/intelligent-model-routing`) | Accepted | [OPP-0030](opportunities/OPP-0030-intelligent-model-routing.md) |
 | [0030](requirements/PRD-0030-agent-defense-in-depth.md) | Agent Defense-in-Depth (`architectures/agent-defense-in-depth`) | Accepted | [OPP-0031](opportunities/OPP-0031-agent-defense-in-depth.md) |
 | [0031](requirements/PRD-0031-validate-trace-contract.md) | Trace-Contract Content Validator (`validate-trace-contract.sh`) | Accepted | [OPP-0051](opportunities/OPP-0051-frontier-agent-cluster-v2-enforcement.md) |
-| [0032](requirements/PRD-0032-cluster-content-validators.md) | Cluster Content Validators — Phases 2–4 (foundry-target / model-routing / defense-in-depth) | Accepted *(design-only)* | [OPP-0051](opportunities/OPP-0051-frontier-agent-cluster-v2-enforcement.md) |
+| [0032](requirements/PRD-0032-cluster-content-validators.md) | Cluster Content Validators — Phases 2–4 (foundry-target / model-routing / defense-in-depth) | Accepted | [OPP-0051](opportunities/OPP-0051-frontier-agent-cluster-v2-enforcement.md) |
 
 ---
 

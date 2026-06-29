@@ -592,6 +592,163 @@ class TestValidateTraceContract < Minitest::Test
 end
 
 # ---------------------------------------------------------------------------
+# validate-foundry-target.sh
+# ---------------------------------------------------------------------------
+class TestValidateFoundryTarget < Minitest::Test
+  def write_artifact(dir, frontmatter)
+    FileUtils.mkdir_p(dir)
+    path = File.join(dir, "foundry-targets.md")
+    File.write(path, "---\n#{frontmatter}---\n\n# Foundry Targets\n\nbody\n")
+    path
+  end
+
+  def test_scan_file_well_formed_passes
+    Dir.mktmpdir do |tmp|
+      fm = "foundries:\n  - id: aws-bedrock-agentcore\n    status: live\n"
+      out, err, code = run_validator("validate-foundry-target.sh", "--scan-file", write_artifact(tmp, fm))
+      assert_equal 0, code, "stderr: #{err}"
+      assert_match(/✓/, out)
+    end
+  end
+
+  def test_scan_file_empty_foundries_fails
+    Dir.mktmpdir do |tmp|
+      _o, err, code = run_validator("validate-foundry-target.sh", "--scan-file", write_artifact(tmp, "foundries: []\n"))
+      assert_equal 1, code
+      assert_match(/at least one/, err)
+    end
+  end
+
+  def test_scan_file_bad_id_fails
+    Dir.mktmpdir do |tmp|
+      fm = "foundries:\n  - id: not-a-foundry\n    status: live\n"
+      _o, err, code = run_validator("validate-foundry-target.sh", "--scan-file", write_artifact(tmp, fm))
+      assert_equal 1, code
+      assert_match(/is not one of/, err)
+    end
+  end
+
+  def test_scan_file_bad_status_fails
+    Dir.mktmpdir do |tmp|
+      fm = "foundries:\n  - id: custom\n    status: someday\n"
+      _o, err, code = run_validator("validate-foundry-target.sh", "--scan-file", write_artifact(tmp, fm))
+      assert_equal 1, code
+      assert_match(/status/, err)
+    end
+  end
+
+  def test_scan_file_missing_arg_is_usage_error
+    _o, _e, code = run_validator("validate-foundry-target.sh", "--scan-file")
+    assert_equal 2, code
+  end
+
+  def test_inactive_modules_skip
+    out, err, code = run_validator("validate-foundry-target.sh", fixture_manifest("valid-prototype"), fixture_project("valid-prototype"))
+    assert_equal 0, code, "stderr: #{err}"
+    assert_match(/skipped/, out)
+  end
+end
+
+# ---------------------------------------------------------------------------
+# validate-model-routing.sh
+# ---------------------------------------------------------------------------
+class TestValidateModelRouting < Minitest::Test
+  def write_artifact(dir, frontmatter)
+    FileUtils.mkdir_p(dir)
+    path = File.join(dir, "model-routing.md")
+    File.write(path, "---\n#{frontmatter}---\n\n# Model Routing\n\nbody\n")
+    path
+  end
+
+  def test_scan_file_well_formed_passes
+    Dir.mktmpdir do |tmp|
+      fm = "routes:\n  - task: reasoning\n    model: claude-sonnet-4-6\n"
+      out, err, code = run_validator("validate-model-routing.sh", "--scan-file", write_artifact(tmp, fm))
+      assert_equal 0, code, "stderr: #{err}"
+      assert_match(/✓/, out)
+    end
+  end
+
+  def test_scan_file_empty_routes_fails
+    Dir.mktmpdir do |tmp|
+      _o, err, code = run_validator("validate-model-routing.sh", "--scan-file", write_artifact(tmp, "routes: []\n"))
+      assert_equal 1, code
+      assert_match(/at least one/, err)
+    end
+  end
+
+  def test_scan_file_missing_model_fails
+    Dir.mktmpdir do |tmp|
+      fm = "routes:\n  - task: reasoning\n"
+      _o, err, code = run_validator("validate-model-routing.sh", "--scan-file", write_artifact(tmp, fm))
+      assert_equal 1, code
+      assert_match(/model/, err)
+    end
+  end
+
+  def test_scan_file_missing_arg_is_usage_error
+    _o, _e, code = run_validator("validate-model-routing.sh", "--scan-file")
+    assert_equal 2, code
+  end
+
+  def test_inactive_modules_skip
+    out, err, code = run_validator("validate-model-routing.sh", fixture_manifest("valid-prototype"), fixture_project("valid-prototype"))
+    assert_equal 0, code, "stderr: #{err}"
+    assert_match(/skipped/, out)
+  end
+end
+
+# ---------------------------------------------------------------------------
+# validate-agent-defense-in-depth.sh
+# ---------------------------------------------------------------------------
+class TestValidateAgentDefenseInDepth < Minitest::Test
+  ALL_FOUR = "patterns:\n  - scope-containment\n  - least-permissions\n  - human-in-the-loop\n  - agent-identity\n"
+
+  def write_artifact(dir, frontmatter)
+    FileUtils.mkdir_p(dir)
+    path = File.join(dir, "agent-defense-in-depth.md")
+    File.write(path, "---\n#{frontmatter}---\n\n# Agent Defense-in-Depth\n\nbody\n")
+    path
+  end
+
+  def test_scan_file_all_four_passes
+    Dir.mktmpdir do |tmp|
+      out, err, code = run_validator("validate-agent-defense-in-depth.sh", "--scan-file", write_artifact(tmp, ALL_FOUR))
+      assert_equal 0, code, "stderr: #{err}"
+      assert_match(/✓/, out)
+    end
+  end
+
+  def test_scan_file_missing_one_pattern_fails
+    Dir.mktmpdir do |tmp|
+      fm = "patterns:\n  - scope-containment\n  - least-permissions\n  - human-in-the-loop\n"
+      _o, err, code = run_validator("validate-agent-defense-in-depth.sh", "--scan-file", write_artifact(tmp, fm))
+      assert_equal 1, code
+      assert_match(/agent-identity/, err)
+    end
+  end
+
+  def test_scan_file_missing_field_fails
+    Dir.mktmpdir do |tmp|
+      _o, err, code = run_validator("validate-agent-defense-in-depth.sh", "--scan-file", write_artifact(tmp, "other: x\n"))
+      assert_equal 1, code
+      assert_match(/patterns/, err)
+    end
+  end
+
+  def test_scan_file_missing_arg_is_usage_error
+    _o, _e, code = run_validator("validate-agent-defense-in-depth.sh", "--scan-file")
+    assert_equal 2, code
+  end
+
+  def test_inactive_modules_skip
+    out, err, code = run_validator("validate-agent-defense-in-depth.sh", fixture_manifest("valid-prototype"), fixture_project("valid-prototype"))
+    assert_equal 0, code, "stderr: #{err}"
+    assert_match(/skipped/, out)
+  end
+end
+
+# ---------------------------------------------------------------------------
 # validate-agent-pack.sh
 # ---------------------------------------------------------------------------
 class TestValidateAgentPack < Minitest::Test

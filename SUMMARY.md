@@ -196,7 +196,7 @@ AI-tool packs and operating adapters.
 
 ## Validator Reference
 
-The twenty-one validator scripts and their shared Ruby library. CI wiring and troubleshooting live in the workflow sections above.
+The twenty-four validator scripts and their shared Ruby library. CI wiring and troubleshooting live in the workflow sections above.
 
 * [Validators Overview](platform/validators/README.md)
 * [validate-manifest.sh](platform/validators/validate-manifest.sh)
@@ -214,6 +214,9 @@ The twenty-one validator scripts and their shared Ruby library. CI wiring and tr
 * [validate-knowledge-redaction.sh](platform/validators/validate-knowledge-redaction.sh)
 * [validate-sast-coverage.sh](platform/validators/validate-sast-coverage.sh)
 * [validate-trace-contract.sh](platform/validators/validate-trace-contract.sh)
+* [validate-foundry-target.sh](platform/validators/validate-foundry-target.sh)
+* [validate-model-routing.sh](platform/validators/validate-model-routing.sh)
+* [validate-agent-defense-in-depth.sh](platform/validators/validate-agent-defense-in-depth.sh)
 * [validate-privacy-by-design.sh](platform/validators/validate-privacy-by-design.sh)
 * [validate-twin-profile.sh](platform/validators/validate-twin-profile.sh)
 * [validate-scenario-manifest.sh](platform/validators/validate-scenario-manifest.sh)

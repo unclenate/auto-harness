@@ -111,6 +111,9 @@ bash $PLATFORM/validators/validate-skill-content.sh      harness.manifest.yaml .
 bash $PLATFORM/validators/validate-knowledge-redaction.sh .                    main
 bash $PLATFORM/validators/validate-sast-coverage.sh      harness.manifest.yaml .
 bash $PLATFORM/validators/validate-trace-contract.sh     harness.manifest.yaml .
+bash $PLATFORM/validators/validate-foundry-target.sh     harness.manifest.yaml .
+bash $PLATFORM/validators/validate-model-routing.sh      harness.manifest.yaml .
+bash $PLATFORM/validators/validate-agent-defense-in-depth.sh harness.manifest.yaml .
 bash $PLATFORM/validators/validate-privacy-by-design.sh  harness.manifest.yaml .
 bash $PLATFORM/validators/validate-twin-profile.sh       harness.manifest.yaml .
 bash $PLATFORM/validators/validate-scenario-manifest.sh  harness.manifest.yaml .
@@ -235,6 +238,17 @@ A few signature notes worth highlighting:
   the deferred code-cross-reference half). The artifact-content half of
   the frontier-agent cluster's v2 enforcement; `--scan-file <path>` for
   fixture tests. Per PRD-0031 / OPP-0051 / OPP-0027.
+- **`validate-foundry-target.sh`**, **`validate-model-routing.sh`**, and
+  **`validate-agent-defense-in-depth.sh`** are the three sibling
+  content validators (PRD-0032, OPP-0051 phases 2–4) — same skeleton as
+  `validate-trace-contract.sh` (requirement-set activation gate,
+  `--scan-file`, predict-clean), each asserting its own artifact's
+  frontmatter shape: `foundry-targets.md` declares ≥ 1 foundry from the
+  enum with a `live`/`roadmap` status; `model-routing.md` declares ≥ 1
+  `task`→`model` route (providers free-form); `agent-defense-in-depth.md`
+  names all four patterns (`scope-containment`, `least-permissions`,
+  `human-in-the-loop`, `agent-identity`). Presence + shape only; the
+  code-cross-reference half stays deferred.
 - **`validate-companions.sh`** is PR-diff-based and takes a third
   positional arg `<base-branch>` (default `main`). It is intended for
   CI; running it locally on a clean branch with no diff against base

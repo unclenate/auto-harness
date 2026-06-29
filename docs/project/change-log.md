@@ -11,6 +11,37 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-28 — PRD-0032 implementation: three cluster content validators shipped — artifact-content v2 enforcement complete (OPP-0051)
+
+Implemented **PRD-0032** in one PR, shipping the three remaining artifact-content
+validators of OPP-0051's family:
+
+- `validate-foundry-target.sh` — `foundry-targets.md`: ≥1 foundry from the enum, each
+  `live`/`roadmap`.
+- `validate-model-routing.sh` — `model-routing.md`: ≥1 task→model route (providers
+  free-form).
+- `validate-agent-defense-in-depth.sh` — `agent-defense-in-depth.md`: all four pattern keys.
+
+Each is a near-exact copy of the shipped `validate-trace-contract.sh` skeleton
+(requirement-set activation gate, Bash 3.2 + Ruby `YAML.safe_load`, 3-state exit,
+`--scan-file` seam, predict-clean) with the artifact path and a small invariant block
+swapped, plus a machine-checkable YAML frontmatter block added to each template (real
+example values so the template self-validates). 16 new fixture tests (203 total, 0
+failures); shellcheck-clean.
+
+**Validator count 21 → 24.** Full propagation across the CI workflow, AGENTS.md, the
+harness-governance SKILL (chain + bullet), `validators/README` (3 table rows + run-list +
+test-list), the `kernel/base` catalog, the root README (table + mermaid + word-form
+counts), and SUMMARY. **PRD-0032** marked Accepted (implemented); **OPP-0051** updated to
+record the family complete. One paired distillation observation (validator-family cost is
+propagation, not logic — bundle to amortize).
+
+**Cluster status:** the frontier-agent posture's **artifact-content v2 enforcement is now
+complete across all four satellites** (trace-contract, foundry-target, model-routing,
+defense-in-depth). The only remaining cluster work is the **code-cross-reference** half
+(declarations match running code) + companion rules — still deferred, gated on consumer
+code paths.
+
 ## 2026-06-28 — PRD-0032: cluster content validators, phases 2–4 design contract (OPP-0051, design-only)
 
 Authored **PRD-0032**, ratifying the **three remaining** artifact-content validators of

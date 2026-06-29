@@ -61,6 +61,7 @@ validators:
   - validate-skill-content
   - validate-knowledge-redaction
   - validate-sast-coverage
+  - validate-trace-contract
   - validate-publication-boundary
   - validate-module-stability
 reviewGates:

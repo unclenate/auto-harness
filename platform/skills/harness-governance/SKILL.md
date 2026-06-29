@@ -110,6 +110,7 @@ bash $PLATFORM/validators/validate-sensitive-paths.sh    harness.manifest.yaml .
 bash $PLATFORM/validators/validate-skill-content.sh      harness.manifest.yaml .
 bash $PLATFORM/validators/validate-knowledge-redaction.sh .                    main
 bash $PLATFORM/validators/validate-sast-coverage.sh      harness.manifest.yaml .
+bash $PLATFORM/validators/validate-trace-contract.sh     harness.manifest.yaml .
 bash $PLATFORM/validators/validate-privacy-by-design.sh  harness.manifest.yaml .
 bash $PLATFORM/validators/validate-twin-profile.sh       harness.manifest.yaml .
 bash $PLATFORM/validators/validate-scenario-manifest.sh  harness.manifest.yaml .
@@ -216,6 +217,24 @@ A few signature notes worth highlighting:
   Half-enforces safety-security-sweep §11 (the largest mission-
   relative gap in the sweep) — the harness validates the contract;
   consumer CI honors it for end-to-end enforcement.
+- **`validate-trace-contract.sh`** takes `[<manifest>] [<project-root>]`
+  (or `--scan-file <path>`). Opt-in / module-gated, but on a different
+  predicate than the others: it activates when **any active module
+  declares `docs/observability/trace-contract.md` in its
+  `requiredArtifacts`** — today `architectures/agent-observability`
+  (which owns it) or `architectures/ai-foundry-target` (which reuses it
+  via the deferred-dependency model) — so a consumer activating either
+  gets the check. When none does, exits 0 with a "skipping" message
+  (predict-clean — the harness activates neither). When active, parses
+  the artifact's YAML frontmatter and asserts `semconv_version:` is a
+  non-empty version pin, `spans:` declares at least one conventional
+  GenAI operation (`chat` / `invoke_agent` / `execute_tool` /
+  `create_agent` / `embeddings` / `invoke_workflow`), and
+  `content_capture:` is one of `{opt-in, none}`. Presence + shape only
+  (never that the declared spans match the emitted telemetry — that is
+  the deferred code-cross-reference half). The artifact-content half of
+  the frontier-agent cluster's v2 enforcement; `--scan-file <path>` for
+  fixture tests. Per PRD-0031 / OPP-0051 / OPP-0027.
 - **`validate-companions.sh`** is PR-diff-based and takes a third
   positional arg `<base-branch>` (default `main`). It is intended for
   CI; running it locally on a clean branch with no diff against base

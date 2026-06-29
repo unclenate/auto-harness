@@ -11,6 +11,33 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-28 — PRD-0031 implementation: `validate-trace-contract.sh` shipped — the cluster's first v2-enforcement validator (OPP-0051 accepted)
+
+Implemented **PRD-0031**, shipping the frontier-agent cluster's first **v2-enforcement**
+validator: **`validate-trace-contract.sh`**, the artifact-content/shape check for
+`docs/observability/trace-contract.md`. It mirrors `validate-sast-coverage.sh` — Bash 3.2 +
+inline Ruby `YAML.safe_load`, 3-state exit, `--scan-file` fixture seam, module-gated /
+predict-clean — and asserts three load-bearing invariants: `semconv_version` pinned, at
+least one conventional GenAI span, and `content_capture ∈ {opt-in, none}`.
+
+Two implementation notes worth recording: (1) the activation gate keys off the **artifact's
+requirement-set** ("any active module requiring `trace-contract.md`") rather than a single
+module id, because the artifact is *shared* — `agent-observability` owns it and
+`ai-foundry-target` reuses it via the deferred-dependency model; (2) the **machine-checkable
+YAML frontmatter** was added to the `trace-contract.md` template (line 1, before the
+copyright comment, with real example values so the template self-validates) — the same shape
+`sast-coverage.md` already uses.
+
+Seven fixture tests (`TestValidateTraceContract`), shellcheck-clean, predict-clean on the
+harness's own CI. Full propagation: the CI workflow step, AGENTS.md, the harness-governance
+SKILL chain + detailed bullet, `platform/validators/README.md` (table + run-list + test-list),
+the `kernel/base` validators catalog, the root README (table + mermaid box + word-form
+counts), and SUMMARY (validator list + count) — **validator count 20 → 21** across every
+`validate-catalog-counts` site. **OPP-0051** flipped `exploring` → `accepted`. The
+code-cross-reference half + companion rule stay deferred; the foundry-target / model-routing /
+defense-in-depth content validators are follow-on phases reusing this validator's
+shape-assertion skeleton.
+
 ## 2026-06-28 — PRD-0031: trace-contract content validator design contract (OPP-0051 first deliverable, design-only)
 
 Authored **PRD-0031**, ratifying OPP-0051's first concrete deliverable: **`validate-trace-contract.sh`**,

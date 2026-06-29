@@ -97,6 +97,15 @@ jobs:
         # end-to-end enforcement).
         run: bash platform/validators/validate-sast-coverage.sh harness.manifest.yaml .
 
+      - name: Validate trace contract
+        # Opt-in: when no active module requires docs/observability/trace-contract.md
+        # (architectures/agent-observability or architectures/ai-foundry-target), the
+        # validator exits 0 with a "skipping" message. When one does, it validates the
+        # trace contract pins a semconv version, declares a conventional GenAI span,
+        # and states a content-capture posture. The artifact-content half of the
+        # frontier-agent cluster's v2 enforcement (PRD-0031 / OPP-0051).
+        run: bash platform/validators/validate-trace-contract.sh harness.manifest.yaml .
+
       - name: Validate privacy-by-design
         # Opt-in: when management/privacy-by-design is not active in the
         # consumer manifest, the validator exits 0 with a "module inactive"

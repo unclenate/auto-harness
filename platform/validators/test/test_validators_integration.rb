@@ -504,6 +504,94 @@ class TestValidateModuleStability < Minitest::Test
 end
 
 # ---------------------------------------------------------------------------
+# validate-trace-contract.sh
+# ---------------------------------------------------------------------------
+class TestValidateTraceContract < Minitest::Test
+  # Write a trace-contract.md artifact with the given frontmatter body
+  # (the text between the --- fences). Returns the file path.
+  def write_contract(dir, frontmatter)
+    FileUtils.mkdir_p(dir)
+    path = File.join(dir, "trace-contract.md")
+    body = +"---\n"
+    body << frontmatter
+    body << "---\n\n# Trace Contract\n\nbody\n"
+    File.write(path, body)
+    path
+  end
+
+  WELL_FORMED = <<~FM
+    semconv_version: "OpenTelemetry GenAI semconv v1.42.0"
+    spans:
+      - invoke_agent
+      - execute_tool
+    content_capture: opt-in
+  FM
+
+  def test_scan_file_well_formed_passes
+    Dir.mktmpdir do |tmp|
+      path = write_contract(tmp, WELL_FORMED)
+      out, err, code = run_validator("validate-trace-contract.sh", "--scan-file", path)
+      assert_equal 0, code, "Expected exit 0 for a well-formed contract. stderr: #{err}"
+      assert_match(/✓/, out)
+    end
+  end
+
+  def test_scan_file_missing_version_fails
+    Dir.mktmpdir do |tmp|
+      fm = "spans:\n  - invoke_agent\ncontent_capture: opt-in\n"
+      path = write_contract(tmp, fm)
+      _out, err, code = run_validator("validate-trace-contract.sh", "--scan-file", path)
+      assert_equal 1, code, "Expected exit 1 for missing semconv_version"
+      assert_match(/semconv_version/, err)
+    end
+  end
+
+  def test_scan_file_empty_spans_fails
+    Dir.mktmpdir do |tmp|
+      fm = "semconv_version: \"v1.42.0\"\nspans: []\ncontent_capture: none\n"
+      path = write_contract(tmp, fm)
+      _out, err, code = run_validator("validate-trace-contract.sh", "--scan-file", path)
+      assert_equal 1, code, "Expected exit 1 for empty spans"
+      assert_match(/spans/, err)
+    end
+  end
+
+  def test_scan_file_no_conventional_operation_fails
+    Dir.mktmpdir do |tmp|
+      fm = "semconv_version: \"v1.42.0\"\nspans:\n  - my_custom_span\ncontent_capture: none\n"
+      path = write_contract(tmp, fm)
+      _out, err, code = run_validator("validate-trace-contract.sh", "--scan-file", path)
+      assert_equal 1, code, "Expected exit 1 when no conventional GenAI operation is declared"
+      assert_match(/conventional GenAI operation/, err)
+    end
+  end
+
+  def test_scan_file_bad_content_capture_fails
+    Dir.mktmpdir do |tmp|
+      fm = "semconv_version: \"v1.42.0\"\nspans:\n  - chat\ncontent_capture: always\n"
+      path = write_contract(tmp, fm)
+      _out, err, code = run_validator("validate-trace-contract.sh", "--scan-file", path)
+      assert_equal 1, code, "Expected exit 1 for content_capture outside the enum"
+      assert_match(/content_capture/, err)
+    end
+  end
+
+  def test_scan_file_missing_arg_is_usage_error
+    _out, _err, code = run_validator("validate-trace-contract.sh", "--scan-file")
+    assert_equal 2, code, "Expected exit 2 when --scan-file has no path"
+  end
+
+  # Predict-clean: a manifest that activates no module requiring the trace
+  # contract exits 0 with a skip message (the harness's own posture).
+  def test_inactive_modules_skip
+    manifest = fixture_manifest("valid-prototype")
+    out, err, code = run_validator("validate-trace-contract.sh", manifest, fixture_project("valid-prototype"))
+    assert_equal 0, code, "Expected exit 0 when no active module requires the trace contract. stderr: #{err}"
+    assert_match(/skipped/, out)
+  end
+end
+
+# ---------------------------------------------------------------------------
 # validate-agent-pack.sh
 # ---------------------------------------------------------------------------
 class TestValidateAgentPack < Minitest::Test

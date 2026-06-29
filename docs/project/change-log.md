@@ -11,6 +11,28 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-28 — doc-watch sweep: front-door drift fixed after the #150–#158 cluster wave (+ a real test-coverage gap)
+
+Routine doc-watch after the nine-PR frontier-agent cluster wave (validators 20 → 24,
+profile modules 49 → 52). Three parallel agents audited the front-door; findings verified
+against disk. The validator-guarded surfaces (catalog-counts, list-completeness, the
+`docs/README.md` indexes) stayed clean; drift was confined to the unguarded prose:
+
+- Stale "18/20" validator counts in `platform/validators/README.md` (×2),
+  `docs/architecture/diagrams.md`, and `docs/roadmap.md` → 24.
+- `docs/roadmap.md` narrative still called the cluster's v2 enforcement a "future OPP" →
+  corrected to record it shipped (OPP-0051), with only the code-cross-reference half deferred.
+- `SUMMARY.md` GitBook nav (not the list-completeness-guarded index) was missing 7 PRD
+  rows (0026–0032) and 4 OPP rows (0048–0051) → added.
+- **Real coverage gap:** `test/test_validators_integration.rb`'s `VALIDATOR_SCRIPTS`
+  (auto-generates the uniform `--help` coverage tests) was missing the four new
+  validators → added (20 → 24; dynamic test count now 72, all green). Surfaced only
+  because the watch cross-checked the prose "× 18 validators" against the actual list.
+
+Recorded in `docs/doc-watch-log.md`. Deferred (logged): a pre-existing `HARNESS.md`
+diagram-enumeration inconsistency (names 15, count says 16) — editing the entrypoint trips
+the governance-companion rule, disproportionate for a one-item list fix.
+
 ## 2026-06-28 — PRD-0032 implementation: three cluster content validators shipped — artifact-content v2 enforcement complete (OPP-0051)
 
 Implemented **PRD-0032** in one PR, shipping the three remaining artifact-content

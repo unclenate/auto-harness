@@ -59,7 +59,7 @@ the v0.5.0 tag. It is **not yet assigned to release tags** (a maintainer pass ow
 that). Summarized here so the roadmap reflects reality; several items below appear
 as "Planned" further down because that text predates their shipping.
 
-**Governance machinery (validators 8 → 20):**
+**Governance machinery (validators 8 → 24):**
 
 - Trust-tier enforcement — `validate-trust-tier.sh` (PRD-0006). Listed as "v0.7.0
   planned" below; **shipped.**
@@ -87,10 +87,13 @@ as "Planned" further down because that text predates their shipping.
 - **The frontier-agent cluster (anchor OPP-0027) is fully built** — all four
   `architectures/*` satellites shipped: `agent-observability` (PRD-0014),
   `ai-foundry-target` (PRD-0028), `intelligent-model-routing` (PRD-0029), and
-  `agent-defense-in-depth` (PRD-0030). Each is a declarative v1 (no enforcement);
-  pattern/contract validators + companion rules are the per-module **v2 enforcement
-  follow-ups** (each a future OPP). The OPP-0027 anchor itself remains a conceptual
-  umbrella (the satellites carry the value).
+  `agent-defense-in-depth` (PRD-0030). Each shipped a declarative v1; the cluster's
+  **artifact-content v2 enforcement is now complete** — four content validators shipped
+  via OPP-0051 (`validate-trace-contract` PRD-0031, plus `validate-foundry-target` /
+  `validate-model-routing` / `validate-agent-defense-in-depth` PRD-0032), each
+  module-gated / predict-clean. Only the **code-cross-reference** half (declarations
+  match running code) + companion rules remain deferred (gated on consumer code paths).
+  The OPP-0027 anchor itself remains a conceptual umbrella (the satellites carry the value).
 
 **Doctrine:** operating-principles §§ 9 (Split Design from Implementation), 10
 (Classify Claims Before Enforcing Them), 11 (Privacy by Design), 12 (Author Deep

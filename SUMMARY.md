@@ -592,6 +592,13 @@ Specifications for substantive new capabilities, paired with their originating o
 * [PRD-0023: Digital Twin / Scenario Runtime Governance Overlay](docs/requirements/PRD-0023-digital-twin-scenario-runtime-overlay.md)
 * [PRD-0024: Geospatial / GIS Wedge (CRS Foundation + OGC Exchange + BIM↔GIS Georeferencing)](docs/requirements/PRD-0024-geospatial-gis-wedge.md)
 * [PRD-0025: Work-Package Lane Contract](docs/requirements/PRD-0025-work-package-lane-contract.md)
+* [PRD-0026: Publication-Boundary Marker](docs/requirements/PRD-0026-publication-boundary-marker.md)
+* [PRD-0027: Module Stability Tiers](docs/requirements/PRD-0027-module-stability-tiers.md)
+* [PRD-0028: Enterprise AI Foundry Target Awareness](docs/requirements/PRD-0028-ai-foundry-target.md)
+* [PRD-0029: Intelligent Model Routing](docs/requirements/PRD-0029-intelligent-model-routing.md)
+* [PRD-0030: Agent Defense-in-Depth (Four Patterns)](docs/requirements/PRD-0030-agent-defense-in-depth.md)
+* [PRD-0031: Trace-Contract Content Validator](docs/requirements/PRD-0031-validate-trace-contract.md)
+* [PRD-0032: Frontier-Agent Cluster Content Validators (Phases 2–4)](docs/requirements/PRD-0032-cluster-content-validators.md)
 
 ### Opportunity Records (this project)
 
@@ -645,3 +652,7 @@ Forward-looking pre-PRD candidates managed by the `opportunity-capture` module.
 * [OPP-0045: Geospatial / GIS Domain Family (decomposed `domains/geospatial-*`)](docs/opportunities/OPP-0045-domain-family-geospatial-decomposed.md) — Fourth built deep-domain vertical; CRS foundation + OGC exchange + BIM↔GIS georeferencing wedge promoted via PRD-0024
 * [OPP-0046: Parallel Multi-Agent Work-Package Lane Contract](docs/opportunities/OPP-0046-parallel-multi-agent-work-package-lane-contract.md) — Lintable lane contract for concurrent multi-agent worktrees; lane (scope) wedge promoted via PRD-0025 (accepted — partial promotion)
 * [OPP-0047: Delivery-Cost & Unit-Economics Governance](docs/opportunities/OPP-0047-delivery-cost-unit-economics-governance.md) — Token/cost attribution per delivery unit for build-vs-buy decisions; folded into PRD-0025 as a deferred v2 phase (proposed)
+* [OPP-0048: Redaction-Scope & Publication-Boundary Hardening](docs/opportunities/OPP-0048-redaction-scope-and-publication-boundary-hardening.md) — Always-on do-not-publish marker gate; promoted via PRD-0026 (accepted)
+* [OPP-0049: Deep Governance Vertical: Authoring-Pattern Harvest](docs/opportunities/OPP-0049-deep-governance-vertical-harvest.md) — Harvests the six-times-proven deep-domain authoring skeleton into operating-principle § 12 + a playbook (accepted)
+* [OPP-0050: Module Stability Tiers & Parity Normalization](docs/opportunities/OPP-0050-module-stability-tiers-parity.md) — Per-module `stability` readiness signal; promoted via PRD-0027 (accepted)
+* [OPP-0051: Frontier-Agent Cluster v2 Enforcement: Artifact-Content Validators](docs/opportunities/OPP-0051-frontier-agent-cluster-v2-enforcement.md) — The four content validators enforcing the cluster's declarative artifacts; promoted via PRD-0031 + PRD-0032 (accepted)

@@ -16,6 +16,52 @@ force.
 
 ---
 
+## 2026-06-28 — doc-watch — DRIFT FOUND + FIXED (frontier-agent cluster wave #150–#158; counts + nav + a real coverage gap)
+
+**Window:** 2026-06-27 → 2026-06-28 (since last watch). **9 PRs (#150–#158)** — the
+frontier-agent cluster built end-to-end (four `architectures/*` satellites) plus its
+v2 artifact-content enforcement (four content validators), taking validators 20 → 24
+and profile modules 49 → 52. Three parallel agents audited the front-door
+(SUMMARY+README / roadmap+operating-principles+HARNESS / validator-catalog surfaces);
+every finding was verified against disk before acting.
+
+**The validator-guarded surfaces were clean** — `validate-catalog-counts` and
+`validate-list-completeness` kept the asserted count sites and the `docs/README.md`
+ADR/PRD/OPP indexes correct throughout the wave. The drift was all in the
+**unguarded** prose the validators don't assert:
+
+- **Stale "18/20" validator counts** (left behind across several waves, never guarded):
+  `platform/validators/README.md` ("eighteen" scripts → twenty-four; "54 … × 18
+  validators" → 72 … × 24); `docs/architecture/diagrams.md` flow box "(18 validators)" →
+  24; `docs/roadmap.md` "validators 8 → 20" → 8 → 24.
+- **Stale narrative:** `docs/roadmap.md` still framed the cluster's v2 enforcement as a
+  "future OPP" — corrected to record it shipped (OPP-0051; four content validators),
+  with only the code-cross-reference half deferred.
+- **SUMMARY.md nav lists** (the GitBook TOC — its PRD/OPP enumeration is *not* the
+  `docs/README.md` index that list-completeness guards, so it drifted): added 7 missing
+  PRD rows (0026–0032) and 4 missing OPP rows (0048–0051).
+- **A REAL coverage gap, not just prose:** `test/test_validators_integration.rb`'s
+  `VALIDATOR_SCRIPTS` list (which auto-generates the uniform `--help`/`-h` coverage
+  tests) had only 20 entries — the four new validators were never added, so they ran
+  *no* uniform `--help` test. Added all four (20 → 24); the dynamic test count is now
+  72 (24 × 3), all green. This is the highest-value find of the sweep: a validator the
+  count-validators cannot see, surfaced only because the doc-watch cross-checked the
+  prose claim ("× 18 validators") against the actual list.
+
+**Found but DEFERRED (logged, not fixed):** `HARNESS.md` (lines 19–26) says "sixteen
+Mermaid diagrams" (count correct) but the inline enumeration names only fifteen
+(omits #16, Work-Package Lane Contract). Pre-existing (predates this wave), and editing
+`HARNESS.md` trips the governance-entrypoint companion rule (requires an ADR or
+operating-principles change in the same commit) — disproportionate ceremony for a
+one-item list fix, so deferred to a maintainer pass per the companion-rule-on-a-
+governance-neutral-edit deferral pattern.
+
+**Lesson reinforced:** the doc-watch's value is the prose the validators *can't* see —
+and cross-checking a prose count against its underlying list (not just against the
+canonical total) is what turned a cosmetic "× 18" fix into catching a live test-coverage
+gap. Re-read the SUMMARY nav lists, the roadmap narrative, and any "N validators"
+prose after every ≥ 2-validator wave.
+
 ## 2026-06-27 — doc-watch — DRIFT FOUND + FIXED (governance-machinery wave #135–#148; GitBook front-door stale)
 
 **Window:** 2026-06-22 → 2026-06-27 (since last watch). ~14 PRs (#135–#148). This

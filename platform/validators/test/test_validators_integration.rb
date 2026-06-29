@@ -1259,6 +1259,10 @@ VALIDATOR_SCRIPTS = %w[
   validate-lane-integrity.sh
   validate-publication-boundary.sh
   validate-module-stability.sh
+  validate-trace-contract.sh
+  validate-foundry-target.sh
+  validate-model-routing.sh
+  validate-agent-defense-in-depth.sh
 ].freeze
 
 class TestValidatorHelpFlag < Minitest::Test

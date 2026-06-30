@@ -140,7 +140,7 @@ clustered backlog with framing.
 | [0023](opportunities/OPP-0023-doc-references-consumer-scan.md) | `validate-doc-references` Consumer-Aware Scan | accepted |
 | [0025](opportunities/OPP-0025-consumer-integration-smoke-test.md) | Consumer-Side Integration Smoke Test | accepted |
 | [0026](opportunities/OPP-0026-distilled-learnings-disposition.md) | `distilled-learnings.md` Disposition (Sunset/Revive/Clarify) | accepted |
-| [0027](opportunities/OPP-0027-frontier-agent-posture.md) | Frontier-Agent Posture (Management Overlay; Cluster Anchor) | proposed |
+| [0027](opportunities/OPP-0027-frontier-agent-posture.md) | Frontier-Agent Posture (Management Overlay; Cluster Anchor) | accepted |
 | [0028](opportunities/OPP-0028-ai-foundry-target.md) | Enterprise AI Foundry Target Awareness | accepted |
 | [0029](opportunities/OPP-0029-agent-observability.md) | Agent Observability with OpenTelemetry Semantic Conventions | accepted |
 | [0030](opportunities/OPP-0030-intelligent-model-routing.md) | Intelligent Model Routing as Architectural Primitive | accepted |

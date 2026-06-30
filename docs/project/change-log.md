@@ -11,6 +11,27 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-30 — Backlog-hygiene reconciliation: OPP-0027 closed, OPP-0047 cross-linked
+
+Cleaned up the two stale-status loose ends the 3-lens triage surfaced after the cluster wave:
+
+- **OPP-0027** (frontier-agent posture, cluster anchor): flipped `proposed` → `accepted`.
+  The posture is fully realized through its four satellites (`agent-observability`,
+  `ai-foundry-target`, `intelligent-model-routing`, `agent-defense-in-depth` + the OPP-0051
+  v2 enforcement). The `management/frontier-agent-posture` umbrella overlay it also proposed
+  was **deliberately not built** — per the OPP's own Open Question 1 (incremental à-la-carte
+  adoption over a forced umbrella), which is what shipped; an umbrella would add a forcing
+  dependency with no capability the satellites lack. Disposition + Promotion filled to record
+  what shipped vs. what was dropped.
+- **OPP-0047** (delivery-cost & unit-economics): stays `proposed` (the wedge is unbuilt), but
+  its Last-Updated + Disposition now cross-link **PRD-0025**, which formally adopted it as a
+  deferred v2 phase of `management/work-package`. Tracked-but-deferred inside an accepted PRD,
+  no longer free-floating.
+
+`docs/README.md` OPP index updated for OPP-0027. One paired distillation observation
+(anchor-OPP disposition — "accepted" when satellites ship, with the umbrella dropped-as-
+redundant explicitly dispositioned). No catalog-count or code change.
+
 ## 2026-06-28 — OPP-0025 shipped: consumer-side integration smoke test (new thread after the cluster closed)
 
 With the frontier-agent cluster thread complete, a 3-lens backlog triage (value / readiness

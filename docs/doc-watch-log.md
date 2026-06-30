@@ -16,6 +16,120 @@ force.
 
 ---
 
+## 2026-06-30 — Weekly doc-watch — ALL CLEAR (backlog-hygiene commit; zero new drift)
+
+**Window:** 2026-06-29 → 2026-06-30. **2 commits** in the window, both
+docs-only and both dated 2026-06-30:
+
+- `c00bbcb` (#160) — `feat(ci): ship consumer-side integration smoke test
+  (OPP-0025)`. This is the **merge-landed** form of the OPP-0025 work already
+  analyzed in the 2026-06-29 entry (pre-merge hash `1082867`); no new analysis
+  needed — re-verified clean.
+- `ca8bb37` (#161) — `docs(opportunities): backlog hygiene — close OPP-0027,
+  cross-link OPP-0047`. Touched 5 files: `docs/README.md`,
+  `docs/knowledge/shared-observations.md`, the two OPP files, and
+  `docs/project/change-log.md`. No new `module.yaml`, validator, skill,
+  composition, or PRD.
+
+**No catalog count moved.** Live counts identical to last watch: modules 52,
+agent-modules 8, validators 24, skills 8, compositions 15, diagrams 16,
+templates 98, ADRs 19, PRDs 32, OPPs 50. OPP-0027 and OPP-0047 both correctly
+rowed in `docs/README.md` (lines 143, 163).
+
+> **Correction (manual, 2026-06-30):** the automation again emitted the template
+> count as **104** (counting `README.md` files); canonical is **98** (see the
+> 2026-06-29 entry's correction note). Corrected inline. This is the **second
+> consecutive** auto-entry with the same non-canonical count — the scheduled
+> doc-watch routine's template-count recipe needs aligning with
+> `validate-catalog-counts.sh` at the source, or every future auto-entry will
+> reintroduce it.
+
+**Drift checks — all green:**
+
+- `validate-catalog-counts.sh` → ✓ 26/26 assertions.
+- `validate-doc-references.sh` → ✓ all link targets resolve.
+- `validate-list-completeness.sh` → ✓ 269/269 (ADR/PRD/OPP indexes,
+  compositions, template subdirs, modules all complete).
+- `markdownlint-cli2 "**/*.md"` → ✓ 0 errors across all `.md` files.
+
+**Status-convention note (not drift):** #161's message says "close OPP-0027"
+but its `docs/README.md` index status reads `accepted`. Consistent with the
+established convention (the OPP index tracks *acceptance*, not implementation
+status) — same pattern flagged for OPP-0025 last watch. No change warranted.
+
+**Re-verified open finding:** the lone carried-over item — `HARNESS.md` line 19
+says "sixteen Mermaid diagrams" (count correct; live count is 16) but the inline
+enumeration names only fifteen (omits #16, Work-Package Lane Contract).
+**Still open, still correctly deferred** — count is accurate, and the fix trips
+the governance-entrypoint companion rule (ADR / operating-principles change in
+the same commit), disproportionate ceremony for a one-item list fix.
+
+**Working-tree note:** the 2026-06-29 entry below remains uncommitted (`M
+docs/doc-watch-log.md`); an untracked `docs/superpowers/specs/2026-06-09-digital-twin-seed-brief.md`
+is also present. Neither affects this watch (read-only analysis); flagged so a
+maintainer can commit the pending log entries.
+
+**Verdict: ALL CLEAR.** No new drift; no full re-audit warranted (window was
+backlog hygiene plus one merge-landed OPP, not structural growth).
+
+---
+
+## 2026-06-29 — Weekly doc-watch (Monday) — ALL CLEAR (one OPP-0025 commit since last watch; zero new drift)
+
+**Window:** 2026-06-28 → 2026-06-29. The #150–#158 frontier-agent cluster was
+already audited and reconciled in the 2026-06-28 entry (its fix landed in #159,
+`64df074`). The only genuinely new work since that watch ran is **one commit**:
+`1082867` — `feat(ci): ship consumer-side integration smoke test (OPP-0025)`.
+
+**OPP-0025 landed clean.** Touched 8 files (`docs/README.md`,
+`docs/opportunities/OPP-0025-…`, `docs/project/change-log.md`,
+`platform/templates/ci/README.md` + two `.yml` templates,
+`platform/workflow/submodule-integration.md`,
+`docs/knowledge/shared-observations.md`). No new `module.yaml`, validator,
+skill, or PRD — so no catalog count moved (modules 52, validators 24, skills 8,
+compositions 15, diagrams 16, templates 98, ADRs 19, PRDs 32, OPPs 50, all
+unchanged from last watch). New `gitlab-ci.yml` / `github-actions.yml` are
+`.yml`, not `.md`, so the template count is untouched; both are correctly rowed
+in `platform/templates/ci/README.md`. OPP-0025 index row present at
+`docs/README.md:141`.
+
+> **Correction (manual, 2026-06-30):** this entry was emitted by the scheduled
+> Monday doc-watch automation, which reported the template count as **104** — a
+> non-canonical figure that counts every `.md` under `platform/templates/`
+> *including* the per-subdir `README.md` files. The canonical recipe (the one
+> `validate-catalog-counts.sh` enforces) is
+> `find platform/templates -type f -name '*.md' ! -name 'README.md'` = **98**.
+> Corrected inline above. The automation's count recipe should be aligned with
+> the canonical one so future auto-entries don't reintroduce this drift — fittingly,
+> the doc-watch log caught drift in its own auto-generated entry. All other figures
+> in this entry were verified correct against disk.
+
+**Drift checks — all green:**
+
+- `validate-catalog-counts.sh` → ✓ 26/26 assertions.
+- `validate-doc-references.sh` → ✓ all link targets resolve.
+- `validate-list-completeness.sh` → ✓ 269/269 (ADR/PRD/OPP indexes,
+  compositions, template subdirs, modules all complete).
+- `markdownlint-cli2 "**/*.md"` → ✓ 0 errors across 428 files.
+
+**Status-convention note (not drift):** OPP-0025's index status reads
+`accepted` even though it shipped — but the OPP index tracks *acceptance*, not
+implementation (distribution is 38 `accepted` / 12 `proposed`; shipped OPPs like
+0031 and 0051 also remain `accepted`). Consistent with convention, so no change.
+
+**Re-verified open finding:** the lone carried-over item — `HARNESS.md` line 19
+says "sixteen Mermaid diagrams" (count correct) but the inline enumeration names
+only fifteen (omits #16, Work-Package Lane Contract). **Still open, still
+correctly deferred:** count is accurate, and the fix trips the
+governance-entrypoint companion rule (ADR / operating-principles change required
+in the same commit) — disproportionate ceremony for a one-item list fix, left
+for a maintainer pass per the established deferral pattern.
+
+**Verdict: ALL CLEAR.** No new drift; no full re-audit warranted (window was a
+single small OPP implementation, not structural growth).
+
+---
+
 ## 2026-06-28 — doc-watch — DRIFT FOUND + FIXED (frontier-agent cluster wave #150–#158; counts + nav + a real coverage gap)
 
 **Window:** 2026-06-27 → 2026-06-28 (since last watch). **9 PRs (#150–#158)** — the

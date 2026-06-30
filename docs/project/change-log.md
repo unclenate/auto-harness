@@ -11,6 +11,25 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-30 — Scheduled doc-watch entry accepted + count corrected (automation recipe drift)
+
+The scheduled Monday doc-watch automation fired **twice** during this session (a
+2026-06-29 entry for the 06-28→29 window, and a 2026-06-30 entry for the 06-29→30 window),
+each appending an "ALL CLEAR" cadence entry to `docs/doc-watch-log.md`. Both were
+substantively correct and verified against disk — **except, in both, one count**: each
+reported `templates 104`, a non-canonical figure that counts every `.md` under
+`platform/templates/` *including* the per-subdir `README.md` files. The canonical recipe
+(`validate-catalog-counts.sh`: `find … -name '*.md' ! -name 'README.md'`) is **98**.
+Corrected both inline with transparent correction notes.
+
+**Flag for the maintainer (root cause):** this is the same error on two consecutive
+auto-runs, so the scheduled doc-watch routine's template-count recipe is systematically
+non-canonical and will reintroduce the drift on every future run. The automation is an
+external scheduled agent (no in-repo script, no session cron, no `.claude/scheduled_tasks.json`),
+so it can't be fixed from a working session — its prompt/recipe should be aligned with
+`validate-catalog-counts.sh` at the source. Fittingly, the doc-watch log keeps catching
+drift in its own auto-generated entries. No other change.
+
 ## 2026-06-30 — Backlog-hygiene reconciliation: OPP-0027 closed, OPP-0047 cross-linked
 
 Cleaned up the two stale-status loose ends the 3-lens triage surfaced after the cluster wave:

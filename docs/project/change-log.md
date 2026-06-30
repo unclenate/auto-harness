@@ -11,6 +11,31 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-06-28 — OPP-0025 shipped: consumer-side integration smoke test (new thread after the cluster closed)
+
+With the frontier-agent cluster thread complete, a 3-lens backlog triage (value / readiness
+/ staleness, three parallel agents over the 13 open OPPs) converged on **OPP-0025** as the
+highest value×readiness item carrying no maintainer-strategic gate. Shipped it directly per
+the half-day-fully-biased-OPP discipline (no PRD — all 7 open questions already carried
+resolved biases).
+
+Delivered a **`submodule-smoke-test` job** in both consumer CI templates
+(`platform/templates/ci/{github-actions.yml,gitlab-ci.yml}`): a separate clean-checkout job
+that asserts `.harness/` materialized (with an actionable failure message) and smoke-runs one
+validator against the consumer's manifest — catching the two silent submodule-integration
+failures (fresh clone without `--recurse-submodules`; pinned SHA unreachable upstream) that
+the harness's own CI cannot see by construction. Added a § Submodule Smoke Test to the CI
+template README and made `submodule-integration.md` § 6's recipe reference present-tense.
+Additive — no validator, module, § 10 claim, or catalog-count change. **OPP-0025** flipped
+`proposed` → `accepted`; its Q7 sibling (the intra-repo M-j gap) noted as already discharged
+by `validate-list-completeness.sh`. One paired distillation observation (cross-repo
+enforcement topology — the producer ships the check into the consumer's CI).
+
+**Backlog hygiene surfaced by the triage (noted, not bundled here):** OPP-0027 (frontier-agent
+posture anchor) is now a closeable loose end — its four satellites all shipped, only the thin
+umbrella overlay was never built; and OPP-0047 (delivery-cost) wants a cross-link to PRD-0025
+(which adopted it as a deferred v2 phase). Both are light maintainer-pass items.
+
 ## 2026-06-28 — doc-watch sweep: front-door drift fixed after the #150–#158 cluster wave (+ a real test-coverage gap)
 
 Routine doc-watch after the nine-PR frontier-agent cluster wave (validators 20 → 24,

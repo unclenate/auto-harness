@@ -138,7 +138,7 @@ clustered backlog with framing.
 | [0021](opportunities/OPP-0021-delivery-self-hosted-oss.md) | Delivery — Self-Hosted OSS (Tula) | accepted |
 | [0022](opportunities/OPP-0022-patient-facing-health-agent-safety.md) | Patient-Facing Health-Agent Safety (Tula) | proposed |
 | [0023](opportunities/OPP-0023-doc-references-consumer-scan.md) | `validate-doc-references` Consumer-Aware Scan | accepted |
-| [0025](opportunities/OPP-0025-consumer-integration-smoke-test.md) | Consumer-Side Integration Smoke Test | proposed |
+| [0025](opportunities/OPP-0025-consumer-integration-smoke-test.md) | Consumer-Side Integration Smoke Test | accepted |
 | [0026](opportunities/OPP-0026-distilled-learnings-disposition.md) | `distilled-learnings.md` Disposition (Sunset/Revive/Clarify) | accepted |
 | [0027](opportunities/OPP-0027-frontier-agent-posture.md) | Frontier-Agent Posture (Management Overlay; Cluster Anchor) | proposed |
 | [0028](opportunities/OPP-0028-ai-foundry-target.md) | Enterprise AI Foundry Target Awareness | accepted |

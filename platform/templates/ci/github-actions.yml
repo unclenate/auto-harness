@@ -110,3 +110,41 @@ jobs:
         run: |
           bash .harness/platform/validators/validate-companions.sh \
             harness.manifest.yaml . "$BASE_REF"
+
+  submodule-smoke-test:
+    name: Submodule Smoke Test
+    # Consumer-side integration smoke test (OPP-0025). Catches the two silent
+    # submodule-integration failure modes the harness's own CI cannot see by
+    # construction (it IS the upstream, so it has no consumer-side clone):
+    #   1. a fresh clone without --recurse-submodules leaves .harness/ empty;
+    #   2. the pinned submodule SHA is no longer reachable upstream (force-push,
+    #      deleted branch, archived/auth-gated remote) — the checkout itself fails.
+    # Runs on a clean runner, so no developer-machine hidden state can mask the
+    # defect. Kept a SEPARATE job (not a step in `validators`) so a failure here
+    # reads as "submodule integration is broken", distinct from "a validator
+    # found drift" — and so it runs with clean-checkout semantics.
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout with submodules (fresh-clone semantics)
+        # If the pinned harness SHA is unreachable upstream, this step fails
+        # with `fatal: reference is not a tree` — exactly the consumer-side
+        # break we want surfaced on every PR rather than in a teammate's clone.
+        uses: actions/checkout@v6
+        with:
+          submodules: recursive
+
+      - name: Assert the harness submodule materialized
+        run: |
+          if [ ! -f .harness/platform/validators/validate-manifest.sh ]; then
+            echo "✗ .harness submodule did not materialize."
+            echo "  → clone with 'git clone --recurse-submodules', or run"
+            echo "    'git submodule update --init --recursive', and confirm the"
+            echo "    pinned SHA is reachable in the harness remote."
+            exit 1
+          fi
+          echo "✓ .harness submodule materialized."
+
+      - name: Smoke-run one validator against the consumer manifest
+        # Proves the integration is live end-to-end: the materialized submodule
+        # can actually run a validator against this project's manifest.
+        run: bash .harness/platform/validators/validate-manifest.sh harness.manifest.yaml

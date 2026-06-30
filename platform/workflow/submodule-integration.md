@@ -167,11 +167,14 @@ submodule URL); if it fails on the validator, your manifest is broken. Either wa
 before announcing the integration to teammates — the silent failure mode is the worst kind
 of integration debt.
 
-Consider adding this same smoke test to your CI: see
-[`platform/templates/ci/README.md`](../templates/ci/README.md) for the CI starter
-templates, and look for the `submodule-smoke-test` job in the consumer CI templates
-once
-[OPP-0025](../../docs/opportunities/OPP-0025-consumer-integration-smoke-test.md) lands.
+Add this same smoke test to your CI so it runs on every PR, not just when you
+remember to: both consumer CI starter templates ship a dedicated
+`submodule-smoke-test` job that does exactly this on a clean runner. See
+[`platform/templates/ci/README.md`](../templates/ci/README.md) § Submodule Smoke
+Test, and copy the `submodule-smoke-test` job from
+[`github-actions.yml`](../templates/ci/github-actions.yml) or
+[`gitlab-ci.yml`](../templates/ci/gitlab-ci.yml). Per
+[OPP-0025](../../docs/opportunities/OPP-0025-consumer-integration-smoke-test.md) (shipped).
 
 ## The `HARNESS_SUBMODULE_ROOT` contract
 

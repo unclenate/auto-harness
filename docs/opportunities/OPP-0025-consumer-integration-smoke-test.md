@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0025 — Consumer-Side Integration Smoke Test
 
-**Status:** proposed
+**Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-05-25
-**Last Updated:** 2026-05-25 *(filed as OPP-0023 in working tree; renumbered to OPP-0025 after PR #59 took the OPP-0023 slot — same renumbering pattern as the OPP-0006 → OPP-0007 collision earlier this session)*
+**Last Updated:** 2026-06-28 *(accepted + shipped directly per the half-day-OPP discipline — all 7 open questions carried resolved biases, so the OPP is the design contract; no separate PRD. Shipped a `submodule-smoke-test` job in both consumer CI templates (`github-actions.yml` + `gitlab-ci.yml`) + a CI-README section + present-tense recipe in `submodule-integration.md` § 6. Bias resolutions adopted: template lives in `platform/templates/ci/` as a job in the existing templates (Q1a), separate job for clean-checkout semantics (Q2), asserts submodule materialized + smoke-runs one validator (Q3 middle option), templated copy not reusable-workflow (Q4), GitHub + GitLab in parallel (Q5), not in the harness's own CI (Q6). Prior: 2026-05-25 filed as OPP-0023, renumbered to OPP-0025.)*
 **Confidence:** medium-high
 
 ---
@@ -145,12 +145,22 @@ discipline-debt small.
 
 ## Disposition
 
-<!--
-Empty while Status: proposed.
--->
+Accepted and shipped directly (no PRD) on 2026-06-28 — a half-day, fully-biased,
+additive change (a CI-template job + recipe docs; no validator, module, or § 10 claim).
+The `submodule-smoke-test` job lands in both consumer CI templates with an explicit
+materialization assertion and a one-validator smoke run, on a separate clean-checkout job.
+
+**Q7 sibling note (the M-j intra-repo gap):** OPP-0025 governs the *cross-repo* instance
+of "a declaration with no mechanical check against its referent" (the submodule integration
+contract). The *intra-repo* instance — catalog-index declarations without inbound
+completeness checks — was since closed independently by `validate-list-completeness.sh`
+(every ADR/PRD/OPP/composition/template-subdir/module on disk must have its canonical index
+row). So the anticipated satellite OPP is already discharged by a shipped validator; no
+separate OPP is needed.
 
 ## Promotion
 
-<!--
-Empty until accepted. Then a link to PRD-NNNN.
--->
+Shipped directly, no PRD (half-day-OPP discipline). Delivered: the `submodule-smoke-test`
+job in `platform/templates/ci/{github-actions.yml,gitlab-ci.yml}`, a § Submodule Smoke Test
+section in `platform/templates/ci/README.md`, and the present-tense recipe in
+`platform/workflow/submodule-integration.md` § 6.

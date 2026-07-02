@@ -16,6 +16,48 @@ force.
 
 ---
 
+## 2026-07-02 — Weekly doc-watch — ALL CLEAR (single self-referential doc-watch fix; zero new drift)
+
+**Window:** 2026-06-30 → 2026-07-02. **1 commit** in the window, docs-only:
+
+- `2e912d9` (#162) — `docs(doc-watch): accept two scheduled watch entries +
+  correct their template counts`. Touched only `docs/doc-watch-log.md` and
+  `docs/project/change-log.md`. It corrected the two prior auto-entries'
+  non-canonical `templates 104` figure down to the canonical **98**
+  (`*.md` excluding `README.md`) and logged a maintainer root-cause flag: the
+  external scheduled doc-watch recipe was systematically counting README files.
+
+**Recipe alignment applied this run.** Per that flag (and standing memory), all
+counts below were computed with canonical recipes — templates via
+`find platform/templates -name '*.md' ! -name 'README.md'`. Result **98**,
+matching canonical. No recurrence of the 104 drift.
+
+**Live counts (all verified against canonical validator recipes):** profile
+modules 52 · agent modules 8 · validators 24 · skills 8 · compositions 15 ·
+architecture diagrams 16 · templates 98 (canonical; 104 incl. README) · ADRs 19
+· PRDs 32 · OPPs 51.
+
+**Validators:**
+
+- `validate-catalog-counts.sh .` → **PASS** (26/26 assertions match).
+- `validate-doc-references.sh .` → **PASS** (all link targets resolve).
+- `validate-list-completeness.sh .` → **PASS** (269/269 assertions; ADR / PRD /
+  OPP / composition / template-subdir / module index rows all complete).
+
+**markdownlint CI gate:** `markdownlint-cli2` ran clean — **0 errors** across
+428 linted files (README + both changed files + repo-wide glob).
+
+**Open-findings re-verify:** structural drift classes from the 2026-05-25
+refresh audit remain closed — the three list-completeness gaps that motivated
+Wave 1 stay green under `validate-list-completeness.sh`, and no canonical count
+in `README.md`, `HARNESS.md`, `SUMMARY.md`, or `platform/**` mismatches disk.
+
+**Working tree note (informational):** one untracked file present —
+`docs/superpowers/specs/2026-06-09-digital-twin-seed-brief.md` — under a
+markdownlint-excluded path; not committed, not a canonical-doc drift concern.
+
+---
+
 ## 2026-06-30 — Weekly doc-watch — ALL CLEAR (backlog-hygiene commit; zero new drift)
 
 **Window:** 2026-06-29 → 2026-06-30. **2 commits** in the window, both

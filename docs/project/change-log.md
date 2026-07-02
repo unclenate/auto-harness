@@ -11,6 +11,28 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-07-02 — PRD-0033 ratifies the relational-module generalization (design-only, § 9)
+
+Authored **PRD-0033** promoting **OPP-0012** — generalize `data/relational-postgres` →
+engine-agnostic `data/relational-sql`, with the SQL engine declared as an enum
+(`postgres`/`mysql`/`mariadb`/`sqlite`) **in the artifact** (`migration-readiness.md`), not
+`module.yaml`. This is the design pass only; a separate implementing PR performs the rename.
+
+The PRD resolves OPP-0012's five open questions against disk-verified facts gathered
+2026-07-02: (1) **migration approach — hard, atomic, single-commit rename**, no alias facility,
+because the rename's entire blast radius is in-repo (4 compositions + `domains/supabase`'s
+`dependsOn` + 2 sample manifests + ~30 prose refs) and OpenEMR — the motivating consumer —
+declares no data module, so no external manifest depends on the old id; (2) **engine lives in
+the artifact** (the `module.schema.json` `additionalProperties: false` constraint forbids it
+on `module.yaml`, same as the PRD-0028 foundries enum); (3) **single-value** engine; (4) keep
+**SQLite in the shared module** for v1, factor out `relational-embedded` only if footnotes
+overwhelm; (5) **`relational-sql` first**, then OPP-0009's `embedded-key-value`.
+
+Design-only per § 9 — this PR touches no `module.yaml`/OPP/ADR, so it does not fire the
+PRD-0004 distillation rule; the paired observation (rename economics when blast radius is
+100% in-repo) is captured in the implementing PR, at the `module.yaml` + OPP-0012 status edit
+that triggers the rule. OPP-0012 stays `proposed` until that implementing merge.
+
 ## 2026-06-30 — Scheduled doc-watch entry accepted + count corrected (automation recipe drift)
 
 The scheduled Monday doc-watch automation fired **twice** during this session (a

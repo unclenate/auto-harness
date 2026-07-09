@@ -9,7 +9,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 **Status:** proposed
 **Owner:** @unclenate
 **Created:** 2026-06-15
-**Last Updated:** 2026-06-15 *(new opportunity — token-cost-of-delivery as governance evidence for build-vs-buy; pairs with a research brief)*
+**Last Updated:** 2026-06-30 *(linkage update — stays `proposed` (the wedge is unbuilt), but [PRD-0025](../requirements/PRD-0025-work-package-lane-contract.md) (`work-package-lane-contract`, accepted) formally **adopted this OPP as a deferred v2 phase**: the economic contract (`tokenBudget` + delivery-cost record) is folded into the `management/work-package` module's v2 phase. So OPP-0047 is now tracked-but-deferred inside an accepted PRD, not free-floating. Prior: 2026-06-15 filed.)*
 **Confidence:** medium-high
 
 ---
@@ -110,12 +110,16 @@ A research brief is committed alongside this OPP scoping the open questions
 
 ## Disposition
 
-**Proposed 2026-06-15.** No promotion yet. Recommended next step: a PRD promoting a
-**thin wedge** — the delivery-cost record schema, a `tokenBudget` extension to the
-OPP-0046 lane with a spend-vs-budget check, and a `build-vs-buy-decision.md`
-artifact with a cite-the-evidence companion — composing explicitly with OPP-0046.
-The cost-attribution convention and the three research items (baselines, predictor,
-dispatch optimization) stay `proposed` pending that wedge and a research pass. The
+**Proposed 2026-06-15; adopted as a deferred phase by an accepted PRD 2026-06-30.**
+The recommended **thin wedge** — the delivery-cost record schema, a `tokenBudget`
+extension to the work-package lane with a spend-vs-budget check, and a
+`build-vs-buy-decision.md` artifact with a cite-the-evidence companion — was taken up by
+[PRD-0025](../requirements/PRD-0025-work-package-lane-contract.md): that PRD (accepted,
+shipping the `management/work-package` lane contract) **folds this OPP's economic contract
+in as the module's v2 phase**. So the wedge now has a home and a sequence; it remains
+unbuilt (the v2 phase is not yet implemented), which is why OPP-0047 stays `proposed`. The
+cost-attribution convention and the three research items (baselines, predictor, dispatch
+optimization) stay deferred pending that v2 implementation and a research pass. The
 companion **research brief** is committed alongside this OPP.
 
 ## Related

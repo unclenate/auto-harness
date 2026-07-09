@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0027 — Frontier-Agent Posture (Management Overlay; Cluster Anchor)
 
-**Status:** proposed
+**Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-05-25
-**Last Updated:** 2026-05-25
+**Last Updated:** 2026-06-30 *(flipped `proposed` → `accepted`: the posture cluster is fully realized through its four satellites — all shipped + accepted as `architectures/*` modules with v2 artifact-content enforcement (OPP-0051). Per the OPP's own Open Question 1 (incremental adoption over a forced umbrella), the standalone `management/frontier-agent-posture` overlay was deliberately NOT built — the satellites compose without it and are adopted à la carte. See Disposition.)*
 **Confidence:** medium-high
 
 ---
@@ -173,13 +173,29 @@ Three converging signals:
 
 ## Disposition
 
-<!--
-Empty while Status: proposed.
--->
+**Accepted 2026-06-30 — realized incrementally through the four satellites, not as a
+standalone umbrella overlay.** The posture this OPP named ("the agent ships with
+enterprise-platform machinery from skill #1") is now a built reality across the catalog:
+
+- `architectures/agent-observability` (OPP-0029 / PRD-0014) — the OTel multi-agent trace contract.
+- `architectures/ai-foundry-target` (OPP-0028 / PRD-0028) — the enterprise-foundry target declaration.
+- `architectures/intelligent-model-routing` (OPP-0030 / PRD-0029) — the task→model routing table.
+- `architectures/agent-defense-in-depth` (OPP-0031 / PRD-0030) — Microsoft's four defense-in-depth patterns.
+- v2 artifact-content enforcement for all four (OPP-0051 / PRD-0031 + PRD-0032) — four `validate-*.sh` content validators.
+
+**The `management/frontier-agent-posture` umbrella overlay was deliberately not built.**
+Open Question 1 weighed an overlay-that-bundles-the-four against incremental adoption and
+biased toward the latter ("avoids forcing the four satellite modules on projects that don't
+want all four; allows incremental adoption") — and that is what shipped. The satellites
+compose without a bundling parent; a consumer activates exactly the ones it commits to. An
+umbrella overlay would add a forcing dependency with no capability the à-la-carte satellites
+don't already provide, so it was dropped rather than built. If a future consumer surfaces a
+genuine need to adopt all four as one unit, that is a fresh, narrowly-scoped OPP (an overlay
+that `dependsOn` the four), not residual work on this one.
 
 ## Promotion
 
-<!--
-Empty until accepted. Then a link to PRD-NNNN.
-Anchor for satellites: OPP-0028, OPP-0029, OPP-0030, OPP-0031.
--->
+Realized through satellites, not a single PRD: [OPP-0028](OPP-0028-ai-foundry-target.md),
+[OPP-0029](OPP-0029-agent-observability.md), [OPP-0030](OPP-0030-intelligent-model-routing.md),
+[OPP-0031](OPP-0031-agent-defense-in-depth.md), and the v2-enforcement
+[OPP-0051](OPP-0051-frontier-agent-cluster-v2-enforcement.md) — all `accepted`.

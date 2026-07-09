@@ -22,8 +22,8 @@ module system, validators, and companion rules.
 > paired-mechanism dynamic, OPP→PRD design-pressure cascade, catalog-counts
 > assertion flow, canonical-position artifact flow, the anchor-satellite
 > filing pattern, the healthcare domain-family composition, the AEC
-> domain-family composition, the Digital Twin overlay family, and the
-> geospatial domain-family composition.
+> domain-family composition, the Digital Twin overlay family, the
+> geospatial domain-family composition, and the work-package lane contract.
 
 **Manifest:** `harness.manifest.yaml`
 **Maturity:** Platform (Alpha)

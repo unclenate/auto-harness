@@ -76,7 +76,7 @@ flowchart TD
     subgraph SURFACE["Consumer-Facing Surfaces"]
         Skills["<b>Skills</b><br/>governance, onboarding,<br/>testing, web3, tools,<br/>agentic-interfaces, mcp,<br/>digital-twin"]
         Templates["<b>Templates</b><br/>98 scaffolding files<br/>(tokenized headers)"]
-        Workflows["<b>Workflows</b><br/>23 guides:<br/>bootstrap, discovery,<br/>distillation, etc."]
+        Workflows["<b>Workflows</b><br/>24 guides:<br/>bootstrap, discovery,<br/>distillation, etc."]
     end
 
     Modules -.supports.-> Skills
@@ -359,7 +359,7 @@ flowchart TD
     Write --> Headers["<b>Fill template headers</b><br/>bash .harness/platform/bootstrap/<br/>set-consumer-headers.sh"]
     Headers --> Config["Writes .harness-headers.yaml<br/>(owner_name, owner_email,<br/>year, spdx_license, project_name)"]
 
-    Config --> Validate["Run validator chain locally<br/>(18 validators)"]
+    Config --> Validate["Run validator chain locally<br/>(24 validators)"]
     Validate --> Pass{"All exit 0?"}
 
     Pass -->|"no"| Troubleshoot["See workflow/troubleshooting.md<br/>or harness-onboarding skill"]

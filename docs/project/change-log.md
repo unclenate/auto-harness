@@ -11,6 +11,133 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-07-08 — Upstream Harvesting Guide launch & HARNESS.md diagrams list patch
+
+Authored and launched the **Upstream Harvesting Guide** (`platform/workflow/upstream-harvesting.md`) as Workflow #24, establishing the intake, refactoring, and integration protocol for harvesting customized consumer modules back into the core platform repository.
+
+Additionally:
+
+- Patched the diagram list in `HARNESS.md` to include Diagram #16 (`Work-Package Lane Contract`), satisfying the entrypoint companion rule.
+- Bumped the workflow count (from 23 to 24) across `SUMMARY.md`, `platform/reference/how-to-read.md`, `docs/architecture/diagrams.md`, and `docs/_assets/cover-back.svg`.
+- Added the `docs/architecture/stigmergy.md` concept page.
+- Hardened integration tests (`test_validators_integration.rb`) by disabling `gpgsign` in temporary git fixtures so mock-commit setup no longer depends on the operator's global signing config.
+
+This change touches the `HARNESS.md` governance entrypoint, firing the kernel/base
+governance-entrypoint companion rule (`validate-companions.sh`); it is satisfied by this
+change-log entry, which the rule's `humanReview` guidance permits for routine
+documentation-consistency maintenance (a diagram-list catch-up to the already-existing
+Diagram #16, not a new governance decision). No PRD-0004 distillation trigger fires — the
+change touches no OPP, ADR, module manifest, or the active-module catalog.
+
+## 2026-07-02 — PRD-0033 ratifies the relational-module generalization (design-only, § 9)
+
+Authored **PRD-0033** promoting **OPP-0012** — generalize `data/relational-postgres` →
+engine-agnostic `data/relational-sql`, with the SQL engine declared as an enum
+(`postgres`/`mysql`/`mariadb`/`sqlite`) **in the artifact** (`migration-readiness.md`), not
+`module.yaml`. This is the design pass only; a separate implementing PR performs the rename.
+
+The PRD resolves OPP-0012's five open questions against disk-verified facts gathered
+2026-07-02: (1) **migration approach — hard, atomic, single-commit rename**, no alias facility,
+because the rename's entire blast radius is in-repo (4 compositions + `domains/supabase`'s
+`dependsOn` + 2 sample manifests + ~30 prose refs) and OpenEMR — the motivating consumer —
+declares no data module, so no external manifest depends on the old id; (2) **engine lives in
+the artifact** (the `module.schema.json` `additionalProperties: false` constraint forbids it
+on `module.yaml`, same as the PRD-0028 foundries enum); (3) **single-value** engine; (4) keep
+**SQLite in the shared module** for v1, factor out `relational-embedded` only if footnotes
+overwhelm; (5) **`relational-sql` first**, then OPP-0009's `embedded-key-value`.
+
+Design-only per § 9 — this PR touches no `module.yaml`/OPP/ADR, so it does not fire the
+PRD-0004 distillation rule; the paired observation (rename economics when blast radius is
+100% in-repo) is captured in the implementing PR, at the `module.yaml` + OPP-0012 status edit
+that triggers the rule. OPP-0012 stays `proposed` until that implementing merge.
+
+## 2026-06-30 — Scheduled doc-watch entry accepted + count corrected (automation recipe drift)
+
+The scheduled Monday doc-watch automation fired **twice** during this session (a
+2026-06-29 entry for the 06-28→29 window, and a 2026-06-30 entry for the 06-29→30 window),
+each appending an "ALL CLEAR" cadence entry to `docs/doc-watch-log.md`. Both were
+substantively correct and verified against disk — **except, in both, one count**: each
+reported `templates 104`, a non-canonical figure that counts every `.md` under
+`platform/templates/` *including* the per-subdir `README.md` files. The canonical recipe
+(`validate-catalog-counts.sh`: `find … -name '*.md' ! -name 'README.md'`) is **98**.
+Corrected both inline with transparent correction notes.
+
+**Flag for the maintainer (root cause):** this is the same error on two consecutive
+auto-runs, so the scheduled doc-watch routine's template-count recipe is systematically
+non-canonical and will reintroduce the drift on every future run. The automation is an
+external scheduled agent (no in-repo script, no session cron, no `.claude/scheduled_tasks.json`),
+so it can't be fixed from a working session — its prompt/recipe should be aligned with
+`validate-catalog-counts.sh` at the source. Fittingly, the doc-watch log keeps catching
+drift in its own auto-generated entries. No other change.
+
+## 2026-06-30 — Backlog-hygiene reconciliation: OPP-0027 closed, OPP-0047 cross-linked
+
+Cleaned up the two stale-status loose ends the 3-lens triage surfaced after the cluster wave:
+
+- **OPP-0027** (frontier-agent posture, cluster anchor): flipped `proposed` → `accepted`.
+  The posture is fully realized through its four satellites (`agent-observability`,
+  `ai-foundry-target`, `intelligent-model-routing`, `agent-defense-in-depth` + the OPP-0051
+  v2 enforcement). The `management/frontier-agent-posture` umbrella overlay it also proposed
+  was **deliberately not built** — per the OPP's own Open Question 1 (incremental à-la-carte
+  adoption over a forced umbrella), which is what shipped; an umbrella would add a forcing
+  dependency with no capability the satellites lack. Disposition + Promotion filled to record
+  what shipped vs. what was dropped.
+- **OPP-0047** (delivery-cost & unit-economics): stays `proposed` (the wedge is unbuilt), but
+  its Last-Updated + Disposition now cross-link **PRD-0025**, which formally adopted it as a
+  deferred v2 phase of `management/work-package`. Tracked-but-deferred inside an accepted PRD,
+  no longer free-floating.
+
+`docs/README.md` OPP index updated for OPP-0027. One paired distillation observation
+(anchor-OPP disposition — "accepted" when satellites ship, with the umbrella dropped-as-
+redundant explicitly dispositioned). No catalog-count or code change.
+
+## 2026-06-28 — OPP-0025 shipped: consumer-side integration smoke test (new thread after the cluster closed)
+
+With the frontier-agent cluster thread complete, a 3-lens backlog triage (value / readiness
+/ staleness, three parallel agents over the 13 open OPPs) converged on **OPP-0025** as the
+highest value×readiness item carrying no maintainer-strategic gate. Shipped it directly per
+the half-day-fully-biased-OPP discipline (no PRD — all 7 open questions already carried
+resolved biases).
+
+Delivered a **`submodule-smoke-test` job** in both consumer CI templates
+(`platform/templates/ci/{github-actions.yml,gitlab-ci.yml}`): a separate clean-checkout job
+that asserts `.harness/` materialized (with an actionable failure message) and smoke-runs one
+validator against the consumer's manifest — catching the two silent submodule-integration
+failures (fresh clone without `--recurse-submodules`; pinned SHA unreachable upstream) that
+the harness's own CI cannot see by construction. Added a § Submodule Smoke Test to the CI
+template README and made `submodule-integration.md` § 6's recipe reference present-tense.
+Additive — no validator, module, § 10 claim, or catalog-count change. **OPP-0025** flipped
+`proposed` → `accepted`; its Q7 sibling (the intra-repo M-j gap) noted as already discharged
+by `validate-list-completeness.sh`. One paired distillation observation (cross-repo
+enforcement topology — the producer ships the check into the consumer's CI).
+
+**Backlog hygiene surfaced by the triage (noted, not bundled here):** OPP-0027 (frontier-agent
+posture anchor) is now a closeable loose end — its four satellites all shipped, only the thin
+umbrella overlay was never built; and OPP-0047 (delivery-cost) wants a cross-link to PRD-0025
+(which adopted it as a deferred v2 phase). Both are light maintainer-pass items.
+
+## 2026-06-28 — doc-watch sweep: front-door drift fixed after the #150–#158 cluster wave (+ a real test-coverage gap)
+
+Routine doc-watch after the nine-PR frontier-agent cluster wave (validators 20 → 24,
+profile modules 49 → 52). Three parallel agents audited the front-door; findings verified
+against disk. The validator-guarded surfaces (catalog-counts, list-completeness, the
+`docs/README.md` indexes) stayed clean; drift was confined to the unguarded prose:
+
+- Stale "18/20" validator counts in `platform/validators/README.md` (×2),
+  `docs/architecture/diagrams.md`, and `docs/roadmap.md` → 24.
+- `docs/roadmap.md` narrative still called the cluster's v2 enforcement a "future OPP" →
+  corrected to record it shipped (OPP-0051), with only the code-cross-reference half deferred.
+- `SUMMARY.md` GitBook nav (not the list-completeness-guarded index) was missing 7 PRD
+  rows (0026–0032) and 4 OPP rows (0048–0051) → added.
+- **Real coverage gap:** `test/test_validators_integration.rb`'s `VALIDATOR_SCRIPTS`
+  (auto-generates the uniform `--help` coverage tests) was missing the four new
+  validators → added (20 → 24; dynamic test count now 72, all green). Surfaced only
+  because the watch cross-checked the prose "× 18 validators" against the actual list.
+
+Recorded in `docs/doc-watch-log.md`. Deferred (logged): a pre-existing `HARNESS.md`
+diagram-enumeration inconsistency (names 15, count says 16) — editing the entrypoint trips
+the governance-companion rule, disproportionate for a one-item list fix.
+
 ## 2026-06-28 — PRD-0032 implementation: three cluster content validators shipped — artifact-content v2 enforcement complete (OPP-0051)
 
 Implemented **PRD-0032** in one PR, shipping the three remaining artifact-content

@@ -103,6 +103,7 @@ originating opportunity records.
 | [0030](requirements/PRD-0030-agent-defense-in-depth.md) | Agent Defense-in-Depth (`architectures/agent-defense-in-depth`) | Accepted | [OPP-0031](opportunities/OPP-0031-agent-defense-in-depth.md) |
 | [0031](requirements/PRD-0031-validate-trace-contract.md) | Trace-Contract Content Validator (`validate-trace-contract.sh`) | Accepted | [OPP-0051](opportunities/OPP-0051-frontier-agent-cluster-v2-enforcement.md) |
 | [0032](requirements/PRD-0032-cluster-content-validators.md) | Cluster Content Validators — Phases 2–4 (foundry-target / model-routing / defense-in-depth) | Accepted | [OPP-0051](opportunities/OPP-0051-frontier-agent-cluster-v2-enforcement.md) |
+| [0033](requirements/PRD-0033-relational-sql-engine-generalization.md) | Relational Data Module Generalization (`data/relational-postgres` → `data/relational-sql`, engine-in-artifact) | Accepted (design-only) | [OPP-0012](opportunities/OPP-0012-data-module-relational-sql-engine-generalization.md) |
 
 ---
 
@@ -138,9 +139,9 @@ clustered backlog with framing.
 | [0021](opportunities/OPP-0021-delivery-self-hosted-oss.md) | Delivery — Self-Hosted OSS (Tula) | accepted |
 | [0022](opportunities/OPP-0022-patient-facing-health-agent-safety.md) | Patient-Facing Health-Agent Safety (Tula) | proposed |
 | [0023](opportunities/OPP-0023-doc-references-consumer-scan.md) | `validate-doc-references` Consumer-Aware Scan | accepted |
-| [0025](opportunities/OPP-0025-consumer-integration-smoke-test.md) | Consumer-Side Integration Smoke Test | proposed |
+| [0025](opportunities/OPP-0025-consumer-integration-smoke-test.md) | Consumer-Side Integration Smoke Test | accepted |
 | [0026](opportunities/OPP-0026-distilled-learnings-disposition.md) | `distilled-learnings.md` Disposition (Sunset/Revive/Clarify) | accepted |
-| [0027](opportunities/OPP-0027-frontier-agent-posture.md) | Frontier-Agent Posture (Management Overlay; Cluster Anchor) | proposed |
+| [0027](opportunities/OPP-0027-frontier-agent-posture.md) | Frontier-Agent Posture (Management Overlay; Cluster Anchor) | accepted |
 | [0028](opportunities/OPP-0028-ai-foundry-target.md) | Enterprise AI Foundry Target Awareness | accepted |
 | [0029](opportunities/OPP-0029-agent-observability.md) | Agent Observability with OpenTelemetry Semantic Conventions | accepted |
 | [0030](opportunities/OPP-0030-intelligent-model-routing.md) | Intelligent Model Routing as Architectural Primitive | accepted |
@@ -233,7 +234,7 @@ ADR (decision recorded, alternatives explained, consequences known)
 Implementation (the actual code/doc change)
 ```
 
-See [Diagram 4 — Opportunity → PRD → ADR Lifecycle](architecture/diagrams.md#4-opportunity--prd--adr-lifecycle) and [Diagram 8 — OPP → PRD Design-Pressure Cascade](architecture/diagrams.md#8-opp--prd-design-pressure-cascade) for the visual references.
+See [Diagram 4 — Opportunity → PRD → ADR Lifecycle](architecture/diagrams.md#4-opportunity--prd--adr-lifecycle), [Diagram 8 — OPP → PRD Design-Pressure Cascade](architecture/diagrams.md#8-opp--prd-design-pressure-cascade), and [Stigmergy](architecture/stigmergy.md) for the visual and conceptual references.
 
 ---
 

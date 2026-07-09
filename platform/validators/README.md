@@ -15,7 +15,7 @@ Run locally during development and in CI on every pull request.
 
 - **Ruby 3.0+** — all validators use inline Ruby for YAML parsing and logic
 - **ripgrep (`rg`)** — required by `validate-placeholders.sh` only; other validators work without it
-- **Bash** — the eighteen `validate-*.sh` scripts delegate to Ruby and work with Bash 3.2 (macOS default) and 4+. The bootstrap scripts (`install.sh`, `link-skills.sh`, `add-license-headers.sh`) require Bash 4+ (use `declare -A` and other 4+ features); macOS users must `brew install bash` for those.
+- **Bash** — the twenty-four `validate-*.sh` scripts delegate to Ruby and work with Bash 3.2 (macOS default) and 4+. The bootstrap scripts (`install.sh`, `link-skills.sh`, `add-license-headers.sh`) require Bash 4+ (use `declare -A` and other 4+ features); macOS users must `brew install bash` for those.
 
 ---
 
@@ -184,8 +184,8 @@ ruby -I platform/validators/lib platform/validators/test/test_harness_registry.r
 
 ### Integration tests
 
-**`test/test_validators_integration.rb`** — hard-coded tests + 54 dynamically
-generated `--help` / `-h` coverage tests (3 per validator × 18 validators) that
+**`test/test_validators_integration.rb`** — hard-coded tests + 72 dynamically
+generated `--help` / `-h` coverage tests (3 per validator × 24 validators) that
 shell out to the actual validator scripts against fixture projects:
 
 - `validate-manifest.sh` — valid pass, bad schema fail, missing file → exit 2

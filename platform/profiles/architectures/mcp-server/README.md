@@ -148,7 +148,7 @@ normative MUSTs under the MCP spec; the auth posture must not drift quietly.
 | `stacks/python` | Python MCP server using `mcp` SDK |
 | `architectures/api-service` | Same codebase serves both HTTP API and MCP server |
 | `architectures/event-driven` | Server emits notifications and reacts to upstream events |
-| `data/relational-postgres` | Server backs tools with a relational store |
+| `data/relational-sql` | Server backs tools with a relational store |
 | `management/interview-driven` | Small team / prototype tier — pairs cleanly with `delivery/prototype` |
 | `delivery/production-saas` | Remote MCP server (Streamable HTTP transport) deployed for many clients |
 

@@ -50,7 +50,7 @@ Review gate: *"Human review is required for changes that affect delivery guarant
 | Pair with | When |
 |-----------|------|
 | `architectures/api-service` | Service exposes both HTTP and event interfaces |
-| `data/relational-postgres` | Event processing writes to relational state |
+| `data/relational-sql` | Event processing writes to relational state |
 | `data/object-storage` | Events trigger artifact generation stored in object storage |
 | `domains/media-pipeline` | Events drive media processing workflows |
 

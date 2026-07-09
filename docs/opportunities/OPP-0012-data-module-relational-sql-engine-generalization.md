@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0012 — Generalize `data/relational-postgres` → `data/relational-sql` (engine sub-field)
 
-**Status:** proposed
+**Status:** accepted *(implemented 2026-07-09 per [PRD-0033](../requirements/PRD-0033-relational-sql-engine-generalization.md) — module renamed to `data/relational-sql`, engine declared as an enum in the `migration-readiness.md` artifact, and every in-repo consumer migrated atomically)*
 **Owner:** @unclenate
 **Created:** 2026-05-24
-**Last Updated:** 2026-05-24
+**Last Updated:** 2026-07-09
 **Confidence:** high
 
 ---

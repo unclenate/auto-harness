@@ -11,6 +11,28 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-07-09 — Implement PRD-0033: rename `data/relational-postgres` → `data/relational-sql` (engine-in-artifact)
+
+Executed the ratified PRD-0033 (and flipped **OPP-0012 → accepted**): `git mv` the relational
+data module to `data/relational-sql`, `id`/`version` → `relational-sql` / `2.0.0`, with every
+other module field (dependsOn, requiredArtifacts, sensitivePaths, the migration-touch companion
+rule, reviewGates) carried through verbatim. Added an `engine:` enum
+(`postgres`/`mysql`/`mariadb`/`sqlite`, single-value) to the `migration-readiness.md` template —
+declared in YAML frontmatter and mirrored by a "Database Engine" section with engine-conditional
+dialect/tooling guidance and a SQLite embedded-posture note (Asserted-only in v1; no validator).
+
+Atomically migrated every in-repo consumer in the same commit — the 4 compositions
+(`node-web-saas-postgres`, `python-api-service-postgres`, `brownfield-lite`,
+`web3-risk-analytics`), `domains/supabase`'s `dependsOn`, and the 2 sample-project manifests —
+and swept the live-catalog prose (architecture/module READMEs, workflow guides, templates, the
+onboarding skill, `module-types.md`, and top-level README/SUMMARY nav). Historical records (prior
+change-log entries, OPP/PRD bodies, `candidates.md`/`roadmap.md` scope rows, dated plans/specs)
+were left as written. Profile-module count is **unchanged at 52** (a rename, not an addition).
+
+Fires the PRD-0004 distillation rule (module manifest + OPP edits), satisfied by the paired
+`shared-observations.md` entry on in-repo-blast-radius / atomic-cutover-vs-alias economics; this
+change-log entry also satisfies the knowledge-capture audit-trail rule for that observation.
+
 ## 2026-07-09 — Capture three validator-ergonomics observations (consumer-scrubbed)
 
 Recorded three field observations in `docs/knowledge/shared-observations.md`, contributed by

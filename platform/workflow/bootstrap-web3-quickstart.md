@@ -42,7 +42,7 @@ Use `web3-risk-analytics.yaml` as the starting composition for most Web3 project
 cp platform/compositions/web3-risk-analytics.yaml your-project/harness.manifest.yaml
 ```
 
-This composition activates: `kernel/base`, `python`, `api-service`, `relational-postgres`,
+This composition activates: `kernel/base`, `python`, `api-service`, `relational-sql`,
 `production-saas`, `discovery-intake`, `product-lite`, `project-standard`, `web3`, `base`.
 
 Update the project block:

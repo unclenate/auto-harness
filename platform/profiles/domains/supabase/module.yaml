@@ -7,7 +7,7 @@ stability: beta
 summary: Supabase domain overlay for project refs, auth boundaries, migrations, and hosted service integration records.
 dependsOn:
   - kernel/base
-  - relational-postgres
+  - relational-sql
 conflictsWith: []
 requiredArtifacts: []
 optionalArtifacts:

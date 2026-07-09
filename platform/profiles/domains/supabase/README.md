@@ -6,12 +6,12 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # Domain Overlay: Supabase
 
-**Depends on:** `kernel/base`, `data/relational-postgres`.
+**Depends on:** `kernel/base`, `data/relational-sql`.
 **Conflicts with:** None.
 
 This overlay activates Supabase-specific governance when Supabase is the hosted backend layer —
 providing auth, database, storage, and edge functions as a managed service. It extends
-`data/relational-postgres` with the assumptions that come with a hosted Supabase project: a
+`data/relational-sql` with the assumptions that come with a hosted Supabase project: a
 managed Postgres instance, built-in auth primitives, and a hosted API surface.
 
 ---
@@ -30,7 +30,7 @@ Changes to these paths trigger a companion rule requiring one of:
 This enforces the principle that auth, policy, and hosted-boundary changes are tracked decisions,
 not silent implementation details.
 
-The dependency on `data/relational-postgres` means this overlay inherits all migration
+The dependency on `data/relational-sql` means this overlay inherits all migration
 discipline and schema governance from that module. Supabase provides the hosting layer;
 the database governance rules still apply.
 
@@ -72,7 +72,7 @@ Supabase Auth handles user identity, session management, and JWT issuance. Gover
 
 ## Migrations
 
-This overlay inherits full migration discipline from `data/relational-postgres`:
+This overlay inherits full migration discipline from `data/relational-sql`:
 
 - Migrations live in `supabase/migrations/` — tracked in version control.
 - Agents may write migration files but must not apply them to any shared or production environment.
@@ -122,5 +122,5 @@ These are not stylistic decisions — they determine who can access what data.
 
 - Module definition: [`module.yaml`](module.yaml)
 - Active modules table: [`HARNESS.md`](../../../../HARNESS.md)
-- Required dep: [`data/relational-postgres`](../../data/relational-postgres/README.md)
+- Required dep: [`data/relational-sql`](../../data/relational-sql/README.md)
 - ADR: [`ADR-0003 — Submodule Integration`](../../../../docs/adr/ADR-0003-submodule-integration.md)

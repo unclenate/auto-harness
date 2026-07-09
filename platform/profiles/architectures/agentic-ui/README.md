@@ -89,7 +89,7 @@ contract artifacts. They are designed to be active together for this class of pr
 | `architectures/api-service` | The agent serves over an API and multiple clients render |
 | `stacks/node-typescript` | React/Lit renderers, CopilotKit, AG-UI Protocol |
 | `stacks/python` | Agent runtime hosted in Python (LangChain Deep Agents, LangGraph) |
-| `data/relational-postgres` | Conversation state, persistent threads, tool-call audit log |
+| `data/relational-sql` | Conversation state, persistent threads, tool-call audit log |
 | `delivery/prototype` | Early agent-loop iteration |
 | `delivery/production-saas` | Agent ships to real users |
 

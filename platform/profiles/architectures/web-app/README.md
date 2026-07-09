@@ -48,7 +48,7 @@ This is enforced by the review gate:
 | `stacks/node-typescript` | Node.js/TypeScript web application |
 | `stacks/python` | Python web application (Django, FastAPI + HTMX, etc.) |
 | `domains/supabase` | Supabase as the backend for auth, data, and storage |
-| `data/relational-postgres` | Postgres as the primary database |
+| `data/relational-sql` | Postgres as the primary database |
 
 **Does not conflict with any other module.** Multiple architecture overlays can coexist if the
 system has both web-facing and API-facing surfaces — add both `web-app` and `api-service`.

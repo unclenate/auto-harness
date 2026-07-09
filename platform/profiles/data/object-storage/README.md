@@ -50,7 +50,7 @@ Review gate: *"Human review is required when retention or lifecycle policies cha
 | `domains/media-pipeline` | Object storage holds input media and derived artifacts |
 | `architectures/api-service` | API handles upload and download signed URL generation |
 | `architectures/event-driven` | Object creation events trigger downstream processing |
-| `data/relational-postgres` | Metadata in Postgres, blobs in object storage |
+| `data/relational-sql` | Metadata in Postgres, blobs in object storage |
 
 ---
 

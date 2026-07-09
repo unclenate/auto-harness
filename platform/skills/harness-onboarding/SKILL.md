@@ -106,7 +106,7 @@ Follow these rules throughout the assessment. They exist because the output will
 - **UNKNOWN when uncertain.** If a fact cannot be confirmed from repository evidence, mark it as `UNKNOWN`. Do not substitute a likely guess.
 - **Use the Module Catalog.** All module choices must come from the catalog in this skill. Do not invent module names.
 - **Respect conflicts.** `delivery/prototype` and `delivery/production-saas` conflict — select exactly one. Stack modules (`stacks/node-typescript`, `stacks/python`) may be combined for genuinely polyglot projects; when combined, the project should declare a primary stack in `docs/architecture/overview.md`.
-- **Respect dependencies.** `management/program-lite` requires `management/project-standard`. `domains/supabase` requires `data/relational-postgres`. `domains/media-pipeline` requires `data/object-storage`. All modules require `core/kernel/base`.
+- **Respect dependencies.** `management/program-lite` requires `management/project-standard`. `domains/supabase` requires `data/relational-sql`. `domains/media-pipeline` requires `data/object-storage`. All modules require `core/kernel/base`.
 - **Do not mark an artifact present unless you have verified its path.** PARTIAL is correct for files that exist but appear to be unfilled stubs or templates.
 - **Conservative module selection.** If evidence is ambiguous, omit the module rather than include it. It is cheaper to add a module later than to inherit all its required artifacts immediately.
 - **Greenfield = discovery, not composition (OPP-0042).** A new or near-empty repo with no code *and* no governance docs — even when the operator gives a one-line description of what it *will* be ("a portfolio site", "a SaaS for X") — is **greenfield**. That description is **intent, not evidence**: never assert a stack, architecture, or data module from a verbal description alone. Route greenfield to a discovery posture (`management/discovery-intake`, or the `new-product-discovery` / `interview-driven-discovery` compositions), keep `overrides.disabledValidations: [required-artifacts]`, and record intended-but-unevidenced modules as commented `# intent:` lines rather than active modules. Promote each to active — and enable its required artifacts — only when repo evidence appears (e.g. a `package.json`, a `pyproject.toml`, an actual framework config). The Conservative-module-selection rule above is brownfield-shaped (evidence = files present); greenfield has no files, so its default is the inverse — assert almost nothing until code lands. Prefer asking 2–3 scoping questions over inferring a full stack from a sentence.
@@ -528,11 +528,11 @@ optional, required-by-convention when any autonomous action is declared).
 
 | Module | Select when | Dependencies |
 | ------ | ----------- | ------------ |
-| `data/relational-postgres` | `migrations/`, Prisma `schema.prisma`, Drizzle config, or Postgres connection string found | — |
+| `data/relational-sql` | `migrations/`, Prisma `schema.prisma`, Drizzle config, or Postgres connection string found | — |
 | `data/document-store` | MongoDB, Firestore, or DynamoDB client found | — |
 | `data/object-storage` | S3, GCS, R2, or Supabase Storage SDK found | — |
 
-Required artifact: `data/relational-postgres` → `docs/database/migration-readiness.md`
+Required artifact: `data/relational-sql` → `docs/database/migration-readiness.md`
 
 No required artifacts for `document-store` or `object-storage`.
 
@@ -584,7 +584,7 @@ Dependency: `management/program-lite` requires `management/project-standard`. `m
 
 | Module | Select when | Dependencies | Required artifacts |
 | ------ | ----------- | ------------ | ------------------ |
-| `domains/supabase` | `supabase/` directory or `@supabase/supabase-js` import found | `data/relational-postgres` | none |
+| `domains/supabase` | `supabase/` directory or `@supabase/supabase-js` import found | `data/relational-sql` | none |
 | `domains/media-pipeline` | `ffmpeg`, media processing jobs, or media CDN SDK found | `data/object-storage` | none |
 | `domains/web3` | `ethers`, `wagmi`, `viem`, `hardhat`, `foundry`, `contracts/`, or `abi/` found | — | `docs/web3/chain-config.md` |
 | `domains/gitbook` | `SUMMARY.md` at root or in `docs/`, `.gitbook.yaml` found | — | `docs/SUMMARY.md` |

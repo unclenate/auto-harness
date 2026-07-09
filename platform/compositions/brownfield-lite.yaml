@@ -22,7 +22,7 @@ modules:
   #   - event-driven              # Queue workers, background jobs, event bus
   #
   # data:                         # May combine
-  #   - relational-postgres       # Migrations, ORM, SQL
+  #   - relational-sql       # Migrations, ORM, SQL
   #   - document-store            # MongoDB, Firestore, DynamoDB
   #   - object-storage            # S3, GCS, R2, Supabase Storage
   #
@@ -38,7 +38,7 @@ modules:
   #   - program-lite              # Multi-team or multi-workstream (requires project-standard)
   #
   # domains:                      # Select if applicable
-  #   - supabase                  # Supabase (requires relational-postgres)
+  #   - supabase                  # Supabase (requires relational-sql)
   #   - media-pipeline            # Media processing (requires object-storage)
   #   - web3                      # Blockchain / on-chain data
   #   - gitbook                   # GitBook documentation site

@@ -64,7 +64,7 @@ Same as `stacks/node-typescript`:
 | `architectures/web-app` | Plain-JS Node web applications |
 | `architectures/api-service` | Plain-JS REST/RPC services |
 | `data/embedded-key-value` | Node + LevelDB/LMDB/SQLite-as-KV (YouBase shape) |
-| `data/relational-postgres` | Node + Postgres |
+| `data/relational-sql` | Node + Postgres |
 | `domains/cryptographic-identity` | Node + BIP32/BIP39 wallets, DID/SSI primitives |
 | `delivery/production-saas` | Plain-JS production deployments |
 | `delivery/prototype` | Plain-JS prototypes / discovery work |

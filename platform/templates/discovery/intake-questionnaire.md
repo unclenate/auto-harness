@@ -387,7 +387,7 @@ Use this to initialize `harness.manifest.yaml`.
 | Web UI needed (§8.3) | `architectures/web-app` |
 | API surface for external consumers (§8.3) | `architectures/api-service` |
 | Async / background processing (§8.3) | `architectures/event-driven` |
-| Relational data / SQL mentioned (§4.2, §8.1) | `data/relational-postgres` |
+| Relational data / SQL mentioned (§4.2, §8.1) | `data/relational-sql` |
 | File storage / media / uploads (§5.1, §8.3) | `data/object-storage` |
 | Document or JSON store (§8.1) | `data/document-store` |
 | Node / TypeScript preferred (§8.1) | `stacks/node-typescript` |
@@ -416,7 +416,7 @@ modules:
   architectures:
     - # web-app, api-service, event-driven
   data:
-    - # relational-postgres, object-storage, document-store
+    - # relational-sql, object-storage, document-store
   delivery:
     - # prototype or production-saas
   management:

@@ -202,7 +202,7 @@ unexplained reasons destroys community trust.
 | `stacks/python` | Python is the dominant Web3 analysis stack (httpx, Pydantic, FastAPI) |
 | `architectures/api-service` | Analytics exposed as a REST or GraphQL API |
 | `architectures/event-driven` | On-chain event indexing and stream processing |
-| `data/relational-postgres` | Primary structured store for results and contract metadata |
+| `data/relational-sql` | Primary structured store for results and contract metadata |
 | `delivery/production-saas` | Platform serves real users with real money at stake |
 | `delivery/prototype` | Early signal validation — UNKNOWN and security rules still apply |
 

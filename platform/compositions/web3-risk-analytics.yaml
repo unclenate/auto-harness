@@ -14,7 +14,7 @@ modules:
   architectures:
     - api-service
   data:
-    - relational-postgres
+    - relational-sql
   delivery:
     - production-saas
   management:
@@ -39,7 +39,7 @@ overrides:
 # Key governance properties activated by this composition:
 #   - domains/web3: chain-config required, UNKNOWN propagation review gate, rate limit gate,
 #     evidence requirement, scoring rule ADR companion rule
-#   - data/relational-postgres: migration discipline, human-directed migration apply
+#   - data/relational-sql: migration discipline, human-directed migration apply
 #   - delivery/production-saas: environment inventory, release checklist, rollback checklist,
 #     risk register all required
 #   - management/discovery-intake: intake questionnaire + MVP scope required;

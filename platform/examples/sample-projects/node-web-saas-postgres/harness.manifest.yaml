@@ -25,7 +25,7 @@ modules:
   architectures:
     - web-app
   data:
-    - relational-postgres
+    - relational-sql
   delivery:
     - production-saas
   management:

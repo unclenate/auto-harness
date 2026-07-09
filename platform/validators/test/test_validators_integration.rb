@@ -1094,6 +1094,7 @@ class TestValidateCompanionsForbidden < Minitest::Test
         system("git init -q -b main")
         system("git config user.email test@example.com")
         system("git config user.name Test")
+        system("git config commit.gpgsign false")
 
         # Baseline: write the manifest and any baseline files, then commit on main.
         baseline_paths.each do |p|
@@ -1702,6 +1703,7 @@ class TestValidateKnowledgeRedaction < Minitest::Test
         system("git init -q -b main")
         system("git config user.email test@example.com")
         system("git config user.name Test")
+        system("git config commit.gpgsign false")
 
         FileUtils.mkdir_p(File.dirname(watched_file))
         File.write(watched_file, baseline)
@@ -1806,6 +1808,7 @@ class TestValidateKnowledgeRedaction < Minitest::Test
         system("git init -q -b main")
         system("git config user.email test@example.com")
         system("git config user.name Test")
+        system("git config commit.gpgsign false")
         File.write("README.md", "init\n")
         system("git add -A && git commit -q -m init")
         # Run with a base ref that doesn't exist.

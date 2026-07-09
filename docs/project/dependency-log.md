@@ -35,6 +35,7 @@ Tracks Dependabot-raised version bumps to actions used in `.github/workflows/`. 
 | Date | Action | From → To | Source | Reviewer | Notes |
 | ---- | ------ | --------- | ------ | -------- | ----- |
 | 2026-05-18 | `actions/checkout` | v4 → v6 | Dependabot PR #17 | @unclenate | Major-version jump skipping v5. Reviewed: (1) v5 changelog — default Node 20→22 (matches our runner's Node version, no concern); (2) v6 changelog — no breaking changes flagged for our usage pattern (we use only `fetch-depth`, no sparse-checkout, no custom tokens, no LFS); (3) all 6 CI jobs (Validators × 2, Self-Tests × 2, Bootstrap Tests × 2) pass on both `ubuntu-latest` and `macos-latest` against the bumped action — verified on PR #17. |
+| 2026-07-09 | `actions/checkout` | v6 → v7 | Dependabot PR #136 | @unclenate | Reviewed: (1) v7 changelog — the only behavioral change is hardened fork-PR checkout under `pull_request_target` / `workflow_run`; our `harness.yml` triggers on plain `pull_request` + `push` only (grep-confirmed: no `pull_request_target`/`workflow_run` anywhere), so this does not affect us. Remaining v7 changes are internal (ESM module upgrade, dependency bumps); (2) usage surface unchanged — only `fetch-depth: 0` on the Validators job, bare checkout elsewhere; no sparse-checkout, custom tokens, submodules, or LFS; (3) all 9 CI jobs (Validators × 2, Self-Tests × 2, Bootstrap Tests × 2, Shellcheck, Markdownlint, Sample Project Validation) pass against the bumped action — verified on PR #136. |
 
 ---
 

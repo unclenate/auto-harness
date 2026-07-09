@@ -183,7 +183,7 @@ Based on the answers above, the following module selections are indicated:
 | Python stack | `stacks/python` |
 | API service surface | `architectures/api-service` |
 | Blockchain data source | `domains/web3` |
-| Relational storage for results | `data/relational-postgres` |
+| Relational storage for results | `data/relational-sql` |
 | Real users / production | `delivery/production-saas` |
 | Token governance layer | add `docs/web3/token-strategy.md` as optional artifact |
 | Contract deployment | add `docs/web3/contract-registry.md` as optional artifact |

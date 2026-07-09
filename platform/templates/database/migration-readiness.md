@@ -1,3 +1,10 @@
+---
+# Primary production SQL engine (single-value): one of postgres | mysql | mariadb | sqlite.
+# Machine-checkable mirror of the "Database Engine" section below. Asserted-only in v1
+# (human-reviewed; no validator yet) — keep it in sync with the prose.
+engine: postgres
+---
+
 <!--
 Copyright [[YEAR]] [[OWNER_NAME]] <[[OWNER_EMAIL]]>
 SPDX-License-Identifier: [[SPDX_LICENSE]]
@@ -10,7 +17,33 @@ SPDX-License-Identifier: [[SPDX_LICENSE]]
 
 This document records the team's migration discipline: how migrations are authored,
 reviewed, tested, and rolled back. It is a required artifact for any project using
-the `relational-postgres` data module.
+the `relational-sql` data module.
+
+---
+
+## Database Engine
+
+Declare the **primary production SQL engine** — single-value, one of `postgres`,
+`mysql`, `mariadb`, or `sqlite`. It is mirrored in the YAML frontmatter above and
+governs the dialect, migration tooling, and operational-posture notes that follow. (A
+test-only SQLite alongside a Postgres production engine is an implementation detail,
+not the declared engine.)
+
+| Engine | Dialect / migration notes | Full-text search |
+|--------|---------------------------|------------------|
+| `postgres` | Transactional DDL — most migration tools apply DDL atomically, so a failed migration rolls back cleanly. Flyway / Liquibase / Alembic / Drizzle all first-class. | Native `tsvector` / GIN |
+| `mysql` | Non-transactional DDL (implicit commits) — a failed migration can leave a partial schema; prefer small, individually reversible steps. | `FULLTEXT` indexes (InnoDB) |
+| `mariadb` | MySQL-compatible; watch for divergence in JSON functions and sequence support across versions. | `FULLTEXT` indexes |
+| `sqlite` | Limited `ALTER TABLE` (pre-3.35 has no drop/alter column — rebuild-and-copy); single writer at a time. | `FTS5` extension |
+
+### SQLite operational posture (embedded)
+
+When `engine: sqlite`, the operational model is **embedded**, not client/server: the
+database is a single file in the application's storage, there is no replication or
+managed backup service, and a "production apply" means shipping a file-level migration
+with the release. The migration-records discipline still applies, but the "who applied
+it to the server" column becomes "which release shipped it," and backups are file (or
+WAL) snapshots rather than a DBA-run service.
 
 ---
 

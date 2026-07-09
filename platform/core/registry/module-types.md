@@ -90,7 +90,7 @@ Reading top-to-bottom, the module says:
 - **`dependsOn: [kernel/base]`** — *what other modules must be active for this one to
   work*. The kernel is always required; profile modules can also require other
   profile modules (e.g., a `domains/healthcare-*` module might depend on the
-  `data/relational-postgres` module).
+  `data/relational-sql` module).
 - **`conflictsWith: [architectures/api-service, architectures/event-driven]`** —
   *which modules cannot coexist*. A project that is a web app isn't simultaneously
   a pure API service or a pure event-driven system; the architecture family has

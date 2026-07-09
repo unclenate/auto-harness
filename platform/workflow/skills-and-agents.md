@@ -194,7 +194,7 @@ clawhub install <slug>
 | `stacks/node-typescript` (Vercel) | `lb-vercel-skill` | Vercel CLI, deployments, env vars |
 | `stacks/node-typescript` (perf) | `react-perf` | React and Next.js performance |
 | `domains/supabase` or Supabase data layer | `supabase` | Database ops, vector search, storage |
-| `data/relational-postgres` | `postgres-perf` | PostgreSQL performance optimization |
+| `data/relational-sql` | `postgres-perf` | PostgreSQL performance optimization |
 | `domains/media-pipeline` | `ffmpeg-master` | Video and audio processing |
 | `domains/media-pipeline` | `mediaproc` | Batch media processing in a locked container |
 | `domains/web3` (security, first) | `azhua-skill-vetter` | Vet other skills before installation |

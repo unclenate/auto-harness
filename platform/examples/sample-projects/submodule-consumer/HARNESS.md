@@ -21,7 +21,7 @@ Source modules:
 - `kernel/base`
 - `node-typescript`
 - `web-app`
-- `relational-postgres`
+- `relational-sql`
 - `production-saas`
 - `product-lite`
 - `project-standard`

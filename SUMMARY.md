@@ -129,7 +129,7 @@ Interaction and deployment patterns.
 
 Storage and state-management overlays.
 
-* [Relational Postgres](platform/profiles/data/relational-postgres/README.md)
+* [Relational SQL](platform/profiles/data/relational-sql/README.md)
 * [Document Store](platform/profiles/data/document-store/README.md)
 * [Object Storage](platform/profiles/data/object-storage/README.md)
 * [Embedded Key-Value](platform/profiles/data/embedded-key-value/README.md) — server-side LevelDB / LMDB / SQLite-as-KV / Bun-KV / Deno-KV

@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 -->
 
-# Data Overlay: Relational Postgres
+# Data Overlay: Relational SQL
 
 **Depends on:** `kernel/base`.
 **Conflicts with:** None.

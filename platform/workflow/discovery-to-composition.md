@@ -199,7 +199,7 @@ modules. Use it to populate `harness.manifest.yaml`.
 | Web UI needed? (§8.3) | `architectures/web-app` |
 | Pure backend API consumed by others? (§8.3) | `architectures/api-service` |
 | Async or background processing? (§8.3) | `architectures/event-driven` |
-| Relational data / SQL needed? (§4.2, §8.1) | `data/relational-postgres` |
+| Relational data / SQL needed? (§4.2, §8.1) | `data/relational-sql` |
 | File storage, media, or uploads? (§5.1, §8.3) | `data/object-storage` |
 | Document or JSON store? (§8.1) | `data/document-store` |
 | Node / TypeScript preferred? (§8.1) | `stacks/node-typescript` |

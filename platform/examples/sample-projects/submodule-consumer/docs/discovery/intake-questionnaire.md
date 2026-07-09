@@ -146,7 +146,7 @@ Not applicable — this is a sample/reference project with no real users or data
 | Question | Answer | Module |
 |----------|--------|--------|
 | Web UI needed? | Yes | `architectures/web-app` |
-| Relational data / SQL? | Yes — Postgres | `data/relational-postgres` |
+| Relational data / SQL? | Yes — Postgres | `data/relational-sql` |
 | Node / TypeScript? | Yes | `stacks/node-typescript` |
 | Production SaaS? | Sample targets production patterns | `delivery/production-saas` |
 | Always for real products | Yes | `management/product-lite` + `management/project-standard` |

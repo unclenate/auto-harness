@@ -376,7 +376,7 @@ for projects with the `architectures/intelligent-model-routing` overlay
 
 | Template | Required By Module | Path |
 | -------- | ------------------ | ---- |
-| Migration readiness | `data/relational-postgres` | `templates/database/migration-readiness.md` |
+| Migration readiness | `data/relational-sql` | `templates/database/migration-readiness.md` |
 
 ### Web3 Templates
 

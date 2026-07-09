@@ -250,7 +250,7 @@ clawhub install <slug>
 | `stacks/node-typescript` (Vercel) | `lb-vercel-skill` |
 | `stacks/node-typescript` (perf) | `react-perf` |
 | `domains/supabase` or Supabase data layer | `supabase` |
-| `data/relational-postgres` | `postgres-perf` |
+| `data/relational-sql` | `postgres-perf` |
 | `domains/media-pipeline` | `ffmpeg-master`, `mediaproc` |
 | `domains/web3` | `azhua-skill-vetter` (first), then full-registry skills — see below |
 

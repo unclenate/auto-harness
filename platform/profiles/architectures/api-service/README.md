@@ -43,7 +43,7 @@ Review gate: *"Human review is required for externally visible API contract chan
 |-----------|------|
 | `stacks/node-typescript` | Node.js API (Express, Fastify, Hono, etc.) |
 | `stacks/python` | Python API (FastAPI, Flask, Django REST) |
-| `data/relational-postgres` | Postgres as the primary data store |
+| `data/relational-sql` | Postgres as the primary data store |
 | `data/document-store` | Document store for flexible schemas |
 | `architectures/event-driven` | Service emits or consumes events in addition to HTTP |
 

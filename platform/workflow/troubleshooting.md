@@ -133,7 +133,7 @@ Common dependencies to remember:
 
 - `program-lite` → requires `project-standard`
 - `claude-code` agent → requires `base` agent
-- `supabase` domain → requires `relational-postgres`
+- `supabase` domain → requires `relational-sql`
 - `media-pipeline` domain → requires `object-storage`
 
 ---
@@ -230,7 +230,7 @@ the same branch satisfies the rule. A companion file touched in a separate PR do
 | `product-lite` | `docs/product/requirements.md` | change-log, ADR, or PRD |
 | `discovery-intake` | `docs/discovery/mvp-scope.md` | change-log, ADR, or PRD |
 | `project-standard` | `docs/project/scope-plan.md` | change-log |
-| `relational-postgres` | `migrations/` | `docs/database/migration-readiness.md` |
+| `relational-sql` | `migrations/` | `docs/database/migration-readiness.md` |
 | `domains/web3` | `contracts/`, `src/wallet/` | risk register or ADR |
 | `domains/web3` | `src/scoring/` | ADR |
 | `domains/web3` | `chain_config` | ADR |

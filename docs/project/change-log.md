@@ -11,6 +11,24 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-07-08 — Upstream Harvesting Guide launch & HARNESS.md diagrams list patch
+
+Authored and launched the **Upstream Harvesting Guide** (`platform/workflow/upstream-harvesting.md`) as Workflow #24, establishing the intake, refactoring, and integration protocol for harvesting customized consumer modules back into the core platform repository.
+
+Additionally:
+
+- Patched the diagram list in `HARNESS.md` to include Diagram #16 (`Work-Package Lane Contract`), satisfying the entrypoint companion rule.
+- Bumped the workflow count (from 23 to 24) across `SUMMARY.md`, `platform/reference/how-to-read.md`, `docs/architecture/diagrams.md`, and `docs/_assets/cover-back.svg`.
+- Added the `docs/architecture/stigmergy.md` concept page.
+- Hardened integration tests (`test_validators_integration.rb`) by disabling `gpgsign` in temporary git fixtures so mock-commit setup no longer depends on the operator's global signing config.
+
+This change touches the `HARNESS.md` governance entrypoint, firing the kernel/base
+governance-entrypoint companion rule (`validate-companions.sh`); it is satisfied by this
+change-log entry, which the rule's `humanReview` guidance permits for routine
+documentation-consistency maintenance (a diagram-list catch-up to the already-existing
+Diagram #16, not a new governance decision). No PRD-0004 distillation trigger fires — the
+change touches no OPP, ADR, module manifest, or the active-module catalog.
+
 ## 2026-07-02 — PRD-0033 ratifies the relational-module generalization (design-only, § 9)
 
 Authored **PRD-0033** promoting **OPP-0012** — generalize `data/relational-postgres` →

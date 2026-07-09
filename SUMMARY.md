@@ -75,6 +75,7 @@ Authoring new modules, validators, skills, templates, and agent packs.
 * [Extending the Harness](platform/workflow/extending-the-harness.md) — module / validator / skill / template / agent-pack author guide
 * [Authoring a Deep Governance Vertical](platform/workflow/deep-governance-vertical-authoring.md) — the step-by-step playbook for building the next domain/overlay from the six-ingredient skeleton (operating-principles § 12)
 * [Threat Model](docs/threat-model.md) — what auto-harness protects against; what it doesn't; mitigations in place
+* [Upstream Harvesting](platform/workflow/upstream-harvesting.md) — scrub, tokenize, validate, and integrate custom modules back to the core
 
 ## Kernel — Governance Foundation
 
@@ -92,6 +93,7 @@ The universal rules that apply to every harnessed project, regardless of modules
 ## Concepts and Reference
 
 * [Architecture Diagrams](docs/architecture/diagrams.md) — composition, trust tier flow, companion rule firing, OPP/PRD/ADR lifecycle, distillation triggers, consumer adoption
+* [Stigmergy](docs/architecture/stigmergy.md) — decentralized, environmental feedback loops and agent coordination
 * [Module Types](platform/core/registry/module-types.md) — families, field reference, compiled fragments vs skills
 * [Prerequisites](platform/reference/prerequisites.md) — per-platform toolchain (macOS / Linux / Windows-WSL)
 * [Glossary](platform/reference/glossary.md) — shared terminology

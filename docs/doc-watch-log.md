@@ -14,6 +14,27 @@ The weekly doc-watch (Monday 7am PT, when scheduled) reads this file to know
 where the project is in the roadmap and which drift checks should now be in
 force.
 
+## 2026-07-08 — doc-watch — ALL CLEAR (documentation pass & upstream harvesting workflow; zero new drift)
+
+**Window:** 2026-07-02 → 2026-07-08.
+
+- Added `platform/workflow/upstream-harvesting.md` (Workflow #24).
+- Added `docs/architecture/stigmergy.md` to concepts.
+- Fixed the diagram list in `HARNESS.md` to include Diagram #16 (`Work-Package Lane Contract`).
+- Updated workflow count 23 → 24 in `SUMMARY.md`, `platform/reference/how-to-read.md`, `docs/architecture/diagrams.md`, and `docs/_assets/cover-back.svg`.
+- Hardened `platform/validators/test/test_validators_integration.rb` against global GPG/SSH signing.
+
+**Live counts (verified):** profile modules 52 · agent modules 8 · validators 24 · skills 8 · compositions 15 · architecture diagrams 16 · templates 98 · ADRs 19 · PRDs 32 · OPPs 51 · workflows 24.
+
+**Drift checks — all green:**
+
+- `validate-catalog-counts.sh` → ✓ 26/26 assertions.
+- `validate-doc-references.sh` → ✓ all targets resolve.
+- `validate-list-completeness.sh` → ✓ all indexes, compositions, and templates complete.
+- `markdownlint-cli2 "**/*.md"` → ✓ 0 errors.
+
+**Verdict: ALL CLEAR.**
+
 ---
 
 ## 2026-07-02 — Weekly doc-watch — ALL CLEAR (single self-referential doc-watch fix; zero new drift)

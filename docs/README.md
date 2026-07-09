@@ -234,7 +234,7 @@ ADR (decision recorded, alternatives explained, consequences known)
 Implementation (the actual code/doc change)
 ```
 
-See [Diagram 4 — Opportunity → PRD → ADR Lifecycle](architecture/diagrams.md#4-opportunity--prd--adr-lifecycle) and [Diagram 8 — OPP → PRD Design-Pressure Cascade](architecture/diagrams.md#8-opp--prd-design-pressure-cascade) for the visual references.
+See [Diagram 4 — Opportunity → PRD → ADR Lifecycle](architecture/diagrams.md#4-opportunity--prd--adr-lifecycle), [Diagram 8 — OPP → PRD Design-Pressure Cascade](architecture/diagrams.md#8-opp--prd-design-pressure-cascade), and [Stigmergy](architecture/stigmergy.md) for the visual and conceptual references.
 
 ---
 

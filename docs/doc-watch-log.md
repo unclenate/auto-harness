@@ -14,6 +14,10 @@ The weekly doc-watch (Monday 7am PT, when scheduled) reads this file to know
 where the project is in the roadmap and which drift checks should now be in
 force.
 
+## 2026-07-09 — doc-watch — ALL CLEAR (dependency bump landed; zero doc drift)
+
+**Window:** 2026-07-08 → 2026-07-09. Branch `main`. Two commits landed: `e0fde45` (#165 — upstream-harvesting workflow #24 + stigmergy concept, already recorded in the 2026-07-08 entry) and `948ebbe` (#136 — Dependabot `actions/checkout` v6 → v7, carrying a `docs/project/dependency-log.md` satisfier row). Neither changes any catalog count. Drift checks green: `validate-catalog-counts.sh` 26/26 assertions match; `validate-doc-references.sh` all links resolve. Untracked stray `docs/superpowers/specs/2026-06-09-digital-twin-seed-brief.md` (never committed) is unchanged and already noted in prior entries — no action. No re-audit warranted.
+
 ## 2026-07-08 — doc-watch — ALL CLEAR (documentation pass & upstream harvesting workflow; zero new drift)
 
 **Window:** 2026-07-02 → 2026-07-08.

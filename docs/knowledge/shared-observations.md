@@ -3349,7 +3349,7 @@ here until distillation.
 
 ### Absolute file:/// URLs in markdown links break local document validation
 
-- **Context:** In the `municipal-brain-drafts` worktree, when using clickable local `file:///` paths inside `docs/README.md` or `docs/adr/ADR-0011-draft.md`, the `validate-doc-references.sh` validator failed to parse it as an external protocol, appending it as a relative link and erroring out.
+- **Context:** In a consumer project's sibling draft worktree, when using clickable local `file:///` paths inside `docs/README.md` or a draft ADR, the `validate-doc-references.sh` validator failed to parse them as an external protocol, appending each as a relative link and erroring out.
 - **Observation:** Validators that scan for link integrity must explicitly filter out local/clickable absolute protocols (e.g. `file://`, `vscode://`, `cursor://`) to allow in-IDE rich navigation without breaking CI loops.
 - **Implication:** Update the regex protocol filtering inside `validate-doc-references.sh` in the platform codebase to treat `file://` as a skipped/external protocol.
 - **Confidence:** high
@@ -3358,7 +3358,7 @@ here until distillation.
 
 ### Empty submodules in sibling git worktrees break platform path validation
 
-- **Context:** Running validators in a sibling git worktree (created via `git worktree add ../municipal-brain-drafts` to isolate draft contract edits from the active distillation branch) triggers document reference failures pointing into `.harness/` because worktrees do not clone submodules by default, leaving the `.harness/` directory empty.
+- **Context:** Running validators in a sibling git worktree (created via `git worktree add ../draft-worktree` to isolate draft contract edits from the active distillation branch) triggers document reference failures pointing into `.harness/` because worktrees do not clone submodules by default, leaving the `.harness/` directory empty.
 - **Observation:** When a repository adopts a submodule-hosted harness, any parallel git worktree will have empty submodule folders, causing validators checking for document references or scripts within submodules to fail unless bypassed globally via `.doc-reference-ignore`.
 - **Implication:** The harness validators (specifically `validate-doc-references.sh`) should automatically detect if they are running inside a git worktree and skip or warn (instead of failing) on uninitialized submodule directories, or provide a default `.doc-reference-ignore` template that covers them out of the box.
 - **Confidence:** high
@@ -3367,7 +3367,7 @@ here until distillation.
 
 ### Skill-content validation triggers on educational prompt injection examples
 
-- **Context:** Staging document files in `municipal-brain-drafts` failed on `validate-skill-content.sh` because the validator triggered on security training content containing standard prompt injection keywords (e.g., system-level instructions in `SKILL.md` documents).
+- **Context:** Staging document files in a consumer project's draft worktree failed on `validate-skill-content.sh` because the validator triggered on security-training content containing standard prompt-injection keywords (e.g., system-level instructions in `SKILL.md` documents).
 - **Observation:** Broad-spectrum security validators targeting prompt injection vectors in documentation will create false positives on educational, test, or security-hardening materials that describe these vectors.
 - **Implication:** Rather than relying solely on global ignore files (`.skill-content-ignore`), the validator should support scoped inline HTML comment markers (e.g., `<!-- validate-skill-ignore-start/end -->`) to cleanly exempt educational blocks without weakening security scanning for the rest of the document.
 - **Confidence:** high

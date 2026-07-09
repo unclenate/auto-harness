@@ -11,7 +11,17 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
-## 2026-07-08 — Upstream Harvesting Guide launch & HARNESS.md diagrams list patch
+## 2026-07-09 — Capture three validator-ergonomics observations (consumer-scrubbed)
+
+Recorded three field observations in `docs/knowledge/shared-observations.md`, contributed by
+an Antigravity (Gemini) agent during consumer-project validation runs: (1) `file:///` /
+`vscode://` / `cursor://` links break `validate-doc-references.sh` protocol filtering;
+(2) sibling git worktrees leave submodule (`.harness/`) dirs empty, so doc-reference checks
+fail there; (3) `validate-skill-content.sh` false-positives on legitimate security-training
+content describing prompt-injection vectors. Consumer identifiers were generalized before
+capture (removed a denylisted workspace name from the redaction-guarded file). This entry is
+the audit-trail satisfier the `knowledge-capture` companion rule requires for any
+shared-observations addition.
 
 Authored and launched the **Upstream Harvesting Guide** (`platform/workflow/upstream-harvesting.md`) as Workflow #24, establishing the intake, refactoring, and integration protocol for harvesting customized consumer modules back into the core platform repository.
 

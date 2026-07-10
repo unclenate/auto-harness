@@ -11,6 +11,26 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-07-09 — File OPP-0052: Federated Review-Lane Contract (review-lane enforcement half)
+
+Filed **OPP-0052 (proposed)** — the **review-lane** complement to OPP-0046 / PRD-0025's
+scope-lane. Where the scope-lane mechanized *who writes what* (`work-package` lane contract +
+`validate-lane-integrity.sh`), the review-lane mechanizes *who reviews whom, in what artifact,
+and how verdicts are tallied*: a `platform/templates/coordination/` scaffold, a provider-neutral
+verdict schema `{ taskId, reviewer, verdict, severity, findings[], timestamp }`, and a
+`validate-coordination-verdicts.sh` linter so cross-provider reviewers (Claude / Codex / Copilot
+/ Antigravity) emit one tally-able artifact an adjudicating core can score mechanically.
+
+Harvested from a consumer federated-review field cycle (Workflow #24, `upstream-harvesting.md`):
+field-proven before authored — the two Enforced rules (canonical shared `taskId`; mandatory
+decorrelated-provider coverage) each fix a specific observed defect (verdict label-swap;
+core-only adjudication). The enforcement half of a two-layer inter-agent contract whose design
+authority-of-record lives in a consumer supervisor's ADR; the harness half is what lets every
+governed repo inherit the substrate rather than re-derive it. Status `proposed` pending a PRD
+that ships the schema + validator wedge with a § 10 claim classification. Paired distillation
+observation captures the consumer-authority / harness-enforcement stratification. Index rows
+added to `docs/README.md` and `docs/opportunities/candidates.md`.
+
 ## 2026-07-09 — Implement PRD-0033: rename `data/relational-postgres` → `data/relational-sql` (engine-in-artifact)
 
 Executed the ratified PRD-0033 (and flipped **OPP-0012 → accepted**): `git mv` the relational

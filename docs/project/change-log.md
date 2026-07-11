@@ -11,6 +11,30 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-07-10 — File OPP-0053: Observation-Ledger Hygiene Gate (knowledge-ledger enforcement half)
+
+Filed **OPP-0053 (proposed)** — the **sibling** of OPP-0052, reconciled as the same
+*structured-agent-ledger gate* species retargeted from the verdict ledger to the knowledge ledger
+(`docs/knowledge/shared-observations.md`). `management/knowledge-capture` enforces that an
+observation *exists* and *connects* (audit-trail + distillation pointers) but never checks its
+ADR-0002 *shape*; the schema drifted for want of a validator — of 105 live observations, **62
+(59%) carry an off-enum `Severity`**, the most-severe canonical level `risk-bearing` is used
+**0×**, and ~20% omit `Confidence` or `Contributed by`.
+
+Proposes two layers: (1) `validate-observation-hygiene.sh` — a diff-based BLOCK linter checking
+each *added* observation against ADR-0002 (six fields, `Confidence`/`Severity` enums, ISO date),
+module-gated with predict-clean, grandfathering the existing 105; (2) an ambient auto-capture
+Stop-hook that scaffolds a schema-shaped **inert stub** when a session touched a
+distillation-trigger path but not the ledger — the active-trace half `stigmergy.md` §4 half-draws.
+Reconciliation with OPP-0052 lands at the **convention layer, not shared code** (name the species
+in `stigmergy.md`; separate module homes), since a Markdown field-parser and a JSON
+schema-validator barely overlap. The `Severity` **enforce-as-locked vs. amend-ADR-0002** call is
+the one load-bearing PRD-time (§ 10) decision — current lean: enforce-as-locked (drift is the
+defect, not the schema). Layer 1 takes the validator count 24 → 25. Status `proposed` pending a
+PRD that ships Layer 1 + the species-naming first, Layer 2 as a follow-on. Paired distillation
+observation captures the presence-vs-shape enforcement gap. Index rows added to `docs/README.md`
+and `docs/opportunities/candidates.md`.
+
 ## 2026-07-09 — File OPP-0052: Federated Review-Lane Contract (review-lane enforcement half)
 
 Filed **OPP-0052 (proposed)** — the **review-lane** complement to OPP-0046 / PRD-0025's

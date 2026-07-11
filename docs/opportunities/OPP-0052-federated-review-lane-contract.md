@@ -41,21 +41,24 @@ so every governed repo inherits the substrate rather than re-deriving it.
 | **Provider-neutral verdict schema** | `{ taskId, reviewer("<provider>/<model>"), verdict(approved\|rejected\|approved-with-findings), severity, findings[], timestamp }` | **Wedge candidate** |
 | **`validate-coordination-verdicts.sh`** | Lints verdict files against the schema; asserts `taskId` is a declared **canonical shared** id (not per-file / per-provider); flags a substantive workstream merged without ≥ 1 decorrelated-provider verdict | **Wedge candidate** |
 | **Canonical-taskId onboarding rule** | Reviewer copies the canonical `taskId` from the review-request; never mints its own (the field-observed label-swap fix) | **Wedge candidate (onboarding)** |
-| Decorrelated-provider routing | Assign the reviewer from a *different* provider than the author (reviewer value ∝ decorrelation of blind spots) | Asserted (onboarding skill) |
-| Whole-branch coverage backstop | No substantive branch merges without ≥ 1 review-lane verdict | Asserted / half-enforced |
+| **Decorrelated-coverage check** | The validator (row 3) flags a substantive workstream merged with no ≥ 1 decorrelated-provider verdict on record — an ex-post, mechanizable check | **Wedge candidate** (enforced by the validator above) |
+| Decorrelated-provider routing | Assign the reviewer from a *different* provider than the author, up front (reviewer value ∝ decorrelation of blind spots) — the behavioral act that *produces* the verdict the check looks for | Asserted (onboarding skill) |
 
 ## Origin / Evidence
 
 Field-proven before authored. A consumer harvest workstream (2026-07-06..08) ran a
 federated review lane: an agent from one provider reviewed two adapters authored by
 an agent from another, emitting schema-conformant verdicts under
-`docs/coordination/verdicts/`. Two defects surfaced, and each becomes one enforced
+`docs/coordination/verdicts/`. Two defects surfaced, and each maps to one **Enforced**
 rule above:
 
 1. **Verdict label-swap** — reviewers minted per-file/per-provider ids, so verdicts
-   for the same task could not be tallied → the **canonical shared `taskId`** rule.
-2. **Core-only adjudication** — a run of tasks was adjudicated without any
-   decorrelated-provider verdict → the **mandatory decorrelated coverage** flag.
+   for the same task could not be tallied → the **canonical shared `taskId` binding**.
+2. **Core-only adjudication** — a run of tasks was adjudicated with no
+   decorrelated-provider verdict on record → the **decorrelated-coverage check**
+   (the validator flags the merge). The *routing* that produces such a verdict —
+   assigning a different-provider reviewer up front — is the behavioral **Asserted**
+   companion, not itself mechanizable.
 
 The supervisor reconstructed full cross-repo state on return from these committed
 artifacts alone, across a multi-day comms blackout — the strongest available case
@@ -86,10 +89,13 @@ than a convention.
 ## Risks / Open Questions
 
 - **Enforced vs. asserted boundary.** Verdict-JSON schema conformance,
-  canonical-`taskId` binding, and verdict-file naming are mechanizable (Enforced);
-  decorrelated-provider *routing* and the whole-branch coverage backstop are agent
-  behavior routed through the onboarding skill (Asserted / half-enforced). Classify
-  precisely at PRD time with a § 10 claim table.
+  canonical-`taskId` binding, verdict-file naming, and the **decorrelated-coverage
+  check** (was a decorrelated-provider verdict on record before merge?) are all
+  mechanizable (Enforced) — the check inspects committed artifacts ex post. Only the
+  decorrelated-provider **routing** (assigning a different-provider reviewer up
+  front) is agent behavior routed through the onboarding skill (Asserted). The check
+  and its routing are two halves of one rule; keep them classified apart. Confirm the
+  split at PRD time with a § 10 claim table.
 - **Schema home + versioning.** Is the verdict schema a JSON Schema file under
   `platform/templates/coordination/`, a fenced block in a spec, or both? It needs a
   version pin so cross-provider emitters can target a stable contract.
@@ -108,12 +114,19 @@ than a convention.
 
 **Proposed (2026-07-09).** Harvested from a consumer federated-review field cycle
 into the harness enforcement half of a two-layer inter-agent contract. Recommended
-promotion path: a PRD that ships the **verdict-schema + `validate-coordination-verdicts.sh`
-wedge** (the two Enforced rules) with a § 10 claim classification, deferring
-decorrelated-routing and the coverage backstop to the onboarding skill. The
-scaffold and schema are the thin, field-harvested wedge; the routing/coverage
-asserts are the deferred depth — mirroring OPP-0046's lane-first, economics-later
-staging.
+promotion path: a PRD that ships the **schema + `validate-coordination-verdicts.sh`
+wedge** — enforcing the two Enforced rules (**canonical-`taskId` binding** and the
+**decorrelated-coverage check**) plus verdict-file naming — with a § 10 claim
+classification, deferring only decorrelated-provider **routing** to the onboarding
+skill. The scaffold, schema, and validator are the thin, field-harvested wedge; the
+routing assert is the deferred behavioral depth — mirroring OPP-0046's lane-first,
+economics-later staging.
+
+## Promotion
+
+None yet — status `proposed`. On acceptance, a spawned `PRD-NNNN` is linked here
+(shipping the schema + `validate-coordination-verdicts.sh` wedge with a § 10 claim
+classification).
 
 ## Related
 

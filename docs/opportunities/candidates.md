@@ -664,6 +664,22 @@ cite-the-evidence rule), not the extraction; composes with the OPP-0046 lane
   `validate-module-stability`. Harvests the identical v2 deferral from PRD-0014
   / 0028 / 0029 / 0030.
 
+- [OPP-0052](OPP-0052-federated-review-lane-contract.md) *(proposed
+  2026-07-09)* — **Federated Review-Lane Contract (verdict schema + coordination
+  substrate).** OPP-0046 / PRD-0025 mechanized the scope-lane (who writes what);
+  the complementary **review-lane** (who reviews whom, in what artifact, how
+  verdicts are tallied) has no machine-checkable substrate. Ship a
+  `platform/templates/coordination/` scaffold + a provider-neutral verdict schema
+  `{ taskId, reviewer, verdict, severity, findings[], timestamp }` +
+  `validate-coordination-verdicts.sh`, so cross-provider reviewers (Claude / Codex
+  / Copilot / Antigravity) emit the same artifact and an adjudicating core tallies
+  them mechanically. The enforcement half of a two-layer inter-agent contract whose
+  design authority-of-record lives in a consumer supervisor's ADR. Field-proven
+  before authored: two Enforced rules (canonical shared `taskId`; mandatory
+  decorrelated-provider coverage) each fix a specific defect observed in a real
+  federated-review cycle (verdict label-swap; core-only adjudication). Sibling half
+  of OPP-0046; declare-then-enforce retargeted from scope to review.
+
 ---
 
 ## References

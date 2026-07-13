@@ -680,6 +680,25 @@ cite-the-evidence rule), not the extraction; composes with the OPP-0046 lane
   federated-review cycle (verdict label-swap; core-only adjudication). Sibling half
   of OPP-0046; declare-then-enforce retargeted from scope to review.
 
+- [OPP-0053](OPP-0053-observation-ledger-hygiene.md) *(proposed
+  2026-07-10)* — **Observation-Ledger Hygiene Gate (structured-agent-ledger
+  validator + ambient auto-capture).** `management/knowledge-capture` enforces that a
+  shared observation *exists* and is *connected* (audit-trail + distillation
+  pointers) but never checks its *shape*. ADR-0002 locks six fields with two enums,
+  yet the schema has drifted for want of a validator: of 105 live observations,
+  **62 (59%) carry an off-enum `Severity`**, the most-severe canonical level
+  `risk-bearing` is used **0×**, and ~20% omit `Confidence` or `Contributed by`.
+  Ship (1) `validate-observation-hygiene.sh` — a diff-based BLOCK linter checking
+  each added observation against ADR-0002 (six fields, both enums, ISO date),
+  grandfathering history; (2) an ambient auto-capture Stop-hook that scaffolds a
+  schema-shaped inert stub when a session touched a distillation-trigger path but not
+  the ledger. **Sibling of OPP-0052**: the same *structured-agent-ledger gate*
+  species retargeted from the verdict ledger to the knowledge ledger — reconciled at
+  the convention layer (named in `stigmergy.md`, separate module homes) rather than
+  shared code, since a Markdown field-parser and a JSON schema-validator barely
+  overlap. `Severity` enforce-as-locked vs. amend-ADR-0002 is the one load-bearing
+  PRD-time (§ 10) decision. Validator count 24 → 25.
+
 ---
 
 ## References

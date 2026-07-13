@@ -11,6 +11,16 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-07-12 — Close out OPP-0053: flip `proposed → accepted` (Layer 1 shipped)
+
+Flipped **OPP-0053 → accepted** (body status + parenthetical + `docs/README.md` index row) now
+that Layer 1 (`validate-observation-hygiene.sh`, PR #173) is on `main`. This flip should have
+ridden on the implementing PR (the OPP-0012 precedent); it did not, so this is a standalone
+closeout. Layer 2 (the ambient auto-capture Stop-hook) remains a deferred follow-on PRD, so the
+`accepted` status reflects the PRD-0034 acceptance bar (Layer 1 merge), not full two-layer
+delivery. Paired distillation observation captures the process lesson — status flips belong in
+the implementing PR, and the README status column drifts independently of the OPP-body status.
+
 ## 2026-07-11 — Implement PRD-0034: ship `validate-observation-hygiene.sh` (OPP-0053 Layer 1)
 
 Implemented the ratified PRD-0034 (and flips **OPP-0053 → accepted** at merge). Shipped

@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0053 — Observation-Ledger Hygiene Gate (structured-agent-ledger validator + ambient auto-capture)
 
-**Status:** proposed
+**Status:** accepted *(Layer 1 implemented 2026-07-12 per [PRD-0034](../requirements/PRD-0034-validate-observation-hygiene.md) — `validate-observation-hygiene.sh` shipped, registered under `management/knowledge-capture` v1.3.0, and the structured-agent-ledger gate species named in `stigmergy.md` §4. Layer 2, the ambient auto-capture Stop-hook, remains a deferred follow-on PRD.)*
 **Owner:** @unclenate
 **Created:** 2026-07-10
-**Last Updated:** 2026-07-10
+**Last Updated:** 2026-07-12
 **Confidence:** high (field-proven this session — see Origin / Evidence)
 
 ---

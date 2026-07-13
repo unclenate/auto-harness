@@ -168,7 +168,7 @@ clustered backlog with framing.
 | [0050](opportunities/OPP-0050-module-stability-tiers-parity.md) | Module Stability Tiers & Parity Normalization | accepted |
 | [0051](opportunities/OPP-0051-frontier-agent-cluster-v2-enforcement.md) | Frontier-Agent Cluster v2 Enforcement: Artifact-Content Validators | accepted |
 | [0052](opportunities/OPP-0052-federated-review-lane-contract.md) | Federated Review-Lane Contract (verdict schema + coordination substrate) | proposed |
-| [0053](opportunities/OPP-0053-observation-ledger-hygiene.md) | Observation-Ledger Hygiene Gate (structured-agent-ledger validator + ambient auto-capture) | proposed |
+| [0053](opportunities/OPP-0053-observation-ledger-hygiene.md) | Observation-Ledger Hygiene Gate (structured-agent-ledger validator + ambient auto-capture) | accepted |
 
 ---
 

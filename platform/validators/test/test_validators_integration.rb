@@ -1229,6 +1229,167 @@ class TestSubmoduleMount < Minitest::Test
 end
 
 # ---------------------------------------------------------------------------
+# validate-observation-hygiene.sh
+# Diff-based ADR-0002 shape linter (PRD-0034 / OPP-0053). Module-gated on
+# management/knowledge-capture; the harness activates it, so it dogfoods.
+# --scan-file is the no-git seam (every record in scope); main mode is
+# diff-scoped (only observations added vs. base are linted; history is
+# grandfathered). The knowledge-ledger structured-agent-ledger gate.
+# ---------------------------------------------------------------------------
+class TestValidateObservationHygiene < Minitest::Test
+  HARNESS_ROOT = File.expand_path("..", PLATFORM_DIR)
+  OH_FIXTURES_DIR = File.join(
+    PLATFORM_DIR, "validators", "test", "fixtures", "observation-hygiene"
+  )
+  BASIC_MANIFEST = File.join(
+    PLATFORM_DIR, "validators", "test", "fixtures", "manifest_basic.yaml"
+  )
+  HARNESS_MANIFEST = File.join(HARNESS_ROOT, "harness.manifest.yaml")
+
+  # Expected --scan-file exit code per fixture (every `### ` record in scope).
+  FIXTURE_EXPECTATIONS = {
+    "valid.md"            => 0,
+    "missing-field.md"    => 1,
+    "bad-confidence.md"   => 1,
+    "bad-severity.md"     => 1,
+    "severity-misfile.md" => 1,
+    "no-iso-date.md"      => 1
+  }.freeze
+
+  def test_every_fixture_has_expected_exit_in_scan_file_mode
+    FIXTURE_EXPECTATIONS.each do |fixture_name, expected_code|
+      fixture = File.join(OH_FIXTURES_DIR, fixture_name)
+      assert File.exist?(fixture), "Fixture missing: #{fixture}"
+      _out, err, code = run_validator(
+        "validate-observation-hygiene.sh", "--scan-file", fixture
+      )
+      assert_equal expected_code, code,
+                   "#{fixture_name} expected exit #{expected_code}, got #{code}. stderr: #{err}"
+    end
+  end
+
+  def test_severity_misfile_surfaces_confidence_hint
+    # FR-S01: low/medium in Severity is the 21-entry misfile class; the hint
+    # must name that they are Confidence values.
+    fixture = File.join(OH_FIXTURES_DIR, "severity-misfile.md")
+    _out, err, _code = run_validator(
+      "validate-observation-hygiene.sh", "--scan-file", fixture
+    )
+    assert_match(/Confidence values/, err,
+                 "misfile hint must name low/medium as Confidence values. stderr: #{err}")
+  end
+
+  def test_scan_file_missing_path_exits_2
+    nonexistent = File.join(Dir.tmpdir, "observation-hygiene-nope-#{Process.pid}.md")
+    _out, err, code = run_validator(
+      "validate-observation-hygiene.sh", "--scan-file", nonexistent
+    )
+    assert_equal 2, code, "missing scan-file target must exit 2"
+    assert_match(/not found|No such file/i, err)
+  end
+
+  def test_scan_file_requires_argument
+    _out, err, code = run_validator("validate-observation-hygiene.sh", "--scan-file")
+    assert_equal 2, code, "--scan-file without argument must exit 2"
+    assert_match(/requires a file path/i, err)
+  end
+
+  def test_module_inactive_skips
+    # knowledge-capture is not in manifest_basic.yaml → exit 0 skip.
+    Dir.mktmpdir do |tmp|
+      out, err, code = run_validator(
+        "validate-observation-hygiene.sh", BASIC_MANIFEST, tmp
+      )
+      assert_equal 0, code, "module-inactive path must exit 0. stderr: #{err}"
+      assert_match(/skipped/, out)
+      assert_match(/not active/, out)
+    end
+  end
+
+  def test_missing_manifest_aborts_with_exit_2
+    nonexistent = File.join(Dir.tmpdir, "oh-manifest-nope-#{Process.pid}.yaml")
+    _out, err, code = run_validator("validate-observation-hygiene.sh", nonexistent)
+    assert_equal 2, code, "missing manifest must exit 2 (usage error)"
+    assert_match(/not found|No such file/i, err)
+  end
+
+  # --- hermetic git-fixture tests: proves diff-scoping (grandfathering) ------
+
+  OFF_ENUM_RECORD = <<~MD
+    ### Grandfathered off-enum record
+
+    - **Context:** old.
+    - **Observation:** old.
+    - **Implication:** old.
+    - **Confidence:** high
+    - **Severity:** process
+    - **Contributed by:** Old Author, 2026-01-01
+  MD
+
+  CONFORMANT_RECORD = <<~MD
+    ### A newly-added conformant observation
+
+    - **Context:** new.
+    - **Observation:** new.
+    - **Implication:** new.
+    - **Confidence:** high
+    - **Severity:** governance-relevant
+    - **Contributed by:** New Author, 2026-07-11
+  MD
+
+  NEW_OFF_ENUM_RECORD = <<~MD
+    ### A newly-added off-enum observation
+
+    - **Context:** new but wrong.
+    - **Observation:** new but wrong.
+    - **Implication:** new but wrong.
+    - **Confidence:** high
+    - **Severity:** process
+    - **Contributed by:** New Author, 2026-07-11
+  MD
+
+  def build_repo(tmp, appended_record)
+    obs_rel = "docs/knowledge/shared-observations.md"
+    FileUtils.mkdir_p(File.join(tmp, "docs/knowledge"))
+    obs = File.join(tmp, obs_rel)
+    # Base commit on main: an off-enum record (grandfathered).
+    File.write(obs, "# Shared Observations\n\n#{OFF_ENUM_RECORD}")
+    system("git -C #{tmp} init -q && git -C #{tmp} config user.email t@t.t && git -C #{tmp} config user.name t")
+    system("git -C #{tmp} add -A && git -C #{tmp} commit -q -m base")
+    system("git -C #{tmp} branch -M main")
+    # Feature branch: append the record under test.
+    system("git -C #{tmp} checkout -q -b feature")
+    File.open(obs, "a") { |f| f.write("\n#{appended_record}") }
+    system("git -C #{tmp} add -A && git -C #{tmp} commit -q -m feature")
+  end
+
+  def test_grandfathers_offenum_history_and_passes_conformant_new
+    skip "git not installed" unless GIT_AVAILABLE
+    Dir.mktmpdir do |tmp|
+      build_repo(tmp, CONFORMANT_RECORD)
+      _out, err, code = run_validator(
+        "validate-observation-hygiene.sh", HARNESS_MANIFEST, tmp, "main"
+      )
+      assert_equal 0, code,
+                   "grandfathered off-enum base + conformant new obs must pass. stderr: #{err}"
+    end
+  end
+
+  def test_new_offenum_observation_fails
+    skip "git not installed" unless GIT_AVAILABLE
+    Dir.mktmpdir do |tmp|
+      build_repo(tmp, NEW_OFF_ENUM_RECORD)
+      _out, err, code = run_validator(
+        "validate-observation-hygiene.sh", HARNESS_MANIFEST, tmp, "main"
+      )
+      assert_equal 1, code,
+                   "a newly-added off-enum observation must fail. stderr: #{err}"
+      assert_match(/Severity/, err)
+    end
+  end
+end
+
+# ---------------------------------------------------------------------------
 # Uniform --help / -h flag on every validator
 #
 # Each validator must short-circuit on --help or -h as the first argument:
@@ -1252,6 +1413,7 @@ VALIDATOR_SCRIPTS = %w[
   validate-trust-tier.sh
   validate-sensitive-paths.sh
   validate-knowledge-redaction.sh
+  validate-observation-hygiene.sh
   validate-skill-content.sh
   validate-sast-coverage.sh
   validate-privacy-by-design.sh

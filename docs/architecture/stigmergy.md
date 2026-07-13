@@ -100,6 +100,11 @@ sequenceDiagram
 
 1. **Companion Rules (Passive Enforcement):** If an agent modifies a trigger path (like a manifest or an ADR), `validate-companions.sh` enforces that a satisfier path (like `shared-observations.md` or `change-log.md`) is also modified. The agent *cannot* commit code without leaving a trace.
 2. **In-Session Hooks (Active Prompting):** The `distillation-prompt.sh` hook runs before commits are finalized, reminding the agent to capture the trace while it is fresh in context.
+3. **Structured-Agent-Ledger Gates (Shape Enforcement):** Forcing a trace to *exist* is not the same as forcing it to be *well-formed*. A **structured-agent-ledger gate** is a validator that lints each newly-added record in an append-only, agent-emitted ledger against a declared schema — diff-based against the base branch (history is grandfathered), BLOCK posture, module-gated. Two instances run this pattern on two different ledgers:
+   * **`validate-observation-hygiene.sh`** (the *knowledge* ledger) — lints each observation added to `shared-observations.md` against the ADR-0002 six-field shape (both enums, an ISO-dated attribution). Without it, companion rules force a trace to exist and connect but never guard its shape, and a ratified schema drifts (PRD-0034 / OPP-0053).
+   * **`validate-coordination-verdicts.sh`** (the *verdict* ledger) — lints each cross-provider review verdict against the coordination schema so an adjudicating core can tally them (OPP-0052).
+
+   The two are the same species retargeted onto two seams; the reuse is a **named convention, not shared code** — separate module homes (`management/knowledge-capture` vs. `management/coordination`), because a Markdown field-parser and a JSON schema-validator barely overlap. Naming the species here is the reconciliation: recognizing that shape-enforcement on an agent ledger is a reusable move, applied concretely twice rather than abstracted prematurely.
 
 ---
 

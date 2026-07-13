@@ -11,6 +11,31 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-07-11 — Implement PRD-0034: ship `validate-observation-hygiene.sh` (OPP-0053 Layer 1)
+
+Implemented the ratified PRD-0034 (and flips **OPP-0053 → accepted** at merge). Shipped
+`platform/validators/validate-observation-hygiene.sh` — the knowledge-ledger instance of the
+**structured-agent-ledger gate**: a diff-based linter (Bash 3.2 + inline Ruby, 3-state exit,
+`--scan-file` seam) that lints each observation whose `###` heading was **added** vs. the base
+branch against the ADR-0002 shape (six fields; `Confidence` ∈ {low, medium, high}; `Severity` ∈
+{informational, governance-relevant, architectural, risk-bearing}, **enforce-as-locked**;
+`Contributed by` name + ISO date). Enum checks normalize case and tolerate trailing prose;
+history is grandfathered (only diff-added records are linted). Registered under
+`management/knowledge-capture` (v1.2.0 → **1.3.0**) — an **active** module, so the harness runs
+this **live/dogfood**, unlike the predict-clean content validators.
+
+Propagation (validator count **24 → 25**): CI step (`harness.yml`), `AGENTS.md` run-order,
+`kernel/base/module.yaml` catalog, `harness-governance` SKILL chain + signature note,
+`platform/validators/README.md` (table + run-list + test-list + counts), root `README.md`
+(table + mermaid + word-form count), `SUMMARY.md`, `how-to-read.md`, `diagrams.md`,
+`cover-back.svg`, and `VALIDATOR_SCRIPTS` + a new `TestValidateObservationHygiene` case (6
+scan-file fixtures + hermetic git-fixture grandfather/new-off-enum proofs + module-inactive +
+usage-error coverage). `docs/architecture/stigmergy.md` §4 names the structured-agent-ledger
+gate species and cross-references the verdict-ledger sibling `validate-coordination-verdicts.sh`
+(OPP-0052) — the convention-layer reconciliation. Paired distillation observation captures the
+self-referential dogfood-loop property. Layer 2 (the ambient auto-capture Stop-hook) remains a
+deferred follow-on PRD.
+
 ## 2026-07-11 — Accept PRD-0034: Observation-Hygiene Content Validator (`validate-observation-hygiene.sh`)
 
 Accepted **PRD-0034 (design-only per § 9)** — ratifies **Layer 1** of OPP-0053 and flips it

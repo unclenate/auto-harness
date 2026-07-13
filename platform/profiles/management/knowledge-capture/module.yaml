@@ -2,9 +2,9 @@
 # SPDX-License-Identifier: MIT OR Apache-2.0
 id: knowledge-capture
 type: management
-version: 1.2.0
+version: 1.3.0
 stability: stable
-summary: "Shared knowledge capture module. Provides docs/knowledge/ as a durable, reviewable, project-level surface where agent and human observations accumulate and are surfaced for promotion into operating-principles. v1.2.0 sunsets docs/knowledge/distilled-learnings.md (ADR-0014, PRD-0011): the file is no longer a required artifact, its audit-trail rule is removed, and the cycle-end distillation satisfier set shrinks from three destinations to two (shared-observations.md, operating-principles.md). Rationale: 40 days of zero inbound flow, operating-principles absorbed the curated-synthesis charter in practice (§§ 7-8), and operating-principle § 7 argues against two destinations whose change-classes have collapsed. v1.1.0 added the cycle-end distillation-trigger companion rule (PRD-0004): distillation-worthy work (new ADR, new OPP, OPP proposed flip, new module manifest, harness manifest change) requires a paired entry in at least one knowledge destination."
+summary: "Shared knowledge capture module. Provides docs/knowledge/ as a durable, reviewable, project-level surface where agent and human observations accumulate and are surfaced for promotion into operating-principles. v1.3.0 adds the validate-observation-hygiene validator (PRD-0034 / OPP-0053): a diff-based ADR-0002 shape linter that lints each newly-added observation for the six fields, the Confidence/Severity enums (Severity enforce-as-locked), and an ISO-dated attribution — grandfathering history. The module previously enforced that an observation EXISTS and CONNECTS (audit-trail + distillation companions) but never its SHAPE; this closes that gap. It is the knowledge-ledger instance of the structured-agent-ledger gate (stigmergy.md §4). v1.2.0 sunsets docs/knowledge/distilled-learnings.md (ADR-0014, PRD-0011): the file is no longer a required artifact, its audit-trail rule is removed, and the cycle-end distillation satisfier set shrinks from three destinations to two (shared-observations.md, operating-principles.md). Rationale: 40 days of zero inbound flow, operating-principles absorbed the curated-synthesis charter in practice (§§ 7-8), and operating-principle § 7 argues against two destinations whose change-classes have collapsed. v1.1.0 added the cycle-end distillation-trigger companion rule (PRD-0004): distillation-worthy work (new ADR, new OPP, OPP proposed flip, new module manifest, harness manifest change) requires a paired entry in at least one knowledge destination."
 tier:
   declared: 2
 dependsOn:
@@ -46,6 +46,7 @@ companionRules:
 validators:
   - validate-required-artifacts
   - validate-companions
+  - validate-observation-hygiene
 reviewGates:
   - "The foundational Observation Structure choice is a one-way decision in practice. Reviewers treat ADRs changing it with extra scrutiny."
   - "Distilled learnings should cite the observations that produced them. Unsourced assertions are not institutional knowledge — they're opinions."

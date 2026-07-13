@@ -109,6 +109,7 @@ bash $PLATFORM/validators/validate-trust-tier.sh         harness.manifest.yaml .
 bash $PLATFORM/validators/validate-sensitive-paths.sh    harness.manifest.yaml .
 bash $PLATFORM/validators/validate-skill-content.sh      harness.manifest.yaml .
 bash $PLATFORM/validators/validate-knowledge-redaction.sh .                    main
+bash $PLATFORM/validators/validate-observation-hygiene.sh harness.manifest.yaml . main
 bash $PLATFORM/validators/validate-sast-coverage.sh      harness.manifest.yaml .
 bash $PLATFORM/validators/validate-trace-contract.sh     harness.manifest.yaml .
 bash $PLATFORM/validators/validate-foundry-target.sh     harness.manifest.yaml .
@@ -173,6 +174,26 @@ A few signature notes worth highlighting:
   exist locally (shallow CI checkout, dogfood from a non-PR context),
   the validator exits 0 cleanly with an informational message rather
   than failing.
+- **`validate-observation-hygiene.sh`** takes
+  `[<manifest>] [<project-root>] [<base-branch>]` (or
+  `--scan-file <path>`). Module-gated on `management/knowledge-capture`
+  (inactive → exit 0 skip; the harness DOES activate it, so its own CI
+  runs this **live/dogfood**, unlike the predict-clean content
+  validators). Diff-based: lints each observation whose `###` heading was
+  **added** vs. the base branch in `docs/knowledge/shared-observations.md`
+  against the ADR-0002 shape — six fields present, `Confidence` ∈
+  `{low, medium, high}`, `Severity` ∈ `{informational,
+  governance-relevant, architectural, risk-bearing}` (**enforce-as-locked**
+  per PRD-0034 § 10 — off-enum values fail), `Contributed by` name + ISO
+  date. **Grandfathers history** — only diff-added records are linted, so
+  the existing corpus is never re-scanned; outside a git tree / base
+  absent → exit 0. Presence + enum membership only, never the semantic
+  quality of the judgement (the `validate-module-stability` boundary).
+  The knowledge-ledger instance of the *structured-agent-ledger gate*
+  species (see `docs/architecture/stigmergy.md` § 4); the verdict-ledger
+  instance is `validate-coordination-verdicts.sh` (OPP-0052).
+  `--scan-file` lints every record in a file for fixture tests. Per
+  PRD-0034 / OPP-0053; the governed schema is ADR-0002.
 - **`validate-sensitive-paths.sh`** takes `[<manifest>] [<project-root>]`
   (defaults: `./harness.manifest.yaml` and `dirname(manifest)`). Across
   all active modules, asserts every `sensitivePaths` regex pattern is

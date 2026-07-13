@@ -61,6 +61,7 @@ bash platform/validators/validate-trust-tier.sh harness.manifest.yaml .
 bash platform/validators/validate-sensitive-paths.sh harness.manifest.yaml .
 bash platform/validators/validate-skill-content.sh harness.manifest.yaml .
 bash platform/validators/validate-knowledge-redaction.sh . main
+bash platform/validators/validate-observation-hygiene.sh harness.manifest.yaml . main
 bash platform/validators/validate-sast-coverage.sh harness.manifest.yaml .
 bash platform/validators/validate-trace-contract.sh harness.manifest.yaml .
 bash platform/validators/validate-foundry-target.sh harness.manifest.yaml .

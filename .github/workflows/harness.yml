@@ -88,6 +88,18 @@ jobs:
           BASE_REF: ${{ github.base_ref }}
         run: bash platform/validators/validate-knowledge-redaction.sh . "$BASE_REF"
 
+      - name: Validate observation hygiene
+        # Diff-based ADR-0002 shape linter (PRD-0034 / OPP-0053). Module-gated on
+        # management/knowledge-capture — which the harness activates, so this runs
+        # LIVE/dogfood (unlike the predict-clean content validators). Lints each
+        # observation added vs. the PR base against the six-field shape + both
+        # enums (Severity enforce-as-locked); grandfathers history. PR-only, since
+        # it needs a base ref to diff against.
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: bash platform/validators/validate-observation-hygiene.sh harness.manifest.yaml . "$BASE_REF"
+
       - name: Validate SAST coverage
         # Opt-in: when management/security-static-analysis is not active in
         # the consumer manifest, the validator exits 0 with a "module inactive"

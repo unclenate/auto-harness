@@ -15,7 +15,7 @@ Run locally during development and in CI on every pull request.
 
 - **Ruby 3.0+** — all validators use inline Ruby for YAML parsing and logic
 - **ripgrep (`rg`)** — required by `validate-placeholders.sh` only; other validators work without it
-- **Bash** — the twenty-four `validate-*.sh` scripts delegate to Ruby and work with Bash 3.2 (macOS default) and 4+. The bootstrap scripts (`install.sh`, `link-skills.sh`, `add-license-headers.sh`) require Bash 4+ (use `declare -A` and other 4+ features); macOS users must `brew install bash` for those.
+- **Bash** — the twenty-five `validate-*.sh` scripts delegate to Ruby and work with Bash 3.2 (macOS default) and 4+. The bootstrap scripts (`install.sh`, `link-skills.sh`, `add-license-headers.sh`) require Bash 4+ (use `declare -A` and other 4+ features); macOS users must `brew install bash` for those.
 
 ---
 
@@ -40,6 +40,7 @@ below).
 | `validate-sensitive-paths.sh` | `[<manifest>] [<project-root>]` | Across all active modules, asserts every `sensitivePaths` regex pattern is overlapped by at least one `companionRules.triggerPaths` regex on some active module. Uses a pragmatic 3-tier overlap check (literal equality, trigger contains sensitive as substring, or sensitive contains trigger as substring). Cross-module overlap is allowed. Closes the doc-code-alignment gap where `sensitivePaths` was sold-as-policy but never-checked-in-code (safety-security-sweep §2 claim 12 → Enforced). OPP-0034 / ADR-0017 Wave 5.3 |
 | `validate-skill-content.sh` | `[--verbose] [<manifest>] [<project-root>]` (or `--scan-file <path>`) | Across active modules, scans authored prose (`module.yaml` description / summary / reviewGates / companionRules.humanReview + SKILL.md bodies via `recommendedSkills` + `compiledFragments` markdown) against a built-in denylist of prompt-injection patterns (e.g., "ignore previous instructions"), tier-bypass phrasings (e.g., "always operates at Tier"), role-prompt headers (`^System:`/`^User:`/`^Assistant:`), zero-width characters, and Unicode bidi marks. Lines matching `.skill-content-ignore` regex patterns are exempted. **Default posture: BLOCK** — hard-fails on any unexempted hit (predict-clean absorption per PRD-0015 FR-003). `--scan-file <path>` provides direct content scanning for ad-hoc fixture checks. Closes safety-security-sweep §3 red-team vectors V1, V2, V4 (partial), V6. PRD-0015 / OPP-0033 / ADR-0017 Wave 5.2 |
 | `validate-knowledge-redaction.sh` | `[--block] [<project-root>] [<base-branch>]` | Diff-based scan of new lines added to `docs/knowledge/shared-observations.md` and `docs/operating-principles.md` against a built-in denylist of consumer-name patterns (Tula, OpenEMR, YouBase, municipal-brain, toast-mcp). Lines matching `.knowledge-redaction-ignore` patterns are exempted. **Default posture: WARN** — surfaces hits on stderr but exits 0 (reviewers eyeball in CI logs). `--block` escalates hits to exit 1 (v2 posture per OPP-0036). Closes safety-security-sweep §8 (cross-pollination) + §9 (upstream-propagation pathways). OPP-0036 / ADR-0017 Wave 5.5 |
+| `validate-observation-hygiene.sh` | `[<manifest>] [<project-root>] [<base-branch>]` (or `--scan-file <path>`) | Diff-based ADR-0002 shape linter for `docs/knowledge/shared-observations.md`. Module-gated on `management/knowledge-capture` (inactive → exit 0 skip; the harness activates it, so its own CI runs **live/dogfood**, not predict-clean). Lints each observation whose `###` heading was **added** vs. the base branch: six fields present (`Context` / `Observation` / `Implication` / `Confidence` / `Severity` / `Contributed by`), `Confidence` ∈ `{low, medium, high}`, `Severity` ∈ `{informational, governance-relevant, architectural, risk-bearing}` (**enforce-as-locked** per PRD-0034 §10 — off-enum values fail), `Contributed by` name + ISO date. **Grandfathers history** — only diff-added records are linted; outside a git tree / base absent → exit 0. Presence + enum membership only, never semantic quality. The knowledge-ledger instance of the *structured-agent-ledger gate* (stigmergy.md §4); `--scan-file` lints every record for fixtures. PRD-0034 / OPP-0053; schema ADR-0002 |
 | `validate-sast-coverage.sh` | `[<manifest>] [<project-root>]` (or `--scan-file <path>`) | Opt-in validator for the `management/security-static-analysis` overlay. When the module is not active, exits 0 with a "module inactive" message — the harness itself does not activate the module, so its own CI run is a no-op pass (predict-clean absorption per PRD-0016 FR-003). When the module is active, reads `docs/security/sast-coverage.md`, parses YAML frontmatter, and asserts `tool:` is from the recommended set (`semgrep` / `codeql` / `bandit` / `gosec` / `eslint-plugin-security` / `snyk-code`), `scanPaths:` is a non-empty list, `severityThreshold:` is a non-empty string. `--scan-file <path>` provides direct content scanning for fixture tests and ad-hoc validation. Half-enforces safety-security-sweep §11 (the largest mission-relative gap in the sweep) — the harness validates the contract; consumer CI honors it for end-to-end enforcement. PRD-0016 / OPP-0035 / ADR-0017 Wave 5.4 |
 | `validate-trace-contract.sh` | `[<manifest>] [<project-root>]` (or `--scan-file <path>`) | Opt-in validator for the OpenTelemetry multi-agent trace contract. Activates when **any active module requires `docs/observability/trace-contract.md`** (`architectures/agent-observability`, which owns it, or `architectures/ai-foundry-target`, which reuses it via the deferred-dependency model); when none does, exits 0 with a "skipping" message (predict-clean — the harness activates neither). When active, parses the artifact's YAML frontmatter and asserts `semconv_version:` is a non-empty pin, `spans:` declares at least one conventional GenAI operation (`chat` / `invoke_agent` / `execute_tool` / `create_agent` / `embeddings` / `invoke_workflow`), and `content_capture:` is one of `{opt-in, none}`. Presence + shape only — the artifact-content half of the frontier-agent cluster's v2 enforcement; the code-cross-reference half (declared spans match emitted telemetry) stays deferred. `--scan-file <path>` for fixture tests. PRD-0031 / OPP-0051 / OPP-0027 |
 | `validate-foundry-target.sh` | `[<manifest>] [<project-root>]` (or `--scan-file <path>`) | Opt-in content validator (OPP-0051 phase 2). Activates when any active module requires `docs/architecture/foundry-targets.md` (`architectures/ai-foundry-target`); predict-clean otherwise. Asserts the `foundries:` frontmatter is a non-empty list, each entry an `id` from the enum (`azure-ai-foundry` / `nvidia-ai-foundry` / `palantir-aip` / `aws-bedrock-agentcore` / `google-vertex-agent-engine` / `custom`) with a `status` of `{live, roadmap}`. Presence + shape only. `--scan-file` for fixtures. PRD-0032 / OPP-0051 |
@@ -95,6 +96,7 @@ bash platform/validators/validate-trust-tier.sh harness.manifest.yaml .
 bash platform/validators/validate-sensitive-paths.sh harness.manifest.yaml .
 bash platform/validators/validate-skill-content.sh harness.manifest.yaml .
 bash platform/validators/validate-knowledge-redaction.sh . main
+bash platform/validators/validate-observation-hygiene.sh harness.manifest.yaml . main
 bash platform/validators/validate-sast-coverage.sh harness.manifest.yaml .
 bash platform/validators/validate-trace-contract.sh harness.manifest.yaml .
 bash platform/validators/validate-foundry-target.sh harness.manifest.yaml .
@@ -185,7 +187,7 @@ ruby -I platform/validators/lib platform/validators/test/test_harness_registry.r
 ### Integration tests
 
 **`test/test_validators_integration.rb`** — hard-coded tests + 72 dynamically
-generated `--help` / `-h` coverage tests (3 per validator × 24 validators) that
+generated `--help` / `-h` coverage tests (3 per validator × 25 validators) that
 shell out to the actual validator scripts against fixture projects:
 
 - `validate-manifest.sh` — valid pass, bad schema fail, missing file → exit 2
@@ -210,6 +212,10 @@ shell out to the actual validator scripts against fixture projects:
   without git); outside-git-tree pass
 - `validate-module-stability.sh` — `--scan-file` valid-tier pass, missing-field
   fail, out-of-enum fail, missing-arg → exit 2; enumerate-mode all-valid pass
+- `validate-observation-hygiene.sh` — `--scan-file` well-formed pass, missing-field
+  fail, off-enum Confidence fail, off-enum Severity fail, Confidence-misfiled-into-
+  Severity fail (with hint), no-ISO-date fail, missing-arg → exit 2; module-inactive
+  skip; hermetic git-fixture grandfather pass + new-off-enum-observation fail
 - `validate-trace-contract.sh` — `--scan-file` well-formed pass, missing-version
   fail, empty-spans fail, no-conventional-operation fail, bad-content_capture fail,
   missing-arg → exit 2; inactive-modules skip (predict-clean)

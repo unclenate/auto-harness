@@ -60,6 +60,7 @@ validators:
   - validate-sensitive-paths
   - validate-skill-content
   - validate-knowledge-redaction
+  - validate-observation-hygiene
   - validate-sast-coverage
   - validate-trace-contract
   - validate-foundry-target

@@ -11,6 +11,29 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-07-11 — Accept PRD-0034: Observation-Hygiene Content Validator (`validate-observation-hygiene.sh`)
+
+Accepted **PRD-0034 (design-only per § 9)** — ratifies **Layer 1** of OPP-0053 and flips it
+`proposed → exploring`. Ships `validate-observation-hygiene.sh`, a diff-based content validator
+that lints each observation *added vs. base* in `docs/knowledge/shared-observations.md` against
+the ADR-0002 six-field shape (both enums + ISO date), grandfathering the existing 105. Unlike the
+requirement-set content validators, `knowledge-capture` is **active on the harness**, so this one
+runs **live/dogfood** (not predict-clean) — every new harness observation must conform.
+
+The load-bearing decision, resolved in the § 10 claim table: **`Severity` enforce-as-locked**.
+Off-enum values (`process`, `low`/`medium` misfiled from `Confidence`, `architecture`,
+`programming-discipline`, `security`) fail on new observations. Rationale sharpened during
+authoring: ADR-0002 makes `Severity` drive the escalation table (`governance-relevant → revision
+tracker`, `architectural → ADR`, `risk-bearing → risk register`), so the 59% off-enum drift
+silently defeats severity-driven escalation — the drift is the defect, not the schema. The
+rejected alternative (amend ADR-0002 to admit `process`) is ADR-domain and left to a future ADR.
+
+Also ratifies the **convention-layer reconciliation with OPP-0052**: `stigmergy.md` § 4 names the
+*structured-agent-ledger gate* species so this validator and `validate-coordination-verdicts.sh`
+read as two instances of one contract (separate module homes, no shared code). Layer 2 (the
+ambient auto-capture Stop-hook) is deferred to its own follow-on PRD. Implementation bumps the
+validator count 24 → 25. PRD-index row added to `docs/README.md`.
+
 ## 2026-07-10 — File OPP-0053: Observation-Ledger Hygiene Gate (knowledge-ledger enforcement half)
 
 Filed **OPP-0053 (proposed)** — the **sibling** of OPP-0052, reconciled as the same

@@ -11,6 +11,27 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-07-13 — Accept PRD-0035: Ambient Auto-Capture (OPP-0053 Layer 2, design-only)
+
+Accepted **PRD-0035 (design-only per § 9)** — ratifies OPP-0053's **Layer 2**, the deferred
+ambient auto-capture half. Rather than a new hook, it **upgrades the existing
+`distillation-prompt.sh` Stop-hook** (reference implementation) from *remind* to *scaffold*: on
+its existing fire condition (a distillation-trigger path changed on the branch, no satisfier
+touched), it also emits an **ADR-0002-shaped inert stub** — six fields, `Context` and the
+`Contributed by` date pre-filled from git context, judgement fields left as fill-points. Layer 1
+(PRD-0034) is the enforcement half; this is the **ergonomics half** — same schema, pre-poured so
+conforming is the default.
+
+The stub is **inert by construction**: its `Confidence`/`Severity` placeholders are non-enum
+values, so `validate-observation-hygiene.sh` (Layer 1) rejects an unfilled stub — the robust
+guarantee — and strict-uppercase `[[…]]` tokens additionally trip `validate-placeholders.sh`.
+The scaffold can never satisfy the very check it stands in for. The one reviewable **§10-adjacent
+design fork** is the stub destination: **Option B (recommended)** — write to a gitignored
+`.claude/drafts/` file + prompt pointer — vs. Option A (stdout only) vs. rejected Option C (append
+to the governed ledger). Ergonomics-only: no claim moves Enforced/Asserted, no validator-count
+change (stays 25), no schema change. On implementation-merge, **OPP-0053 is delivered end-to-end**
+(enforcement + ergonomics). PRD-index row added to `docs/README.md`.
+
 ## 2026-07-12 — Close out OPP-0053: flip `proposed → accepted` (Layer 1 shipped)
 
 Flipped **OPP-0053 → accepted** (body status + parenthetical + `docs/README.md` index row) now

@@ -12,3 +12,7 @@ legacy/Docs.pdf
 # above for paths under platform/examples/sample-projects/*/.claude/.
 !platform/examples/sample-projects/*/.claude/
 !platform/examples/sample-projects/*/.claude/**
+# ...but never track the runtime drafts the PRD-0035 auto-capture hook scaffolds
+# into a sample project's .claude/drafts/ (consumer runtime state, not reference).
+# In a real consumer project the global .claude/ ignore already covers this.
+platform/examples/sample-projects/*/.claude/drafts/

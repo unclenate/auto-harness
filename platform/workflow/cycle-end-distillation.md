@@ -163,8 +163,14 @@ Agents working in projects with `management/knowledge-capture` active:
    respond to the hook prompt by surfacing any insights worth capturing.
    The prompt names the branch's commit shortlog and the specific
    trigger signals detected; use that as the input for "what learning
-   emerged?" The hook is the in-session reminder; the companion rule is
-   the PR-boundary floor.
+   emerged?" Per PRD-0035 the hook also **scaffolds** an ADR-0002-shaped
+   inert stub (six fields, `Context` and the attribution date pre-filled,
+   judgement fields left as fill-tokens) and drops a copy in a gitignored
+   `.claude/drafts/` file — fill the tokens and move the block into
+   `shared-observations.md`. The stub is inert until filled (its
+   placeholder `Confidence`/`Severity` fail `validate-observation-hygiene`
+   and `validate-placeholders`), so it cannot merge half-done. The hook is
+   the in-session scaffold; the companion rule is the PR-boundary floor.
 3. **When writing the observation/principle**, cite the trigger artifact
    explicitly in the Context field. The connection between work and
    distillation must be legible months later.

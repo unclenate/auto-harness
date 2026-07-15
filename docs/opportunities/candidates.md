@@ -6,7 +6,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # auto-harness — Opportunity Candidates Index
 
-**Owner:** @unclenate | **Last Updated:** 2026-06-10 *(added Digital Twin / Scenario Runtime cluster: OPP-0044)*
+**Owner:** @unclenate | **Last Updated:** 2026-07-15 *(status reconciliation: 10 entries whose annotation had drifted from their record's canonical `Status` — OPP-0012 / 0025 / 0027 / 0028 / 0029 / 0030 / 0031 / 0032 / 0051 / 0053 — realigned to `accepted`. Prior: 2026-06-10 added Digital Twin / Scenario Runtime cluster: OPP-0044)*
 
 Organizational index of opportunity candidates filed in this directory. The
 canonical record for each candidate is its own `OPP-NNNN-slug.md` file —
@@ -85,8 +85,8 @@ back-pressure between observation accumulation and synthesis. The
 automations exist; the *cadence that consumes their output* is
 underspecified.
 
-- [OPP-0032](OPP-0032-session-cycle-orchestration.md) *(exploring
-  2026-05-25; PRD-0013 in flight, drafted same-day; promoted from
+- [OPP-0032](OPP-0032-session-cycle-orchestration.md) *(accepted 2026-06-19;
+  filed 2026-05-25; PRD-0013, drafted same-day; promoted from
   candidate-stub after a second concrete instance accumulated)* — Define a taxonomy of session-boundary
   review checkpoints and name which automation fires at each. Two
   confirmed instances motivated the promotion: the distilled-learnings
@@ -235,8 +235,8 @@ complete greenfield projects specifically."
   make the validator scan consumer `*.md` when no `platform/` exists (skip the
   platform-specific pass), and align the template + guide.
 
-- [OPP-0025](OPP-0025-consumer-integration-smoke-test.md) *(proposed
-  2026-05-25; filed as OPP-0023 in working tree, renumbered after PR #59
+- [OPP-0025](OPP-0025-consumer-integration-smoke-test.md) *(accepted 2026-06-28;
+  filed 2026-05-25 as OPP-0023 in working tree, renumbered after PR #59
   took the OPP-0023 slot for a separate Tula-surfaced finding)* — Add a
   consumer-side integration smoke test as a
   first-class harness primitive: a tiny CI workflow template + a recipe
@@ -311,7 +311,7 @@ references back to OPP-0008/0009/0010 record the convergence.*
   Closes the gap that forced OpenEMR's manifest to omit stacks entirely;
   convergent with OPP-0008 (Node-JS-without-TS) from the YouBase
   onboarding.
-- [OPP-0012](OPP-0012-data-module-relational-sql-engine-generalization.md) *(proposed 2026-05-24)*
+- [OPP-0012](OPP-0012-data-module-relational-sql-engine-generalization.md) *(accepted 2026-07-09; filed 2026-05-24; PRD-0033)*
   — Generalize `data/relational-postgres` → `data/relational-sql` with
   `engine: postgres | mysql | mariadb | sqlite` sub-field. 95% of
   required artifacts are engine-independent; the rename keeps the
@@ -405,40 +405,40 @@ first profile pass catches product-shape gaps; a second pass catches
 platform-layer gaps"* in `shared-observations.md` (2026-05-25)
 generalizes the two-pass discipline.
 
-- **[OPP-0027](OPP-0027-frontier-agent-posture.md)** *(proposed
-  2026-05-25; anchor)* — `management/frontier-agent-posture` overlay
+- **[OPP-0027](OPP-0027-frontier-agent-posture.md)** *(accepted 2026-06-30;
+  filed 2026-05-25; anchor)* — `management/frontier-agent-posture` overlay
   declaring a project commits to enterprise-AI-platform standards
   from skill #1: foundry-targeting, OTel-shaped observability,
   intelligent model routing, defense-in-depth-for-autonomous-agents.
   Lightweight umbrella; substantive machinery lives in the four
   satellites below. Second instance of the anchor-satellite filing
   pattern after OPP-0007.
-- **[OPP-0028](OPP-0028-ai-foundry-target.md)** *(proposed 2026-05-25;
-  satellite of OPP-0027)* — `architectures/ai-foundry-target` —
+- **[OPP-0028](OPP-0028-ai-foundry-target.md)** *(accepted 2026-06-27; filed
+  2026-05-25; satellite of OPP-0027)* — `architectures/ai-foundry-target` —
   enumerated `foundries:` field naming which enterprise AI foundries
   (Microsoft / Azure AI Foundry, NVIDIA AI Foundry, Palantir Foundry /
   AIP, AWS Bedrock Agents, Google Vertex Agents, IBM watsonx
   Orchestrate) the project commits to landing in. New
   `architectures/`-family deployment-target dimension distinct from
   `delivery/` and `agents/`.
-- **[OPP-0029](OPP-0029-agent-observability.md)** *(exploring
-  2026-05-26; PRD-0014 in flight, drafted same-day; satellite of OPP-0027)* — `architectures/agent-observability`
+- **[OPP-0029](OPP-0029-agent-observability.md)** *(accepted 2026-06-27;
+  filed 2026-05-26; PRD-0014, drafted same-day; satellite of OPP-0027)* — `architectures/agent-observability`
   — OpenTelemetry-shaped multi-agent semantic conventions (Microsoft +
   Cisco Outshift). Required artifacts: `docs/observability/trace-contract.md`,
   plus `docs/observability/exporters.md`. Companion rule: action-code
   changes require trace-contract updates if a new span shape is
   introduced. Composes with OPP-0028 (foundries consume the shape)
   and OPP-0030 (model-selection spans).
-- **[OPP-0030](OPP-0030-intelligent-model-routing.md)** *(proposed
-  2026-05-25; satellite of OPP-0027)* — `architectures/intelligent-model-routing`
+- **[OPP-0030](OPP-0030-intelligent-model-routing.md)** *(accepted 2026-06-28;
+  filed 2026-05-25; satellite of OPP-0027)* — `architectures/intelligent-model-routing`
   — deployment-context-aware multi-provider routing as a first-class
   architectural primitive. Required artifact: `docs/architecture/model-routing.md`
   with the routing table, decision criteria, providers, and
   foundry-routing seams. Healthcare-specific routing (MedGemma 4B/27B,
   MedASR, MedImageInsight, CXRReportGen) named in the suggested-providers
   list but not required.
-- **[OPP-0031](OPP-0031-agent-defense-in-depth.md)** *(proposed
-  2026-05-25; satellite of OPP-0027)* — `architectures/agent-defense-in-depth`
+- **[OPP-0031](OPP-0031-agent-defense-in-depth.md)** *(accepted 2026-06-28;
+  filed 2026-05-25; satellite of OPP-0027)* — `architectures/agent-defense-in-depth`
   — Microsoft's four mutually-reinforcing patterns: agents-as-microservices,
   least-permissions, deterministic human-in-the-loop, agent-identity.
   Required artifacts: `docs/security/agent-defense-in-depth.md` +
@@ -645,7 +645,7 @@ cite-the-evidence rule), not the extraction; composes with the OPP-0046 lane
   ~70% already-built. Deferred: behavior-gating on stability, a module
   deprecation/lifecycle policy, stack build-out.
 
-- [OPP-0051](OPP-0051-frontier-agent-cluster-v2-enforcement.md) *(proposed
+- [OPP-0051](OPP-0051-frontier-agent-cluster-v2-enforcement.md) *(accepted
   2026-06-28)* — **Frontier-Agent Cluster v2 Enforcement: Artifact-Content
   Validators.** The four cluster satellites (observability / foundry-target /
   model-routing / defense-in-depth) shipped declarative-v1 — they require
@@ -680,24 +680,27 @@ cite-the-evidence rule), not the extraction; composes with the OPP-0046 lane
   federated-review cycle (verdict label-swap; core-only adjudication). Sibling half
   of OPP-0046; declare-then-enforce retargeted from scope to review.
 
-- [OPP-0053](OPP-0053-observation-ledger-hygiene.md) *(proposed
-  2026-07-10)* — **Observation-Ledger Hygiene Gate (structured-agent-ledger
+- [OPP-0053](OPP-0053-observation-ledger-hygiene.md) *(accepted 2026-07-12;
+  filed 2026-07-10; PRD-0034 + PRD-0035; delivered end-to-end
+  2026-07-15)* — **Observation-Ledger Hygiene Gate (structured-agent-ledger
   validator + ambient auto-capture).** `management/knowledge-capture` enforces that a
   shared observation *exists* and is *connected* (audit-trail + distillation
   pointers) but never checks its *shape*. ADR-0002 locks six fields with two enums,
   yet the schema has drifted for want of a validator: of 105 live observations,
   **62 (59%) carry an off-enum `Severity`**, the most-severe canonical level
   `risk-bearing` is used **0×**, and ~20% omit `Confidence` or `Contributed by`.
-  Ship (1) `validate-observation-hygiene.sh` — a diff-based BLOCK linter checking
+  Shipped (1) `validate-observation-hygiene.sh` — a diff-based BLOCK linter checking
   each added observation against ADR-0002 (six fields, both enums, ISO date),
-  grandfathering history; (2) an ambient auto-capture Stop-hook that scaffolds a
-  schema-shaped inert stub when a session touched a distillation-trigger path but not
-  the ledger. **Sibling of OPP-0052**: the same *structured-agent-ledger gate*
+  grandfathering history (PRD-0034, Layer 1); (2) an ambient auto-capture Stop-hook
+  that scaffolds a schema-shaped inert stub when a session touched a
+  distillation-trigger path but not the ledger (PRD-0035, Layer 2). **Sibling of OPP-0052**: the same *structured-agent-ledger gate*
   species retargeted from the verdict ledger to the knowledge ledger — reconciled at
   the convention layer (named in `stigmergy.md`, separate module homes) rather than
   shared code, since a Markdown field-parser and a JSON schema-validator barely
-  overlap. `Severity` enforce-as-locked vs. amend-ADR-0002 is the one load-bearing
-  PRD-time (§ 10) decision. Validator count 24 → 25.
+  overlap. The one load-bearing PRD-time (§ 10) decision — `Severity`
+  enforce-as-locked vs. amend-ADR-0002 — resolved as **enforce-as-locked**, because
+  `Severity` drives ADR-0002's escalation table, so off-enum drift silently defeats
+  escalation. Validator count 24 → 25.
 
 ---
 

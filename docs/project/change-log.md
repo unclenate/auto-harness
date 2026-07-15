@@ -11,6 +11,34 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-07-15 — Reconcile the OPP candidates index against record status (10 entries)
+
+Closing out OPP-0053 exposed that `docs/opportunities/candidates.md` had drifted from the
+canonical `Status` field of the records it indexes. A full reconciliation of all 53 OPP records
+against their index annotations found **10 disagreements** — OPP-0012 / 0025 / 0027 / 0028 /
+0029 / 0030 / 0031 / 0032 / 0051 / 0053 all annotated `proposed` or `exploring` while their
+records read `accepted`, some for over six weeks, carrying stale sub-claims (`PRD-0014 in
+flight`, `PRD-0013 in flight`). All ten realigned to each record's canonical status, with the
+acceptance date taken from the record's own `Last Updated` field (the authoritative statement of
+when the disposition was made) rather than the merge-commit date.
+
+**Root cause is structural, not clerical.** ADR-0012 split this directory deliberately:
+`README.md` is *structural* and ADR-gated, `candidates.md` is *organizational* and explicitly
+exempt from the companion-rule floor so clusters can be regrouped freely. That exemption is why
+the index is cheap to edit — and why nothing reconciles it back. It is the same failure
+`validate-catalog-counts.sh` mechanizes away for counts, with no equivalent gate for status. The
+drift clusters where work moves fastest (the entire frontier-agent cluster, OPP-0027..0031,
+shipped without a single index annotation following), so the index was least accurate exactly
+where a reader most needed it. A status-parity validator — recompute-and-compare, the natural
+sibling of catalog-counts — is recorded in `shared-observations.md` as an OPP candidate rather
+than actioned here; this change reconciles the current state and does not mechanize it.
+
+Also updated **OPP-0053's own record**, whose `Status` still read that Layer 2 "remains a
+deferred follow-on PRD" after Layer 2 shipped in PR #176: status now records end-to-end delivery
+across PRD-0034 + PRD-0035, with an appended dated Disposition entry (the prior `Proposed
+(2026-07-10)` block preserved per the append-only convention) and the `Last Updated` ledger
+carrying its `Prior:` chain.
+
 ## 2026-07-13 — Implement PRD-0035: ambient auto-capture stub (OPP-0053 Layer 2, delivered)
 
 Implemented PRD-0035 by upgrading the `distillation-prompt.sh` Stop-hook (sample-project

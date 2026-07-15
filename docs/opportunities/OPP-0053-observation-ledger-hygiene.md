@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0053 — Observation-Ledger Hygiene Gate (structured-agent-ledger validator + ambient auto-capture)
 
-**Status:** accepted *(Layer 1 implemented 2026-07-12 per [PRD-0034](../requirements/PRD-0034-validate-observation-hygiene.md) — `validate-observation-hygiene.sh` shipped, registered under `management/knowledge-capture` v1.3.0, and the structured-agent-ledger gate species named in `stigmergy.md` §4. Layer 2, the ambient auto-capture Stop-hook, remains a deferred follow-on PRD.)*
+**Status:** accepted *(delivered end-to-end 2026-07-15. Layer 1 implemented 2026-07-12 per [PRD-0034](../requirements/PRD-0034-validate-observation-hygiene.md) — `validate-observation-hygiene.sh` shipped, registered under `management/knowledge-capture` v1.3.0, and the structured-agent-ledger gate species named in `stigmergy.md` §4. Layer 2 implemented 2026-07-15 per [PRD-0035](../requirements/PRD-0035-ambient-auto-capture.md) — the existing `distillation-prompt.sh` Stop-hook upgraded from remind to scaffold, emitting an ADR-0002-shaped inert stub and persisting a copy to a gitignored `.claude/drafts/` file.)*
 **Owner:** @unclenate
 **Created:** 2026-07-10
-**Last Updated:** 2026-07-12
+**Last Updated:** 2026-07-15 *(Layer 2 shipped per PRD-0035; OPP delivered end-to-end — enforcement (Layer 1) plus ergonomics (Layer 2). Prior: 2026-07-12 accepted on Layer 1 implementation, Layer 2 then a deferred follow-on PRD.)*
 **Confidence:** high (field-proven this session — see Origin / Evidence)
 
 ---
@@ -150,6 +150,18 @@ follow-on. Shipping Layer 1 takes the validator count 24 → 25 (catalog-counts
 propagation). The linter is the thin, field-harvested wedge; the hook is the deferred
 depth — mirroring OPP-0052's schema-first, routing-later staging and OPP-0046's
 lane-first, economics-later staging.
+
+**Delivered end-to-end (2026-07-15).** Both layers shipped on the staging above, and
+the staging held: Layer 1 (PRD-0034) landed `validate-observation-hygiene.sh` as
+validator 25 with `Severity` classified enforce-as-locked in its § 10 table, and
+Layer 2 (PRD-0035) landed the auto-capture scaffold as an *upgrade to the existing*
+`distillation-prompt.sh` rather than a new hook — the follow-on turned out to be a
+change to a hook that already computed the git context it needed, not a new surface.
+The two layers are complements, not alternatives: Layer 1 alone is a wall agents
+bounce off, Layer 2 alone is a suggestion; enforcement plus ergonomics is what makes
+a ratified schema hold. Layer 2's stub is inert by construction (its placeholder
+`Confidence` / `Severity` fail Layer 1's own validator), so the scaffold can never
+satisfy the trace it scaffolds until a human or agent fills it.
 
 ## Related
 

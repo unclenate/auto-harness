@@ -11,6 +11,28 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-07-13 — Implement PRD-0035: ambient auto-capture stub (OPP-0053 Layer 2, delivered)
+
+Implemented PRD-0035 by upgrading the `distillation-prompt.sh` Stop-hook (sample-project
+reference implementation) from *remind* to *scaffold*: on its existing fire condition it now
+emits an ADR-0002-shaped **inert stub** (six fields; `Context` and the `Contributed by` date
+pre-filled from the git context it already computes; judgement fields as bracketed fill-tokens)
+and — Option B — persists a copy to a gitignored `.claude/drafts/` file (best-effort;
+degrades to stdout-only if `.claude/` is unwritable, preserving exit-0-always). Root `.gitignore`
+re-ignores `platform/examples/sample-projects/*/.claude/drafts/` (the reference `.claude/**` is
+otherwise negated-to-tracked); real consumers rely on the standard global `.claude/` ignore.
+
+**Inertness verified**: the emitted stub fails `validate-observation-hygiene.sh --scan-file`
+(its placeholder `Confidence`/`Severity` are non-enum) and carries strict-uppercase bracketed
+tokens that `validate-placeholders.sh` flags — it cannot merge or masquerade as a real
+observation. All the
+silent-exit paths (satisfier present, no trigger, on base) are unchanged. New
+`TestDistillationPromptHook` (4 hermetic git-fixture cases: scaffold-on-trigger, silent×2,
+inertness). Docs updated: `stigmergy.md` §4 point 2 (remind→scaffold), `cycle-end-distillation.md`,
+`platform/agents/claude-code/README.md`. No validator-count change (stays 25); the hook file is
+under the `platform/**` `.placeholder-ignore` exemption, so its literal template tokens are not
+flagged. **OPP-0053 is now delivered end-to-end** — Layer 1 (enforcement) + Layer 2 (ergonomics).
+
 ## 2026-07-13 — Accept PRD-0035: Ambient Auto-Capture (OPP-0053 Layer 2, design-only)
 
 Accepted **PRD-0035 (design-only per § 9)** — ratifies OPP-0053's **Layer 2**, the deferred

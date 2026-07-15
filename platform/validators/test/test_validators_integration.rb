@@ -1390,6 +1390,93 @@ class TestValidateObservationHygiene < Minitest::Test
 end
 
 # ---------------------------------------------------------------------------
+# distillation-prompt.sh Stop hook — PRD-0035 ambient auto-capture upgrade.
+# The hook is a sample-project reference implementation (not a validator); this
+# case exercises the remind→scaffold behavior: stub emitted on the fire
+# condition, silent otherwise, and the emitted stub is inert (fails Layer 1 +
+# carries strict-uppercase placeholder tokens).
+# ---------------------------------------------------------------------------
+class TestDistillationPromptHook < Minitest::Test
+  HARNESS_ROOT = File.expand_path("..", PLATFORM_DIR)
+  HOOK = File.join(
+    PLATFORM_DIR, "examples", "sample-projects", "node-web-saas-postgres",
+    ".claude", "hooks", "distillation-prompt.sh"
+  )
+
+  def build_repo(tmp, appended:, satisfier: false)
+    FileUtils.mkdir_p(File.join(tmp, "docs/adr"))
+    FileUtils.mkdir_p(File.join(tmp, "docs/knowledge"))
+    File.write(File.join(tmp, "docs/adr/ADR-0099-x.md"), "# ADR\n")
+    system("git -C #{tmp} init -q && git -C #{tmp} config user.email t@t.t && git -C #{tmp} config user.name t")
+    system("git -C #{tmp} add -A && git -C #{tmp} commit -q -m base")
+    system("git -C #{tmp} branch -M main")
+    system("git -C #{tmp} checkout -q -b feature")
+    File.write(File.join(tmp, appended), "changed\n", mode: "a") if appended
+    File.write(File.join(tmp, "docs/knowledge/shared-observations.md"), "- obs\n") if satisfier
+    system("git -C #{tmp} add -A && git -C #{tmp} commit -q -m feature")
+  end
+
+  def run_hook(tmp)
+    Open3.capture3("bash", HOOK, chdir: tmp)
+  end
+
+  def test_scaffolds_stub_on_trigger_without_satisfier
+    skip "git not installed" unless GIT_AVAILABLE
+    Dir.mktmpdir do |tmp|
+      build_repo(tmp, appended: "docs/adr/ADR-0099-x.md")
+      out, _err, status = run_hook(tmp)
+      assert_equal 0, status.exitstatus, "hook must always exit 0"
+      assert_match(/AUTO-CAPTURE STUB/, out, "stub must be emitted on the fire condition")
+      assert_match(/\*\*Confidence:\*\* \[\[CONFIDENCE\]\]/, out, "Confidence fill-token present")
+      assert_match(/On branch feature this session changed: docs\/adr\/ADR-0099-x\.md/, out,
+                   "Context pre-filled from git triggers")
+    end
+  end
+
+  def test_silent_when_satisfier_present
+    skip "git not installed" unless GIT_AVAILABLE
+    Dir.mktmpdir do |tmp|
+      build_repo(tmp, appended: "docs/adr/ADR-0099-x.md", satisfier: true)
+      out, _err, status = run_hook(tmp)
+      assert_equal 0, status.exitstatus
+      assert_empty out.strip, "must stay silent when a satisfier is already touched"
+    end
+  end
+
+  def test_silent_when_no_trigger
+    skip "git not installed" unless GIT_AVAILABLE
+    Dir.mktmpdir do |tmp|
+      # Change a non-trigger file only.
+      File.write(File.join(tmp, "README.md"), "x\n")
+      system("git -C #{tmp} init -q && git -C #{tmp} config user.email t@t.t && git -C #{tmp} config user.name t")
+      system("git -C #{tmp} add -A && git -C #{tmp} commit -q -m base && git -C #{tmp} branch -M main")
+      system("git -C #{tmp} checkout -q -b feature")
+      File.write(File.join(tmp, "README.md"), "y\n")
+      system("git -C #{tmp} add -A && git -C #{tmp} commit -q -m feature")
+      out, _err, status = run_hook(tmp)
+      assert_equal 0, status.exitstatus
+      assert_empty out.strip, "must stay silent when no distillation-trigger path changed"
+    end
+  end
+
+  def test_emitted_stub_is_inert
+    skip "git not installed" unless GIT_AVAILABLE
+    Dir.mktmpdir do |tmp|
+      build_repo(tmp, appended: "docs/adr/ADR-0099-x.md")
+      run_hook(tmp)
+      draft = Dir.glob(File.join(tmp, ".claude", "drafts", "*.md")).first
+      refute_nil draft, "Option B must persist a draft stub file"
+      # Guard 1: fails the Layer 1 shape gate (non-enum Confidence/Severity).
+      _o, _e, code = run_validator("validate-observation-hygiene.sh", "--scan-file", draft)
+      assert_equal 1, code, "an unfilled stub must fail validate-observation-hygiene"
+      # Guard 2: carries strict-uppercase placeholder tokens (validate-placeholders class).
+      body = File.read(draft)
+      assert_match(/\[\[[A-Z0-9_]+\]\]/, body, "stub must carry strict-uppercase placeholder tokens")
+    end
+  end
+end
+
+# ---------------------------------------------------------------------------
 # Uniform --help / -h flag on every validator
 #
 # Each validator must short-circuit on --help or -h as the first argument:

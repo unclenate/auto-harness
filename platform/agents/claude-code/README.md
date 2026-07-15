@@ -55,8 +55,14 @@ distillation-worthy work (new/modified ADR, OPP, module manifest, or
 active-module catalog change relative to base) and no knowledge destination
 has been touched in the same branch yet. Silent otherwise — it does **not**
 fire on every Stop turn, only at end-of-session-on-a-feature-branch-with-
-work. The in-session counterpart to the PR-boundary companion rule on
-`management/knowledge-capture` (see PRD-0004 + `platform/workflow/cycle-end-distillation.md`).
+work. Per PRD-0035 it also **scaffolds** an ADR-0002-shaped inert stub (six
+fields, `Context` and the attribution date pre-filled from git context,
+judgement fields as fill-tokens) and writes a copy to a gitignored
+`.claude/drafts/` file, so the agent fills a correct skeleton instead of
+recalling the schema; the stub is inert until filled (it fails
+`validate-observation-hygiene` and `validate-placeholders`). The in-session
+counterpart to the PR-boundary companion rule on `management/knowledge-capture`
+(see PRD-0004 / PRD-0035 + `platform/workflow/cycle-end-distillation.md`).
 
 Reference implementation lives at
 `platform/examples/sample-projects/node-web-saas-postgres/.claude/hooks/distillation-prompt.sh`.

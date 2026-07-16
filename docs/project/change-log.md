@@ -11,6 +11,31 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-07-16 — File OPP-0054: status-parity validator (design-only) + fix a second drifted surface
+
+Filed **OPP-0054 — Status-Parity Validator** (design-only per § 9; no validator code, no count
+change). It proposes an always-on `validate-status-parity.sh` that recomputes each OPP record's
+`Status` and asserts every *derived* surface agrees — the status-parity sibling of
+`validate-catalog-counts.sh` (which recomputes counts) and the row-status completion of
+`validate-list-completeness.sh` (which checks only that a row exists, never its status).
+
+**Why now — the drift class bit twice this session.** PR #174 omitted a status flip → forced the
+PR #177 closeout; PR #177 then reconciled 10 `candidates.md` annotations by hand but **silently
+left a second surface drifted**: `docs/README.md`'s OPP-0012 row still read `proposed` while the
+record read `accepted`. Scoping OPP-0054 required enumerating the mirror surfaces and surfaced that
+miss
+— now fixed in this same PR (line 132, `proposed → accepted`). The enumeration also established
+that OPP status lives in **three** files easily confused by name: `candidates.md` (annotation),
+`docs/README.md` (status column), and `docs/opportunities/README.md` (write policy, no status) —
+and that two of my own prior observations each half-described a different one and mutually
+"corrected" into error. The distillation entry supersedes both per the append-only convention.
+
+**Root cause is structural** (ADR-0012 exempts `candidates.md` from the companion-rule floor as
+*organizational*), so the fix is a validator, not more discipline. Recommended promotion path is a
+short PRD, because two § 10 forks are genuinely unresolved (missing-annotation policy; BLOCK vs.
+WARN posture). Satisfiers: `shared-observations.md` entry (PRD-0004 distillation, fired by the new
+OPP) + this change-log entry (audit trail).
+
 ## 2026-07-15 — Reconcile the OPP candidates index against record status (10 entries)
 
 Closing out OPP-0053 exposed that `docs/opportunities/candidates.md` had drifted from the

@@ -702,6 +702,27 @@ cite-the-evidence rule), not the extraction; composes with the OPP-0046 lane
   `Severity` drives ADR-0002's escalation table, so off-enum drift silently defeats
   escalation. Validator count 24 → 25.
 
+- [OPP-0054](OPP-0054-status-parity-validator.md) *(proposed 2026-07-16)* —
+  **Status-Parity Validator (OPP record status vs. derived index surfaces).** An
+  OPP record's `Status` field is the source of truth, but the same state is
+  mirrored into ≥ 2 *derived* surfaces no validator reconciles: the
+  `candidates.md` annotation token and the `docs/README.md` status column.
+  `validate-list-completeness.sh` checks every OPP has an index *row* (presence)
+  but never that the row's *status* agrees with the record → silent drift. Ship an
+  always-on `validate-status-parity.sh` that recomputes each derived surface's
+  status token from the record and diffs — the same species as
+  `validate-catalog-counts.sh` (recompute-a-derived-claim) applied to status
+  instead of counts, and the completion of `validate-list-completeness.sh` (row
+  status, not just row presence). **Field-proven this session at my own expense:**
+  #174 missed a status flip → forced the #177 closeout; #177 reconciled 10
+  `candidates.md` annotations by hand yet silently left `docs/README.md`'s OPP-0012
+  row at `proposed` (fixed in this same PR). Root cause is structural — ADR-0012
+  exempts `candidates.md` from the companion-rule floor as *organizational*, which
+  is why nothing reconciles it. Two load-bearing § 10 forks (missing-annotation
+  policy; BLOCK vs. WARN) → short-PRD promotion recommended. Sibling of OPP-0053
+  (shape-parity on the observation ledger); this is status-parity on the
+  opportunity index.
+
 ---
 
 ## References

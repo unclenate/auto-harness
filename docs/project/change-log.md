@@ -11,6 +11,31 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-07-16 — Capture cycle learnings + sync GitBook nav (SUMMARY.md six records)
+
+A parallel-agent audit of the GitBook-facing docs (three read-only agents: staleness, nav
+completeness, learnings harvest) converged on a single finding — the reader-facing docs are
+current in every prose catalog count, the `relational-sql` rename, and the canonical
+`docs/README.md` index, with the *only* drift confined to `SUMMARY.md`'s navigation, whose
+Opportunity and Requirement lists had silently lagged six records behind disk (missing
+OPP-0052/0053/0054 and PRD-0033/0034/0035). No validator gates those nav lists
+(`validate-list-completeness.sh` enforces only the `docs/README.md` index and SUMMARY's *module*
+lists), so the drift was invisible to CI. Appended the six nav rows.
+
+Separately, the learnings harvest surfaced one durable principle worth promoting out of the
+observation ledger: **a source-of-truth field mirrored into N derived surfaces creates N−1
+unenforced drift sites** — the field-general capstone of §3's existing count-drift and
+enumeration-drift bullets, now added to `operating-principles.md §3`. It is backed by two
+independent observations, the 10-of-53 OPP-status reconciliation (PR #177), and — fittingly — the
+`SUMMARY.md` nav lag fixed in this very change, which is itself another instance of the law. The
+principle names `validate-status-parity.sh` (OPP-0054) as the status instance and notes the
+stronger design move: remove the mirror (link an index page) rather than re-listing every record.
+
+No companion rule fires (SUMMARY.md and operating-principles.md are neither distillation triggers
+nor audit-trail destinations); this change-log entry records the doctrine promotion as a material
+direction change per §2 review discipline. The remaining learnings stay as observations; an
+optional §10 "presence vs. shape" sharpening was identified and deferred to maintainer review.
+
 ## 2026-07-16 — File OPP-0054: status-parity validator (design-only) + fix a second drifted surface
 
 Filed **OPP-0054 — Status-Parity Validator** (design-only per § 9; no validator code, no count

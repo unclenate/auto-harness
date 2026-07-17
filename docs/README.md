@@ -129,7 +129,7 @@ clustered backlog with framing.
 | [0009](opportunities/OPP-0009-data-module-embedded-key-value.md) | Data Module — Embedded Key-Value | accepted |
 | [0010](opportunities/OPP-0010-domain-module-cryptographic-identity.md) | Domain Module — Cryptographic Identity | accepted |
 | [0011](opportunities/OPP-0011-stack-module-php.md) | Stack Module — PHP | proposed |
-| [0012](opportunities/OPP-0012-data-module-relational-sql-engine-generalization.md) | Data Module — Relational SQL Engine Generalization | proposed |
+| [0012](opportunities/OPP-0012-data-module-relational-sql-engine-generalization.md) | Data Module — Relational SQL Engine Generalization | accepted |
 | [0013](opportunities/OPP-0013-domain-family-healthcare-decomposed.md) | Domain Family — Healthcare Decomposed | accepted (partial promotion) |
 | [0014](opportunities/OPP-0014-polyglot-companion-services.md) | Polyglot Companion Services | proposed |
 | [0015](opportunities/OPP-0015-regulated-compliance-test-kits.md) | Regulated Compliance + External Test Kits | proposed |
@@ -170,6 +170,7 @@ clustered backlog with framing.
 | [0051](opportunities/OPP-0051-frontier-agent-cluster-v2-enforcement.md) | Frontier-Agent Cluster v2 Enforcement: Artifact-Content Validators | accepted |
 | [0052](opportunities/OPP-0052-federated-review-lane-contract.md) | Federated Review-Lane Contract (verdict schema + coordination substrate) | proposed |
 | [0053](opportunities/OPP-0053-observation-ledger-hygiene.md) | Observation-Ledger Hygiene Gate (structured-agent-ledger validator + ambient auto-capture) | accepted |
+| [0054](opportunities/OPP-0054-status-parity-validator.md) | Status-Parity Validator (OPP record status vs. derived index surfaces) | proposed |
 
 ---
 

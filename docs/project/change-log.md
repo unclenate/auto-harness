@@ -11,6 +11,30 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-07-18 — Promote OPP-0054 to PRD-0036 (status-parity validator, design-only)
+
+Filed [PRD-0036](../requirements/PRD-0036-status-parity-validator.md), the short-PRD promotion
+OPP-0054 recommended, and flipped OPP-0054 `proposed → exploring`. The PRD ratifies an always-on
+`validate-status-parity.sh` — the third always-on structural reconciler after
+`validate-catalog-counts.sh` (row counts) and `validate-list-completeness.sh` (row presence),
+checking each OPP record's `Status` against its two derived mirrors (`candidates.md` annotation +
+`docs/README.md` column) via a data-driven `SURFACES` registry.
+
+Both § 10 forks OPP-0054 flagged are resolved. **Missing-annotation policy = implicit `proposed`**
+(option c) — chosen on disk evidence, not preference: scoping the PRD found **OPP-0002 and OPP-0003
+carry record `Status: accepted` with no `candidates.md` annotation at all**, a live drift that the
+gentler "match-if-present" option (b) would pass silently, whereas implicit-`proposed` fails it
+(forcing the backfill) while still letting genuinely-raw `proposed` entries like OPP-0001 pass
+un-annotated. **Posture = BLOCK** — the two same-species always-on reconcilers both BLOCK; WARN is
+reserved for the single fuzzy denylist check (`validate-knowledge-redaction.sh`), and a
+deterministic recompute-and-diff that only WARNs is theater.
+
+This PR dogfoods the contract it specifies: flipping OPP-0054's status required updating all three
+status surfaces (record + `candidates.md` + `docs/README.md`) in the same commit, exactly the
+parity the future validator will enforce. Design-only per § 9; the implementing PR ships the
+validator, the 25 → 26 count propagation, and the OPP-0002 / OPP-0003 reconciliation the BLOCK
+posture needs to go green. OPP-0054 flips `exploring → accepted` at that merge.
+
 ## 2026-07-16 — Capture cycle learnings + sync GitBook nav (SUMMARY.md six records)
 
 A parallel-agent audit of the GitBook-facing docs (three read-only agents: staleness, nav

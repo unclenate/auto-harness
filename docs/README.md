@@ -106,6 +106,7 @@ originating opportunity records.
 | [0033](requirements/PRD-0033-relational-sql-engine-generalization.md) | Relational Data Module Generalization (`data/relational-postgres` → `data/relational-sql`, engine-in-artifact) | Accepted (design-only) | [OPP-0012](opportunities/OPP-0012-data-module-relational-sql-engine-generalization.md) |
 | [0034](requirements/PRD-0034-validate-observation-hygiene.md) | Observation-Hygiene Content Validator (`validate-observation-hygiene.sh`) | Accepted (design-only) | [OPP-0053](opportunities/OPP-0053-observation-ledger-hygiene.md) |
 | [0035](requirements/PRD-0035-ambient-auto-capture.md) | Ambient Auto-Capture — schema-shaped stub upgrade to the distillation Stop hook | Accepted (design-only) | [OPP-0053](opportunities/OPP-0053-observation-ledger-hygiene.md) |
+| [0036](requirements/PRD-0036-status-parity-validator.md) | Status-Parity Validator (`validate-status-parity.sh`) — OPP record status vs. derived index surfaces | Accepted (design-only) | [OPP-0054](opportunities/OPP-0054-status-parity-validator.md) |
 
 ---
 
@@ -170,7 +171,7 @@ clustered backlog with framing.
 | [0051](opportunities/OPP-0051-frontier-agent-cluster-v2-enforcement.md) | Frontier-Agent Cluster v2 Enforcement: Artifact-Content Validators | accepted |
 | [0052](opportunities/OPP-0052-federated-review-lane-contract.md) | Federated Review-Lane Contract (verdict schema + coordination substrate) | proposed |
 | [0053](opportunities/OPP-0053-observation-ledger-hygiene.md) | Observation-Ledger Hygiene Gate (structured-agent-ledger validator + ambient auto-capture) | accepted |
-| [0054](opportunities/OPP-0054-status-parity-validator.md) | Status-Parity Validator (OPP record status vs. derived index surfaces) | proposed |
+| [0054](opportunities/OPP-0054-status-parity-validator.md) | Status-Parity Validator (OPP record status vs. derived index surfaces) | exploring |
 
 ---
 

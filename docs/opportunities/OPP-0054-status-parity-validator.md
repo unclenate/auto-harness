@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0054 — Status-Parity Validator (OPP record status vs. derived index surfaces)
 
-**Status:** proposed
+**Status:** exploring
 **Owner:** @unclenate
 **Created:** 2026-07-16
-**Last Updated:** 2026-07-16
+**Last Updated:** 2026-07-18
 **Confidence:** high (field-proven this session — the drift is real, recurring, and I missed a surface myself; see Origin / Evidence)
 
 ---
@@ -136,6 +136,8 @@ equivalent gate for *status*.
 
 ## Disposition
 
+**Exploring (2026-07-18).** Promoted to a short PRD — [PRD-0036](../requirements/PRD-0036-status-parity-validator.md) — which resolves the two § 10 forks the proposal flagged: **missing-annotation policy = implicit `proposed`** (OPP-0054 option **c**, chosen on disk evidence — OPP-0002 / OPP-0003 carry record `Status: accepted` with no `candidates.md` annotation, a live drift that option (b) "match-if-present" would pass silently), and **posture = BLOCK** (the same-species always-on reconcilers `validate-catalog-counts.sh` / `validate-list-completeness.sh` both BLOCK; WARN is reserved for the fuzzy denylist check). Flips `exploring → accepted` at the validator's implementation-merge. Prior:
+
 **Proposed (2026-07-16).** Harvested from this session's two self-inflicted
 status-drift misses (#174 → #177 closeout; #177 → the `docs/README.md` OPP-0012
 row this PR also fixes). Recommended promotion path: a **short PRD, not
@@ -152,4 +154,4 @@ load-bearing posture decision.
 
 ## Promotion
 
-<!-- Empty until accepted. Then a link to PRD-NNNN. -->
+Promoted via [PRD-0036 — Status-Parity Validator (`validate-status-parity.sh`)](../requirements/PRD-0036-status-parity-validator.md) (2026-07-18, design-only per § 9). The PRD ratifies the wedge, resolves the two § 10 forks (implicit-`proposed` missing-annotation policy; BLOCK posture), and specifies the data-driven `SURFACES` registry over the two known surfaces. OPP-0054 flips `exploring → accepted` when the validator merges and the harness CI passes.

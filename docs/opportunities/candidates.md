@@ -29,14 +29,14 @@ this index exists only to group, cluster, or annotate them for human readers.
   Define an exportable governance contract any AI-agent runtime harness (Hive,
   LangGraph, CrewAI) can adopt to gate state transitions on human approval,
   with audit trails compatible with auto-harness's lifecycle artifacts.
-- [OPP-0003](OPP-0003-mcp-producer-and-exportable-governance-via-mcp.md) —
+- [OPP-0003](OPP-0003-mcp-producer-and-exportable-governance-via-mcp.md) *(accepted 2026-05-18; ADR-0008; `architectures/mcp-server` shipped PR #6)* —
   Teach auto-harness to govern three MCP modes (consumer, producer, and
   exportable-governance-via-MCP) as first-class shapes, making the governance
   contract from OPP-0001 reachable through the protocol layer.
 
 ### In-product agent surfaces
 
-- [OPP-0002](OPP-0002-agentic-interface-awareness.md) — Teach the auto-harness
+- [OPP-0002](OPP-0002-agentic-interface-awareness.md) *(accepted 2026-05-18; ADR-0007; `architectures/agentic-ui` shipped PR #5)* — Teach the auto-harness
   to recognize agentic interfaces (CopilotKit-style copilots, A2UI generative
   UI, conversational-primary products) as a governable shape, so consumer
   projects ship modern AI surfaces without inventing their own
@@ -702,7 +702,7 @@ cite-the-evidence rule), not the extraction; composes with the OPP-0046 lane
   `Severity` drives ADR-0002's escalation table, so off-enum drift silently defeats
   escalation. Validator count 24 → 25.
 
-- [OPP-0054](OPP-0054-status-parity-validator.md) *(exploring 2026-07-18; PRD-0036)* —
+- [OPP-0054](OPP-0054-status-parity-validator.md) *(accepted 2026-07-18; PRD-0036; `validate-status-parity.sh` shipped)* —
   **Status-Parity Validator (OPP record status vs. derived index surfaces).** An
   OPP record's `Status` field is the source of truth, but the same state is
   mirrored into ≥ 2 *derived* surfaces no validator reconciles: the

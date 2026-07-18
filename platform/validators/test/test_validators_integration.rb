@@ -1808,6 +1808,149 @@ class TestValidateListCompleteness < Minitest::Test
 end
 
 # ---------------------------------------------------------------------------
+# validate-status-parity.sh
+#
+# PRD-0036 / OPP-0054. Always-on structural reconciler: each OPP record's
+# canonical **Status:** token must equal the status token in its two derived
+# surfaces (candidates.md annotation + docs/README.md status column). The
+# project-root positional is the test seam — each case builds a mini project
+# root and points the validator at it (the cross-file nature makes a
+# single-file --scan-file ill-defined).
+# ---------------------------------------------------------------------------
+class TestValidateStatusParity < Minitest::Test
+  FNAME = "OPP-0001-test.md"
+
+  # Build a one-OPP project. `cand` is the candidates.md annotation token, or
+  # :none for an un-annotated list-item entry. `readme` is the docs/README.md
+  # status-column token. Extra candidates.md body can be injected via `prefix`.
+  def write_parity_fixture(root, record: "accepted", cand: "accepted", readme: "accepted", prefix: "")
+    FileUtils.mkdir_p(File.join(root, "docs/opportunities"))
+    File.write(File.join(root, "docs/opportunities/#{FNAME}"),
+               "# OPP-0001 — Test\n\n**Status:** #{record}\n")
+    ann = cand == :none ? "" : " *(#{cand} 2026-01-01)*"
+    File.write(File.join(root, "docs/opportunities/candidates.md"),
+               "# Candidates\n\n#{prefix}- [OPP-0001](#{FNAME})#{ann} — a test opportunity\n")
+    File.write(File.join(root, "docs/README.md"), <<~MD)
+      # Records
+      | [0001](opportunities/#{FNAME}) | Test OPP | #{readme} |
+    MD
+  end
+
+  def test_aligned_fixture_passes
+    Dir.mktmpdir do |tmp|
+      write_parity_fixture(tmp, record: "accepted", cand: "accepted", readme: "accepted")
+      out, err, code = run_validator("validate-status-parity.sh", tmp)
+      assert_equal 0, code, "aligned fixture must pass. stderr: #{err}\nstdout: #{out}"
+      assert_match(/✓/, out)
+    end
+  end
+
+  def test_candidates_annotation_mismatch_fails
+    Dir.mktmpdir do |tmp|
+      write_parity_fixture(tmp, record: "accepted", cand: "proposed", readme: "accepted")
+      _out, err, code = run_validator("validate-status-parity.sh", tmp)
+      assert_equal 1, code, "candidates.md annotation drift must exit 1"
+      assert_match(/candidates\.md: OPP-0001 .*'proposed'.*'accepted'/, err)
+    end
+  end
+
+  def test_readme_column_mismatch_fails
+    Dir.mktmpdir do |tmp|
+      write_parity_fixture(tmp, record: "accepted", cand: "accepted", readme: "proposed")
+      _out, err, code = run_validator("validate-status-parity.sh", tmp)
+      assert_equal 1, code, "docs/README.md status-column drift must exit 1"
+      assert_match(/docs\/README\.md: OPP-0001 .*'proposed'.*'accepted'/, err)
+    end
+  end
+
+  def test_missing_annotation_on_accepted_record_fails
+    # The disk-grounded § 10 decision: a missing annotation normalizes to
+    # implicit `proposed`, so an accepted record with an un-annotated entry
+    # fails (this is exactly the live OPP-0002/0003 case).
+    Dir.mktmpdir do |tmp|
+      write_parity_fixture(tmp, record: "accepted", cand: :none, readme: "accepted")
+      _out, err, code = run_validator("validate-status-parity.sh", tmp)
+      assert_equal 1, code, "un-annotated accepted entry must exit 1 (implicit proposed)"
+      assert_match(/candidates\.md: OPP-0001 .*'proposed'.*'accepted'/, err)
+    end
+  end
+
+  def test_missing_annotation_on_proposed_record_passes
+    # The other half of implicit-`proposed`: a genuinely-proposed record with
+    # no annotation is correct and must pass (no ceremony forced on raw ideas).
+    Dir.mktmpdir do |tmp|
+      write_parity_fixture(tmp, record: "proposed", cand: :none, readme: "proposed")
+      out, err, code = run_validator("validate-status-parity.sh", tmp)
+      assert_equal 0, code, "un-annotated proposed entry must pass. stderr: #{err}\nstdout: #{out}"
+      assert_match(/✓/, out)
+    end
+  end
+
+  def test_prose_mention_is_not_matched
+    # A prose mention of the OPP (not a list item) carrying a WRONG token must
+    # be ignored; only the anchored list item counts. If the parser wrongly
+    # matched prose, it would read 'proposed' and fail — passing proves it did not.
+    Dir.mktmpdir do |tmp|
+      prose = "See [OPP-0001](#{FNAME}) which was *(proposed earlier)* in discussion.\n\n"
+      write_parity_fixture(tmp, record: "accepted", cand: "accepted", readme: "accepted", prefix: prose)
+      out, err, code = run_validator("validate-status-parity.sh", tmp)
+      assert_equal 0, code, "prose mention must not be matched. stderr: #{err}\nstdout: #{out}"
+      assert_match(/✓/, out)
+    end
+  end
+
+  def test_wrapped_annotation_on_next_line_is_matched
+    # candidates.md wraps long bullets — the annotation frequently sits on the
+    # line AFTER the link. That must still be read (the parser scans the block).
+    Dir.mktmpdir do |tmp|
+      FileUtils.mkdir_p(File.join(tmp, "docs/opportunities"))
+      File.write(File.join(tmp, "docs/opportunities/#{FNAME}"),
+                 "# OPP-0001\n\n**Status:** accepted\n")
+      File.write(File.join(tmp, "docs/opportunities/candidates.md"),
+                 "# Candidates\n\n- [OPP-0001](#{FNAME})\n  *(accepted 2026-01-01; wrapped)* — a test\n")
+      File.write(File.join(tmp, "docs/README.md"),
+                 "# Records\n| [0001](opportunities/#{FNAME}) | Test | accepted |\n")
+      out, err, code = run_validator("validate-status-parity.sh", tmp)
+      assert_equal 0, code, "wrapped annotation must be read. stderr: #{err}\nstdout: #{out}"
+      assert_match(/✓/, out)
+    end
+  end
+
+  def test_unrecognized_record_token_fails
+    Dir.mktmpdir do |tmp|
+      write_parity_fixture(tmp, record: "wibble", cand: "wibble", readme: "wibble")
+      _out, err, code = run_validator("validate-status-parity.sh", tmp)
+      assert_equal 1, code, "unrecognized record status token must exit 1"
+      assert_match(/unrecognized.*'wibble'/, err)
+    end
+  end
+
+  def test_vacuous_pass_without_opportunities
+    Dir.mktmpdir do |tmp|
+      out, err, code = run_validator("validate-status-parity.sh", tmp)
+      assert_equal 0, code, "no opportunities → vacuous pass. stderr: #{err}"
+      assert_match(/✓/, out)
+    end
+  end
+
+  def test_missing_project_root_aborts_with_exit_2
+    nonexistent = File.join(Dir.tmpdir, "validate-status-parity-nope-#{Process.pid}")
+    _out, err, code = run_validator("validate-status-parity.sh", nonexistent)
+    assert_equal 2, code, "missing project root must exit 2 (usage error)"
+    assert_match(/not a directory/i, err)
+  end
+
+  def test_runs_clean_against_harness_repo
+    # Dogfood: the harness's own OPP index must be status-consistent.
+    harness_root = File.expand_path("..", PLATFORM_DIR)
+    out, err, code = run_validator("validate-status-parity.sh", harness_root)
+    assert_equal 0, code,
+                 "Harness's own OPP status surfaces must agree. stderr: #{err}\nstdout: #{out}"
+    assert_match(/✓/, out)
+  end
+end
+
+# ---------------------------------------------------------------------------
 # validate-trust-tier.sh
 #
 # Wave 5.1 of the 2026-05-27 audit roadmap (PRD-0006 / ADR-0017). Asserts

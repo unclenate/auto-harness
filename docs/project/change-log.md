@@ -11,6 +11,31 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-07-18 — Implement `validate-status-parity.sh` (PRD-0036 / OPP-0054)
+
+Shipped the always-on `validate-status-parity.sh` — the third structural reconciler, after
+`validate-catalog-counts.sh` (row counts) and `validate-list-completeness.sh` (row presence),
+checking each OPP record's `Status` against its `candidates.md` annotation and `docs/README.md`
+status column. Pure Bash (`[[ =~ ]]` + `BASH_REMATCH`, matching its two siblings — the design
+PRD's Ruby guess was corrected to Bash), BLOCK posture, implicit-`proposed` for missing
+annotations, leading-token equality only, anchored on the exact OPP-id + filename so a prose
+mention never matches.
+
+Reconciled the live drift the BLOCK gate surfaced: **OPP-0002 / OPP-0003** were `accepted`
+records with no `candidates.md` annotation — backfilled to `*(accepted 2026-05-18; …)*`. Notably,
+the validator's *first* run reported five mismatches; three (OPP-0037 / 0048 / 0049) were parser
+false positives where the `*(accepted …)*` annotation wraps onto the line after the link — caught
+by verifying the report against raw lines before acting, then fixed by parsing the whole entry
+block. That build-time lesson is distilled in `docs/knowledge/shared-observations.md`.
+
+Propagation: registered in the harness-governance run-order chain (SKILL.md + its per-validator
+note), AGENTS.md, `platform/validators/README.md` (run-order + table row), root `README.md`
+(validator table row + mermaid box), CI, and `platform/core/kernel/base/module.yaml`. Validator
+count **25 → 26** at all `validate-catalog-counts` assertion sites (how-to-read.md ×2,
+diagrams.md, cover-back.svg, README.md ×3). Eleven fixture tests in `TestValidateStatusParity`
+(including the wrapped-annotation and prose-mention cases). This merge flips OPP-0054
+`exploring → accepted` (pending its own status propagation in the closeout).
+
 ## 2026-07-18 — Promote OPP-0054 to PRD-0036 (status-parity validator, design-only)
 
 Filed [PRD-0036](../requirements/PRD-0036-status-parity-validator.md), the short-PRD promotion

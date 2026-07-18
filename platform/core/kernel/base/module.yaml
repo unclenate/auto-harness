@@ -56,6 +56,7 @@ validators:
   - validate-placeholders
   - validate-companions
   - validate-catalog-counts
+  - validate-status-parity
   - validate-trust-tier
   - validate-sensitive-paths
   - validate-skill-content

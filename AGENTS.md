@@ -57,6 +57,7 @@ bash platform/validators/validate-agent-pack.sh harness.manifest.yaml .
 bash platform/validators/validate-doc-references.sh .
 bash platform/validators/validate-catalog-counts.sh .
 bash platform/validators/validate-list-completeness.sh .
+bash platform/validators/validate-status-parity.sh .
 bash platform/validators/validate-trust-tier.sh harness.manifest.yaml .
 bash platform/validators/validate-sensitive-paths.sh harness.manifest.yaml .
 bash platform/validators/validate-skill-content.sh harness.manifest.yaml .

@@ -53,7 +53,7 @@ harness provides:
 - **Artifact requirements** — the files that must exist for a module to be considered active
   and governed (problem statement, ADRs, risk register, release checklist, etc.)
 - **Sensitive path governance** — patterns that trigger elevated human review when changed
-- **Validator chain** — twenty-five shell scripts you run locally or in CI that enforce all of the above
+- **Validator chain** — twenty-six shell scripts you run locally or in CI that enforce all of the above
 - **Agent adapters** — `CLAUDE.md`, `AGENTS.md`, and `.claude/settings.json` shims that load
   the governance rules into agent context at session start
 
@@ -143,7 +143,7 @@ flowchart TD
     end
 
     subgraph ENFORCE["Enforcement (CI)"]
-        Validators["<b>Validators</b><br/>25 scripts"]
+        Validators["<b>Validators</b><br/>26 scripts"]
         Validators -.reads.-> Manifest
         Validators -.reads.-> Companions
         Validators --> CIGate["<b>CI gates merge</b>"]
@@ -408,7 +408,7 @@ bash .harness/platform/bootstrap/link-skills.sh \
 
 ## Validators
 
-Twenty-five validators, each targeting a specific governance layer:
+Twenty-six validators, each targeting a specific governance layer:
 
 | Validator | What It Checks |
 | --------- | -------------- |
@@ -421,6 +421,7 @@ Twenty-five validators, each targeting a specific governance layer:
 | `validate-doc-references.sh` | Markdown links to `platform/...` paths resolve on disk — catches stale path strings as the catalog evolves |
 | `validate-catalog-counts.sh` | Documented catalog counts (modules, validators, skills, templates, workflows, diagrams) match canonical recipes — closes the count-drift class |
 | `validate-list-completeness.sh` | Every ADR / PRD / OPP / composition / template subdirectory / profile module / agent module on disk is referenced by its canonical index file — closes the list-completeness drift class |
+| `validate-status-parity.sh` | Always-on structural check — every OPP record's `Status` agrees with its `candidates.md` annotation and `docs/README.md` status column (leading-token equality; a missing annotation normalizes to implicit `proposed`); the row-*status* sibling of `validate-catalog-counts.sh` (row counts) and `validate-list-completeness.sh` (row presence) — closes the status-drift class (PRD-0036 / OPP-0054) |
 | `validate-trust-tier.sh` | Each active module's declared trust tier (0–5) is coherent with its inferred tier (from `sensitivePaths`); agent `maxTier` ceilings respect the active manifest's highest non-agent tier — closes safety claims 10–11 (no self-elevation; tier-ceiling fixed) |
 | `validate-sensitive-paths.sh` | Every declared `sensitivePaths` regex is overlapped by at least one `companionRules.triggerPaths` regex on some active module — closes safety claim 12 (sensitive-paths from Asserted-only to Enforced) |
 | `validate-skill-content.sh` | Scans authored prose in active modules (description / summary / reviewGates / humanReview + SKILL.md bodies + compiledFragments markdown) against a denylist of prompt-injection and tier-bypass patterns (default BLOCK; `.skill-content-ignore` for exemptions) — closes safety-security-sweep §3 vectors V1/V2/V4-partial/V6 |

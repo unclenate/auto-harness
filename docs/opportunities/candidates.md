@@ -702,7 +702,7 @@ cite-the-evidence rule), not the extraction; composes with the OPP-0046 lane
   `Severity` drives ADR-0002's escalation table, so off-enum drift silently defeats
   escalation. Validator count 24 → 25.
 
-- [OPP-0054](OPP-0054-status-parity-validator.md) *(proposed 2026-07-16)* —
+- [OPP-0054](OPP-0054-status-parity-validator.md) *(exploring 2026-07-18; PRD-0036)* —
   **Status-Parity Validator (OPP record status vs. derived index surfaces).** An
   OPP record's `Status` field is the source of truth, but the same state is
   mirrored into ≥ 2 *derived* surfaces no validator reconciles: the

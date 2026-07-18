@@ -605,6 +605,7 @@ Specifications for substantive new capabilities, paired with their originating o
 * [PRD-0033: Relational Data Module Generalization (`data/relational-postgres` → `data/relational-sql`)](docs/requirements/PRD-0033-relational-sql-engine-generalization.md)
 * [PRD-0034: Observation-Hygiene Content Validator (`validate-observation-hygiene.sh`)](docs/requirements/PRD-0034-validate-observation-hygiene.md)
 * [PRD-0035: Ambient Auto-Capture — schema-shaped stub upgrade to the distillation Stop hook](docs/requirements/PRD-0035-ambient-auto-capture.md)
+* [PRD-0036: Status-Parity Validator (`validate-status-parity.sh`)](docs/requirements/PRD-0036-status-parity-validator.md)
 
 ### Opportunity Records (this project)
 
@@ -664,4 +665,4 @@ Forward-looking pre-PRD candidates managed by the `opportunity-capture` module.
 * [OPP-0051: Frontier-Agent Cluster v2 Enforcement: Artifact-Content Validators](docs/opportunities/OPP-0051-frontier-agent-cluster-v2-enforcement.md) — The four content validators enforcing the cluster's declarative artifacts; promoted via PRD-0031 + PRD-0032 (accepted)
 * [OPP-0052: Federated Review-Lane Contract (verdict schema + coordination substrate)](docs/opportunities/OPP-0052-federated-review-lane-contract.md) — Provider-neutral verdict schema + `validate-coordination-verdicts.sh` so cross-provider reviewers emit tally-able verdicts (proposed)
 * [OPP-0053: Observation-Ledger Hygiene Gate (structured-agent-ledger validator + ambient auto-capture)](docs/opportunities/OPP-0053-observation-ledger-hygiene.md) — Shape-linter for the observation ledger + ambient auto-capture stub; delivered end-to-end via PRD-0034 + PRD-0035 (accepted)
-* [OPP-0054: Status-Parity Validator (OPP record status vs. derived index surfaces)](docs/opportunities/OPP-0054-status-parity-validator.md) — Proposed `validate-status-parity.sh` reconciling each record's `Status` against its `candidates.md` and `docs/README.md` mirrors (proposed)
+* [OPP-0054: Status-Parity Validator (OPP record status vs. derived index surfaces)](docs/opportunities/OPP-0054-status-parity-validator.md) — Always-on BLOCK `validate-status-parity.sh` reconciling each record's `Status` against its `candidates.md` and `docs/README.md` mirrors; promoted via PRD-0036 (exploring)

@@ -57,6 +57,9 @@ jobs:
       - name: Validate list completeness
         run: bash platform/validators/validate-list-completeness.sh .
 
+      - name: Validate status parity
+        run: bash platform/validators/validate-status-parity.sh .
+
       - name: Validate trust tier
         run: bash platform/validators/validate-trust-tier.sh harness.manifest.yaml .
 

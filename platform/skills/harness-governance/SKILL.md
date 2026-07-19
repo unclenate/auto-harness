@@ -105,6 +105,7 @@ bash $PLATFORM/validators/validate-agent-pack.sh         harness.manifest.yaml .
 bash $PLATFORM/validators/validate-doc-references.sh     .
 bash $PLATFORM/validators/validate-catalog-counts.sh     .
 bash $PLATFORM/validators/validate-list-completeness.sh  .
+bash $PLATFORM/validators/validate-status-parity.sh      .
 bash $PLATFORM/validators/validate-trust-tier.sh         harness.manifest.yaml .
 bash $PLATFORM/validators/validate-sensitive-paths.sh    harness.manifest.yaml .
 bash $PLATFORM/validators/validate-skill-content.sh      harness.manifest.yaml .
@@ -160,6 +161,21 @@ A few signature notes worth highlighting:
 - **`validate-list-completeness.sh`** takes only `[<project-root>]`.
   Asserts every ADR / PRD / OPP / composition / template subdirectory /
   profile module / agent module on disk has its canonical index row.
+- **`validate-status-parity.sh`** takes only `[<project-root>]`.
+  **Always-on** structural reconciler (like `validate-list-completeness`
+  and `validate-catalog-counts`, not module-gated): for every
+  `docs/opportunities/OPP-NNNN-*.md` record it extracts the leading
+  canonical `Status` token and asserts every derived surface agrees — the
+  `docs/opportunities/candidates.md` `*(…)*` annotation and the
+  `docs/README.md` opportunities-table status column. Entries are anchored
+  on the exact OPP-id + filename (never a prose mention); a matched entry
+  with no status token normalizes to an implicit `proposed` (so an
+  `accepted` record with an un-annotated entry fails, while a genuinely
+  `proposed` one passes). Leading-token equality only — never whether the
+  chosen status is the semantically correct disposition (the
+  `validate-module-stability` boundary). Posture **BLOCK**. The row-*status*
+  sibling of catalog-counts (row *counts*) and list-completeness (row
+  *presence*). Per PRD-0036 / OPP-0054.
 - **`validate-knowledge-redaction.sh`** takes
   `[--block] [<project-root>] [<base-branch>]` (defaults: cwd and `main`).
   Diff-based scan of new lines added to

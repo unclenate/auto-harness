@@ -6,7 +6,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0054 — Status-Parity Validator (OPP record status vs. derived index surfaces)
 
-**Status:** exploring
+**Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-07-16
 **Last Updated:** 2026-07-18
@@ -135,6 +135,8 @@ equivalent gate for *status*.
   the PRD; **out of scope here per § 9 (design-only)**.
 
 ## Disposition
+
+**Accepted (2026-07-18).** `validate-status-parity.sh` shipped per PRD-0036 — always-on, BLOCK, pure-Bash, implicit-`proposed` missing-annotation policy, over the two known surfaces via anchored entry-matching. The BLOCK gate's first run surfaced the live OPP-0002 / OPP-0003 drift (reconciled) plus three parser false positives (wrapped annotations, fixed by whole-block parsing). Validator count 25 → 26; eleven fixture tests. Prior:
 
 **Exploring (2026-07-18).** Promoted to a short PRD — [PRD-0036](../requirements/PRD-0036-status-parity-validator.md) — which resolves the two § 10 forks the proposal flagged: **missing-annotation policy = implicit `proposed`** (OPP-0054 option **c**, chosen on disk evidence — OPP-0002 / OPP-0003 carry record `Status: accepted` with no `candidates.md` annotation, a live drift that option (b) "match-if-present" would pass silently), and **posture = BLOCK** (the same-species always-on reconcilers `validate-catalog-counts.sh` / `validate-list-completeness.sh` both BLOCK; WARN is reserved for the fuzzy denylist check). Flips `exploring → accepted` at the validator's implementation-merge. Prior:
 

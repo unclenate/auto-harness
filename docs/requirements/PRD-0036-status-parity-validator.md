@@ -108,9 +108,12 @@ The validator asserts **leading-token equality only** — never whether the chos
 - **Per-surface, per-record failure surfacing.** On mismatch, print the OPP id, the record's
   canonical token, the surface, and the surface's found (or implicit) token — so a reviewer can
   fix without re-deriving.
-- **`--scan-file <path>` test seam** — lint a supplied `candidates.md`- or README-shaped fixture
-  against a supplied record set without walking the real tree, per the validator-test-seam
-  pattern.
+- **Project-root test seam** — the `[<project-root>]` positional is the test seam (as in
+  `validate-list-completeness.sh`): fixture tests build a mini project root
+  (`docs/opportunities/` records + `candidates.md` + `docs/README.md`) and point the validator
+  at it. A single-file `--scan-file` is intentionally *not* offered — the check is inherently
+  cross-file (record ↔ surface), so a lone surface file carries no source of truth to diff
+  against; the project-root seam is what the two sibling always-on structural validators use.
 - **Register** the validator in the harness-governance run-order chain, AGENTS.md,
   `platform/validators/README.md`, the root README validator table + mermaid box, the
   `harness-governance` SKILL.md chain, and CI.
@@ -125,7 +128,8 @@ The validator asserts **leading-token equality only** — never whether the chos
   annotation-mismatch → fail; README-column mismatch → fail; **missing annotation on an
   `accepted` record → fail** (the implicit-`proposed` rule, the OPP-0002/0003 case); **missing
   annotation on a `proposed` record → pass** (the OPP-0001 case); a prose-mention-of-an-OPP →
-  **not matched** (no false positive); and the `--scan-file` seam.
+  **not matched** (no false positive); a **wrapped annotation** on the line after the link
+  read correctly; and vacuous-pass / exit-2 / dogfood cases.
 
 **Non-Goals (deferred):**
 
@@ -177,10 +181,10 @@ footprint, and can be tightened to option (a) later without changing the compari
 | FR-005 | Implicit-`proposed` for missing tokens | A record-backed entry with no annotation / empty status cell normalizes to `proposed`; parity holds iff the record's token is also `proposed`. So `accepted`-record + no-annotation → **fail**; `proposed`-record + no-annotation → **pass**. |
 | FR-006 | BLOCK posture | Default posture is **BLOCK** (exit 1 on any mismatch). No WARN default; deterministic comparison, per the catalog-counts / list-completeness precedent. |
 | FR-007 | Per-surface failure surfacing | On mismatch, print OPP id, record token, surface file, and found/implicit surface token — one line per violation. |
-| FR-008 | `--scan-file` test seam | `--scan-file <surface-path>` (with a supplied record set) lints a fixture surface without walking the real tree, per the validator-test-seam pattern. |
+| FR-008 | Project-root test seam | The `[<project-root>]` positional is the test seam: fixture tests build a mini project root and point the validator at it (as `validate-list-completeness.sh` is tested). A single-file `--scan-file` is intentionally not offered — the cross-file record↔surface check makes a lone surface file un-diffable. |
 | FR-009 | Propagation + validator-count bump | Validator wired into the harness-governance chain, AGENTS.md, `platform/validators/README.md`, root README table + mermaid box, the SKILL.md chain, CI. Validator count **25 → 26** at every `validate-catalog-counts` ASSERTIONS site (recipe auto-derives; recompute at impl). |
 | FR-010 | Live-drift reconciliation to green | The implementing PR reconciles every mismatch the BLOCK validator surfaces — at minimum OPP-0002 / OPP-0003 `candidates.md` annotations backfilled to `accepted` — so the full chain (including this validator, dogfooded on the harness) passes. |
-| FR-011 | Fixture tests | `platform/validators/test/` gains a `TestValidateStatusParity` case: matching pass; annotation-mismatch fail; README-column mismatch fail; missing-annotation-on-`accepted` fail; missing-annotation-on-`proposed` pass; prose-mention-not-matched; `--scan-file` seam. |
+| FR-011 | Fixture tests | `platform/validators/test/` gains a `TestValidateStatusParity` case: matching pass; annotation-mismatch fail; README-column mismatch fail; missing-annotation-on-`accepted` fail; missing-annotation-on-`proposed` pass; prose-mention-not-matched; wrapped-annotation-on-next-line read; unrecognized-token fail; vacuous pass; exit-2; harness dogfood. |
 
 ### Should Have
 
@@ -203,10 +207,13 @@ footprint, and can be tightened to option (a) later without changing the compari
 
 - **Bash 3.2 compatible** (macOS default); **shellcheck clean at `-S warning`**; **3-state exit**
   (0 / 1 / 2).
-- **Ruby for content scanning** — inline `ruby`, same approach as `validate-catalog-counts.sh` /
-  `validate-knowledge-redaction.sh`. No new runtime dependencies (Bash + system Ruby only).
-  Anchor and token parsing is line-oriented on the existing `- [OPP-NNNN](…)` list-item,
-  `| [NNNN](opportunities/…) |` table-row, and `*(token …)*` annotation conventions.
+- **Pure Bash content scanning** — `[[ =~ ]]` + `BASH_REMATCH`, the same approach as
+  `validate-catalog-counts.sh` and `validate-list-completeness.sh` (the two same-species
+  always-on reconcilers), which use no Ruby. No new runtime dependencies (Bash only). Anchor
+  and token parsing is line-oriented on the existing `- [OPP-NNNN](…)` list-item,
+  `| [NNNN](opportunities/…) |` table-row, and `*(token …)*` annotation conventions. The
+  `candidates.md` annotation is matched across the entry *block* (link line through the next
+  bullet / blank line / heading), because long bullets wrap the `*(…)*` onto the following line.
 - **Leading-token normalization** — lowercase, strip surrounding markup, take the first
   whitespace/`(`/`+`/`;`-delimited word. Compare record-token == surface-token per surface.
 - **Recognized token set** codified inline `{proposed, exploring, accepted, rejected,

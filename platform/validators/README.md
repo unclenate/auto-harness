@@ -188,8 +188,8 @@ ruby -I platform/validators/lib platform/validators/test/test_harness_registry.r
 
 ### Integration tests
 
-**`test/test_validators_integration.rb`** — hard-coded tests + 72 dynamically
-generated `--help` / `-h` coverage tests (3 per validator × 25 validators) that
+**`test/test_validators_integration.rb`** — hard-coded tests + 78 dynamically
+generated `--help` / `-h` coverage tests (3 per validator × 26 validators) that
 shell out to the actual validator scripts against fixture projects:
 
 - `validate-manifest.sh` — valid pass, bad schema fail, missing file → exit 2

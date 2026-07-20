@@ -36,14 +36,23 @@
 #
 # Checks:
 #   1. ADRs            docs/adr/ADR-NNNN-*.md           → docs/README.md
+#                                                        + SUMMARY.md (nav)
 #   2. PRDs            docs/requirements/PRD-NNNN-*.md  → docs/README.md
+#                                                        + SUMMARY.md (nav)
 #   3. OPPs            docs/opportunities/OPP-NNNN-*.md → docs/README.md
 #                                                        + docs/opportunities/candidates.md
+#                                                        + SUMMARY.md (nav)
 #   4. Compositions    platform/compositions/*.yaml     → platform/compositions/README.md
 #                                                        + README.md (root)
 #   5. Template dirs   platform/templates/<subdir>/     → platform/templates/README.md
 #   6. Profile modules platform/profiles/**/module.yaml → SUMMARY.md
 #   7. Agent modules   platform/agents/*/module.yaml    → SUMMARY.md
+#
+# ADR/PRD/OPP → SUMMARY.md nav is anchored on the record's link-target PATH
+# (docs/<dir>/<filename>), NOT the bare record id: SUMMARY module descriptions
+# cite records in prose (e.g. "(PRD-0014)"), so a bare-id grep would match a
+# prose mention and pass with the nav row deleted. The relative path appears
+# only in the nav row's link target — one occurrence per record. Per OPP-0055.
 #
 # Exit codes:
 #   0  every discovered entity is referenced in its canonical index file(s)
@@ -77,13 +86,18 @@ Behavior:
   asserts each entity is referenced in its canonical index file(s).
 
   Index file definitions:
-    ADRs   → docs/README.md
-    PRDs   → docs/README.md
-    OPPs   → docs/README.md + docs/opportunities/candidates.md
+    ADRs   → docs/README.md + SUMMARY.md (nav)
+    PRDs   → docs/README.md + SUMMARY.md (nav)
+    OPPs   → docs/README.md + docs/opportunities/candidates.md + SUMMARY.md (nav)
     Compositions → platform/compositions/README.md + README.md
     Templates    → platform/templates/README.md
     Profile modules → SUMMARY.md
     Agent modules   → SUMMARY.md
+
+  The ADR/PRD/OPP → SUMMARY.md nav assertion is anchored on the record's
+  link-target path (docs/<dir>/<filename>), which appears only in the nav
+  row — never on the bare record id, which SUMMARY descriptions also cite in
+  prose (a bare-id grep would pass with the nav row deleted). Per OPP-0055.
 
 Exit codes:
   0  every entity has its canonical index row
@@ -141,6 +155,9 @@ if [[ -d docs/adr ]]; then
     id="${base:0:8}"
     checks_run=$((checks_run + 1))
     assert_contains "docs/README.md" "$id" "$id" "ADR"
+    # SUMMARY nav row — anchored on the link-target path (unique to the nav row).
+    checks_run=$((checks_run + 1))
+    assert_contains "SUMMARY.md" "$adr" "$id" "ADR nav"
   done
 fi
 
@@ -155,6 +172,9 @@ if [[ -d docs/requirements ]]; then
     id="${base:0:8}"
     checks_run=$((checks_run + 1))
     assert_contains "docs/README.md" "$id" "$id" "PRD"
+    # SUMMARY nav row — anchored on the link-target path (unique to the nav row).
+    checks_run=$((checks_run + 1))
+    assert_contains "SUMMARY.md" "$prd" "$id" "PRD nav"
   done
 fi
 
@@ -174,6 +194,9 @@ if [[ -d docs/opportunities ]]; then
     # grep satisfies both shapes.
     checks_run=$((checks_run + 1))
     assert_contains "docs/opportunities/candidates.md" "$id" "$id" "OPP candidates"
+    # SUMMARY nav row — anchored on the link-target path (unique to the nav row).
+    checks_run=$((checks_run + 1))
+    assert_contains "SUMMARY.md" "$opp" "$id" "OPP nav"
   done
 fi
 

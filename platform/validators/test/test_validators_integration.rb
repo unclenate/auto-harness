@@ -1674,9 +1674,15 @@ class TestValidateListCompleteness < Minitest::Test
     File.write(File.join(root, "platform/agents/test-agent/module.yaml"),
                "id: test-agent\n")
 
+    # SUMMARY.md — module nav rows PLUS the ADR/PRD/OPP record nav rows (the
+    # nav check anchors on the record's link-target PATH, so each nav row must
+    # link the record file).
     File.write(File.join(root, "SUMMARY.md"), <<~MD)
       * [Test](platform/profiles/management/test-mod/README.md)
       * [Test Agent](platform/agents/test-agent/README.md)
+      * [ADR-0001: Test](docs/adr/ADR-0001-test.md)
+      * [PRD-0001: Test](docs/requirements/PRD-0001-test.md)
+      * [OPP-0001: Test](docs/opportunities/OPP-0001-test.md)
     MD
   end
 
@@ -1772,6 +1778,73 @@ class TestValidateListCompleteness < Minitest::Test
       _out, err, code = run_validator("validate-list-completeness.sh", tmp)
       assert_equal 1, code, "missing agent module row in SUMMARY.md must exit 1"
       assert_match(/missing agent module row for agents\/test-agent/, err)
+    end
+  end
+
+  def test_adr_missing_from_summary_nav_fails
+    Dir.mktmpdir do |tmp|
+      write_complete_fixture(tmp)
+      # Strip the ADR nav row; keep module + PRD/OPP nav rows.
+      File.write(File.join(tmp, "SUMMARY.md"), <<~MD)
+        * [Test](platform/profiles/management/test-mod/README.md)
+        * [Test Agent](platform/agents/test-agent/README.md)
+        * [PRD-0001: Test](docs/requirements/PRD-0001-test.md)
+        * [OPP-0001: Test](docs/opportunities/OPP-0001-test.md)
+      MD
+      _out, err, code = run_validator("validate-list-completeness.sh", tmp)
+      assert_equal 1, code, "missing ADR nav row must exit 1"
+      assert_match(/missing ADR nav row for ADR-0001/, err)
+    end
+  end
+
+  def test_prd_missing_from_summary_nav_fails
+    Dir.mktmpdir do |tmp|
+      write_complete_fixture(tmp)
+      File.write(File.join(tmp, "SUMMARY.md"), <<~MD)
+        * [Test](platform/profiles/management/test-mod/README.md)
+        * [Test Agent](platform/agents/test-agent/README.md)
+        * [ADR-0001: Test](docs/adr/ADR-0001-test.md)
+        * [OPP-0001: Test](docs/opportunities/OPP-0001-test.md)
+      MD
+      _out, err, code = run_validator("validate-list-completeness.sh", tmp)
+      assert_equal 1, code, "missing PRD nav row must exit 1"
+      assert_match(/missing PRD nav row for PRD-0001/, err)
+    end
+  end
+
+  def test_opp_missing_from_summary_nav_fails
+    Dir.mktmpdir do |tmp|
+      write_complete_fixture(tmp)
+      File.write(File.join(tmp, "SUMMARY.md"), <<~MD)
+        * [Test](platform/profiles/management/test-mod/README.md)
+        * [Test Agent](platform/agents/test-agent/README.md)
+        * [ADR-0001: Test](docs/adr/ADR-0001-test.md)
+        * [PRD-0001: Test](docs/requirements/PRD-0001-test.md)
+      MD
+      _out, err, code = run_validator("validate-list-completeness.sh", tmp)
+      assert_equal 1, code, "missing OPP nav row must exit 1"
+      assert_match(/missing OPP nav row for OPP-0001/, err)
+    end
+  end
+
+  def test_summary_nav_bare_id_in_prose_does_not_satisfy
+    # Regression lock for OPP-0055's anchoring decision: the OPP-0001 nav row is
+    # replaced by a PROSE mention citing the bare id "OPP-0001" (no link-target
+    # path). A bare-id grep would pass; the path anchor must still fail. This is
+    # the exact false-negative that made SUMMARY unsafe for a bare-id check.
+    Dir.mktmpdir do |tmp|
+      write_complete_fixture(tmp)
+      File.write(File.join(tmp, "SUMMARY.md"), <<~MD)
+        * [Test](platform/profiles/management/test-mod/README.md)
+        * [Test Agent](platform/agents/test-agent/README.md)
+        * [ADR-0001: Test](docs/adr/ADR-0001-test.md)
+        * [PRD-0001: Test](docs/requirements/PRD-0001-test.md)
+
+        Note: OPP-0001 is discussed in the design section above.
+      MD
+      _out, err, code = run_validator("validate-list-completeness.sh", tmp)
+      assert_equal 1, code, "a bare-id prose mention must not satisfy the path-anchored nav check"
+      assert_match(/missing OPP nav row for OPP-0001/, err)
     end
   end
 

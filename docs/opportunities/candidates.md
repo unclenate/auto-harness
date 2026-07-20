@@ -723,6 +723,20 @@ cite-the-evidence rule), not the extraction; composes with the OPP-0046 lane
   (shape-parity on the observation ledger); this is status-parity on the
   opportunity index.
 
+- [OPP-0055](OPP-0055-summary-nav-list-completeness.md) *(accepted 2026-07-19; OPP-direct; three checks added to `validate-list-completeness.sh`)* —
+  **SUMMARY nav-list completeness.** `SUMMARY.md`'s per-record OPP / PRD / ADR
+  nav rows (GitBook's published sidebar) are derived mirrors of the record files
+  that no validator reconciles — the last unguarded mirror in the record family.
+  `validate-list-completeness.sh` gates ADR/PRD/OPP presence in `docs/README.md`
+  and *module* presence in SUMMARY, but never *record* presence in the SUMMARY
+  nav, which is why PR #179 hand-fixed a 6-record nav lag CI never caught. The
+  "mechanize" arm of `operating-principles.md` § 3 and the sibling of
+  `validate-status-parity.sh` (row *status*) — this closes row *presence* for the
+  SUMMARY nav. Anchored on the link-target **path** (unique to the nav row), not
+  the bare id (which SUMMARY descriptions cite in prose — a bare-id grep would
+  pass with the row deleted). Mechanize-vs-remove fork resolved to **mechanize**
+  (the nav rows serve real reader UX). OPP-direct: three checks + fixtures.
+
 ---
 
 ## References

@@ -11,6 +11,28 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-07-19 — Gate the SUMMARY record-nav (OPP-0055, OPP-direct)
+
+Closed the last unguarded record mirror: `SUMMARY.md`'s per-record ADR / PRD / OPP nav rows (the
+GitBook sidebar) were derived mirrors no validator reconciled, which is why PR #179 had to
+hand-fix a 6-record nav lag CI never caught. Extended `validate-list-completeness.sh` with three
+checks (ADR / PRD / OPP → `SUMMARY.md`), completing it across all record surfaces — the
+"mechanize" arm of `operating-principles.md` § 3 and the row-*presence* sibling of the
+row-*status* gate (`validate-status-parity.sh`) shipped the day before.
+
+The mechanize-vs-remove fork (§ 3 offers both) resolved to **mechanize**: the SUMMARY nav rows
+are the reader's sidebar navigation, not redundant restatement, so removing them to kill the
+drift would regress UX. The one technical decision — anchor on the record's link-target **path**,
+not the bare id — was settled by disk evidence: `PRD-0014` / `OPP-0007` each appear twice in
+SUMMARY (once in a module description's prose, once in the nav row), so a bare-id grep would pass
+with the nav row deleted; the path appears exactly once per record. A fixture
+(`test_summary_nav_bare_id_in_prose_does_not_satisfy`) regression-locks that anchoring choice.
+
+OPP-direct (no PRD): half-day, biases pre-resolved. No validator-count change (an existing
+validator gained checks; list-completeness assertions 279 → 390). OPP-0055 filed `accepted`; its
+own three index surfaces (docs/README.md, candidates.md, SUMMARY nav) are populated in this PR —
+which the extended validator and `validate-status-parity.sh` both now enforce (dogfood).
+
 ## 2026-07-18 — Implement `validate-status-parity.sh` (PRD-0036 / OPP-0054)
 
 Shipped the always-on `validate-status-parity.sh` — the third structural reconciler, after

@@ -160,7 +160,11 @@ A few signature notes worth highlighting:
   itself).
 - **`validate-list-completeness.sh`** takes only `[<project-root>]`.
   Asserts every ADR / PRD / OPP / composition / template subdirectory /
-  profile module / agent module on disk has its canonical index row.
+  profile module / agent module on disk has its canonical index row, and
+  that every ADR / PRD / OPP additionally has its `SUMMARY.md` nav row —
+  anchored on the record's link-target *path* (which appears only in the
+  nav row), never the bare id (which SUMMARY descriptions cite in prose, so
+  a bare-id grep would pass with the nav row deleted). Per OPP-0055.
 - **`validate-status-parity.sh`** takes only `[<project-root>]`.
   **Always-on** structural reconciler (like `validate-list-completeness`
   and `validate-catalog-counts`, not module-gated): for every

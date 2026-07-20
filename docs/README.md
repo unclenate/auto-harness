@@ -172,6 +172,7 @@ clustered backlog with framing.
 | [0052](opportunities/OPP-0052-federated-review-lane-contract.md) | Federated Review-Lane Contract (verdict schema + coordination substrate) | proposed |
 | [0053](opportunities/OPP-0053-observation-ledger-hygiene.md) | Observation-Ledger Hygiene Gate (structured-agent-ledger validator + ambient auto-capture) | accepted |
 | [0054](opportunities/OPP-0054-status-parity-validator.md) | Status-Parity Validator (OPP record status vs. derived index surfaces) | accepted |
+| [0055](opportunities/OPP-0055-summary-nav-list-completeness.md) | SUMMARY Nav-List Completeness (gate ADR/PRD/OPP record presence in the SUMMARY nav) | accepted |
 
 ---
 

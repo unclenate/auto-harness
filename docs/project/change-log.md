@@ -296,9 +296,9 @@ verdict schema `{ taskId, reviewer, verdict, severity, findings[], timestamp }`,
 / Antigravity) emit one tally-able artifact an adjudicating core can score mechanically.
 
 Harvested from a consumer federated-review field cycle (Workflow #24, `upstream-harvesting.md`):
-field-proven before authored — the two Enforced rules (canonical shared `taskId`; mandatory
-decorrelated-provider coverage) each fix a specific observed defect (verdict label-swap;
-core-only adjudication). The enforcement half of a two-layer inter-agent contract whose design
+field-proven before authored — the two Enforced rules (canonical shared `taskId` binding; the
+decorrelated-coverage check) each fix a specific observed defect (verdict label-swap;
+core-only adjudication), with decorrelated-provider *routing* asserted via the onboarding skill. The enforcement half of a two-layer inter-agent contract whose design
 authority-of-record lives in a consumer supervisor's ADR; the harness half is what lets every
 governed repo inherit the substrate rather than re-derive it. Status `proposed` pending a PRD
 that ships the schema + validator wedge with a § 10 claim classification. Paired distillation

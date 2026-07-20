@@ -675,9 +675,10 @@ cite-the-evidence rule), not the extraction; composes with the OPP-0046 lane
   / Copilot / Antigravity) emit the same artifact and an adjudicating core tallies
   them mechanically. The enforcement half of a two-layer inter-agent contract whose
   design authority-of-record lives in a consumer supervisor's ADR. Field-proven
-  before authored: two Enforced rules (canonical shared `taskId`; mandatory
-  decorrelated-provider coverage) each fix a specific defect observed in a real
-  federated-review cycle (verdict label-swap; core-only adjudication). Sibling half
+  before authored: two Enforced rules (canonical shared `taskId` binding; the
+  decorrelated-coverage check) each fix a specific defect observed in a real
+  federated-review cycle (verdict label-swap; core-only adjudication), with
+  decorrelated-provider *routing* asserted via the onboarding skill. Sibling half
   of OPP-0046; declare-then-enforce retargeted from scope to review.
 
 - [OPP-0053](OPP-0053-observation-ledger-hygiene.md) *(accepted 2026-07-12;

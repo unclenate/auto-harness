@@ -11,6 +11,33 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-07-20 — Ship `agents/acp` module + PRD-0037 (ACP governance bridge into the harness)
+
+Built the `agents/acp` module and filed **PRD-0037** promoting OPP-0056 — the ACP governance
+bridge is now *in* the harness catalog and adoptable. The module is **declarative governance**:
+it ships `module.yaml` (a consumer policy-binding requiredArtifact `.acp/policy.yaml` /
+`docs/acp/governance.md`, sensitive paths + companion rule on the binding), the canonical
+**`tier-policy.yaml`** (the two-step mapping: ACP tool-call `kind` + path + command → trust tier,
+then tier → `session/request_permission` option set), and a README carrying five
+**implementation-helper sketches** (the editor-agnostic governance proxy, policy-engine
+pseudocode, an example consumer binding, the audit bridge, an adoption checklist).
+
+The five open questions from OPP-0056 are resolved in PRD-0037: policy-engine home → the
+editor-agnostic **proxy**; `execute` classified by command heuristics (Should-Have); `allow_always`
+scoped and prohibited for delete / sensitive paths / Tier 3+; Tier 5 blocked at the seam (ACP has
+no second sign-off) and routed to the harness's authorization path; audit as a JSONL session log
+pending ADR-0002 reconciliation. C-ACP-1 is classified **Half-enforced** — the harness owns the
+policy, the consumer's proxy/client honors it at runtime.
+
+Documentation propagation (the necessary updates): registered the module in `SUMMARY.md`, the root
+`README.md` Module System table + directory-tree comment, `platform/README.md`, and the
+`harness-onboarding` skill's active-module + required-artifact tables; PRD-0037 in docs/README.md
+and the SUMMARY nav; OPP-0056 Promotion links PRD-0037. `modules_all` **61 → 62** at both
+`validate-catalog-counts` assertion sites. Scope excludes the runtime proxy and audit-bridge
+implementations (reference sketches; own follow-on phases) and manifest activation on the harness
+itself (it runs `claude-code`, not an ACP editor). Distilled the declarative-policy-plus-helper
+integration pattern for external runtime protocols.
+
 ## 2026-07-20 — File OPP-0056: Agent Client Protocol (ACP) governance bridge (strategic)
 
 Analyzed the [Agent Client Protocol](https://agentclientprotocol.com/) (Zed + JetBrains,

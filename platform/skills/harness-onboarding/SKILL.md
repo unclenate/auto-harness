@@ -603,6 +603,7 @@ Dependency: `management/program-lite` requires `management/project-standard`. `m
 
 | Module | Select when |
 | ------ | ----------- |
+| `agents/acp` | The project is used through an Agent Client Protocol editor (Zed, JetBrains, Neovim, …) and wants trust tiers enforced at the ACP permission seam |
 | `agents/base` | Always include as baseline |
 | `agents/claude-code` | Claude Code is the AI assistant for this project |
 | `agents/codex-cli` | OpenAI Codex CLI is used with project-local approval, sandbox, or shim policy |
@@ -612,7 +613,7 @@ Dependency: `management/program-lite` requires `management/project-standard`. `m
 | `agents/generic-llm` | Another AI assistant is in use and no first-class tool pack fits yet |
 | `agents/openclaw` | OpenClaw is the AI assistant for this project; requires `TOOLS.md` |
 
-No required artifacts for `base`, `claude-code`, `codex-cli`, `copilot-cli`, `cursor`, or `generic-llm`. The `gemini-cli` pack requires either `GEMINI.md` or `.gemini/settings.json`. The `openclaw` pack requires `TOOLS.md` at project root.
+No required artifacts for `base`, `claude-code`, `codex-cli`, `copilot-cli`, `cursor`, or `generic-llm`. The `gemini-cli` pack requires either `GEMINI.md` or `.gemini/settings.json`. The `acp` pack requires either `.acp/policy.yaml` or `docs/acp/governance.md` (the ACP tier-policy binding). The `openclaw` pack requires `TOOLS.md` at project root.
 
 ---
 

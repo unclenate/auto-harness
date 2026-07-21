@@ -11,6 +11,28 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-07-20 — Build the ACP governance proxy reference implementation (PRD-0038)
+
+Made the ACP integration runtime real: a working, dependency-free **reference proxy** at
+`platform/agents/acp/reference-proxy/` that sits between an ACP client and agent and enforces the
+tier-policy at `session/request_permission`. `policy.py` is the engine (`classify` kind+path+
+command → tier, `options_for` tier → ACP option set with the `allow_always` bans, and
+`rewrite_permission_request`); `proxy.py` is the stdio JSON-RPC pump that rewrites the permission
+request, **auto-rejects Tier 5 at the seam** (client never sees it, agent receives
+`reject_always`), and mirrors `session/update` to a JSONL audit log. Python 3 stdlib only.
+
+Verified: 17 unit tests pass (`test_policy.py`) and an end-to-end smoke test confirmed a Tier-5
+`edit HARNESS.md` is blocked at the seam and audited. Building it caught a real bug — the
+`execute` command classification used `max(baseline, rule)`, which could never *lower* the
+baseline-3 tier to 1 for test/build commands; fixed to let the command determine the tier.
+
+Framed explicitly as **reference/example material, not the enforced governance contract** (the
+genre boundary — the harness ships a declarative contract plus reference material like templates,
+not enforced runtime). No harness validator gates it; the Python tests run manually. PRD-0038 in
+docs/README + SUMMARY nav. No catalog-count change (a reference tool is not a catalog entity).
+Follow-on phases (production hardening; the audit → knowledge-capture bridge) remain their own
+PRDs.
+
 ## 2026-07-20 — Ship `agents/acp` module + PRD-0037 (ACP governance bridge into the harness)
 
 Built the `agents/acp` module and filed **PRD-0037** promoting OPP-0056 — the ACP governance

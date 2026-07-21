@@ -11,6 +11,32 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-07-19 — Fix + gate three validator-count mirrors the 25→26 bump missed
+
+The 2026-07-19 doc-watch run surfaced three drifted validator-count mirrors from the
+status-parity ship (#181), all the same shape — a count site the propagation pass missed because
+it lives outside `validate-catalog-counts.sh`'s assertion table:
+
+1. `platform/validators/test/test_validators_integration.rb` — `validate-status-parity.sh` was
+   absent from the `VALIDATOR_SCRIPTS` registry, so it shipped with **no `--help`/exit-contract
+   test** while all siblings have three. Added it (the highest-value item — a real test gap, not
+   just prose).
+2. `platform/validators/README.md` — "72 dynamically generated … 3 per validator × 25 validators"
+   → 78 / 26.
+3. `docs/architecture/diagrams.md` — an onboarding-flow **Mermaid node label** read "(24
+   validators)"; live is 26. A carryover open since 2026-07-13 that widened to off-by-2 because
+   the count sits inside a Mermaid string, invisible to the count validator.
+
+Rather than only repairing the instances, **mechanized the two blind spots** so they cannot
+recur: added three assertion rows to `validate-catalog-counts.sh` (the Mermaid `(N validators)`
+label; the README `× N validators` basis; and a new derived `help_tests` count = 3 × validators
+for the "N dynamically generated" prose). Catalog-count assertions 26 → 29. The Mermaid-label
+blind spot — twice-confirmed by doc-watch — is now gated by the same recompute-and-diff oracle
+that catches every other count, closing the class rather than the instance.
+
+No OPP (drift repair + a small assertion-table extension). `docs/doc-watch-log.md` remains the
+automation's own uncommitted record and is left for it to manage.
+
 ## 2026-07-19 — Gate the SUMMARY record-nav (OPP-0055, OPP-direct)
 
 Closed the last unguarded record mirror: `SUMMARY.md`'s per-record ADR / PRD / OPP nav rows (the

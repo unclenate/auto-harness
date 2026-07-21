@@ -1497,6 +1497,7 @@ VALIDATOR_SCRIPTS = %w[
   validate-doc-references.sh
   validate-catalog-counts.sh
   validate-list-completeness.sh
+  validate-status-parity.sh
   validate-trust-tier.sh
   validate-sensitive-paths.sh
   validate-knowledge-redaction.sh

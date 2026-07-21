@@ -106,6 +106,10 @@ COUNT_skills=$(find platform/skills -maxdepth 1 -mindepth 1 -type d 2>/dev/null 
 COUNT_templates=$(find platform/templates -type f -name '*.md' ! -name 'README.md' 2>/dev/null | wc -l | tr -d ' ')
 COUNT_workflows=$(find platform/workflow -name '*.md' 2>/dev/null | wc -l | tr -d ' ')
 COUNT_diagrams=$(grep -cE '^## [0-9]+\.' docs/architecture/diagrams.md 2>/dev/null || echo 0)
+# Derived: the validator test suite generates 3 --help/-h contract tests per
+# validator script (see TestValidatorHelpFlag). Gating this keeps the prose
+# "N dynamically generated" count honest as the validator set grows.
+COUNT_help_tests=$((3 * COUNT_validators))
 
 # Lookup a canonical count by key, using indirect variable expansion.
 # Returns the empty string for unknown keys (caller treats as
@@ -147,6 +151,17 @@ ASSERTIONS=(
   "docs/architecture/diagrams.md|>([0-9]+) scripts|validators"
   "docs/architecture/diagrams.md|>([0-9]+) scaffolding files|templates"
   "docs/architecture/diagrams.md|>([0-9]+) guides:|workflows"
+
+  # docs/architecture/diagrams.md — onboarding-flow Mermaid node label. The
+  # count lives inside a Mermaid node string, a blind spot that drifted twice
+  # (doc-watch 2026-07-13 → 2026-07-19, unnoticed to off-by-2); gating it here.
+  "docs/architecture/diagrams.md|\(([0-9]+) validators\)|validators"
+
+  # platform/validators/README.md — test-suite prose (help-test count is
+  # 3 × validators; the per-validator basis is the validator count). Both are
+  # count mirrors the run-order propagation missed on the 25→26 bump.
+  "platform/validators/README.md|hard-coded tests \+ ([0-9]+) dynamically|help_tests"
+  "platform/validators/README.md|per validator × ([0-9]+) validators|validators"
 
   # docs/_assets/cover-back.svg — back cover catalog list
   "docs/_assets/cover-back.svg|>([0-9]+) modules<|modules_all"

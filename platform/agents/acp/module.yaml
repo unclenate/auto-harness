@@ -1,0 +1,70 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+id: acp
+type: agent
+version: 0.1.0
+stability: experimental
+summary: >-
+  Agent Client Protocol (ACP) governance bridge. Maps harness trust tiers and
+  companion rules onto ACP's session/request_permission seam so any ACP editor+agent
+  pair is governed at the moment of action. Ships the canonical tier-policy mapping
+  (tier-policy.yaml) and reference implementation-helper sketches; the consumer binds
+  it via .acp/policy.yaml. Per PRD-0037 / OPP-0056.
+
+dependsOn:
+  - kernel/base
+  - base
+
+conflictsWith: []
+
+requiredArtifacts:
+  # An ACP-governed project declares its policy binding — the file the client or the
+  # reference governance proxy reads to turn ACP permission prompts into tier-driven
+  # gates. Either the machine-readable binding OR a governance doc that references it.
+  - oneOf:
+      - .acp/policy.yaml
+      - docs/acp/governance.md
+
+optionalArtifacts:
+  - .acp/policy.yaml
+  - docs/acp/governance.md
+
+sensitivePaths:
+  - description: ACP policy binding — changes alter what the runtime permission prompt is allowed to offer, so they carry the same weight as a trust-tier change
+    patterns:
+      - ^\.acp/
+      - (^|/)acp-policy\.ya?ml$
+
+companionRules:
+  - description: ACP policy-binding changes require an AGENTS.md cross-reference, an ADR, or a PRD — the runtime gate must stay aligned with the declared trust tiers
+    triggerPaths:
+      - ^\.acp/
+      - (^|/)acp-policy\.ya?ml$
+    requiredAny:
+      - ^AGENTS\.md$
+      - ^docs/adr/ADR-
+      - ^docs/requirements/PRD-
+    humanReview: >-
+      Reviewers verify the policy binding still maps ACP tool-call kinds to the kernel
+      trust tiers as declared (Tier 0-1 auto-approve, Tier 3 no allow_always, Tier 4-5
+      gated), that allow_always is never persisted for a sensitive-path or Tier-3+ call,
+      and that Tier 5 remains blocked at the protocol seam (ACP cannot express a second
+      sign-off).
+
+validators:
+  - validate-agent-pack
+  - validate-companions
+
+reviewGates:
+  - The ACP policy binding must defer to AGENTS.md and kernel trust tiers for the tier of each tool-call kind; it declares the mapping, never a laxer policy.
+  - Tier 5 (remote/production) actions are blocked at the ACP seam and routed to the harness's out-of-band human-authorization path — never auto-approved via allow_always.
+  - allow_always is prohibited for delete, for any sensitive-path target, and for Tier 3 and above.
+
+agentAdapters:
+  - .acp/policy.yaml
+
+compiledFragments:
+  - platform/agents/acp/README.md
+
+recommendedSkills:
+  - harness-governance

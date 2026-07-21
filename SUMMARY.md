@@ -187,6 +187,7 @@ Vendor, ecosystem, or specialist overlays.
 
 AI-tool packs and operating adapters.
 
+* [ACP (Agent Client Protocol)](platform/agents/acp/README.md)
 * [Base](platform/agents/base/README.md)
 * [Claude Code](platform/agents/claude-code/README.md)
 * [Codex CLI](platform/agents/codex-cli/README.md)
@@ -606,6 +607,7 @@ Specifications for substantive new capabilities, paired with their originating o
 * [PRD-0034: Observation-Hygiene Content Validator (`validate-observation-hygiene.sh`)](docs/requirements/PRD-0034-validate-observation-hygiene.md)
 * [PRD-0035: Ambient Auto-Capture — schema-shaped stub upgrade to the distillation Stop hook](docs/requirements/PRD-0035-ambient-auto-capture.md)
 * [PRD-0036: Status-Parity Validator (`validate-status-parity.sh`)](docs/requirements/PRD-0036-status-parity-validator.md)
+* [PRD-0037: Agent Client Protocol Governance Bridge (`agents/acp`)](docs/requirements/PRD-0037-acp-governance-bridge.md)
 
 ### Opportunity Records (this project)
 

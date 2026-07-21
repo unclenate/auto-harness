@@ -11,6 +11,34 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-07-20 — File OPP-0056: Agent Client Protocol (ACP) governance bridge (strategic)
+
+Analyzed the [Agent Client Protocol](https://agentclientprotocol.com/) (Zed + JetBrains,
+Apache-2.0, an LSP-analog wire protocol for editor↔coding-agent sessions) against auto-harness
+and filed **OPP-0056** to bridge them via a 9th agent-adapter module, `agents/acp`. The finding:
+they are **complementary, different layers** — ACP is a runtime wire protocol whose spec
+explicitly has *no policy, trust tiers, or audit*; auto-harness is all policy with *no runtime
+wire*. Each is the other's missing half.
+
+The wedge, specified in the OPP as a two-step table, is the **trust-tier → ACP permission-policy
+mapping**: a policy engine behind ACP's `session/request_permission` computes a trust tier per
+tool call from `(kind, target path, command)` against the manifest, then emits only the
+permission options that tier allows (auto-approve tiers 0–1, hard-gate tiers 4–5, surface
+companion-rule consequences inline), logging each decision to the audit ledger. Two strategic
+payoffs drive the fast-track: **(a)** it converts the declared-but-runtime-advisory trust tiers
+into gates enforced at the moment of action (development acceleration; partial answer to the
+runtime-enforcement gap OPP-0020 circles), and **(b)** it positions auto-harness as the portable
+governance layer the JetBrains-co-maintained ACP ecosystem lacks (inducement to the community and
+vendors — the adopter set already overlaps the harness's `claude-code`/`gemini-cli`/`codex-cli`/
+`cursor` agent modules).
+
+Status `accepted` as a strategic direction; a PRD is recommended to specify the module and the
+policy engine (open questions: policy-engine home — client/proxy/agent, with the editor-agnostic
+proxy favored; `execute` classification; `allow_always` scoping; the tier-4/5 human-authorization
+channel; audit format). Registered across the three index surfaces (docs/README.md,
+candidates.md under a new interoperability cluster, SUMMARY nav). A companion positioning analysis
+was published as a shareable artifact for the JetBrains/ACP-vendor audience.
+
 ## 2026-07-19 — Gate the SUMMARY record-nav (OPP-0055, OPP-direct)
 
 Closed the last unguarded record mirror: `SUMMARY.md`'s per-record ADR / PRD / OPP nav rows (the

@@ -737,6 +737,27 @@ cite-the-evidence rule), not the extraction; composes with the OPP-0046 lane
   pass with the row deleted). Mechanize-vs-remove fork resolved to **mechanize**
   (the nav rows serve real reader UX). OPP-direct: three checks + fixtures.
 
+### Agent-surface interoperability & ecosystem integration
+
+- [OPP-0056](OPP-0056-agent-client-protocol-governance-bridge.md) *(accepted 2026-07-20; strategic; PRD recommended)* —
+  **Agent Client Protocol (ACP) governance bridge (`agents/acp`).** ACP (Zed +
+  JetBrains, Apache-2.0) is an LSP-analog wire protocol standardizing the
+  editor↔coding-agent runtime session; its spec explicitly has **no policy,
+  trust tiers, or audit**. auto-harness is the inverse — all policy, no runtime
+  wire. Ship a 9th agent-adapter module bridging them: a tier-policy engine
+  behind ACP's `session/request_permission` that computes a trust tier per tool
+  call from `(kind, path, command)` against the manifest and emits only the
+  permission options that tier allows, logging to the audit ledger. Two payoffs:
+  **(a) dev acceleration** — turns the declared-but-runtime-advisory trust tiers
+  into gates enforced at the moment of action (partial answer to the
+  behavioral/runtime-enforcement gap, cf. OPP-0020); **(b) ecosystem inducement**
+  — positions auto-harness as the portable governance layer for the ACP
+  community/vendors, targeting the adopter overlap (`claude-code` / `gemini-cli`
+  / `codex-cli` / `cursor` are already harness agent modules AND ACP
+  participants). Complementary, coexists without conflict (different layers).
+  Carries the specified wedge — the tier → `request_permission` mapping table —
+  into a recommended PRD.
+
 ---
 
 ## References

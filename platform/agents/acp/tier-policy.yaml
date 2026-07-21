@@ -1,0 +1,124 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+#
+# Canonical ACP tier-policy mapping (agents/acp, PRD-0037 / OPP-0056).
+#
+# This is the reference policy a governance proxy or ACP client reads to turn ACP's
+# flat, policy-free `session/request_permission` prompt into a tiered, path-aware,
+# audited gate. A consumer project binds it via `.acp/policy.yaml`, which may extend
+# or tighten these defaults but must never loosen a tier below the kernel contract.
+#
+# Two-step function:
+#   1. classify(kind, targetPath, command) -> trustTier      (see `kinds` + `escalation`)
+#   2. optionsFor(trustTier)               -> permission set  (see `tiers`)
+#
+# Trust tiers are the kernel model (0 read-only .. 5 remote/production); see
+# platform/skills/harness-governance/SKILL.md and diagram #2.
+
+schemaVersion: 1
+
+# --------------------------------------------------------------------------
+# Step 1 — ACP tool-call `kind` -> baseline trust tier
+# ACP kinds: read, edit, delete, move, search, execute, think, fetch, other
+# --------------------------------------------------------------------------
+kinds:
+  read:    { tier: 0 }
+  search:  { tier: 0 }
+  think:   { tier: 0 }
+  fetch:   { tier: 2 }   # network read; publishing egress escalates (see escalation.publishes)
+  edit:    { tier: 2 }
+  move:    { tier: 2 }
+  delete:  { tier: 2, allowAlways: false }   # deletion never persists a blanket grant
+  execute: { tier: 3 }   # a shell command can do anything; classified by command (see escalation.command)
+  other:   { tier: 3 }   # conservative default; requires explicit classification before allow_always
+
+# --------------------------------------------------------------------------
+# Cross-cutting escalation — applied after the baseline, highest tier wins.
+# --------------------------------------------------------------------------
+escalation:
+  # Any kind whose target matches a manifest-declared sensitivePath: raise the tier
+  # by at least one and strip allow_always.
+  sensitivePath:
+    bumpTierBy: 1
+    stripAllowAlways: true
+  # Editing/moving/deleting a governance entrypoint or a secrets path is Tier 5.
+  governanceEntrypoint:
+    appliesTo: [edit, move, delete]
+    setTier: 5
+    paths:
+      - ^HARNESS\.md$
+      - ^AGENTS\.md$
+      - ^CLAUDE\.md$
+      - ^\.github/workflows/
+      - (^|/)\.env
+      - (^|/)secrets?/
+  # `fetch` that publishes (POST / push to an external service) rather than reads.
+  publishes:
+    appliesTo: [fetch]
+    setTier: 3
+  # `execute` command inspection — match the command string, highest tier wins.
+  command:
+    appliesTo: [execute]
+    rules:
+      - setTier: 1
+        match: '^(npm|yarn|pnpm) (test|run test)|(pytest|jest|go test|cargo test)|(lint|eslint|ruff)|(make )?build'
+      - setTier: 4
+        match: '(npm|pip|uv|cargo|go|brew|apt) (install|add|sync)|migrat|docker (build|run)'
+      - setTier: 5
+        match: 'deploy|kubectl|terraform apply|prod|secret(s)? (rotate|set)|helm (install|upgrade)'
+  # An edit that touches a companion-rule triggerPath surfaces the required companion
+  # in the permission request title (the human decides with the consequence visible).
+  companionSurfacing:
+    appliesTo: [edit, move, delete]
+    surfaceInTitle: true
+
+# --------------------------------------------------------------------------
+# Step 2 — trust tier -> ACP `session/request_permission` option set
+# ACP option kinds: allow_once, allow_always, reject_once, reject_always
+# The proxy emits `options` (in order), pre-selects `default`, and records `audit`.
+# --------------------------------------------------------------------------
+tiers:
+  "0":
+    posture: auto            # read-only
+    options: [allow_once, allow_always]
+    default: allow_always
+    audit: [kind]
+  "1":
+    posture: auto            # local analysis (test / lint / build)
+    options: [allow_once, allow_always]
+    default: allow_once
+    audit: [kind, command]
+  "2":
+    posture: care            # workspace mutation
+    options: [allow_once, allow_always, reject_once]
+    default: allow_once
+    audit: [kind, path]
+  "3":
+    posture: care            # git / shell writing — human must see each; no blanket grant
+    options: [allow_once, reject_once]
+    default: reject_once
+    allowAlways: false
+    audit: [kind, path, diff]
+  "4":
+    posture: gate            # environment-altering — human authorization required first
+    options: [allow_once, reject_always]
+    default: reject_always
+    allowAlways: false
+    requiresHumanAuthorization: true
+    audit: [kind, path, command, humanAuthorizer]
+  "5":
+    posture: block           # remote / production — blocked at the seam (ACP has no second sign-off)
+    options: [reject_always]
+    default: reject_always
+    allowAlways: false
+    blockAtSeam: true
+    routeTo: harness-tier5-authorization
+    audit: [kind, path, command, escalationNotice]
+
+# --------------------------------------------------------------------------
+# Audit — every decision is appended to the session ledger. Reconcile with the
+# knowledge-capture / observation schema (ADR-0002) at the audit-bridge phase.
+# --------------------------------------------------------------------------
+audit:
+  sink: .acp/audit/session-log.jsonl
+  record: [timestamp, sessionId, toolCallId, kind, targetPath, tier, optionSelected, humanAuthorizer]

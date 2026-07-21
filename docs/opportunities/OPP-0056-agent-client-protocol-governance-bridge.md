@@ -205,4 +205,4 @@ starting point. Mirrors how OPP-0054 carried a load-bearing design table into PR
 
 ## Promotion
 
-<!-- Empty until a PRD is filed. Then a link to PRD-NNNN specifying the agents/acp module. -->
+Promoted via [PRD-0037 — Agent Client Protocol Governance Bridge](../requirements/PRD-0037-acp-governance-bridge.md) (2026-07-20), which ratifies the `agents/acp` module (module.yaml + canonical `tier-policy.yaml` + README implementation-helper sketches) and resolves the five open design questions (policy-engine home → editor-agnostic proxy; `execute` classification; `allow_always` scoping; tier-4/5 authorization channel; audit format). The runtime proxy and audit bridge proceed as follow-on phases (their own PRDs) reusing the `tier-policy.yaml` this establishes.

@@ -108,6 +108,7 @@ originating opportunity records.
 | [0035](requirements/PRD-0035-ambient-auto-capture.md) | Ambient Auto-Capture — schema-shaped stub upgrade to the distillation Stop hook | Accepted (design-only) | [OPP-0053](opportunities/OPP-0053-observation-ledger-hygiene.md) |
 | [0036](requirements/PRD-0036-status-parity-validator.md) | Status-Parity Validator (`validate-status-parity.sh`) — OPP record status vs. derived index surfaces | Accepted (design-only) | [OPP-0054](opportunities/OPP-0054-status-parity-validator.md) |
 | [0037](requirements/PRD-0037-acp-governance-bridge.md) | Agent Client Protocol Governance Bridge (`agents/acp`) — trust-tier → permission-policy mapping | Accepted | [OPP-0056](opportunities/OPP-0056-agent-client-protocol-governance-bridge.md) |
+| [0038](requirements/PRD-0038-acp-governance-proxy-reference.md) | ACP Governance Proxy — Reference Implementation (`agents/acp/reference-proxy`) | Accepted | [OPP-0056](opportunities/OPP-0056-agent-client-protocol-governance-bridge.md) |
 
 ---
 

@@ -2061,6 +2061,44 @@ class TestValidateTrustTier < Minitest::Test
     assert_equal 2, code, "missing manifest must exit 2 (usage error)"
     assert_match(/not found|No such file/i, err)
   end
+
+  def test_low_criticality_prototype_with_only_kernel_passes
+    # Regression (kernel-tier5 false positive): kernel/base declares tier 5
+    # because it governs CI workflows + governance entrypoints on EVERY
+    # project. Since every consumer activates the universal kernel, the
+    # "declared tier-5 module ⇒ criticality high/critical" heuristic must
+    # NOT fire on the kernel alone — otherwise every low-criticality
+    # prototype (and every stock sample manifest) fails trust-tier
+    # validation on day one. The heuristic targets a *consumer-selected*
+    # non-kernel tier-5 module (e.g. a deploy/infra module on a prototype),
+    # for which the kernel carries no signal.
+    Dir.mktmpdir do |tmpdir|
+      manifest_path = File.join(tmpdir, "harness.manifest.yaml")
+      File.write(manifest_path, <<~YAML)
+        schemaVersion: 1
+        project:
+          id: kernel-only-prototype
+          name: Kernel-Only Prototype
+          maturity: prototype
+          criticality: low
+        modules:
+          core:
+            - kernel/base
+        overrides:
+          requiredArtifacts: []
+          disabledValidations: []
+      YAML
+      out, err, code = run_validator("validate-trust-tier.sh", manifest_path, HARNESS_ROOT)
+      assert_equal 0, code,
+                   "A low-criticality prototype activating only the universal " \
+                   "kernel must pass trust-tier validation (kernel tier-5 is " \
+                   "structural, not a per-project risk signal). " \
+                   "stderr: #{err}\nstdout: #{out}"
+      refute_match(/declares a tier-5 module/, err,
+                   "the kernel's structural tier-5 must not trip the " \
+                   "criticality heuristic")
+    end
+  end
 end
 
 # ---------------------------------------------------------------------------

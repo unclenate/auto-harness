@@ -11,6 +11,32 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-08-03 — Fix trust-tier false positive: exclude the universal kernel from the tier-5 criticality heuristic
+
+`validate-trust-tier.sh` carried a cross-cutting rule: *"a declared tier-5 module requires
+`project.criticality` ∈ {high, critical}, unless `maturity: platform`"* — meant to catch a
+consumer bolting genuinely tier-5 work (deploy / infra / secrets) onto a low-criticality
+prototype. But `kernel/base` is the **only** tier-5 module in the catalog and is the universal
+kernel every consumer activates. Its tier-5 declaration is a structural governance-ceiling (it
+governs `^.github/workflows/`, `^scripts/`, and governance entrypoints), **not** a per-project
+risk signal. So the heuristic fired on every non-platform consumer — including every stock sample
+manifest — making them fail trust-tier validation on day one. The rule was, in the current
+catalog, a 100 %-false-positive: it never once caught a real misconfiguration.
+
+**Fix:** the heuristic now counts only *consumer-selected* modules — the universal kernel
+(`kernel/base`, any `kernel/*`, anything under `platform/core/kernel/`) is excluded. Protection is
+preserved by construction: the instant a consumer activates a genuine non-kernel tier-5 module on a
+low-criticality project, the rule reactivates. Added a TDD regression test (a low-criticality
+prototype activating only the kernel must pass) and wired `validate-trust-tier.sh` into the
+sample-project CI loop so this class of drift is caught before it reaches a real consumer (the loop
+previously ran schema / graph / required-artifacts / agent-pack only, which is why the bug stayed
+latent). Rationale synced across the validator header, `--help`, and the `harness-governance`
+SKILL.md note. No ADR: this is a scope-correctness fix within the original ADR-0017 Wave 5.1
+intent, not a new enforcement decision. Reviewer verifies the workflow edit is intentional
+(governance-companion satisfier for `^.github/workflows/`).
+
+---
+
 ## 2026-07-20 — Ship `agents/acp` module + PRD-0037 (ACP governance bridge into the harness)
 
 Built the `agents/acp` module and filed **PRD-0037** promoting OPP-0056 — the ACP governance

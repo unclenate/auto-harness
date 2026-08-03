@@ -34,9 +34,13 @@
 #   3. For each active agent module, validate maxTier (range 0–5).
 #      Assert agent maxTier >= max(declared|inferred) across all
 #      non-agent active modules.
-#   4. Cross-cutting: if any active module's declared tier is 5,
-#      require the manifest's project.criticality to be "high" or
+#   4. Cross-cutting: if any active *non-kernel* module's declared tier is
+#      5, require the manifest's project.criticality to be "high" or
 #      "critical" (catches "Tier 5 work on prototype" misconfigurations).
+#      The universal kernel (kernel/base) is excluded — every consumer
+#      inherits its structural tier-5, so counting it would false-positive
+#      on every non-platform consumer. Relaxed entirely for
+#      maturity: platform projects.
 #
 # Inference table (kept in sync with PRD-0006 FR-002):
 #   ^src/migrations/  | ^db/migrations/                  → tier 4
@@ -90,7 +94,11 @@ of declaration):
   ^harness\.manifest\.yaml,                     → tier 5 (kernel)
     ^platform/core/kernel/
 
-Cross-cutting: declared tier 5 requires project.criticality in {high,critical}.
+Cross-cutting: a *consumer-selected* (non-kernel) declared tier-5 module
+requires project.criticality in {high,critical}. The universal kernel
+(kernel/base) is excluded — its tier-5 declaration is a structural
+governance-ceiling every consumer inherits, not a per-project risk signal.
+The rule is also relaxed entirely for maturity: platform projects.
 
 Exit codes:
   0  all tiers coherent
@@ -280,14 +288,28 @@ end
 # heuristic "tier-5 work on a prototype = probable misconfiguration"
 # doesn't apply when the project is the platform layer governing other
 # projects. See ADR-0017 Wave 5.1 implementation reconciliation notes.
+#
+# The heuristic only counts *consumer-selected* tier-5 modules. The
+# universal kernel (kernel/base, and any future kernel/* submodule) is
+# EXCLUDED: it declares tier 5 because it governs CI workflows and
+# governance entrypoints on EVERY project — a structural governance-ceiling,
+# not a per-project risk signal. Since every consumer activates the kernel,
+# counting it would fire this rule on every non-platform consumer (every
+# stock sample manifest included), which is a false positive. What the rule
+# is meant to catch is a consumer bolting a genuinely tier-5 module (deploy,
+# infra, secrets) onto a low-criticality project — for which the kernel
+# carries no signal.
 criticality = (manifest.dig("project", "criticality") || "").to_s
 maturity    = (manifest.dig("project", "maturity") || "").to_s
-has_tier_5 = active_modules.any? do |mod|
+has_consumer_tier_5 = active_modules.any? do |mod|
+  id   = (mod["id"] || "").to_s
+  path = (mod["__path"] || "").to_s
+  next false if id.start_with?("kernel/") || path.include?("/core/kernel/")
   block = mod["tier"]
   block.is_a?(Hash) && block["declared"] == 5
 end
-if has_tier_5 && !%w[high critical].include?(criticality) && maturity != "platform"
-  warn "✗ project.criticality is #{criticality.inspect} but the active manifest declares a tier-5 module (expected high or critical for non-platform projects)"
+if has_consumer_tier_5 && !%w[high critical].include?(criticality) && maturity != "platform"
+  warn "✗ project.criticality is #{criticality.inspect} but the active manifest declares a non-kernel tier-5 module (expected high or critical for non-platform projects)"
   violations += 1
 end
 

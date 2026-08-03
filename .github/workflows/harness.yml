@@ -290,9 +290,16 @@ jobs:
       # catches it immediately.
       #
       # Scope: validate-manifest, validate-module-graph,
-      # validate-required-artifacts, and validate-agent-pack — these
-      # answer "is the sample harness-shaped correctly?" without
-      # demanding consumer-fill discipline.
+      # validate-required-artifacts, validate-agent-pack, and
+      # validate-trust-tier — these answer "is the sample harness-shaped
+      # correctly?" without demanding consumer-fill discipline.
+      #
+      # validate-trust-tier is included specifically to guard the
+      # kernel-tier5 false-positive class: kernel/base declares tier 5 and
+      # every sample activates it, so a regression in the "consumer-selected
+      # tier-5 ⇒ high criticality" heuristic (e.g. re-counting the kernel)
+      # would make every low-criticality sample fail on day one — exactly the
+      # bug this loop now catches before it reaches a real consumer.
       #
       # Skipped intentionally:
       # - validate-placeholders: samples include pedagogical examples
@@ -308,7 +315,7 @@ jobs:
       #   level; runs separately in the main validators job.
       # - validate-catalog-counts: harness-specific; samples don't
       #   make catalog count claims.
-      - name: Validate each sample project (schema + graph + required artifacts + agent pack)
+      - name: Validate each sample project (schema + graph + required artifacts + agent pack + trust tier)
         run: |
           set -euo pipefail
           for sample in platform/examples/sample-projects/*/; do
@@ -318,5 +325,6 @@ jobs:
             bash platform/validators/validate-module-graph.sh "$sample/harness.manifest.yaml"
             bash platform/validators/validate-required-artifacts.sh "$sample/harness.manifest.yaml" "$sample"
             bash platform/validators/validate-agent-pack.sh "$sample/harness.manifest.yaml" "$sample"
+            bash platform/validators/validate-trust-tier.sh "$sample/harness.manifest.yaml" "$sample"
             echo "::endgroup::"
           done

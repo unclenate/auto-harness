@@ -156,8 +156,14 @@ A few signature notes worth highlighting:
   tier. Per PRD-0006 / ADR-0017 Wave 5.1. The harness's own kernel
   declares tier 5 (governs CI workflows + governance entrypoints); the
   cross-cutting "declared tier 5 requires criticality high/critical"
-  rule is relaxed for `maturity: platform` projects (auto-harness
-  itself).
+  rule counts only *consumer-selected* modules — the universal kernel
+  (`kernel/base`, any `kernel/*`) is **excluded**, since every consumer
+  inherits its structural tier-5 and counting it would false-positive on
+  every non-platform consumer (every stock sample manifest included). The
+  rule is also relaxed entirely for `maturity: platform` projects
+  (auto-harness itself). The heuristic reactivates the moment a consumer
+  activates a genuine non-kernel tier-5 module (deploy / infra / secrets)
+  on a low-criticality project.
 - **`validate-list-completeness.sh`** takes only `[<project-root>]`.
   Asserts every ADR / PRD / OPP / composition / template subdirectory /
   profile module / agent module on disk has its canonical index row, and

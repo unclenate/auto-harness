@@ -176,6 +176,7 @@ clustered backlog with framing.
 | [0054](opportunities/OPP-0054-status-parity-validator.md) | Status-Parity Validator (OPP record status vs. derived index surfaces) | accepted |
 | [0055](opportunities/OPP-0055-summary-nav-list-completeness.md) | SUMMARY Nav-List Completeness (gate ADR/PRD/OPP record presence in the SUMMARY nav) | accepted |
 | [0056](opportunities/OPP-0056-agent-client-protocol-governance-bridge.md) | Agent Client Protocol (ACP) Governance Bridge (`agents/acp`) — trust-tier → permission-policy mapping | accepted |
+| [0057](opportunities/OPP-0057-acp-audit-knowledge-capture-bridge.md) | ACP Audit → Knowledge-Capture Bridge (`agents/acp` follow-on) — session-boundary distillation of the runtime audit into ADR-0002 observations | proposed |
 
 ---
 

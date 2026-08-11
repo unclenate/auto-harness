@@ -11,6 +11,28 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-08-07 — File OPP-0057: ACP audit → knowledge-capture bridge (`agents/acp` follow-on)
+
+Filed **OPP-0057** (status `proposed`) — the audit→knowledge-capture bridge deferred by OPP-0056 /
+PRD-0037 to its own record. It reconciles the governance-relevant subset of the shipped ACP proxy's
+runtime audit (`.acp/audit/session-log.jsonl`) into ADR-0002 observations via a **session-boundary
+distillation** step: promote only decision-bearing events (tier-3+ escalations, denials,
+sensitive-path touches, tier-5 seam-blocks) as **draft observations a human/agent ratifies**, never
+auto-appending to the enforced ledger; a mechanical tier→Severity map onto the enforce-as-locked
+enum; `Confidence` defaults `low`; `Implication` left for the ratifier. Reference-helper +
+declarative-contract genre (recommended **Half-enforced**), consistent with PRD-0038; closes the
+runtime→policy loop OPP-0056 opened.
+
+The self-review recorded a real defect in the shipped `agents/acp` audit: the declared contract
+(`tier-policy.yaml` `audit.record`) and the reference proxy's actual `_AuditSink` output **diverge**,
+and neither carries the `sessionId`/`timestamp` the per-session grain needs — so the audit-bridge
+PRD's first sequenced task is reconciling to one authoritative schema. The `validate-acp-audit.sh`
+shape linter and a policy-feedback phase remain their own records. Propagated to `candidates.md`,
+`SUMMARY.md`, and the `docs/README.md` opportunities table (status `proposed`); distilled the
+distillation-not-translation rule for ledger-to-ledger reconciliation into `shared-observations.md`.
+
+---
+
 ## 2026-08-03 — Fix trust-tier false positive: exclude the universal kernel from the tier-5 criticality heuristic
 
 `validate-trust-tier.sh` carried a cross-cutting rule: *"a declared tier-5 module requires

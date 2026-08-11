@@ -759,6 +759,24 @@ cite-the-evidence rule), not the extraction; composes with the OPP-0046 lane
   Carries the specified wedge — the tier → `request_permission` mapping table —
   into a recommended PRD.
 
+- [OPP-0057](OPP-0057-acp-audit-knowledge-capture-bridge.md) *(proposed 2026-08-07; `agents/acp` follow-on; PRD recommended)* —
+  **ACP audit → knowledge-capture bridge.** The shipped ACP reference proxy
+  (PRD-0038) writes an append-only runtime audit (`.acp/audit/session-log.jsonl`)
+  that nothing reads back — a dead end. Bridge it: a **session-boundary
+  distillation** step that promotes only the *governance-relevant subset*
+  (tier-3+ escalations, denials, sensitive-path events, tier-5 seam-blocks) of the
+  audit into ADR-0002 observations, as **draft observations a human/agent
+  ratifies** (never auto-appending to the enforced `shared-observations.md`).
+  Mechanical tier→Severity map onto the enforce-as-locked enum; `Confidence`
+  defaults `low`; `Implication` left for the ratifier. Closes the runtime→policy
+  loop (OPP-0056 mapped policy *onto* the runtime; this maps the runtime *back
+  into* policy). Reference-helper + declarative-contract genre (Half-enforced),
+  consistent with PRD-0038. **Precondition the PRD must sequence first:** the two
+  divergent audit schemas (`tier-policy.yaml` `audit.record` vs the proxy's actual
+  output) must reconcile to one that carries `sessionId` + `timestamp`. The
+  `validate-acp-audit.sh` shape linter and a policy-feedback phase remain their own
+  records.
+
 ---
 
 ## References

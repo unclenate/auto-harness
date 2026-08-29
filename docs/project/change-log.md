@@ -28,6 +28,22 @@ loop machinery; non-native CLI adapters (one file-poll shape reused N×, Codex f
 re-verified against the redaction denylist before landing (public-safe; provenance generalized).
 Propagated to candidates.md, SUMMARY, docs/README (proposed), change-log, and shared-observations.
 
+## 2026-08-15 — Compact-ahead capture: Grok client-pack analysis (three observations)
+
+First Grok Build TUI session against auto-harness. Nate asked for a thorough repo analysis and a perspective on incorporating Grok agents, then asked to capture all project learnings ahead of compacting and rebooting.
+
+Appended three ADR-0002 observations to `docs/knowledge/shared-observations.md` (this change-log entry is the knowledge-capture audit-trail companion; no PRD-0004 trigger — no ADR / OPP / module / manifest in this pass):
+
+1. **Grok is a client pack, not a model-routing row** (architectural). Catalog names Grok only as a provider in OPP-0030. Three axes: model (already in intelligent-model-routing), client (missing `agents/grok-cli`), protocol (already `agents/acp`). Pack shape is Codex-not-Claude: no `GROK.md`, optional `.grok/` artifacts, police `--yolo` / default-sandbox-`off`. Do not activate on this repo's manifest until `.grok/config.toml` is committed. Next artifact is an OPP (number **0059** if untracked OPP-0058 dreaming lands first).
+2. **Vendor-compat dual-authority** (governance-relevant). Grok also loads Claude and Cursor rules, skills, hooks, and `.claude/settings.json`. Copilot-class precedence risk. Native Grok policy, when committed, lives in `.grok/config.toml`.
+3. **Compact-ahead capture belongs in the harness ledger** (governance-relevant). Tool-local memory (Grok `[memory]`, `.remember/`) is a projection surface. OPP-0058 dreaming is a later cross-session layer, not a substitute for writing this session down.
+
+No OPP filed (opportunity-capture is heartbeat-only pending Nate's go). Catalog gaps belong in an OPP, not the revision tracker.
+
+**Correction, same day:** this Grok session then overwrote Claude Remember's `.remember/remember.md` (Claude's 2026-08-07 ACP/OPP-0057 handoff) by executing a Claude-native plugin skill against another agent's projection surface. Restored that file from the session transcript. Reverted cargo-cult revision-tracker rows M-16/M-17. Appended a fourth observation that supersedes the claim that `.remember/remember.md` is a shared operational handoff. Grok must not write `.remember/` again.
+
+Working-tree note (not part of this capture): do **not** commit the uncommitted `AGENTS.md` "Imported Claude Cowork project instructions" block, untracked `.agents/`, untracked OPP-0058 / dreaming plan, or the `do-not-publish` seed brief.
+
 ## 2026-08-07 — File OPP-0057: ACP audit → knowledge-capture bridge (`agents/acp` follow-on)
 
 Filed **OPP-0057** (status `proposed`) — the audit→knowledge-capture bridge deferred by OPP-0056 /

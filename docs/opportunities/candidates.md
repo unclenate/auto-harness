@@ -777,6 +777,20 @@ cite-the-evidence rule), not the extraction; composes with the OPP-0046 lane
   `validate-acp-audit.sh` shape linter and a policy-feedback phase remain their own
   records.
 
+- [OPP-0059](OPP-0059-inter-agent-control-loop-cross-vendor-bus.md) *(proposed 2026-08-29; field report; un-defers OPP-0046 bus; PRD anticipated)* —
+  **Live inter-agent control-loop & cross-vendor bus.** OPP-0046 governs the static
+  lane boundary between concurrent agents; the *live channel* they coordinate over —
+  dispatch/ack/progress/done/block/sync/verdict — has no contract, existing only as
+  ungoverned session-to-session messaging with no schema, correlation, cadence, or
+  cross-vendor reach. Split **control semantics** (vendor-neutral message schema +
+  a `tier_ceiling` that caps-but-never-grants) from **transport adapters** (a file
+  inbox/outbox seam), ship one native-bus reference adapter + loop machinery
+  (heartbeat/pacing/supervision, no busy-spin), and reuse ONE file-poll adapter shape
+  across the local-CLI agents (Codex first) instead of N transport problems.
+  Un-defers OPP-0046's cross-agent memory bus. Safety spine: messages are untrusted
+  data, no self-elevation, Tier 4/5 human-gated (field-observed this session).
+  `validate-agent-bus.sh` deferred until the schema survives >= 2 real cycles.
+
 ---
 
 ## References

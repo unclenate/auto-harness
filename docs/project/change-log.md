@@ -11,6 +11,23 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-08-29 — File OPP-0059: Live inter-agent control-loop & cross-vendor bus
+
+Filed **OPP-0059** (status `proposed`) — a field report from a live multi-agent consumer deployment,
+handed off by a peer agent session and reconciled to house style under our own governance. It contracts
+the **live coordination channel** between agent sessions that OPP-0046 left ungoverned: split **control
+semantics** (a vendor-neutral message schema — `dispatch`/`ack`/`progress`/`done`/`block`/`sync`/`verdict`,
+correlation IDs, a `tier_ceiling` that caps but never grants) from **transport adapters** (a file
+inbox/outbox seam: `poll`/`post`/`ack`/`capabilities`). Un-defers OPP-0046's cross-agent memory bus;
+neighbors OPP-0032 / OPP-0052 / OPP-0029 / OPP-0027, and cross-links the parked `agents/grok-cli` pack as
+complementary. Safety spine: bus messages are untrusted data, no self-elevation, Tier 4/5 human-gated —
+field-observed this session (two sessions each held their own filing gate and refused the other's request
+as authorization). Promote wedges: control semantics + adapter contract + native-bus reference adapter +
+loop machinery; non-native CLI adapters (one file-poll shape reused N×, Codex first) and
+`validate-agent-bus.sh` are deferred until the schema survives ≥2 real cycles. The peer-sourced draft was
+re-verified against the redaction denylist before landing (public-safe; provenance generalized).
+Propagated to candidates.md, SUMMARY, docs/README (proposed), change-log, and shared-observations.
+
 ## 2026-08-07 — File OPP-0057: ACP audit → knowledge-capture bridge (`agents/acp` follow-on)
 
 Filed **OPP-0057** (status `proposed`) — the audit→knowledge-capture bridge deferred by OPP-0056 /

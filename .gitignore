@@ -1,6 +1,10 @@
 .DS_Store
 legacy/Docs.pdf
 
+# Python bytecode cache from running the reference orchestrators under reference/
+__pycache__/
+*.pyc
+
 # Claude Code runtime state and generated skill links/adapters. Canonical skills
 # live under platform/skills/ and should be projected into tool-local folders,
 # not maintained there as independent copies.

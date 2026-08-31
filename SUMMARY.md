@@ -612,6 +612,7 @@ Specifications for substantive new capabilities, paired with their originating o
 * [PRD-0037: Agent Client Protocol Governance Bridge (`agents/acp`)](docs/requirements/PRD-0037-acp-governance-bridge.md)
 * [PRD-0038: ACP Governance Proxy — Reference Implementation](docs/requirements/PRD-0038-acp-governance-proxy-reference.md)
 * [PRD-0039: Inter-Agent Control-Loop & Cross-Vendor Bus (`management/agent-coordination`)](docs/requirements/PRD-0039-agent-coordination-control-loop.md)
+* [PRD-0040: ACP Audit → Knowledge-Capture Bridge, with a Tamper-Evident Audit Record](docs/requirements/PRD-0040-acp-audit-bridge.md)
 
 ### Opportunity Records (this project)
 

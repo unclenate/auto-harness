@@ -68,5 +68,31 @@ class TestNativeAdapter(unittest.TestCase):
         # a high ceiling cannot raise a low local policy
         self.assertEqual(apply_tier_ceiling(_msg(tier_ceiling=5), 1), 1)
 
+from loop import Loop
+
+class TestLoop(unittest.TestCase):
+    def setUp(self):
+        self.dir = tempfile.mkdtemp(); self.bus = FileBus(self.dir)
+    def test_tick_reports_next_wake_and_never_spins(self):
+        loop = Loop(self.bus, "b", heartbeat_s=60, now_fn=lambda: 1000)
+        rep = loop.tick()
+        self.assertEqual(rep["next_wake_s"], 60)   # returns cadence for ScheduleWakeup
+        self.assertIn("stalled", rep)
+    def _send_dispatch(self, frm, to, deadline):
+        # dispatcher `frm` queues a dispatch to `to` and marks it sent (durable log)
+        self.bus.post_outbound(_msg(**{"from": frm, "to": to},
+                                    payload={"task": "x", "deadline": deadline}))
+        self.bus.mark_sent(frm, self.bus.drain_outbox(frm)[0][0])
+    def test_stalled_dispatch_detected_after_deadline(self):
+        self._send_dispatch("d", "b", deadline=500)   # d dispatched to b, got no result
+        loop = Loop(self.bus, "d", heartbeat_s=60, now_fn=lambda: 999)
+        self.assertEqual(loop.stalled_dispatches(now=999), ["c1"])
+    def test_done_clears_stall(self):
+        self._send_dispatch("d", "b", deadline=500)
+        # b's done flows BACK to d's inbox (the correct routing) — must clear the stall
+        self.bus.post(_msg(type="done", id="c1", payload={"result": "ok"}, **{"from": "b", "to": "d"}))
+        loop = Loop(self.bus, "d", heartbeat_s=60, now_fn=lambda: 999)
+        self.assertEqual(loop.stalled_dispatches(now=999), [])
+
 if __name__ == "__main__":
     unittest.main()

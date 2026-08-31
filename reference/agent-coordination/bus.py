@@ -8,6 +8,10 @@ import json, os
 TYPES = ["dispatch", "ack", "progress", "done", "block", "sync", "verdict"]
 _REQUIRED = ["type", "id", "from", "to", "tier_ceiling", "ts", "payload"]
 
+def _read_json(path):
+    with open(path) as fh:
+        return json.load(fh)
+
 def validate_envelope(msg):
     for f in _REQUIRED:
         if f not in msg:
@@ -72,7 +76,7 @@ class FileBus:
         os.replace(tmp, final); return name
     def drain_outbox(self, agent_id):
         outbox = self._outbox(agent_id)
-        return [(f, json.load(open(os.path.join(outbox, f))))
+        return [(f, _read_json(os.path.join(outbox, f)))
                 for f in sorted(os.listdir(outbox)) if f.endswith(".json")]
     def mark_sent(self, agent_id, filename):
         outbox = self._outbox(agent_id)
@@ -83,6 +87,6 @@ class FileBus:
         sent = os.path.join(self._outbox(agent_id), ".sent")
         if not os.path.isdir(sent):
             return []
-        out = [json.load(open(os.path.join(sent, f)))
+        out = [_read_json(os.path.join(sent, f))
                for f in sorted(os.listdir(sent)) if f.endswith(".json")]
         return [m for m in out if m["type"] == "dispatch"]

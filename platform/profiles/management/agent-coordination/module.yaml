@@ -11,9 +11,10 @@ summary: >
   (adapter-contract.md), with a native-bus reference orchestrator. The LIVE-channel sibling of
   management/work-package's static lane contract. tier.declared 3; messages are untrusted data;
   tier_ceiling caps but never grants; Tier 4/5 stays human-gated. Half-enforced (reference-tool
-  genre): the harness ships the contract + reference material, not an enforced runtime. Deferred to
-  their own records: the validate-agent-bus.sh linter, non-native CLI adapters, and the verdict-ledger
-  (OPP-0052) tie-in.
+  genre): the harness ships the contract + reference material, not an enforced runtime. The non-native
+  (local-CLI) adapter landed as reference material (OPP-0060) with an argv second-gate + CLI_MIN_TIER
+  caps-never-grants defense. Deferred to their own records: the validate-agent-bus.sh linter and the
+  verdict-ledger (OPP-0052) tie-in.
 tier:
   declared: 3
   rationale: >

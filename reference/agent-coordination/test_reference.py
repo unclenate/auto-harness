@@ -90,6 +90,16 @@ class TestBus(unittest.TestCase):
         got = self.bus.poll("b")                   # must NOT raise
         self.assertEqual([m["id"] for m in got], ["good"])
         self.assertTrue(os.path.isdir(os.path.join(inbox, ".rejected")))
+    def test_poll_survives_scalar_json_and_json_dir(self):
+        # M3 hardening: a scalar-JSON file (TypeError) and a *.json DIRECTORY (IsADirectoryError)
+        # are the exact "file written outside post()" DoS vectors — poll must quarantine, not crash
+        self.bus.post(_msg(id="good"))
+        inbox = os.path.join(self.dir, "b", "inbox")
+        with open(os.path.join(inbox, "zzz-scalar-dispatch.json"), "w") as fh:
+            fh.write("42")                          # valid JSON, non-object -> TypeError in validate
+        os.makedirs(os.path.join(inbox, "yyy-dir-dispatch.json"))  # dir -> IsADirectoryError on open
+        got = self.bus.poll("b")                    # must NOT raise
+        self.assertEqual([m["id"] for m in got], ["good"])
 
 from native_adapter import NativeAdapter, apply_tier_ceiling
 

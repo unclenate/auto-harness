@@ -11,6 +11,17 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-08-31 — File OPP-0058: out-of-band memory consolidation ("dreaming")
+
+Filed **OPP-0058** (proposed) — governed, **propose-only** batch consolidation of cross-session
+transcripts into an evidence-backed proposed knowledge-tree diff a human promotes; the out-of-band
+complement to in-band PRD-0004 distillation, closing the session-shape §4 gaps (declared-but-unfired
+trigger classes). Two maintainer-flagged design questions were resolved to their recommended defaults at
+Nate's direction: **Q3 = staging-only** promotion (never direct-to-operating-principles) and **Q9 =
+unified** framing (one `management/memory-consolidation` overlay, not three OPPs) — both re-openable at
+PRD time. Pre-PRD design notes at `docs/superpowers/plans/2026-08-11-dreaming-module.md`. Distillation
+lesson (mechanism-by-check-class + machine-surface provenance-keying) captured in `shared-observations.md`.
+
 ## 2026-08-31 — Explore OPP-0001: exportable governance contract → candidate cross-vendor governance extension
 
 Flipped **OPP-0001** (`proposed → exploring`). It sat in the backlog "awaiting framing"; the "Governance

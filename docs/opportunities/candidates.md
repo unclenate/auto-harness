@@ -777,6 +777,7 @@ cite-the-evidence rule), not the extraction; composes with the OPP-0046 lane
   `validate-acp-audit.sh` shape linter and a policy-feedback phase remain their own
   records.
 
+- [OPP-0058](OPP-0058-out-of-band-memory-consolidation-dreaming.md) *(proposed 2026-08-31; session-shape §4 unifier; PRD anticipated)* — **Out-of-Band Memory Consolidation ("Dreaming").** Governed, propose-only batch consolidation of cross-session transcripts into an evidence-backed proposed knowledge-tree diff a human promotes — the out-of-band complement to in-band PRD-0004 distillation.
 - [OPP-0059](OPP-0059-inter-agent-control-loop-cross-vendor-bus.md) *(accepted 2026-08-30; field report; un-defers OPP-0046 bus; promoted via PRD-0039)* —
   **Live inter-agent control-loop & cross-vendor bus.** OPP-0046 governs the static
   lane boundary between concurrent agents; the *live channel* they coordinate over —

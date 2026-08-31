@@ -49,5 +49,24 @@ class TestBus(unittest.TestCase):
     def test_seven_types(self):
         self.assertEqual(TYPES, ["dispatch","ack","progress","done","block","sync","verdict"])
 
+from native_adapter import NativeAdapter, apply_tier_ceiling
+
+class TestNativeAdapter(unittest.TestCase):
+    def setUp(self):
+        self.dir = tempfile.mkdtemp(); self.bus = FileBus(self.dir); self.sent = []
+    def test_bridge_out_drains_outbox_to_peer(self):
+        # b produces a message FOR peer d -> outbox; bridge must deliver it to d, not back to b
+        self.bus.post_outbound(_msg(**{"from": "b", "to": "d"}))
+        NativeAdapter(self.bus, lambda to, text: self.sent.append((to, text))).bridge_out("b")
+        self.assertEqual(len(self.sent), 1)
+        self.assertEqual(self.sent[0][0], "d")   # delivered to the PEER, never self-addressed
+        self.assertTrue(self.sent[0][1].startswith("AGENT-BUS:"))
+    def test_tier_ceiling_only_lowers(self):
+        self.assertEqual(apply_tier_ceiling(_msg(tier_ceiling=5), 3), 3)  # local policy binds
+        self.assertEqual(apply_tier_ceiling(_msg(tier_ceiling=2), 3), 2)  # ceiling lowers
+    def test_tier_ceiling_never_grants(self):
+        # a high ceiling cannot raise a low local policy
+        self.assertEqual(apply_tier_ceiling(_msg(tier_ceiling=5), 1), 1)
+
 if __name__ == "__main__":
     unittest.main()

@@ -14,6 +14,96 @@ The weekly doc-watch (Monday 7am PT, when scheduled) reads this file to know
 where the project is in the roadmap and which drift checks should now be in
 force.
 
+## 2026-08-31 — doc-watch — external source added to the watch
+
+**New external source to monitor.** Added **arXiv 2606.31498** — Kang & Diponegoro,
+"Governance Gaps in Agent Interoperability Protocols: What MCP, A2A, and ACP Cannot Express"
+(Jun 2026) — to the doc-watch. It supplies the G1–G6 governance taxonomy the harness now
+scores against (see `docs/knowledge/shared-observations.md`, the Layer-4 observation).
+**Watch trigger:** A2A governance-extension activity (the OPP-0001 window) — if a governance
+extension appears in the A2A extensions process, the harness's exportable-governance work
+(OPP-0001) either shaped it or must adapt. Acronym note for future readers: the paper's "ACP"
+is IBM's Agent *Communication* Protocol, **not** the harness's `agents/acp` (Agent *Client*
+Protocol).
+
+## 2026-08-30 — doc-watch — MINOR DRIFT (52-day catch-up window; committed tree clean, 2 open items)
+
+**Window:** 2026-07-09 → 2026-08-30 (52 days — the watch cadence lapsed after
+the 2026-07-09 entry; this run is a catch-up covering seven skipped weeks).
+Branch `main`. **24 commits** in window (excluding the two already logged on
+2026-07-09). Working tree **not clean** — 5 untracked paths (see below).
+
+**What landed (doc-relevant):**
+
+- New agent module `agents/acp` (`stability: experimental`) + PRD-0037 —
+  Agent Client Protocol governance bridge (#186), plus the ACP governance
+  proxy reference implementation under PRD-0038 (#187).
+- Two new validators: `validate-observation-hygiene.sh` (PRD-0034, #173) and
+  `validate-status-parity.sh` (PRD-0036, #181). Validator count 24 → 26.
+- `validate-list-completeness.sh` extended to gate `SUMMARY.md` record-nav
+  (OPP-0055, #182).
+- Mirrored-field-drift law promoted to `docs/operating-principles.md` §3
+  (#179); three validator-count mirrors repaired that the 25 → 26 bump missed
+  (#183).
+- 6 new PRDs (0033–0038), 8 new OPPs (0052–0059), 2 knowledge-observation
+  captures (#167, #190).
+
+**Live counts (canonical recipes):** profile modules 52 · agent modules 9 ·
+validators 26 · skills 8 · compositions 15 · architecture diagrams 16 ·
+workflows 24 · templates 98 (104 on disk minus 6 READMEs) · ADRs 19 ·
+PRDs 38 · OPPs 58 on disk (57 committed + 1 untracked).
+
+**Drift checks:**
+
+- `validate-catalog-counts.sh` → ✓ 29/29 assertions match.
+- `validate-doc-references.sh` → ✓ all link targets resolve.
+- `validate-status-parity.sh` → ✓ 58 records × 109 checks, 0 drift.
+- `validate-list-completeness.sh` → ✗ **3 of 407 failed** (all one root cause,
+  see D1).
+- `markdownlint-cli2 "**/*.md"` → 28 errors, **all in untracked
+  `project-status-2026-08-04/`**; 0 errors in tracked content. CI gate is
+  green today and would go red the moment that folder is committed as-is.
+
+**D1 — untracked OPP-0058 breaks list-completeness.**
+`docs/opportunities/OPP-0058-out-of-band-memory-consolidation-dreaming.md`
+exists on disk but is uncommitted and unindexed. Missing rows:
+
+- `docs/README.md` — OPP table row for OPP-0058
+- `docs/opportunities/candidates.md` — OPP candidates row for OPP-0058
+- `SUMMARY.md` — OPP nav row for OPP-0058
+
+This is working-tree-only drift; the committed tree passes 407/407. Note
+OPP-0059 (#191) landed *after* OPP-0058 was drafted and was indexed correctly,
+so the number is allocated but the record never shipped.
+
+**D2 — `agents/acp` missing from the discovery routing table.**
+`platform/workflow/discovery-to-composition.md:219` — the module-selection
+table has no routing row for `agents/acp`. The existing `Other LLM tool? →
+agents/generic-llm` row does not cover it (ACP is a protocol seam, not an LLM
+tool). `CLAUDE.md`'s companion-rule reflex requires every new catalog module to
+propagate to this file in the same pass. The other four required surfaces are
+correct: `README.md:269` and `:567`, `SUMMARY.md`, and
+`platform/skills/harness-onboarding/SKILL.md:606` (which already carries the
+equivalent routing question). Fix is one table row.
+
+**Carry-over findings re-verified:**
+
+- **Still open** — a11y H1 / Wave 0 item 3.7: all four repo SVGs
+  (`docs/_assets/cover-front.svg`, `cover-back.svg`,
+  `docs/_assets/proposed-visuals/hero-before-after.svg`,
+  `trust-tier-ladder.svg`) still lack `<title>`/`<desc>`. Unchanged since May.
+- **Still unverifiable** — L3-04 GitHub repo hardening (branch protection,
+  secret scanning, push protection). Requires maintainer `gh api` runs; cannot
+  be checked from the watch environment.
+- **Roadmap waves 3, 4, 6** remain open — no movement this window.
+
+**Verdict: MINOR DRIFT.** Committed tree is clean on every count, index, link,
+and status surface. Both open items are small and mechanical. A full
+multi-agent re-audit **is** recommended, not for drift volume but for window
+size and surface novelty: seven skipped weeks, a new agent-governance seam
+(ACP) with a reference implementation, and 6 new PRDs have accumulated without
+an audit-grade read.
+
 ## 2026-07-09 — doc-watch — ALL CLEAR (dependency bump landed; zero doc drift)
 
 **Window:** 2026-07-08 → 2026-07-09. Branch `main`. Two commits landed: `e0fde45` (#165 — upstream-harvesting workflow #24 + stigmergy concept, already recorded in the 2026-07-08 entry) and `948ebbe` (#136 — Dependabot `actions/checkout` v6 → v7, carrying a `docs/project/dependency-log.md` satisfier row). Neither changes any catalog count. Drift checks green: `validate-catalog-counts.sh` 26/26 assertions match; `validate-doc-references.sh` all links resolve. Untracked stray `docs/superpowers/specs/2026-06-09-digital-twin-seed-brief.md` (never committed) is unchanged and already noted in prior entries — no action. No re-audit warranted.

@@ -20,10 +20,23 @@ def dreaming_run(corpus, policy, distill_fn, prior_manifests=None, run_id="run-1
     """Returns {"proposals": [...], "manifest": {...}, "wrote": "branch"}. Refuses any proposal
     whose target is not a declared targetSurface. NEVER merges."""
     validate_policy(policy)
+    budget = policy["budget"]
+    # fail-closed budget: refuse a corpus larger than the declared ceiling before doing any work
+    # (maxTokens is not enforceable here — the reference has no tokenizer; it is consumer-implemented).
+    if len(corpus) > budget["maxCorpusSessions"]:
+        raise ValueError(
+            "corpus of %d sessions exceeds budget.maxCorpusSessions %d"
+            % (len(corpus), budget["maxCorpusSessions"]))
     allowed = set(policy["targetSurfaces"])
     rejected = _rejected_from(prior_manifests)
 
     proposals = consolidate(corpus, policy, distill_fn, rejected=rejected)
+    # fail-closed: a run that would emit more proposals than the ceiling is refused, not truncated —
+    # the operator tunes the evidence bar rather than the run silently dropping proposals.
+    if len(proposals) > budget["maxProposedChangesPerRun"]:
+        raise ValueError(
+            "%d proposals exceed budget.maxProposedChangesPerRun %d — tighten the evidence bar"
+            % (len(proposals), budget["maxProposedChangesPerRun"]))
 
     # target-surface containment: dreaming may only PROPOSE to declared staging surfaces.
     for p in proposals:

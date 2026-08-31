@@ -77,8 +77,12 @@ copies it from `platform/templates/memory-consolidation/dreaming-policy.yaml` an
 edits it. Its blocks:
 
 - **`budget`** — dedicated and declarative: `maxTokens`, `maxSubAgents`,
-  `maxProposedChangesPerRun`, `maxCorpusSessions`. **Fail-closed** if a run would
-  exceed any ceiling (budget-runaway mitigation).
+  `maxProposedChangesPerRun`, `maxCorpusSessions`. **Fail-closed** on the countable
+  ceilings — the reference refuses a run whose corpus exceeds `maxCorpusSessions` or
+  whose output exceeds `maxProposedChangesPerRun` (it raises rather than truncating,
+  so the operator tightens the evidence bar). `maxTokens` is **consumer-implemented**
+  (the stdlib reference has no tokenizer); a production runner enforces it fail-closed
+  the same way (budget-runaway mitigation).
 - **`evidenceBar`** — the signal thresholds: `minPrevalenceSessions` (a pattern
   must recur across at least this many **independent** sessions; default 3),
   `minCitationsPerChange`, and `proseLossyWeight` (the down-weight applied to

@@ -17,8 +17,9 @@ evidenceBar:                    # threshold VALUES are operator-tunable (change-
   minCitationsPerChange: 2
   proseLossyWeight: 0.5         # openclaw-style lossy transcripts down-weighted
 targetSurfaces:                 # which files dreaming may PROPOSE to (adding one = ADR, Q7)
-  - docs/knowledge/promotion-candidates.md   # staging (Q3 default — NOT operating-principles directly)
-  - docs/knowledge/shared-observations.md    # last-verified stamping / retirement proposals (Phase 2)
+  - docs/knowledge/promotion-candidates.md   # v1 staging surface (Q3 default — NOT operating-principles directly)
+  # - docs/knowledge/shared-observations.md  # Phase 2 ONLY (last-verified stamping / retirement) — leave
+  #                                           # commented in v1, whose duty is the promotion-candidate scan
 noiseFilters:
   - <regex/glob of transcript content to ignore>
 corpus:

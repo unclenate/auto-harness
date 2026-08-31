@@ -95,6 +95,21 @@ class TestDreamingRun(unittest.TestCase):
         out = dreaming_run(_corpus(3), _policy(), _fake_distill, prior_manifests=prior)
         pats = [r["pattern"] for r in out["manifest"]["rejected"]]
         self.assertIn("old-pat", pats)
+    def test_corpus_over_budget_raises(self):
+        p = _policy()
+        p["budget"]["maxCorpusSessions"] = 2   # corpus of 3 exceeds it
+        with self.assertRaises(ValueError):
+            dreaming_run(_corpus(3), p, _fake_distill)
+    def test_too_many_proposals_over_budget_raises(self):
+        # a distill_fn reporting TWO distinct patterns, each seen in the partition's sessions
+        def two_patterns(partition):
+            return [{"pattern": pat, "verb": "promote", "target": TARGET, "change": "c",
+                     "sessions": list(partition), "citations": ["c1", "c2"], "mode_basis": "full"}
+                    for pat in ("p1", "p2")]
+        p = _policy()
+        p["budget"]["maxProposedChangesPerRun"] = 1   # 2 proposals exceed it
+        with self.assertRaises(ValueError):
+            dreaming_run(_corpus(3), p, two_patterns)
 
 if __name__ == "__main__":
     unittest.main()

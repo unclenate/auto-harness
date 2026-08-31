@@ -25,7 +25,7 @@ this index exists only to group, cluster, or annotate them for human readers.
 
 ### Exportable governance & ecosystem interop
 
-- [OPP-0001](OPP-0001-exportable-governance-contract-for-runtime-harnesses.md) —
+- [OPP-0001](OPP-0001-exportable-governance-contract-for-runtime-harnesses.md) *(exploring 2026-08-31; Layer-4 governance-extension framing per arXiv 2606.31498; G1–G6 mapping published)* —
   Define an exportable governance contract any AI-agent runtime harness (Hive,
   LangGraph, CrewAI) can adopt to gate state transitions on human approval,
   with audit trails compatible with auto-harness's lifecycle artifacts.

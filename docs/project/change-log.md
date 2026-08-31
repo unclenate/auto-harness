@@ -11,6 +11,20 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-08-31 — Explore OPP-0001: exportable governance contract → candidate cross-vendor governance extension
+
+Flipped **OPP-0001** (`proposed → exploring`). It sat in the backlog "awaiting framing"; the "Governance
+Gaps" paper (arXiv 2606.31498) supplied the frame (governance = a missing Layer 4 the harness already
+implements) and a clock (likely A2A-extension standardization in 6–12 months). Concretely reframed:
+package the control-loop envelope + trust-tier escalation + (via OPP-0057/PRD-0040) tamper-evident audit
+as a candidate **cross-vendor governance extension**, neutral above A2A/MCP by construction. First
+deliverable published: the G1–G6 mapping of harness primitives →
+`docs/architecture/governance-layer-mapping.md` (names what would be contributed-as-neutral vs. kept
+proprietary; clarifying regardless of standardization). Next: register interest with the A2A extensions
+process + watch (the arXiv 2606.31498 doc-watch entry) — not a rushed proposal. Distillation lesson (the
+framing-blocked-OPP-unblocks-exogenously / cheapest-clarifying-artifact-first discipline) in
+`shared-observations.md`.
+
 ## 2026-08-31 — Capture the Layer-4 governance-taxonomy observation (interop-protocol design review)
 
 Recorded one ADR-0002 observation in `docs/knowledge/shared-observations.md` from the "Governance Gaps in

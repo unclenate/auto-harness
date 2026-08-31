@@ -94,6 +94,7 @@ The universal rules that apply to every harnessed project, regardless of modules
 
 * [Architecture Diagrams](docs/architecture/diagrams.md) — composition, trust tier flow, companion rule firing, OPP/PRD/ADR lifecycle, distillation triggers, consumer adoption
 * [Stigmergy](docs/architecture/stigmergy.md) — decentralized, environmental feedback loops and agent coordination
+* [Governance-Layer Mapping](docs/architecture/governance-layer-mapping.md) — harness governance primitives → the G1–G6 interop-governance taxonomy (OPP-0001 exploration; candidate neutral cross-vendor governance extension)
 * [Module Types](platform/core/registry/module-types.md) — families, field reference, compiled fragments vs skills
 * [Prerequisites](platform/reference/prerequisites.md) — per-platform toolchain (macOS / Linux / Windows-WSL)
 * [Glossary](platform/reference/glossary.md) — shared terminology

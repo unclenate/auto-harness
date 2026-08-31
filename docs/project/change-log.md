@@ -11,6 +11,43 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-08-30 — Document management/agent-coordination: Diagram 17 + sample composition + doc-accuracy sweep
+
+Follow-up documentation/diagram/asset pass after the `management/agent-coordination` build (PR #192). A
+three-lane audit (user/system docs, developer/governance docs, diagrams/assets) confirmed the feature's
+required propagation was already complete and surfaced three discretionary items, all applied here:
+(1) **New Diagram 17 — Agent-Coordination Control Loop** (`docs/architecture/diagrams.md`): a message-lifecycle
+state machine (`dispatch→ack→progress*→done|block|verdict`, `sync` out-of-band) + the control-semantics-vs-transport
+split, on the precedent of the work-package lane diagram (#16) and the digital-twin family diagram (#14). This is a
+**coupled count bump** `sixteen→seventeen` across `HARNESS.md`, `README.md`, and `docs/_assets/cover-back.svg`
+(all `validate-catalog-counts`-gated), plus the diagrams.md summary table + intro count; the `HARNESS.md` edit is
+satisfied by the operating-principles §3 second-instance note (kernel/base governance-entrypoint companion rule).
+(2) **Sample composition** `platform/compositions/agent-coordination-bus.yaml` (+ compositions README row) — parity
+with `work-package-lane.yaml`, pairing the live coordination channel with the static work-package lane.
+(3) **Doc-accuracy fix** (pre-existing, unrelated): `SUMMARY.md` validator section said "twenty-five validator
+scripts" and omitted `validate-status-parity.sh` (shipped #181) — corrected to twenty-six with the missing nav row.
+
+## 2026-08-30 — Ship management/agent-coordination (PRD-0039, promotes OPP-0059)
+
+Shipped the opt-in **`management/agent-coordination`** overlay — the runtime dual of
+`management/work-package`'s static lane contract — promoting **OPP-0059** (`proposed → accepted`) via
+**PRD-0039** (`Proposed → Accepted`). The overlay's spine is a deliberate split: **control semantics**
+(`docs/coordination/control-loop-contract.md` — a 7-message schema `dispatch`/`ack`/`progress`/`done`/
+`block`/`sync`/`verdict`, a correlation lifecycle, and the load-bearing `tier_ceiling` **caps-never-grants**
+rule — effective tier = `min(ceiling, local policy)`, Tier 4/5 stays human-gated) kept separate from a
+swappable **transport seam** (`docs/coordination/adapter-contract.md` — `poll`/`post`/`ack`/`capabilities`
+over an atomic file inbox/outbox store). A Python-stdlib **reference orchestrator**
+(`reference/agent-coordination/` — `bus.py`, `native_adapter.py`, `loop.py`, 19 manual tests) demonstrates
+the contracts over the Claude `SendMessage` channel with a `ScheduleWakeup`-paced, no-busy-spin supervision
+loop. Half-enforced (reference-tool genre, the `agents/acp` precedent): the harness ships the contract +
+reference material, not an enforced runtime. `tier.declared 3` (with rationale); module stays **opt-in**
+(not on `harness.manifest.yaml`), validated consumer-safe against a throwaway activating manifest. A
+commit-time security review of the reference bus surfaced path-traversal + symlink-follow (untrusted
+envelope fields flowed into filesystem paths) — fixed with a path-component guard + `O_EXCL|O_NOFOLLOW`
+atomic writes, and distilled into `shared-observations.md`. **Deferred to their own records:** the
+`validate-agent-bus.sh` linter, non-native CLI adapters, and the verdict-ledger (OPP-0052) tie-in.
+Catalog: **modules_profiles 52→53, modules_all 62→63**.
+
 ## 2026-08-29 — File OPP-0059: Live inter-agent control-loop & cross-vendor bus
 
 Filed **OPP-0059** (status `proposed`) — a field report from a live multi-agent consumer deployment,

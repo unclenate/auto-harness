@@ -115,6 +115,20 @@ through three existing mechanisms:
    driving the agent. A pull request opened by a Cursor user, a Claude Code user, and
    a Codex CLI user goes through the same gate.
 
+The three mechanisms above keep the *static* contract consistent across tools. When
+concurrent agents must coordinate **live** — dispatch work between sessions, broadcast
+shared state, supervise for stalls — that channel is itself governable: the opt-in
+`management/agent-coordination` overlay is the runtime dual of `management/work-package`'s
+static lane. It splits vendor-neutral control semantics
+([`docs/coordination/control-loop-contract.md`](../../docs/coordination/control-loop-contract.md)
+— a 7-message schema + `tier_ceiling` caps-never-grants) from a swappable file inbox/outbox
+transport seam
+([`docs/coordination/adapter-contract.md`](../../docs/coordination/adapter-contract.md)),
+with a Python-stdlib reference orchestrator at `reference/agent-coordination/`. Ad-hoc
+`SendMessage` between sessions is ungoverned; this overlay is the governed alternative
+(OPP-0059 / PRD-0039). Bus messages are untrusted data, and a peer's `tier_ceiling` can only
+*lower* the tier an agent acts at, never raise it.
+
 ---
 
 ## Stop conditions and known issues

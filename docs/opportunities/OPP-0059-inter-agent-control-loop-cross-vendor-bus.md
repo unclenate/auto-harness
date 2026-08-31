@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0059 — Live Inter-Agent Control-Loop & Cross-Vendor Bus
 
-**Status:** proposed *(field-reported from a live multi-agent consumer deployment)*
+**Status:** accepted *(field-reported from a live multi-agent consumer deployment)*
 **Owner:** @unclenate
 **Created:** 2026-08-29
-**Last Updated:** 2026-08-29
+**Last Updated:** 2026-08-30
 **Confidence:** high *(gap diagnosis)*; medium-high *(cross-vendor adapters — the named agents are
 local CLIs reachable in the reporting deployment; per-agent plumbing conventions pending narrow probes)*
 
@@ -111,14 +111,21 @@ shape. Defer `validate-agent-bus.sh` until the schema has survived ≥2 real mul
 
 ## Disposition
 
-*(empty — proposed; awaiting maintainer disposition. A PRD is anticipated for the promote wedges
-[control semantics + adapter contract + native-bus reference adapter + loop machinery]; the non-native
-adapters and `validate-agent-bus.sh` are sequenced follow-ups. The field-reporter's companion design
-spec is available on request as PRD input.)*
+**Accepted** (2026-08-30). Promoted by PRD-0039 into the opt-in
+`management/agent-coordination` overlay. The promote wedges are: the module manifest, the two
+declarative contracts (`docs/coordination/control-loop-contract.md` — the 7-message schema,
+lifecycle, and `tier_ceiling` caps-never-grants rule; `docs/coordination/adapter-contract.md` — the
+poll/post/ack/capabilities file inbox/outbox seam), and a Python-stdlib native-bus reference
+orchestrator (`reference/agent-coordination/`). Half-enforced (reference-tool genre): the harness
+ships the contract + reference material, not an enforced runtime.
+
+**Deferred to their own records** (do not treat as shipped): the `validate-agent-bus.sh` schema
+linter (until the contract survives ≥2 real coordination cycles), the non-native CLI adapters
+(Codex-first, one file-poll shape reused N×), and the verdict-ledger (OPP-0052) tie-in.
 
 ## Promotion
 
-*(empty)*
+Promoted via **PRD-0039** (`docs/requirements/PRD-0039-agent-coordination-control-loop.md`).
 
 ## Related
 

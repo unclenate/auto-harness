@@ -1,11 +1,21 @@
 .DS_Store
 legacy/Docs.pdf
 
+# Python bytecode cache from running the reference orchestrators under reference/
+__pycache__/
+*.pyc
+
 # Claude Code runtime state and generated skill links/adapters. Canonical skills
 # live under platform/skills/ and should be projected into tool-local folders,
 # not maintained there as independent copies.
 .claude/
 .remember/
+
+# Inter-agent coordination bus runtime store (management/agent-coordination,
+# PRD-0039). The reference orchestrator writes ephemeral message files under
+# .coordination/bus/; these are runtime state, never governed artifacts — the
+# governed contracts live under docs/coordination/.
+.coordination/
 
 # Sample-project example .claude/ directories are reference implementations
 # that ship checked-in (not consumer runtime state). Negate the .claude/ ignore

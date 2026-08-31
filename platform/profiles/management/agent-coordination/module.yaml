@@ -1,0 +1,58 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+id: agent-coordination
+type: management
+version: 0.1.0
+stability: experimental
+summary: >
+  Live inter-agent control-loop & cross-vendor bus overlay (OPP-0059). Governs the live
+  coordination channel between concurrent agent sessions: a vendor-neutral message schema +
+  lifecycle (control-loop-contract.md) split from a file inbox/outbox transport seam
+  (adapter-contract.md), with a native-bus reference orchestrator. The LIVE-channel sibling of
+  management/work-package's static lane contract. tier.declared 3; messages are untrusted data;
+  tier_ceiling caps but never grants; Tier 4/5 stays human-gated. Half-enforced (reference-tool
+  genre): the harness ships the contract + reference material, not an enforced runtime. Deferred to
+  their own records: the validate-agent-bus.sh linter, non-native CLI adapters, and the verdict-ledger
+  (OPP-0052) tie-in.
+tier:
+  declared: 3
+  rationale: >
+    The coordination bus mediates cross-agent task dispatch and shared-state broadcast; a compromised
+    or misconfigured contract can influence what multiple agents act on, so contract changes warrant
+    tier-3 review. Dispatched actions retain their own action tiers — tier_ceiling only caps, never
+    grants. (validate-trust-tier requires a rationale for declared >= 3.)
+dependsOn:
+  - kernel/base
+conflictsWith: []
+requiredArtifacts:
+  - docs/coordination/control-loop-contract.md
+  - docs/coordination/adapter-contract.md
+optionalArtifacts: []
+sensitivePaths:
+  - description: The coordination contracts (message schema, lifecycle, transport seam, trust posture)
+    patterns:
+      - ^docs/coordination/   # self-covered by the companion triggerPaths below (validate-sensitive-paths). NOTE: `.coordination/` (the runtime bus store) is NOT a sensitivePath — it is ephemeral runtime, gitignored, never governed by an ADR.
+companionRules:
+  - description: A change to a coordination contract (message schema, lifecycle, or transport seam) is a governance change — it requires an ADR or a change-log entry in the same commit.
+    triggerPaths:
+      - ^docs/coordination/control-loop-contract\.md$
+      - ^docs/coordination/adapter-contract\.md$
+    requiredAny:
+      - ^docs/adr/ADR-
+      - ^docs/project/change-log\.md$
+    humanReview: >
+      Reviewers verify the contract change is intentional and its blast radius is understood — a
+      message-type, lifecycle, envelope-field, or tier_ceiling-semantics change alters what every
+      adapter and the reference orchestrator must honor. A schema/lifecycle change warrants an ADR;
+      a clarification or additive field may use a change-log entry.
+validators:
+  - validate-companions
+reviewGates:
+  - Human review is required for any change to tier_ceiling semantics, the Tier 4/5 human-gate, or the untrusted-data rule — these are the safety spine, not tunables.
+  - A new message type or lifecycle edge must be justified against a real coordination cycle, not speculated.
+agentAdapters:
+  - platform/agents/base
+compiledFragments:
+  - platform/profiles/management/agent-coordination/README.md
+recommendedSkills:
+  - harness-governance

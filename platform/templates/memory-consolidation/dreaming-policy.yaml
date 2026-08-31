@@ -1,0 +1,35 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+# Template steering file for the management/memory-consolidation ("dreaming") overlay.
+# Copy this to docs/knowledge/dreaming-policy.yaml in the consumer repo and edit the
+# values for your organization. It declares the budget, the evidence bar, the target
+# surfaces dreaming may PROPOSE to, the noise filters, the corpus permission scope, and
+# the per-agent-pack transcript-provider mapping. See docs/knowledge/dreaming-contract.md
+# for the governing contract.
+schemaVersion: 1
+budget:                         # dedicated, declarative — fail-closed on exceed
+  maxTokens: 200000
+  maxSubAgents: 8
+  maxProposedChangesPerRun: 15
+  maxCorpusSessions: 500
+evidenceBar:                    # threshold VALUES are operator-tunable (change-log) per Q7
+  minPrevalenceSessions: 3      # a pattern must recur across >= 3 INDEPENDENT sessions
+  minCitationsPerChange: 2
+  proseLossyWeight: 0.5         # openclaw-style lossy transcripts down-weighted
+targetSurfaces:                 # which files dreaming may PROPOSE to (adding one = ADR, Q7)
+  - docs/knowledge/promotion-candidates.md   # staging (Q3 default — NOT operating-principles directly)
+  - docs/knowledge/shared-observations.md    # last-verified stamping / retirement proposals (Phase 2)
+noiseFilters:
+  - <regex/glob of transcript content to ignore>
+corpus:
+  permissionScope: maintainer-local         # mirrors the target store's permission set (Mukta)
+transcriptProviders:                        # § 2 mapping lives HERE (not a module.yaml key), keyed by agent-pack id
+  claude-code:
+    location: ~/.claude/**/transcripts/*.jsonl
+    format: jsonl
+    mode: full                              # richest; the v1 target; needs NO OPP-0057
+    fields: [sessionId, timestamp, toolCalls, outcome]
+    permissionScope: maintainer-local       # MUST NOT exceed corpus.permissionScope above
+  # acp:        mode: full  — ONLY after OPP-0057 adds sessionId/timestamp to the audit sink
+  # openclaw:   mode: prose-lossy  — down-weighted by evidenceBar.proseLossyWeight
+  # gemini-cli / codex-cli / cursor: omit = honest "none" until a provider exists

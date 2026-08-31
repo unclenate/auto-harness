@@ -162,6 +162,7 @@ Product, project, and program governance overlays.
 * [Security Static Analysis](platform/profiles/management/security-static-analysis/README.md) — opt-in SAST coverage posture for agent-generated code (Wave 5.4; PRD-0016)
 * [Digital Twin / Scenario Runtime](platform/profiles/management/digital-twin/README.md) — default-off overlay for scenario-driven twins; maturity-gated twin-profile + dual-spine standards anchor (interoperability + Gemini Principles)
 * [Work Package](platform/profiles/management/work-package/README.md) — default-off overlay for parallel multi-agent delivery; a per-task lane (allowedFiles / readOnlyFiles / prMode) checked against the dispatched agent's actual diff by `validate-lane-integrity.sh`
+* [Agent Coordination](platform/profiles/management/agent-coordination/README.md) — default-off overlay governing the live inter-agent channel; a vendor-neutral control-loop contract (7-message schema + `tier_ceiling` caps-never-grants) split from a file inbox/outbox transport seam, with a Python-stdlib reference orchestrator (OPP-0059 / PRD-0039)
 * [Canonical Position](platform/profiles/management/canonical-position/README.md) — opt-in strategic north-star overlay; a single ratified `docs/canonical-position.md` every strategy-shaped artifact must cite, revised only via a paired review-artifact ratification trail (PRD-0007 / OPP-0007)
 
 ### Domains
@@ -609,6 +610,7 @@ Specifications for substantive new capabilities, paired with their originating o
 * [PRD-0036: Status-Parity Validator (`validate-status-parity.sh`)](docs/requirements/PRD-0036-status-parity-validator.md)
 * [PRD-0037: Agent Client Protocol Governance Bridge (`agents/acp`)](docs/requirements/PRD-0037-acp-governance-bridge.md)
 * [PRD-0038: ACP Governance Proxy — Reference Implementation](docs/requirements/PRD-0038-acp-governance-proxy-reference.md)
+* [PRD-0039: Inter-Agent Control-Loop & Cross-Vendor Bus (`management/agent-coordination`)](docs/requirements/PRD-0039-agent-coordination-control-loop.md)
 
 ### Opportunity Records (this project)
 

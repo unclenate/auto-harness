@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 
 **Version:** 1.0 | **Owner:** @unclenate | **Last Updated:** 2026-08-30 | **Review Cycle:** on-change
 
-**Status:** Proposed
+**Status:** Accepted
 **Date:** 2026-08-30
 **Author:** @unclenate
 **Reviewers:** @unclenate

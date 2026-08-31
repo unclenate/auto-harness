@@ -777,7 +777,7 @@ cite-the-evidence rule), not the extraction; composes with the OPP-0046 lane
   `validate-acp-audit.sh` shape linter and a policy-feedback phase remain their own
   records.
 
-- [OPP-0059](OPP-0059-inter-agent-control-loop-cross-vendor-bus.md) *(proposed 2026-08-29; field report; un-defers OPP-0046 bus; PRD anticipated)* —
+- [OPP-0059](OPP-0059-inter-agent-control-loop-cross-vendor-bus.md) *(accepted 2026-08-30; field report; un-defers OPP-0046 bus; promoted via PRD-0039)* —
   **Live inter-agent control-loop & cross-vendor bus.** OPP-0046 governs the static
   lane boundary between concurrent agents; the *live channel* they coordinate over —
   dispatch/ack/progress/done/block/sync/verdict — has no contract, existing only as

@@ -11,7 +11,20 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
-## 2026-08-31 — File OPP-0060: non-native (local-CLI) transport adapter for the agent-coordination bus
+## 2026-08-31 — Implement OPP-0060: port the non-native (local-CLI) adapter into the reference orchestrator
+
+Ported the peer-sourced, independently-re-verified non-native adapter into
+`reference/agent-coordination/`: `cli_runner.py` (`CLIRunner` — per-dispatch headless-CLI runner) +
+`cli_invokers.py` (`build_argv` defense-in-depth second gate) + their manual TDD suites
+(`test_cli_runner.py` 9, `test_cli_invokers.py` 12) + `smoke_live.py` (the one human-authorized live-spawn
+harness). Added a **"Non-native (local-CLI) adapters"** section to `docs/coordination/adapter-contract.md`
+encoding the three findings — notably that copilot's headless mode forces `--allow-all-tools` (no true
+read-only tier), so the gap must be **declared via `capabilities`**, never silently over-permitted (a
+caps-never-grants rule at the transport layer). Vendors (`bus.py`/`native_adapter.py`/`loop.py`) reused
+verbatim, no contract change. **All 40 tests pass** (21 non-native + 19 upstream regression) against the
+frozen store. Half-day direct port, no PRD (OPP-0060 Disposition). Credits the OPP-0059 field-reporter;
+`agents/agent-coordination` stays opt-in so its contract-change companion rule is dormant (this entry is
+the audit trail).
 
 Filed **OPP-0060** (proposed) — the piece PRD-0039 explicitly deferred ("non-native CLI adapters to their
 own records"). A headless CLI (Codex/Copilot/Grok) participates in the bus over the FROZEN store +

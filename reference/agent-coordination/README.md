@@ -26,13 +26,43 @@ coordination contracts over the Claude `SendMessage` channel with a
 | `bus.py` | Canonical file inbox/outbox store — `poll` / `post` / `ack` / `capabilities` + envelope validation, per `adapter-contract.md`. |
 | `native_adapter.py` | Bridges the Claude `SendMessage` channel to the file bus; `apply_tier_ceiling` (caps-never-grants). |
 | `loop.py` | Heartbeat + stall detection. `tick()` runs **once** and returns `next_wake_s` for a `ScheduleWakeup`-style scheduler — no busy-spin. |
-| `test_reference.py` | Manual TDD tests for all three modules. |
+| `test_reference.py` | Manual TDD tests for the native store/adapter/loop. |
+| `cli_runner.py` | **Non-native adapter** — drives a local CLI agent (Codex/Copilot/Grok) as a headless process, one invocation per dispatch: poll → `ack` → apply `tier_ceiling` → invoke the CLI with the task as data → `done`/`block`. Tier ≥4 auto-blocks; `tick()` returns `next_wake_s` (no busy-spin). |
+| `cli_invokers.py` | `build_argv(cli, task, effective_tier, cwd, model)` — per-vendor headless argv; a defense-in-depth second gate that refuses any Tier ≥4 or sandbox-bypass command; task is a single un-shell-interpreted arg. |
+| `test_cli_runner.py`, `test_cli_invokers.py` | Manual TDD tests for the non-native adapter (fake invoker, zero external calls). |
+| `smoke_live.py` | The one place a real external CLI is spawned — **manual, human-authorized** (`python3 smoke_live.py [codex\|grok\|copilot] [model]`). Not a unit test. |
 
 ## Run the manual tests
 
 ```bash
-python3 reference/agent-coordination/test_reference.py
+cd reference/agent-coordination
+python3 test_reference.py         # native store/adapter/loop (19)
+python3 test_cli_runner.py        # non-native runner (9)
+python3 test_cli_invokers.py      # non-native argv builder (12)
 ```
+
+## Non-native (local-CLI) adapter
+
+`cli_runner.py` + `cli_invokers.py` demonstrate the piece PRD-0039 / OPP-0059 defers — a **non-native**
+adapter for a headless local CLI (Codex/Copilot/Grok), driven as a process *per dispatch* rather than a
+polling session. It reuses the frozen `bus.py` store + `native_adapter.apply_tier_ceiling` verbatim (no
+contract change) and honors the same spine: `tier_ceiling` caps-never-grants, Tier 4/5 auto-blocks to the
+human gate, task-as-untrusted-data, and a `build_argv` **second gate** that refuses to construct any Tier
+≥4 or sandbox-bypass command. See the non-native section of
+[`../../docs/coordination/adapter-contract.md`](../../docs/coordination/adapter-contract.md) for the
+governed constraints (OPP-0060).
+
+**Verified CLI matrix (headless `--help`, 2026-08-31):**
+
+- **Codex** — `codex exec -s <read-only|workspace-write> --skip-git-repo-check "task"`; sandbox maps ~1:1
+  to trust tiers (cleanest). Live: loop proven; a successful `done` needs a model the operator's account
+  permits (set `SMOKE_MODEL`).
+- **Grok** — `grok -p "task" [--always-approve]`. Live: **PASS** — full `dispatch→ack→done{result:"4"}`
+  round-trip through the file bus.
+- **Copilot** — `copilot -p "task" --allow-all-tools`; non-interactive **forces** `--allow-all-tools`, so
+  there is no true read-only headless tier — the adapter **declares** that gap (never silently
+  over-permits) and runs at a low local tier in a scoped dir.
+- **Antigravity** — no headless CLI (IDE-only); reach is bounded by the vendor's headless surface.
 
 ## Safety
 

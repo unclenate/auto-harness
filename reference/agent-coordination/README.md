@@ -50,5 +50,7 @@ The orchestrator honors the contract's safety spine:
   the filesystem it is given — an attacker who already has write access to an
   agent's own inbox directory is out of scope for this example.)
 
-The two contracts under [`../../docs/coordination/`](../../docs/coordination/)
-are the source of truth; this code follows them, it does not define them.
+The two contracts under `docs/coordination/` are the source of truth — the
+[control-loop contract](../../docs/coordination/control-loop-contract.md) and the
+[adapter contract](../../docs/coordination/adapter-contract.md); this code follows
+them, it does not define them.

@@ -35,7 +35,7 @@ Two declarative contracts (the forcing artifacts):
 ## Reference orchestrator
 
 A thin, runnable **reference** lives at
-[`reference/agent-coordination/`](../../../../reference/agent-coordination/) —
+[`reference/agent-coordination/`](../../../../reference/agent-coordination/README.md) —
 a Python 3 stdlib file bus (`bus.py`), a native `SendMessage` adapter
 (`native_adapter.py`), and a `ScheduleWakeup`-paced supervision loop
 (`loop.py`), with manual TDD tests. It is **reference material, not enforced

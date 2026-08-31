@@ -759,7 +759,7 @@ cite-the-evidence rule), not the extraction; composes with the OPP-0046 lane
   Carries the specified wedge — the tier → `request_permission` mapping table —
   into a recommended PRD.
 
-- [OPP-0057](OPP-0057-acp-audit-knowledge-capture-bridge.md) *(proposed 2026-08-07; `agents/acp` follow-on; PRD recommended)* —
+- [OPP-0057](OPP-0057-acp-audit-knowledge-capture-bridge.md) *(accepted 2026-08-31; `agents/acp` follow-on; promoted via PRD-0040)* —
   **ACP audit → knowledge-capture bridge.** The shipped ACP reference proxy
   (PRD-0038) writes an append-only runtime audit (`.acp/audit/session-log.jsonl`)
   that nothing reads back — a dead end. Bridge it: a **session-boundary

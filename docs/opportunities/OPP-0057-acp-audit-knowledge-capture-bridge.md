@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0057 — ACP Audit → Knowledge-Capture Bridge (`agents/acp` follow-on)
 
-**Status:** proposed
+**Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-08-03
-**Last Updated:** 2026-08-07
+**Last Updated:** 2026-08-31
 **Confidence:** medium (the source and target artifacts both exist and are stable — the ACP proxy's audit JSONL and the ADR-0002 observation schema; the open question is the *distillation policy* between them, not whether the endpoints are real)
 
 ---
@@ -234,6 +234,12 @@ linter and the policy-feedback phase remain their own records.
 
 ## Promotion
 
-None yet — status `proposed`. On acceptance, a spawned `PRD-NNNN` is linked here (specifying the
-promotion contract + reference distillation helper, and sequencing the audit-schema reconciliation
-that unblocks per-session grain).
+**Accepted (2026-08-31)** — promoted via **PRD-0040** (`docs/requirements/PRD-0040-acp-audit-bridge.md`).
+The PRD sequences the audit-schema reconciliation first (adopting the `tier-policy.yaml` `audit.record`
+as the contract of record and extending the reference proxy to emit `sessionId` + `timestamp`, which are
+declared but not currently emitted — a schema *divergence*, not a flat absence), and bakes G6
+tamper-evidence into the record's first authoritative definition (`actor` + a keyless `prev_hash` chain;
+cryptographic signatures deferred). It is named the shared dependency of dreaming (OPP-0058), the
+coordination bus (PRD-0039), and the verdict ledger (OPP-0052). Implementation (proxy extension + bridge
+transform + reference chain-verify helper) is a subsequent phase; the audit-schema linter and the
+policy-feedback phase remain their own records.

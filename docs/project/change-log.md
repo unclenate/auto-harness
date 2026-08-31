@@ -11,6 +11,22 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-08-31 — File PRD-0040: ACP audit → knowledge-capture bridge, with a tamper-evident audit record (promotes OPP-0057)
+
+Filed **PRD-0040** (Accepted, design-only) promoting **OPP-0057** (`proposed → accepted`). The PRD
+reconciles the divergent ACP audit surface — the declared `tier-policy.yaml` `audit.record` lists
+`sessionId`+`timestamp` but the reference proxy `_AuditSink` emits neither — to a single contract of
+record, and bakes **G6 tamper-evidence** into the record's first authoritative definition: adds an
+`actor` field and a **keyless SHA-256 `prev_hash` chain** (ordered/replayable/reconstructible, zero key
+management);
+cryptographic signatures and a `validate-audit-chain.sh` gate are deferred. The record is named the
+shared dependency of dreaming (OPP-0058, its Phase-0 precondition), the coordination bus (PRD-0039), and
+the verdict ledger (OPP-0052) — designed once, first, because integrity added after consumers lock in is
+a migration on a shared format. Half-enforced (reference-tool genre, the `agents/acp` precedent);
+implementation (proxy extension + bridge transform) is a subsequent phase. Design input: the interop
+governance-gaps review (arXiv:2606.31498, dimension G6). Distillation lesson captured in
+`shared-observations.md`.
+
 ## 2026-08-30 — Document management/agent-coordination: Diagram 17 + sample composition + doc-accuracy sweep
 
 Follow-up documentation/diagram/asset pass after the `management/agent-coordination` build (PR #192). A

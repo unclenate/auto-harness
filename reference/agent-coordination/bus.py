@@ -12,6 +12,32 @@ def _read_json(path):
     with open(path) as fh:
         return json.load(fh)
 
+def _check_path_component(field, value):
+    """Message fields are UNTRUSTED DATA (control-loop-contract.md), yet `to`/`from`/`id`/`ts`
+    are used to build filesystem paths (inbox dir + `<ts>-<id>-<type>.json`). Guard them so a
+    hostile message can never escape the bus root via traversal: reject path separators, parent
+    refs, and home markers. `*` is allowed ONLY as the sync-broadcast recipient."""
+    if not isinstance(value, str) or not value:
+        raise ValueError("%s must be a non-empty string" % field)
+    if value == "*":
+        return
+    if ("/" in value or "\\" in value or os.sep in value
+            or (os.altsep and os.altsep in value)
+            or ".." in value or value in (".", "..") or value.startswith("~")):
+        raise ValueError("unsafe path component in %s: %r" % (field, value))
+
+def _atomic_write(path, data):
+    """Write-then-rename, refusing to follow a symlink planted at the temp path.
+    O_EXCL fails if the temp name already exists; O_NOFOLLOW (POSIX) refuses a symlink."""
+    flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_NOFOLLOW", 0)
+    fd = os.open(path, flags, 0o600)
+    try:
+        with os.fdopen(fd, "w") as fh:
+            fh.write(data)
+    except BaseException:
+        os.unlink(path)
+        raise
+
 def validate_envelope(msg):
     for f in _REQUIRED:
         if f not in msg:
@@ -24,11 +50,18 @@ def validate_envelope(msg):
     # correlation rule (control-loop-contract.md): every non-dispatch/sync message echoes a dispatch id
     if msg["type"] not in ("dispatch", "sync") and not msg.get("id"):
         raise ValueError("%s message must carry a correlation id" % msg["type"])
+    # path-safety: these fields build file paths — an untrusted value must never traverse the root
+    _check_path_component("from", msg["from"])
+    _check_path_component("to", msg["to"])
+    _check_path_component("ts", msg["ts"])
+    if msg.get("id"):
+        _check_path_component("id", msg["id"])
 
 class FileBus:
     def __init__(self, root):
         self.root = root
     def _inbox(self, agent_id):
+        _check_path_component("agent_id", agent_id)  # defense-in-depth: poll/ack pass it directly
         p = os.path.join(self.root, agent_id, "inbox")
         os.makedirs(p, exist_ok=True); return p
     def post(self, msg):
@@ -36,8 +69,7 @@ class FileBus:
         inbox = self._inbox(msg["to"])
         name = "%s-%s-%s.json" % (msg["ts"], msg["id"], msg["type"])
         final = os.path.join(inbox, name); tmp = final + ".tmp"
-        with open(tmp, "w") as fh:
-            json.dump(msg, fh)
+        _atomic_write(tmp, json.dumps(msg))
         os.replace(tmp, final)  # atomic — a partial file is never polled
         return name
     def poll(self, agent_id):
@@ -64,6 +96,7 @@ class FileBus:
         return {"types": list(TYPES), "modes": ["poll"]}
     # --- outbox: messages an agent produced for REMOTE peers (drained by an adapter) ---
     def _outbox(self, agent_id):
+        _check_path_component("agent_id", agent_id)  # defense-in-depth
         p = os.path.join(self.root, agent_id, "outbox"); os.makedirs(p, exist_ok=True); return p
     def post_outbound(self, msg):
         """Queue a message FROM msg['from'] for a remote peer; an adapter bridges it out."""
@@ -71,8 +104,7 @@ class FileBus:
         outbox = self._outbox(msg["from"])
         name = "%s-%s-%s.json" % (msg["ts"], msg["id"], msg["type"])
         final = os.path.join(outbox, name); tmp = final + ".tmp"
-        with open(tmp, "w") as fh:
-            json.dump(msg, fh)
+        _atomic_write(tmp, json.dumps(msg))
         os.replace(tmp, final); return name
     def drain_outbox(self, agent_id):
         outbox = self._outbox(agent_id)

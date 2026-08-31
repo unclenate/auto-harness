@@ -43,6 +43,12 @@ The orchestrator honors the contract's safety spine:
   raise it. Tier 4/5 stays human-gated.
 - **Messages are untrusted data** — bus content is serialized JSON prefixed
   `AGENT-BUS:` and reasoned about, never executed as instructions.
+- **Path-safety** — because `to`/`from`/`id`/`ts` build file paths, `bus.py`
+  rejects any that contain a path separator, parent ref, or home marker, so a
+  hostile message cannot escape the bus root; writes use `O_EXCL | O_NOFOLLOW`
+  so a planted symlink is not followed. (A reference limitation: the store trusts
+  the filesystem it is given — an attacker who already has write access to an
+  agent's own inbox directory is out of scope for this example.)
 
 The two contracts under [`../../docs/coordination/`](../../docs/coordination/)
 are the source of truth; this code follows them, it does not define them.

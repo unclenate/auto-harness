@@ -46,6 +46,18 @@ class TestBus(unittest.TestCase):
     def test_result_requires_correlation_id(self):
         with self.assertRaises(ValueError):
             validate_envelope(_msg(type="done", id="", payload={"result": "ok"}))
+    def test_rejects_path_traversal_in_recipient(self):
+        # untrusted 'to' must never escape the bus root via a traversal segment
+        with self.assertRaises(ValueError):
+            self.bus.post(_msg(to="../../../../tmp/evil"))
+    def test_rejects_path_traversal_in_id(self):
+        # untrusted 'id' feeds the filename — a separator/parent-ref must be rejected
+        with self.assertRaises(ValueError):
+            self.bus.post(_msg(id="../../etc/passwd"))
+    def test_sync_broadcast_star_recipient_allowed(self):
+        # '*' is the one allowed non-identifier recipient (sync broadcast)
+        self.bus.post(_msg(type="sync", id="", to="*", payload={"state": {}}))
+        self.assertEqual(len(self.bus.poll("*")), 1)
     def test_seven_types(self):
         self.assertEqual(TYPES, ["dispatch","ack","progress","done","block","sync","verdict"])
 

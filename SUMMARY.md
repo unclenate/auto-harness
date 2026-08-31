@@ -164,6 +164,7 @@ Product, project, and program governance overlays.
 * [Digital Twin / Scenario Runtime](platform/profiles/management/digital-twin/README.md) — default-off overlay for scenario-driven twins; maturity-gated twin-profile + dual-spine standards anchor (interoperability + Gemini Principles)
 * [Work Package](platform/profiles/management/work-package/README.md) — default-off overlay for parallel multi-agent delivery; a per-task lane (allowedFiles / readOnlyFiles / prMode) checked against the dispatched agent's actual diff by `validate-lane-integrity.sh`
 * [Agent Coordination](platform/profiles/management/agent-coordination/README.md) — default-off overlay governing the live inter-agent channel; a vendor-neutral control-loop contract (7-message schema + `tier_ceiling` caps-never-grants) split from a file inbox/outbox transport seam, with a Python-stdlib reference orchestrator (OPP-0059 / PRD-0039)
+* [Memory Consolidation ("Dreaming")](platform/profiles/management/memory-consolidation/README.md) — default-off, **propose-only** out-of-band overlay; mines cross-session transcripts and emits an evidence-backed proposed knowledge-tree diff a human promotes (Tier 2, never merges — the Letta divergence rejected); the out-of-band complement to in-band PRD-0004 distillation (OPP-0058 / PRD-0041)
 * [Canonical Position](platform/profiles/management/canonical-position/README.md) — opt-in strategic north-star overlay; a single ratified `docs/canonical-position.md` every strategy-shaped artifact must cite, revised only via a paired review-artifact ratification trail (PRD-0007 / OPP-0007)
 
 ### Domains
@@ -288,6 +289,9 @@ Pre-built manifests for common project types. Copy the closest match to
 * [AEC BIM Project](platform/compositions/aec-bim-project.yaml) — ISO 19650 / openBIM delivery; information-management substrate + openBIM exchange + ISO 19650-5 security
 * [Digital Twin Prototype](platform/compositions/digital-twin-prototype.yaml) — scenario-driven digital-twin overlay with privacy-by-design on a built stack
 * [Geospatial BIM Twin](platform/compositions/geospatial-bim-twin.yaml) — BIM + GIS twin of a place; spatial-reference substrate + OGC exchange + BIM↔GIS georeferencing
+* [Work-Package Lane](platform/compositions/work-package-lane.yaml) — parallel multi-agent delivery; per-work-package lane (allowedFiles / readOnlyFiles / prMode) checked against the dispatched agent's diff
+* [Agent-Coordination Bus](platform/compositions/agent-coordination-bus.yaml) — live multi-agent coordination; the control-loop bus (`tier_ceiling` caps-never-grants) paired with the static work-package lane
+* [Memory Consolidation (Dreaming)](platform/compositions/memory-consolidation.yaml) — out-of-band consolidation mining cross-session transcripts into evidence-backed proposals a human promotes (propose-only, Tier 2)
 
 ### Examples
 

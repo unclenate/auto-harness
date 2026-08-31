@@ -1,0 +1,53 @@
+# Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
+# SPDX-License-Identifier: MIT OR Apache-2.0
+id: memory-consolidation                 # "dreaming" is the documented alias (Q5)
+type: management
+version: 0.1.0
+stability: experimental                  # honest: unbuilt, reference-genre (valid vocab: 3 shipped modules use it)
+summary: >
+  Out-of-band memory consolidation ("dreaming") — a propose-only batch process that mines
+  cross-session transcripts and emits an evidence-backed proposed diff against the knowledge
+  tree. Opt-in overlay; complements (never replaces) the in-band cycle-end rule (PRD-0004).
+tier:
+  declared: 2                            # propose-only: writes a branch, NEVER merges (Tier 3). Mirrors the knowledge-capture parent; makes the "never Tier 3" thesis manifest-grounded, not prose-only.
+dependsOn:
+  - kernel/base
+  - knowledge-capture                    # consumes the ADR-0002 observation schema
+conflictsWith: []
+requiredArtifacts:
+  - docs/knowledge/dreaming-policy.yaml   # the steering file (§ 9.2)
+optionalArtifacts:
+  - docs/knowledge/dreaming-runs/         # run manifests (§ 9.3), one per invocation
+sensitivePaths:
+  - description: Steering policy (signal/noise bar, budget, target surfaces) and the run manifests
+    patterns:
+      - ^docs/knowledge/dreaming-policy\.ya?ml$
+      - ^docs/knowledge/dreaming-runs/
+companionRules:
+  - description: Steering SCHEMA or a new target surface is a governance change → ADR/operating-principles (Q7)
+    triggerPaths: [ ^docs/knowledge/dreaming-policy\.ya?ml$ ]
+    requiredAny: [ ^docs/adr/ADR-, ^docs/operating-principles\.md$, ^docs/project/change-log\.md$ ]
+    humanReview: >
+      Reviewers distinguish a THRESHOLD tune (change-log suffices) from a SCHEMA/target-surface
+      change (requires an ADR): the latter changes what the batch process may propose or write to.
+  - description: A dreaming run manifest (a batch-consolidation run's proposal record) must be accompanied by a change-log audit-trail entry noting the run.
+    triggerPaths: [ ^docs/knowledge/dreaming-runs/ ]
+    requiredAny: [ ^docs/project/change-log\.md$ ]
+    humanReview: >
+      Reviewers verify the run is logged (steering-policy version, corpus scope, proposal count) and
+      that each PROPOSE block in the manifest carries >= N independent-session citations with prevalence
+      stats; reject manufactured or single-session "patterns" (cargo-cult-at-scale) and anything
+      proposing a write above the corpus permissionScope. NOTE: this rule triggers on the
+      dreaming-authored surface (dreaming-runs/) ONLY — it must NOT trigger on promotion-candidates.md /
+      shared-observations.md, because those are also edited by humans, whose observations are governed by
+      the existing knowledge-capture rules (observation-hygiene + audit-trail), unchanged.
+validators:
+  - validate-companions
+reviewGates:
+  - Human review is required to merge ANY dreaming proposal; the job never merges (propose-only, Tier 2).
+agentAdapters:
+  - platform/agents/base
+compiledFragments:                        # schema-REQUIRED (both knowledge-capture and privacy-by-design carry it); omitting it fails validation
+  - platform/profiles/management/memory-consolidation/README.md
+recommendedSkills:
+  - harness-governance

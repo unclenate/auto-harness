@@ -11,6 +11,22 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-08-31 — Build the management/memory-consolidation ("dreaming") overlay v1 (implements PRD-0041)
+
+Shipped the opt-in **`management/memory-consolidation`** overlay v1 — the out-of-band second layer that
+complements in-band PRD-0004 distillation. The overlay (tier 2 — **propose-only**, writes a branch, never
+merges) ships: the governed **contract** (`docs/knowledge/dreaming-contract.md` — transcript-provider
+interface + steering schema + proposed-diff output contract + the propose-only spine), a **template**
+steering file (`platform/templates/memory-consolidation/dreaming-policy.yaml`), and a Python-stdlib
+**reference orchestrator** (`reference/dreaming/` — `policy.py`/`consolidate.py`/`run.py`, the sub-agent
+distillation taken as an **injected `distill_fn` seam**, **14 tests** green). v1 duty = the gap-#1
+promotion-candidate scan; proposals land in the `promotion-candidates.md` staging surface a human
+promotes. Two companion rules keyed on the **machine-authored** `dreaming-runs/` surface (never the shared
+human/machine files). **Deferred:** `validate-dreaming-output.sh`, Phase 2/3, non-Claude providers. Catalog:
+**modules_profiles 53→54, modules_all 63→64**. Distillation lesson (inject-the-cognition-seam reference
+design) in `shared-observations.md`. Built subagent-driven (governance docs by an implementer; the
+reference orchestrator controller-authored — the invention split).
+
 ## 2026-08-31 — File PRD-0041: out-of-band memory consolidation ("dreaming"), promotes OPP-0058
 
 Filed **PRD-0041** (Accepted, design-only) promoting **OPP-0058** (`proposed → accepted`). Specifies the

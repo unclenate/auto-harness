@@ -127,6 +127,17 @@ current.
 | 5 | **Cargo-cult observation-quality review** | `platform/workflow/cycle-end-distillation.md:118` | Reject observations appended only to satisfy the rule with no substantive connection to the trigger work. | Audit-boundary | Separate OPP (review *quality*, not firing) — bar is a second observed instance before machinery; see the note below. |
 | 6 | **Candidate-stub promotion-criterion gate** | `OPP-0032:137` (the promotion-criterion text) + `candidates.md:89` | Promote a candidate-stub to an OPP only when its self-declared promotion-criterion is met (a second concrete instance). | Session-boundary or audit-boundary | Codify the technique in `candidates.md` after a second firing (deferred per OPP-0032). |
 
+> **Status update — gaps #1, #3, #4 now have a home (`management/memory-consolidation`).**
+> The propose-only out-of-band "dreaming" overlay (OPP-0058 / PRD-0041, shipped) is
+> the periodic job the "Recommended next step" column asked for on three of these
+> rows: **gap #1** (operating-principles promotion-candidate scan) is its **v1**
+> duty — a human-gated diff landing in `docs/knowledge/promotion-candidates.md`;
+> **gap #3** (back-pressure audit) is its deferred **Phase 2**; **gap #4** (periodic
+> §10 doctrine audit) is its deferred **Phase 3**. The rows stay listed here because
+> the overlay is *opt-in and propose-only* — it proposes, a human still fires the
+> promotion — so the reviews are addressed, not auto-closed. See
+> [`docs/knowledge/dreaming-contract.md`](../../docs/knowledge/dreaming-contract.md).
+
 > **A note on review *quality* (out of scope, named here on purpose).** Rows 5
 > is a different gap class than the rest: it is about a fired review being
 > satisfied *shallowly*, not about an unfired review. Per PRD-0013 this is

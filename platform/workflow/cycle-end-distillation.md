@@ -25,6 +25,14 @@ trigger mechanisms compose*.
 > wired (PR-boundary) trigger; `session-shape.md` is where the unfired ones are
 > catalogued.
 
+> **Out-of-band complement:** this PR-boundary rule is the **floor** that fires as
+> each cycle ends. The opt-in `management/memory-consolidation` overlay ("dreaming",
+> OPP-0058 / PRD-0041) is its propose-only **out-of-band** counterpart: it runs
+> *between* sessions, on a dedicated budget, mining the cross-session corpus no
+> single PR-boundary cycle can see, and emits an evidence-backed proposed diff a
+> human promotes. It **complements, never replaces** this rule. Contract:
+> [`docs/knowledge/dreaming-contract.md`](../../docs/knowledge/dreaming-contract.md).
+
 This document is the canonical home for the "heartbeat with Knowledge
 Contribution step" pattern that earlier module READMEs reference as
 aspirational prose. The pattern is now grounded in actionable machinery:

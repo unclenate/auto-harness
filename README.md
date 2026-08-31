@@ -160,7 +160,7 @@ flowchart TD
     Modules -.documented in.-> Workflows
 ```
 
-For the full set of architecture diagrams (seventeen in total — covering trust tier flow, companion rule firing, the OPP/PRD/ADR lifecycle, and more) see [`docs/architecture/diagrams.md`](docs/architecture/diagrams.md).
+For the full set of architecture diagrams (eighteen in total — covering trust tier flow, companion rule firing, the OPP/PRD/ADR lifecycle, and more) see [`docs/architecture/diagrams.md`](docs/architecture/diagrams.md).
 
 ### 1. Declare your modules
 
@@ -264,7 +264,7 @@ declares its governance contract. You compose them to match your project.
 | **Architectures** | Deployment and interaction patterns | `web-app`, `api-service`, `event-driven`, `mcp-server`, `agent-observability`, `ai-foundry-target`, `intelligent-model-routing`, `agent-defense-in-depth` |
 | **Data** | Storage overlays | `relational-sql`, `document-store`, `object-storage` |
 | **Delivery** | Lifecycle posture | `prototype`, `production-saas`, `internal-platform`, `self-hosted-oss`, `managed-fleet` |
-| **Management** | Product, project, program, knowledge, opportunity, and testing governance | `discovery-intake`, `interview-driven`, `product-lite`, `project-standard`, `program-lite`, `testing-standard`, `eval-gated-testing`, `knowledge-capture`, `opportunity-capture`, `security-static-analysis`, `privacy-by-design`, `digital-twin`, `work-package`, `canonical-position`, `agent-coordination` |
+| **Management** | Product, project, program, knowledge, opportunity, and testing governance | `discovery-intake`, `interview-driven`, `product-lite`, `project-standard`, `program-lite`, `testing-standard`, `eval-gated-testing`, `knowledge-capture`, `opportunity-capture`, `security-static-analysis`, `privacy-by-design`, `digital-twin`, `work-package`, `canonical-position`, `agent-coordination`, `memory-consolidation` |
 | **Domains** | Vendor or specialist overlays | `supabase`, `web3`, `media-pipeline`, `gitbook`, `agentic-interfaces`, `cryptographic-identity`, `healthcare-fhir`, `healthcare-smart-on-fhir`, `aec-iso19650-im`, `aec-openbim-exchange`, `aec-iso19650-5-security`, `geospatial-foundation`, `geospatial-exchange`, `geospatial-bim-georeference` |
 | **Agents** | AI-tool operating packs | `acp`, `base`, `claude-code`, `codex-cli`, `copilot-cli`, `cursor`, `gemini-cli`, `generic-llm`, `openclaw` |
 
@@ -327,6 +327,7 @@ Pre-built manifests for common project types. Copy the closest match and adjust:
 | [`geospatial-bim-twin.yaml`](platform/compositions/geospatial-bim-twin.yaml) | Any | BIM + GIS digital twin — first 4-way domain × domain × cross-cutting × cross-cutting composition (geospatial foundation + exchange + BIM↔GIS georeference + openBIM exchange + digital-twin + privacy-by-design) |
 | [`work-package-lane.yaml`](platform/compositions/work-package-lane.yaml) | Any | Parallel multi-agent delivery — per-work-package lane (allowedFiles / readOnlyFiles / prMode) checked against the dispatched agent's actual diff (work-package + node-typescript) |
 | [`agent-coordination-bus.yaml`](platform/compositions/agent-coordination-bus.yaml) | Any | Live multi-agent coordination — the control-loop bus (dispatch/ack/progress/done/block/sync/verdict, `tier_ceiling` caps-never-grants) paired with the static work-package lane (work-package + agent-coordination + node-typescript) |
+| [`memory-consolidation.yaml`](platform/compositions/memory-consolidation.yaml) | Any | Out-of-band "dreaming" memory consolidation — mine cross-session transcripts into evidence-backed proposals a human promotes (propose-only, Tier 2; memory-consolidation + knowledge-capture) |
 
 ```bash
 cp platform/compositions/node-web-saas-postgres.yaml harness.manifest.yaml
@@ -563,7 +564,7 @@ The bootstrap is brownfield-safe — it never overwrites pre-existing files from
 │   │   ├── architectures/           # web-app, api-service, event-driven, mcp-server, agent-skill-pack, agentic-ui, agent-observability, ai-foundry-target, intelligent-model-routing, agent-defense-in-depth
 │   │   ├── data/                    # relational-sql, document-store, object-storage, browser-storage, embedded-key-value
 │   │   ├── delivery/                # prototype, production-saas, internal-platform, self-hosted-oss, managed-fleet
-│   │   ├── management/              # discovery-intake, interview-driven, product-lite, project-standard, program-lite, testing-standard, eval-gated-testing, knowledge-capture, opportunity-capture, security-static-analysis, privacy-by-design, digital-twin, work-package, canonical-position, agent-coordination
+│   │   ├── management/              # discovery-intake, interview-driven, product-lite, project-standard, program-lite, testing-standard, eval-gated-testing, knowledge-capture, opportunity-capture, security-static-analysis, privacy-by-design, digital-twin, work-package, canonical-position, agent-coordination, memory-consolidation
 │   │   └── domains/                 # supabase, web3, media-pipeline, gitbook, agentic-interfaces, cryptographic-identity, healthcare-fhir, healthcare-smart-on-fhir, aec-iso19650-im, aec-iso19650-5-security, aec-openbim-exchange, geospatial-foundation, geospatial-exchange, geospatial-bim-georeference
 │   ├── agents/                      # Agent operating packs: acp, base, claude-code, codex-cli, copilot-cli, cursor, gemini-cli, generic-llm, openclaw
 │   ├── skills/                      # Agent Skills: harness-governance, harness-testing, harness-web3, harness-onboarding, harness-tools, harness-agentic-interfaces, harness-mcp, harness-digital-twin

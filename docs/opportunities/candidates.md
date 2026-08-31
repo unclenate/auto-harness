@@ -791,6 +791,7 @@ cite-the-evidence rule), not the extraction; composes with the OPP-0046 lane
   Un-defers OPP-0046's cross-agent memory bus. Safety spine: messages are untrusted
   data, no self-elevation, Tier 4/5 human-gated (field-observed this session).
   `validate-agent-bus.sh` deferred until the schema survives >= 2 real cycles.
+- [OPP-0060](OPP-0060-cli-transport-adapter.md) *(proposed 2026-08-31; field-reported with a live-validated prototype; fills PRD-0039's deferred non-native-adapter slot)* — **Non-native (local-CLI) transport adapter.** A headless CLI (Codex/Copilot/Grok) participates in the bus over the FROZEN store + contracts — no contract change: a per-dispatch runner (poll → ack → apply `tier_ceiling` → invoke the CLI with the task as data → done/block; Tier ≥4 auto-blocks) plus a `build_argv` defense-in-depth second gate. Grok live round-trip proven. Encodes the copilot `--allow-all-tools` read-only gap → declared via `capabilities`.
 
 ---
 

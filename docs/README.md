@@ -181,6 +181,7 @@ clustered backlog with framing.
 | [0057](opportunities/OPP-0057-acp-audit-knowledge-capture-bridge.md) | ACP Audit → Knowledge-Capture Bridge (`agents/acp` follow-on) — session-boundary distillation of the runtime audit into ADR-0002 observations | accepted |
 | [0058](opportunities/OPP-0058-out-of-band-memory-consolidation-dreaming.md) | Out-of-Band Memory Consolidation ("Dreaming") — governed propose-only batch consolidation of cross-session transcripts into an evidence-backed proposed knowledge-tree diff; out-of-band complement to in-band PRD-0004 distillation | proposed |
 | [0059](opportunities/OPP-0059-inter-agent-control-loop-cross-vendor-bus.md) | Live Inter-Agent Control-Loop & Cross-Vendor Bus — vendor-neutral control semantics split from a file inbox/outbox transport seam; un-defers OPP-0046's cross-agent bus | accepted |
+| [0060](opportunities/OPP-0060-cli-transport-adapter.md) | Non-Native (Local-CLI) Transport Adapter — a headless CLI (Codex/Copilot/Grok) participates in the bus over the frozen store/contracts; per-dispatch runner + `build_argv` second gate; fills PRD-0039's deferred non-native-adapter slot | proposed |
 
 ---
 

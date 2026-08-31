@@ -11,6 +11,21 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-08-31 — File PRD-0041: out-of-band memory consolidation ("dreaming"), promotes OPP-0058
+
+Filed **PRD-0041** (Accepted, design-only) promoting **OPP-0058** (`proposed → accepted`). Specifies the
+opt-in `management/memory-consolidation` overlay — the **out-of-band** second layer complementing in-band
+PRD-0004 distillation: a transcript-provider contract, a per-org steering file, a propose-only reference
+orchestrator (fan blind/independent sub-agents over the cross-session corpus → consolidate → emit a
+proposed diff), and a proposed-diff output contract. **v1 duty = the gap-#1 promotion-candidate scan** on
+Claude Code transcripts, operator-invoked. The load-bearing safety is **propose-only enforced
+structurally** (Tier 2 branch, human merges, never Tier 3 — the Letta divergence rejected); citations
+become hash-verifiable once PRD-0040's `prev_hash` lands. Q3 (staging-only) + Q9 (unified) carried from the
+OPP. **Deferred to their own records:** Phase 2/3 (back-pressure audit + periodic §10 doctrine audit +
+staleness re-verification) and the `validate-dreaming-*` linters. Implementation (the module build) is a
+subsequent writing-plans pass. Distillation lesson (propose-only as the trust anchor for all
+machine-authored governance changes) in `shared-observations.md`.
+
 ## 2026-08-31 — Implement OPP-0060: port the non-native (local-CLI) adapter into the reference orchestrator
 
 Ported the peer-sourced, independently-re-verified non-native adapter into

@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0058 — Out-of-Band Memory Consolidation ("Dreaming")
 
-**Status:** proposed
+**Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-08-11
-**Last Updated:** 2026-08-11
+**Last Updated:** 2026-08-31
 **Confidence:** medium (the failure class is repo-documented and the design has convergent cross-lab precedent; the open variables are packaging, budget/cadence, and the transcript substrate — which depends on OPP-0057)
 
 ---
@@ -168,7 +168,8 @@ same way `agents/acp` added a runtime layer without the harness leaving its poli
 
 ## Disposition
 
-**Proposed (filed 2026-08-31).** A PRD is anticipated; the two-layer model, the transcript-provider
+**Accepted (2026-08-31).** Promoted by PRD-0041 into the opt-in `management/memory-consolidation` overlay
+(v1 = promotion-candidate scan, gap #1, on Claude Code transcripts, operator-invoked). The two-layer model, the transcript-provider
 contract, and the propose-only + evidence-bar output contract are the specified starting point, and the
 smallest-useful v1 is promotion-scan-only (gap #1) on Claude Code transcripts, operator-invoked. See the
 pre-PRD design notes at `docs/superpowers/plans/2026-08-11-dreaming-module.md`.
@@ -181,7 +182,11 @@ not three separate OPPs). Both are re-openable at PRD time if the shape proves w
 
 ## Promotion
 
-*(empty)*
+Promoted via **PRD-0041** (`docs/requirements/PRD-0041-out-of-band-memory-consolidation-dreaming.md`) —
+the `management/memory-consolidation` overlay: transcript-provider contract + steering file + a
+propose-only reference orchestrator + the proposed-diff output contract; v1 duty = the gap-#1
+promotion-candidate scan. Phase 2/3 (back-pressure + §10 doctrine audit) and the `validate-dreaming-*`
+linter are deferred to their own records.
 
 ## Related
 

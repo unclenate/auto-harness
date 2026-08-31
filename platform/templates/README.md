@@ -432,6 +432,16 @@ Template for one parallel multi-agent work-package. Copy into the project's
 | -------- | ------------------ | ---- |
 | Work-package lane (forcing artifact) | `management/work-package` | `templates/work-package/lane.md` |
 
+### Memory Consolidation
+
+Starter steering file for out-of-band "dreaming" consolidation. Copy to the
+project's `docs/knowledge/dreaming-policy.yaml` and set the budget, evidence bar,
+target surfaces, and transcript providers.
+
+| Template | Required By Module | Path |
+| -------- | ------------------ | ---- |
+| Dreaming steering file | `management/memory-consolidation` | `templates/memory-consolidation/dreaming-policy.yaml` |
+
 ### AEC
 
 | Template | Required By Module | Path |

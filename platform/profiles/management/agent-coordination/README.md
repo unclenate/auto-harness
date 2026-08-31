@@ -63,11 +63,19 @@ message schema, lifecycle, and `tier_ceiling` semantics are honored by adapters
 and confirmed at review — **Asserted-only** in v1 until the deferred
 `validate-agent-bus.sh` linter checks a live cycle.
 
+## Landed since v1
+
+- **Non-native (local-CLI) adapter** (OPP-0060) — a headless-CLI transport
+  runner (`reference/agent-coordination/cli_runner.py` + `cli_invokers.py`,
+  Codex / Copilot / Grok) reusing the one file-poll shape. Hardened in a later
+  security pass: the argv builder binds the untrusted task so it can never parse
+  as a flag (a `--` end-of-options separator / `=`-joined value) and enforces a
+  per-CLI minimum tier (`CLI_MIN_TIER`) — caps-never-grants at the argv layer.
+
 ## Deferred to their own records
 
 - **`validate-agent-bus.sh`** — a schema/lifecycle linter, deferred until the
   contract survives two or more real coordination cycles.
-- **Non-native CLI adapters** — Codex-first, reusing the one file-poll shape.
 - **The verdict-ledger tie-in** (OPP-0052) — routing `verdict` messages into the
   append-only ledger.
 

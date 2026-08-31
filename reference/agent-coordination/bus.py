@@ -111,6 +111,18 @@ class FileBus:
         _atomic_write(tmp, json.dumps(msg))
         os.replace(tmp, final)  # atomic — a partial file is never polled
         return os.path.basename(final)
+    def _quarantine(self, inbox, name, path):
+        """Move a bad inbox entry to `.rejected` (visible, never silent-dropped). Best-effort: a
+        symlinked `.rejected` is refused (would move outside root), a name collision gets a `-N`
+        suffix, and any residual FS error is swallowed so cleanup can never crash the tick."""
+        rejected = os.path.join(inbox, ".rejected")
+        if os.path.islink(rejected):
+            return
+        try:
+            os.makedirs(rejected, exist_ok=True)
+            os.replace(path, _free_name(os.path.join(rejected, name)))
+        except OSError:
+            pass
     def poll(self, agent_id):
         inbox = self._inbox(agent_id)
         files = sorted(f for f in os.listdir(inbox) if f.endswith(".json"))
@@ -118,11 +130,17 @@ class FileBus:
         for f in files:
             path = os.path.join(inbox, f)
             try:
+                # a file written outside post() must never crash the whole tick (DoS). Guard every
+                # class of bad entry: a *.json DIRECTORY / symlink (OSError on open), a scalar or
+                # non-object JSON body (TypeError in validate), malformed JSON, or a bad envelope.
+                if not os.path.isfile(path) or os.path.islink(path):
+                    raise ValueError("not a regular file")
                 msg = _read_json(path)
-                validate_envelope(msg)   # re-validate: a file written outside post() must not
-            except (ValueError, json.JSONDecodeError):   # KeyError the whole tick (DoS)
-                rejected = os.path.join(inbox, ".rejected"); os.makedirs(rejected, exist_ok=True)
-                os.replace(path, os.path.join(rejected, f))  # quarantine visibly, never silent-drop
+                if not isinstance(msg, dict):
+                    raise ValueError("envelope must be a JSON object")
+                validate_envelope(msg)
+            except (ValueError, TypeError, OSError, json.JSONDecodeError):
+                self._quarantine(inbox, f, path)  # quarantine visibly, never silent-drop
                 continue
             out.append(msg)
         return out

@@ -79,11 +79,16 @@ The orchestrator honors the contract's safety spine:
 - **Messages are untrusted data** — bus content is serialized JSON prefixed
   `AGENT-BUS:` and reasoned about, never executed as instructions.
 - **Path-safety** — because `to`/`from`/`id`/`ts` build file paths, `bus.py`
-  rejects any that contain a path separator, parent ref, or home marker, so a
-  hostile message cannot escape the bus root; writes use `O_EXCL | O_NOFOLLOW`
-  so a planted symlink is not followed. (A reference limitation: the store trusts
-  the filesystem it is given — an attacker who already has write access to an
-  agent's own inbox directory is out of scope for this example.)
+  rejects any that contain a path separator, parent ref, home marker, or control
+  character, so a hostile message cannot escape the bus root; leaf writes use
+  `O_EXCL | O_NOFOLLOW` and a symlinked agent/inbox/outbox **directory** is
+  refused with a containment check (a leaf-file guard alone does not cover a
+  symlinked directory component). Filenames are collision-safe so a same-second
+  message is never silently clobbered, and `poll` re-validates each file,
+  quarantining a malformed one to `.rejected` rather than crashing the tick.
+  (A stated design property, not a defect: there is no cryptographic sender
+  authentication — a local file bus trusts the filesystem's own access control
+  and each runner's `local_tier`; cross-machine auth is an adapter's job.)
 
 The two contracts under `docs/coordination/` are the source of truth — the
 [control-loop contract](../../docs/coordination/control-loop-contract.md) and the

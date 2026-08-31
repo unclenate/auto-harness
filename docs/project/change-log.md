@@ -11,6 +11,23 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-08-31 — Agent-coordination security-hardening doc pass + finish the M3 poll DoS fix
+
+Follow-up to the #201 security patch: captured the reusable lesson and reconciled the doc surfaces. (a) A
+**shared-observations** entry distills the argv-flag-injection class — a trust-tier ceiling that gates a
+typed/numeric field is defeated by untrusted STRING data one layer down; enforce the invariant at every
+layer the value flows through — flagged as an operating-principles promotion candidate (it now has the
+concrete #201 instance behind the abstract OPP-0060 foresight). (b) `agent-coordination` **module.yaml +
+README** no longer list the non-native CLI adapter as *deferred* — it landed (OPP-0060) and was hardened
+(#201); the reference README's safety bullet now enumerates the full `bus.py` hardening. (c) A fresh
+adversarial pass on the merged code confirmed C1/H1/H2/M1/M2/L1 hold but found the **M3 poll DoS fix
+incomplete**: a scalar-JSON file (TypeError) or a `*.json` **directory** (IsADirectoryError) still crashed
+the whole tick. Completed the fix — poll now guards every bad-entry class (non-file, non-object body,
+malformed JSON, bad envelope) and quarantines to `.rejected` with a symlink-refusal + collision-safe name.
+Tests 52 → 53. Doc-audit agent confirmed Diagram 17 / control-loop-contract / module reviewGates correctly
+need NO change (out of the contract's altitude — annotating them would miscategorize reference-code
+defense-in-depth as contract governance). No catalog counts changed.
+
 ## 2026-08-31 — Security-harden the non-native CLI adapter (OPP-0060); clarify the argv second-gate contract
 
 Patched the shipped local-CLI adapter (`reference/agent-coordination/`, merged #198) after an independent

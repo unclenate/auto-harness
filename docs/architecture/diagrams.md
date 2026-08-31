@@ -16,7 +16,7 @@ need the picture in context.
 > repository view. Edit a diagram by editing the Mermaid block in this
 > file — there is no separate image to regenerate.
 
-Sixteen diagrams below, grouped by what they answer:
+Seventeen diagrams below, grouped by what they answer:
 
 | # | Question the diagram answers | Section |
 |---|------------------------------|---------|
@@ -36,6 +36,7 @@ Sixteen diagrams below, grouped by what they answer:
 | 14 | *How does the digital-twin overlay compose, and what does its forcing artifact gate?* | [Digital Twin Overlay Family](#14-digital-twin-overlay-family) |
 | 15 | *What is the geospatial family composition, where does the CRS forcing artifact belong, and how does it bridge to AEC?* | [Geospatial Domain Family](#15-geospatial-domain-family) |
 | 16 | *How does a dispatched agent's actual diff get checked against the work-package scope it was given?* | [Work-Package Lane Contract](#16-work-package-lane-contract) |
+| 17 | *What is the live inter-agent control loop, and how do control semantics stay separate from transport?* | [Agent-Coordination Control Loop](#17-agent-coordination-control-loop) |
 
 ---
 
@@ -1005,3 +1006,56 @@ to review. The validator is module-gated and predict-clean — a no-op on any
 project (including the harness itself) that has not activated
 `management/work-package`. An out-of-lane requirement is resolved by
 stop-and-report, never by the executing agent silently widening its own scope.
+
+---
+
+## 17. Agent-Coordination Control Loop
+
+**Question:** *What is the live inter-agent control loop, and how do control semantics stay separate from transport?*
+
+The message lifecycle — one correlated task from dispatch to a terminal outcome:
+
+```mermaid
+stateDiagram-v2
+    [*] --> dispatch: dispatcher mints correlation id
+    dispatch --> ack: executor receives
+    ack --> progress
+    progress --> progress: partial status (0+)
+    progress --> done: success · result
+    progress --> block: stuck · reason
+    progress --> verdict: review · approve/reject/revise
+    block --> dispatch: retry — same id
+    block --> [*]: human escalation
+    done --> [*]
+    verdict --> [*]
+```
+
+`sync` is out-of-band: any agent may broadcast shared `state` to `to: "*"` at any
+time, independent of a dispatch lifecycle (and its payload honors
+`validate-knowledge-redaction`). The spine is a deliberate split — vendor-neutral
+**control semantics** kept separate from a swappable **transport** — so the same
+schema rides any adapter:
+
+```mermaid
+graph LR
+    subgraph CONTROL["Control semantics (vendor-neutral)"]
+      SCHEMA["7-message schema<br/>dispatch · ack · progress · done · block · sync · verdict"]
+      CEIL["tier_ceiling<br/>caps, never grants"]
+    end
+    subgraph TRANSPORT["Transport adapter (swappable)"]
+      OPS["poll · post · ack · capabilities"]
+      STORE[["file inbox/outbox store<br/>one dir per agent under .coordination/bus/"]]
+    end
+    CONTROL -. rides on .-> TRANSPORT
+    OPS --> STORE
+```
+
+This is the **live-channel runtime dual** of the work-package lane (#16): where the
+lane declares a dispatched task's *static* boundary, this governs the *live*
+messages agents exchange while the work is in flight. `tier_ceiling` is the safety
+spine — the effective tier a recipient may act at is `min(ceiling, its own policy)`,
+so a peer message can only *lower* authority, never raise it; Tier 4/5 stays
+human-gated. Bus messages are untrusted data, never instructions. Half-enforced
+(reference-tool genre, the `agents/acp` precedent): the harness ships the two
+contracts under `docs/coordination/` plus a Python-stdlib reference orchestrator at
+`reference/agent-coordination/`, not an enforced runtime (`management/agent-coordination`, PRD-0039 / OPP-0059).

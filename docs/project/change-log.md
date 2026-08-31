@@ -11,6 +11,22 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-08-30 — Document management/agent-coordination: Diagram 17 + sample composition + doc-accuracy sweep
+
+Follow-up documentation/diagram/asset pass after the `management/agent-coordination` build (PR #192). A
+three-lane audit (user/system docs, developer/governance docs, diagrams/assets) confirmed the feature's
+required propagation was already complete and surfaced three discretionary items, all applied here:
+(1) **New Diagram 17 — Agent-Coordination Control Loop** (`docs/architecture/diagrams.md`): a message-lifecycle
+state machine (`dispatch→ack→progress*→done|block|verdict`, `sync` out-of-band) + the control-semantics-vs-transport
+split, on the precedent of the work-package lane diagram (#16) and the digital-twin family diagram (#14). This is a
+**coupled count bump** `sixteen→seventeen` across `HARNESS.md`, `README.md`, and `docs/_assets/cover-back.svg`
+(all `validate-catalog-counts`-gated), plus the diagrams.md summary table + intro count; the `HARNESS.md` edit is
+satisfied by the operating-principles §3 second-instance note (kernel/base governance-entrypoint companion rule).
+(2) **Sample composition** `platform/compositions/agent-coordination-bus.yaml` (+ compositions README row) — parity
+with `work-package-lane.yaml`, pairing the live coordination channel with the static work-package lane.
+(3) **Doc-accuracy fix** (pre-existing, unrelated): `SUMMARY.md` validator section said "twenty-five validator
+scripts" and omitted `validate-status-parity.sh` (shipped #181) — corrected to twenty-six with the missing nav row.
+
 ## 2026-08-30 — Ship management/agent-coordination (PRD-0039, promotes OPP-0059)
 
 Shipped the opt-in **`management/agent-coordination`** overlay — the runtime dual of

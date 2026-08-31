@@ -7,6 +7,12 @@ legacy/Docs.pdf
 .claude/
 .remember/
 
+# Inter-agent coordination bus runtime store (management/agent-coordination,
+# PRD-0039). The reference orchestrator writes ephemeral message files under
+# .coordination/bus/; these are runtime state, never governed artifacts — the
+# governed contracts live under docs/coordination/.
+.coordination/
+
 # Sample-project example .claude/ directories are reference implementations
 # that ship checked-in (not consumer runtime state). Negate the .claude/ ignore
 # above for paths under platform/examples/sample-projects/*/.claude/.

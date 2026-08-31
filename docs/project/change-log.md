@@ -11,6 +11,35 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-08-31 — File OPP-0060: non-native (local-CLI) transport adapter for the agent-coordination bus
+
+Filed **OPP-0060** (proposed) — the piece PRD-0039 explicitly deferred ("non-native CLI adapters to their
+own records"). A headless CLI (Codex/Copilot/Grok) participates in the bus over the FROZEN store +
+contracts (no contract change): a per-dispatch runner (poll → `ack` → apply `tier_ceiling` → invoke the
+CLI with the task as data → `done`/`block`; Tier ≥4 auto-blocks for the human gate) plus a `build_argv`
+defense-in-depth second gate that refuses to construct any Tier ≥4 or sandbox-bypass command.
+**Peer-sourced** (the OPP-0059 field-reporter) with a live-validated prototype, **independently
+re-verified before filing** in this session: integration-smoke-tested against main's frozen `bus.py`/
+`native_adapter.py` (round-trip + Tier-4 auto-block + `build_argv` second-gate + task-as-data all correct),
+API-compatible, number deconflicted (0060 next-free), redaction re-scrubbed clean (caught + scrubbed a
+private-project token that rode the peer's *session identity*, not its content). Half-day-scoped; the
+implementation follow-on ports the two stdlib files into `reference/agent-coordination/` + adds a
+"non-native adapters" section to the adapter contract (encoding the copilot `--allow-all-tools` read-only
+gap → declared via `capabilities`) + re-runs the prototype's tests. Distillation lesson (honor-what-the-
+surface-allows / declare-the-gap / re-enforce-caps-never-grants-at-the-argv-boundary) in
+`shared-observations.md`.
+
+## 2026-08-31 — File OPP-0058: out-of-band memory consolidation ("dreaming")
+
+Filed **OPP-0058** (proposed) — governed, **propose-only** batch consolidation of cross-session
+transcripts into an evidence-backed proposed knowledge-tree diff a human promotes; the out-of-band
+complement to in-band PRD-0004 distillation, closing the session-shape §4 gaps (declared-but-unfired
+trigger classes). Two maintainer-flagged design questions were resolved to their recommended defaults at
+Nate's direction: **Q3 = staging-only** promotion (never direct-to-operating-principles) and **Q9 =
+unified** framing (one `management/memory-consolidation` overlay, not three OPPs) — both re-openable at
+PRD time. Pre-PRD design notes at `docs/superpowers/plans/2026-08-11-dreaming-module.md`. Distillation
+lesson (mechanism-by-check-class + machine-surface provenance-keying) captured in `shared-observations.md`.
+
 ## 2026-08-31 — Explore OPP-0001: exportable governance contract → candidate cross-vendor governance extension
 
 Flipped **OPP-0001** (`proposed → exploring`). It sat in the backlog "awaiting framing"; the "Governance

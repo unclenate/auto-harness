@@ -1,7 +1,7 @@
 # reference/agent-coordination/test_reference.py
 # Copyright 2026 Nate DiNiro <UncleNate@gmail.com>
 # SPDX-License-Identifier: MIT OR Apache-2.0
-import tempfile, os, unittest
+import tempfile, os, json, unittest
 from bus import FileBus, validate_envelope, TYPES
 
 def _msg(**kw):
@@ -60,6 +60,36 @@ class TestBus(unittest.TestCase):
         self.assertEqual(len(self.bus.poll("*")), 1)
     def test_seven_types(self):
         self.assertEqual(TYPES, ["dispatch","ack","progress","done","block","sync","verdict"])
+    def test_rejects_control_char_in_path_field(self):
+        # L1: a null byte / control char in a path-building field is rejected early, not late
+        with self.assertRaises(ValueError):
+            self.bus.post(_msg(id="a\x00b"))
+        with self.assertRaises(ValueError):
+            self.bus.post(_msg(to="a\tb"))
+    def test_refuses_symlinked_agent_dir(self):
+        # H2: a symlinked <agent_id> directory would let makedirs/os.open write OUTSIDE the root;
+        # O_NOFOLLOW only guards the leaf temp file, so the store must refuse the symlinked dir
+        outside = tempfile.mkdtemp()
+        os.symlink(outside, os.path.join(self.dir, "victim"))
+        with self.assertRaises(ValueError):
+            self.bus.post(_msg(to="victim"))
+    def test_same_name_message_not_silently_clobbered(self):
+        # M1: two same ts/id/type messages must both survive (never silently drops)
+        self.bus.post(_msg(id="c1", ts="2026-08-30T00:00:00Z", type="progress",
+                           payload={"note": "first"}))
+        self.bus.post(_msg(id="c1", ts="2026-08-30T00:00:00Z", type="progress",
+                           payload={"note": "second"}))
+        self.assertEqual(len(self.bus.poll("b")), 2)
+    def test_poll_quarantines_malformed_and_does_not_crash(self):
+        # M3: a file written directly into the inbox (bypassing post) that fails validation must
+        # be quarantined, not KeyError the whole tick (DoS)
+        self.bus.post(_msg(id="good"))
+        inbox = os.path.join(self.dir, "b", "inbox")
+        with open(os.path.join(inbox, "zzz-bad-dispatch.json"), "w") as fh:
+            json.dump({"type": "dispatch"}, fh)   # valid JSON, missing required fields
+        got = self.bus.poll("b")                   # must NOT raise
+        self.assertEqual([m["id"] for m in got], ["good"])
+        self.assertTrue(os.path.isdir(os.path.join(inbox, ".rejected")))
 
 from native_adapter import NativeAdapter, apply_tier_ceiling
 

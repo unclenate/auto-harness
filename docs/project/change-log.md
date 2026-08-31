@@ -11,6 +11,24 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-08-31 — Security-harden the non-native CLI adapter (OPP-0060); clarify the argv second-gate contract
+
+Patched the shipped local-CLI adapter (`reference/agent-coordination/`, merged #198) after an independent
+adversarial review found the argv builder could be defeated at the **argv layer**. The untrusted `task`
+was appended as a bare positional (codex) / `-p` value (grok, copilot), so a leading-dash task
+(`--dangerously-bypass-approvals-and-sandbox`) parsed as a *flag* and re-opened the sandbox beneath the
+tier gate — a caps-never-grants defeat the tier-number checks could not see (**C1, critical**). Fixes:
+codex binds the task after a `--` end-of-options separator, grok/copilot as one `=`-joined value; copilot
+now **refuses** a read-only dispatch (`CLI_MIN_TIER` ≥ 2) rather than run over-permissioned (**H1**); the
+runner dedupes duplicate-id dispatches (**M2**); and the frozen `bus.py` store gained symlinked-dir-escape
+refusal (**H2**), collision-safe filenames so a same-second message is never silently clobbered (**M1**),
+poll re-validation that quarantines a malformed file instead of crashing the whole tick (**M3**), and
+control-char rejection in path fields (**L1**). No cryptographic sender auth is stated as an explicit
+design property of a local file bus, not a defect. `adapter-contract.md`'s "defense-in-depth second gate"
+now documents the argv-injection guard and the copilot refusal (this is the contract clarification this
+entry accompanies). Tests: 40 → 52 (regression coverage for every finding). Finding independently
+re-verified against disk before patching; adversarial review credited generically.
+
 ## 2026-08-31 — Build the management/memory-consolidation ("dreaming") overlay v1 (implements PRD-0041)
 
 Shipped the opt-in **`management/memory-consolidation`** overlay v1 — the out-of-band second layer that

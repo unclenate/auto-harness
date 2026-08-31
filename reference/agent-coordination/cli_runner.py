@@ -52,9 +52,15 @@ class CLIRunner:
         """One heartbeat: drain pending dispatches, return next_wake_s for a ScheduleWakeup-style
         scheduler. Never a while-loop — the caller owns cadence (mirrors loop.py)."""
         handled = []
+        seen = set()
         for msg in self.bus.poll(self.agent_id):
             if msg.get("type") != "dispatch":
                 continue                    # v1: a CLI runner acts only on dispatches
+            mid = msg.get("id")
+            if mid in seen:
+                continue                    # _handle already acked EVERY id-matching file this
+                                            # tick; a same-id duplicate must not re-invoke the CLI
             self._handle(msg)
-            handled.append(msg["id"])
+            seen.add(mid)
+            handled.append(mid)
         return {"handled": handled, "next_wake_s": self.heartbeat_s}

@@ -91,6 +91,15 @@ class TestCLIRunner(unittest.TestCase):
         self.assertEqual(rep["next_wake_s"], 60)
         self.assertIn("handled", rep)
 
+    def test_duplicate_id_dispatch_invoked_once(self):
+        # two same-id dispatch FILES in one poll (distinct ts -> distinct filenames). The first
+        # _handle acks EVERY id-matching file, so the runner must not re-invoke on the duplicate.
+        self.bus.post(_dispatch(id="dup", ts="2026-08-31T00:00:00Z"))
+        self.bus.post(_dispatch(id="dup", ts="2026-08-31T00:00:01Z"))
+        cli = FakeCLI()
+        self._runner(cli).tick()
+        self.assertEqual(len(cli.calls), 1)   # one dispatch id -> one CLI invocation, not two
+
     def test_non_dispatch_message_left_untouched(self):
         self.bus.post({"type": "ack", "id": "c9", "from": "supervisor", "to": "codex",
                        "tier_ceiling": 3, "ts": "2026-08-31T00:00:00Z", "payload": {}})

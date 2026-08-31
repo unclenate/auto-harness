@@ -54,14 +54,19 @@ governed constraints (OPP-0060).
 
 **Verified CLI matrix (headless `--help`, 2026-08-31):**
 
-- **Codex** — `codex exec -s <read-only|workspace-write> --skip-git-repo-check "task"`; sandbox maps ~1:1
-  to trust tiers (cleanest). Live: loop proven; a successful `done` needs a model the operator's account
-  permits (set `SMOKE_MODEL`).
-- **Grok** — `grok -p "task" [--always-approve]`. Live: **PASS** — full `dispatch→ack→done{result:"4"}`
-  round-trip through the file bus.
-- **Copilot** — `copilot -p "task" --allow-all-tools`; non-interactive **forces** `--allow-all-tools`, so
-  there is no true read-only headless tier — the adapter **declares** that gap (never silently
-  over-permits) and runs at a low local tier in a scoped dir.
+The untrusted `task` is bound so it can **never be parsed as a flag**: codex places it after a `--`
+end-of-options separator; grok and copilot pass it as one `=`-joined value. (Without this a leading-dash
+task like `--dangerously-bypass-approvals-and-sandbox` would re-open the sandbox beneath the tier gate.)
+
+- **Codex** — `codex exec -s <read-only|workspace-write> --skip-git-repo-check -- "task"`; sandbox maps
+  ~1:1 to trust tiers (cleanest). Live: loop proven; a successful `done` needs a model the operator's
+  account permits (set `SMOKE_MODEL`).
+- **Grok** — `grok --single="task" [--always-approve]`. Live: **PASS** — full
+  `dispatch→ack→done{result:"4"}` round-trip through the file bus.
+- **Copilot** — `copilot --prompt="task" --allow-all-tools`; non-interactive **forces**
+  `--allow-all-tools`, so there is no true read-only headless tier. `build_argv` therefore **refuses** a
+  copilot dispatch below tier 2 (`CLI_MIN_TIER`) rather than run it over-permissioned — caps-never-grants
+  enforced in code, not merely declared.
 - **Antigravity** — no headless CLI (IDE-only); reach is bounded by the vendor's headless surface.
 
 ## Safety

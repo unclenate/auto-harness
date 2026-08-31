@@ -77,7 +77,11 @@ a single un-shell-interpreted argument** (`shell=False`; the task is untrusted d
 runner) → posts `done{result}` on success or `block{reason}` on failure → `ack`s the dispatch out of the
 inbox. **A dispatch whose effective tier is ≥4 is auto-blocked** (the human gate), never invoked. The
 argv builder is a **defense-in-depth second gate**: it refuses to construct any Tier ≥4 or sandbox-bypass
-command, so even a mis-capped dispatch cannot become a full-access CLI spawn.
+command, so even a mis-capped dispatch cannot become a full-access CLI spawn. The gate also closes the
+**argv layer**: the untrusted `task` is bound so it can never separate into its own flag token (codex
+after a `--` end-of-options separator; grok/copilot as one `=`-joined value). Without this, a leading-dash
+task (`--dangerously-bypass-approvals-and-sandbox`) parses as an *option* and re-opens the sandbox beneath
+the tier check, which inspects only the tier number — never the task string.
 
 Three constraints every non-native adapter MUST honor (verified against real CLIs, OPP-0060):
 
@@ -89,7 +93,9 @@ Three constraints every non-native adapter MUST honor (verified against real CLI
    "Degraded modes" section below states for a missing message type — and the consumer runs such an
    adapter only at a deliberately low `local_tier` in a scoped working directory. Silently accepting a
    read-only dispatch on a CLI that will auto-approve every tool is a caps-never-grants violation at the
-   transport layer.
+   transport layer. The reference goes one step further and **refuses to construct** such a dispatch: its
+   argv builder declares a per-CLI minimum tier (`CLI_MIN_TIER`, copilot ≥ 2) and raises below it, so the
+   floor is enforced in code rather than resting on the operator's `local_tier` choice alone.
 2. **Reach is bounded by the vendor's headless surface.** No headless CLI → no adapter (e.g. an IDE-only
    vendor). Cross-vendor reach is a function of what each vendor exposes headlessly, not of the contract;
    the contract governs the *shape* of participation, not its *availability*.

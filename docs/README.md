@@ -123,7 +123,7 @@ clustered backlog with framing.
 
 | # | Title | Status |
 |---|-------|--------|
-| [0001](opportunities/OPP-0001-exportable-governance-contract-for-runtime-harnesses.md) | Exportable Governance Contract for Runtime Harnesses | proposed |
+| [0001](opportunities/OPP-0001-exportable-governance-contract-for-runtime-harnesses.md) | Exportable Governance Contract for Runtime Harnesses | exploring |
 | [0002](opportunities/OPP-0002-agentic-interface-awareness.md) | Agentic Interface Awareness | accepted |
 | [0003](opportunities/OPP-0003-mcp-producer-and-exportable-governance-via-mcp.md) | MCP Producer and Exportable Governance via MCP | accepted |
 | [0004](opportunities/OPP-0004-distillation-triggers.md) | Distillation Triggers | accepted |

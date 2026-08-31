@@ -11,6 +11,18 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-08-31 — Capture the Layer-4 governance-taxonomy observation (interop-protocol design review)
+
+Recorded one ADR-0002 observation in `docs/knowledge/shared-observations.md` from the "Governance Gaps in
+Agent Interoperability Protocols" review (Kang & Diponegoro, arXiv 2606.31498): auto-harness is the missing
+**Layer-4 governance** the paper describes — the shipped control-loop contract scores G5 Supported, G2/G6
+Partial, G1/G3/G4 Absent (~5/12 contract, ~7/12 harness-wide, above every protocol scored), which sets G4
+(dissent) and G6 (audit) as the next contract revision's requirements and frames OPP-0001 as a candidate
+neutral A2A governance extension. Adopt the taxonomy as a checklist of what a governance contract must
+express/record, never a mandate that principal-gated agents decide by quorum (G3-as-decision does not
+transfer). Audit-trail entry for the observation add (knowledge-capture companion); no PRD-0004 trigger
+fires from a review memo alone.
+
 ## 2026-08-31 — File PRD-0040: ACP audit → knowledge-capture bridge, with a tamper-evident audit record (promotes OPP-0057)
 
 Filed **PRD-0040** (Accepted, design-only) promoting **OPP-0057** (`proposed → accepted`). The PRD

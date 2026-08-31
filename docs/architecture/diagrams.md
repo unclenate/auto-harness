@@ -16,7 +16,7 @@ need the picture in context.
 > repository view. Edit a diagram by editing the Mermaid block in this
 > file — there is no separate image to regenerate.
 
-Seventeen diagrams below, grouped by what they answer:
+Eighteen diagrams below, grouped by what they answer:
 
 | # | Question the diagram answers | Section |
 |---|------------------------------|---------|
@@ -37,6 +37,7 @@ Seventeen diagrams below, grouped by what they answer:
 | 15 | *What is the geospatial family composition, where does the CRS forcing artifact belong, and how does it bridge to AEC?* | [Geospatial Domain Family](#15-geospatial-domain-family) |
 | 16 | *How does a dispatched agent's actual diff get checked against the work-package scope it was given?* | [Work-Package Lane Contract](#16-work-package-lane-contract) |
 | 17 | *What is the live inter-agent control loop, and how do control semantics stay separate from transport?* | [Agent-Coordination Control Loop](#17-agent-coordination-control-loop) |
+| 18 | *How is knowledge distilled from the cross-session corpus without a machine ever writing to the knowledge tree?* | [Out-of-Band Memory Consolidation (Dreaming)](#18-out-of-band-memory-consolidation-dreaming) |
 
 ---
 
@@ -1059,3 +1060,35 @@ human-gated. Bus messages are untrusted data, never instructions. Half-enforced
 (reference-tool genre, the `agents/acp` precedent): the harness ships the two
 contracts under `docs/coordination/` plus a Python-stdlib reference orchestrator at
 `reference/agent-coordination/`, not an enforced runtime (`management/agent-coordination`, PRD-0039 / OPP-0059).
+
+## 18. Out-of-Band Memory Consolidation (Dreaming)
+
+**Question:** *How does knowledge get distilled from the cross-session corpus no single PR-boundary cycle can see — without a machine ever writing to the knowledge tree?*
+
+Two layers, deliberately complementary. The in-band rule is the floor that fires as each cycle ends; the out-of-band overlay is a batch job that runs between sessions, on a dedicated budget, over a corpus no single cycle sees:
+
+```mermaid
+graph TB
+    subgraph INBAND["In-band floor (per cycle-end)"]
+      PRD4["PRD-0004 distillation rule<br/>knowledge-capture companion<br/>fires at PR boundary"]
+    end
+    subgraph OUTBAND["Out-of-band batch (between sessions)"]
+      DREAM["management/memory-consolidation<br/>dedicated budget · cross-session corpus"]
+    end
+    DREAM -- dependsOn --> PRD4
+    DREAM -. complements, never replaces .-> PRD4
+```
+
+The run pipeline is propose-only end to end — blind independent sub-agents, an evidence bar, and a diff a human promotes:
+
+```mermaid
+graph LR
+    CORPUS[["transcript corpus<br/>(permissionScope)"]] --> PART["partition<br/>disjoint round-robin"]
+    PART --> FAN["blind sub-agent fan-out<br/>each slice, independently"]
+    FAN --> CONS["consolidate after all return<br/>dedup · evidence bar"]
+    CONS --> DIFF["proposed diff + run manifest<br/>PROPOSE blocks · citations"]
+    DIFF --> HUMAN{{"human promotes"}}
+    HUMAN -.->|rejected + rationale| MANIFEST[["dreaming-runs/&lt;id&gt;.md<br/>dissent record"]]
+```
+
+The safety spine is structural, not advisory: the job runs **Tier 2** — it writes proposals to a **branch** and **never merges** (Tier 3 is the human merge); **no confidence threshold may auto-merge**; a **direct machine write to the knowledge tree is rejected** (the Letta divergence, deliberately not taken — `operating-principles.md` is never edited directly, only the `promotion-candidates.md` staging surface). The evidence bar requires prevalence across **independent** sessions (deduped, so one finding echoed N times by sub-agents is still one) and distinct citations; prose-lossy providers are down-weighted, and a missing mode fails **closed**. A run may propose **nothing** — there is no minimum-output quota (the guard against cargo-cult-at-scale). Half-enforced (reference-tool genre, the `agents/acp` precedent): the harness ships the contract at `docs/knowledge/dreaming-contract.md`, a template steering file, and a Python-stdlib reference orchestrator at `reference/dreaming/`, not an enforced runtime (`management/memory-consolidation`, PRD-0041 / OPP-0058).

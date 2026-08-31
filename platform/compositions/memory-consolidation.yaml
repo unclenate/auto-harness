@@ -4,8 +4,12 @@
 # memory-consolidation overlay (with its knowledge-capture dependency) — the shape an operator
 # uses to mine cross-session transcripts into evidence-backed PROPOSALS a human promotes. The
 # overlay is propose-only (Tier 2, never merges); the reference orchestrator lives under
-# reference/dreaming/. Activating it here also puts the module's own sensitive-paths /
-# trust-tier / companion checks under CI (the sample-composition validation loop).
+# reference/dreaming/. Activating it here puts the module's own sensitive-paths checks under CI
+# (the sample-composition loop runs validate-sensitive-paths over every compositions/*.yaml). It
+# does NOT mirror the module's activation-time trust-tier or companion checks: trust-tier runs only
+# over harness.manifest.yaml (which does not activate this opt-in overlay) and companion checks are
+# PR-diff-based — the partial-mirror gap that let PR #188 through, called out here so it is not
+# mistaken for full coverage.
 # References:
 #   - platform/profiles/management/memory-consolidation/README.md
 #   - docs/knowledge/dreaming-contract.md

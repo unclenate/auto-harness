@@ -289,6 +289,9 @@ Pre-built manifests for common project types. Copy the closest match to
 * [AEC BIM Project](platform/compositions/aec-bim-project.yaml) — ISO 19650 / openBIM delivery; information-management substrate + openBIM exchange + ISO 19650-5 security
 * [Digital Twin Prototype](platform/compositions/digital-twin-prototype.yaml) — scenario-driven digital-twin overlay with privacy-by-design on a built stack
 * [Geospatial BIM Twin](platform/compositions/geospatial-bim-twin.yaml) — BIM + GIS twin of a place; spatial-reference substrate + OGC exchange + BIM↔GIS georeferencing
+* [Work-Package Lane](platform/compositions/work-package-lane.yaml) — parallel multi-agent delivery; per-work-package lane (allowedFiles / readOnlyFiles / prMode) checked against the dispatched agent's diff
+* [Agent-Coordination Bus](platform/compositions/agent-coordination-bus.yaml) — live multi-agent coordination; the control-loop bus (`tier_ceiling` caps-never-grants) paired with the static work-package lane
+* [Memory Consolidation (Dreaming)](platform/compositions/memory-consolidation.yaml) — out-of-band consolidation mining cross-session transcripts into evidence-backed proposals a human promotes (propose-only, Tier 2)
 
 ### Examples
 

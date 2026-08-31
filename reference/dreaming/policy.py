@@ -14,6 +14,11 @@ _SCOPE_RANK = {"public": 0, "consumer-local": 1, "maintainer-local": 2, "kernel"
 
 _REQUIRED_TOP = ["budget", "evidenceBar", "targetSurfaces", "corpus"]
 
+# only these declared modes earn full confidence; a missing/unknown mode is down-weighted,
+# never trusted at 1.0 (contract: "degraded modes are declared, not silent" — the conservative
+# branch is the silent one, so an undeclared mode must NOT fail open to full weight).
+_FULL_CONFIDENCE_MODES = {"full", "session-only"}
+
 def load_policy(path):
     """Load a machine-readable steering file (JSON form). The canonical steering file is YAML
     (dreaming-policy.yaml); a consumer parses it with their own tooling and passes the dict in.
@@ -59,10 +64,14 @@ class EvidenceBar:
             if sid in seen:
                 continue          # prevalence counts INDEPENDENT sessions, never one echoed N times
             seen.add(sid)
-            total += self.prose_lossy_weight if s.get("mode") == "prose-lossy" else 1.0
+            # full/session-only → full weight; prose-lossy AND any missing/unknown mode → down-weighted
+            total += 1.0 if s.get("mode") in _FULL_CONFIDENCE_MODES else self.prose_lossy_weight
         return total
 
     def passes(self, candidate):
-        if len(candidate.get("citations", [])) < self.min_citations:
+        # count DISTINCT citations: a single transcript cited N times is ONE source, not N. Parallels
+        # the prevalence dedup (contract requires ">= N transcripts", a citation being sessionId +
+        # timestamp + excerpt); here a citation is an opaque identity token, deduped by value.
+        if len(set(candidate.get("citations", []))) < self.min_citations:
             return False
         return self._weighted_prevalence(candidate.get("sessions", [])) >= self.min_prevalence

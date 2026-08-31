@@ -173,7 +173,14 @@ fan-out.
   against cargo-cult-at-scale (manufacturing patterns to justify a budget).
 - **`permissionScope` mirroring** and the **fail-closed budget** bound the blast
   radius: dreaming never writes above the corpus's scope and never exceeds its
-  declared ceilings.
+  declared ceilings. In v1 that scope guarantee is enforced at two seams — the
+  provider-vs-corpus scope check at policy-validation time, and the
+  operator-authored `targetSurfaces` allowlist a proposal's target must exactly
+  match (no path normalization to exploit). A **per-file `permissionScope` map**
+  that would let the reference reject an individual proposal whose *target file*
+  sits above the corpus scope — independent of the allowlist — is a Phase-2
+  refinement; until then the operator is trusted to keep every `targetSurface`
+  at or below the corpus scope.
 
 The reviewer of a dreaming PR must: (a) verify the cited transcripts actually
 support the pattern; (b) verify prevalence is across **independent** sessions,

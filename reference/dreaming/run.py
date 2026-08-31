@@ -9,11 +9,14 @@ from policy import validate_policy
 from consolidate import consolidate
 
 def _rejected_from(prior_manifests):
-    """Patterns a human already rejected in prior runs — suppressed so they are not re-proposed."""
-    out = set()
+    """Map pattern -> the human's rejection rationale, gathered from prior run manifests. The pattern
+    is suppressed (not re-proposed) AND its rationale is carried forward verbatim — the dissent
+    record's whole point is that the institutional reason is not lost (dreaming-contract.md). Returned
+    as a dict so `set(...)` still yields the suppression key-set consolidate needs."""
+    out = {}
     for m in prior_manifests or ():
         for r in m.get("rejected", []):
-            out.add(r["pattern"])
+            out[r["pattern"]] = r.get("rationale", "")
     return out
 
 def dreaming_run(corpus, policy, distill_fn, prior_manifests=None, run_id="run-1"):
@@ -48,9 +51,12 @@ def dreaming_run(corpus, policy, distill_fn, prior_manifests=None, run_id="run-1
         "run_id": run_id,
         "policy_version": policy.get("schemaVersion"),
         "corpus_scope": policy["corpus"].get("permissionScope"),
+        "count": len(proposals),          # proposal-count provenance (a run may legitimately propose 0)
         "proposals": proposals,
-        # preserve rejected proposals (dissent record) so the next run suppresses re-proposal
-        "rejected": [{"pattern": pat, "rationale": "carried from a prior run"} for pat in sorted(rejected)],
+        # preserve rejected proposals (dissent record) WITH their original rationale so the next run
+        # suppresses re-proposal AND the human's institutional reason survives across runs
+        "rejected": [{"pattern": pat, "rationale": rationale}
+                     for pat, rationale in sorted(rejected.items())],
     }
     # propose-only: the run writes a BRANCH of staged proposals; a human merges. It NEVER merges.
     return {"proposals": proposals, "manifest": manifest, "wrote": "branch"}

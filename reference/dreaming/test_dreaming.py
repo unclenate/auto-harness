@@ -64,6 +64,16 @@ class TestEvidenceBar(unittest.TestCase):
     def test_below_citations_fails(self):
         self.assertFalse(EvidenceBar(_policy()).passes(
             self._cand([_sess("s1"), _sess("s2"), _sess("s3")], citations=("only-one",))))
+    def test_duplicate_citations_do_not_satisfy_bar(self):
+        # ONE transcript cited twice is one source, not two — must not clear minCitationsPerChange=2
+        self.assertFalse(EvidenceBar(_policy()).passes(
+            self._cand([_sess("s1"), _sess("s2"), _sess("s3")], citations=("dup", "dup"))))
+    def test_missing_mode_is_downweighted_not_full(self):
+        # a session with no declared mode must NOT be credited full confidence (declared, not silent)
+        no_mode = [{"sessionId": "s%d" % i} for i in range(3)]      # 3 * 0.5 = 1.5 < 3
+        self.assertFalse(EvidenceBar(_policy()).passes(self._cand(no_mode)))
+        full = [_sess("s%d" % i) for i in range(3)]                 # declared full: 3 * 1.0 = 3.0 >= 3
+        self.assertTrue(EvidenceBar(_policy()).passes(self._cand(full)))
 
 class TestConsolidate(unittest.TestCase):
     def test_merges_across_partitions_to_prevalence(self):
@@ -91,10 +101,12 @@ class TestDreamingRun(unittest.TestCase):
         with self.assertRaises(ValueError):
             dreaming_run(_corpus(3), _policy(), off_target)
     def test_manifest_preserves_rejected(self):
-        prior = [{"rejected": [{"pattern": "old-pat", "rationale": "declined"}]}]
+        why = "conflicts with ADR-0002 severity policy; maintainer decision 2026-08-01"
+        prior = [{"rejected": [{"pattern": "old-pat", "rationale": why}]}]
         out = dreaming_run(_corpus(3), _policy(), _fake_distill, prior_manifests=prior)
-        pats = [r["pattern"] for r in out["manifest"]["rejected"]]
-        self.assertIn("old-pat", pats)
+        rej = {r["pattern"]: r["rationale"] for r in out["manifest"]["rejected"]}
+        self.assertIn("old-pat", rej)
+        self.assertEqual(rej["old-pat"], why)   # the specific human rationale survives, not a generic string
     def test_corpus_over_budget_raises(self):
         p = _policy()
         p["budget"]["maxCorpusSessions"] = 2   # corpus of 3 exceeds it

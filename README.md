@@ -326,6 +326,7 @@ Pre-built manifests for common project types. Copy the closest match and adjust:
 | [`digital-twin-prototype.yaml`](platform/compositions/digital-twin-prototype.yaml) | Any | Scenario-driven digital-twin / decision-support project (municipal, real-estate, datacenter, civic) — digital-twin + privacy-by-design + ISO 19650 IM |
 | [`geospatial-bim-twin.yaml`](platform/compositions/geospatial-bim-twin.yaml) | Any | BIM + GIS digital twin — first 4-way domain × domain × cross-cutting × cross-cutting composition (geospatial foundation + exchange + BIM↔GIS georeference + openBIM exchange + digital-twin + privacy-by-design) |
 | [`work-package-lane.yaml`](platform/compositions/work-package-lane.yaml) | Any | Parallel multi-agent delivery — per-work-package lane (allowedFiles / readOnlyFiles / prMode) checked against the dispatched agent's actual diff (work-package + node-typescript) |
+| [`agent-coordination-bus.yaml`](platform/compositions/agent-coordination-bus.yaml) | Any | Live multi-agent coordination — the control-loop bus (dispatch/ack/progress/done/block/sync/verdict, `tier_ceiling` caps-never-grants) paired with the static work-package lane (work-package + agent-coordination + node-typescript) |
 
 ```bash
 cp platform/compositions/node-web-saas-postgres.yaml harness.manifest.yaml

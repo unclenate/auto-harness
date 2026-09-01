@@ -11,6 +11,20 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-09-01 — File OPP-0061: validate-agent-bus.sh contract-conformance linter
+
+Filed **OPP-0061** (proposed), the design contract for the deferred agent-coordination bus linter
+(promotes OPP-0059's `validate-agent-bus.sh` deferral; parent PRD-0039). A `--scan-file` conformance
+checker over a bus-transcript JSONL — envelope / per-type payload keys / correlation-id rule / lifecycle
+validity / `tier_ceiling` sanity / `sync` shape, a direct transcription of `control-loop-contract.md`.
+Because bus messages are runtime/gitignored, it takes the `validate-observation-hygiene` shape: operator-run
+against a live `.coordination/bus/` session, CI-tested against committed fixtures. Moves the
+schema/lifecycle/`tier_ceiling` checks **§10 Asserted-only → Half-enforced** and sets the `sync` size/rate
+caps the contract deferred to it. Open ratification questions carried in the OPP: cap values +
+WARN-vs-ENFORCE, lifecycle strictness, transcript-source shape. Ships OPP → implementation without a PRD on
+acceptance. Distillation lesson (a runtime/ephemeral-artifact contract is made checkable by a fixture-tested
+`--scan-file` linter at Half-enforced, not a per-PR CI gate) in `shared-observations.md`.
+
 ## 2026-08-31 — Agent-coordination security-hardening doc pass + finish the M3 poll DoS fix
 
 Follow-up to the #201 security patch: captured the reusable lesson and reconciled the doc surfaces. (a) A

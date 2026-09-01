@@ -52,11 +52,11 @@ harvested from the real multi-agent cycles, not a speculative full framework.
 ## Origin / Evidence
 
 - **Issue #121** (machine-readable WP lane contracts; Codex handoff from the
-  PlanAtlas ACP-server package). The sharp edge: a spec required a
+  a multi-agent planning project ACP-server package). The sharp edge: a spec required a
   `CAPABILITY_RULES` entry while the hard file list omitted
   `lib/identity/capabilities.ts` where it actually lives — Codex honored the lane
   too narrowly, then had to patch the contract afterward.
-- **Issue #122** (field observation, 2026-06-14, `central-city-web`): a fullstack
+- **Issue #122** (field observation, 2026-06-14, `a municipal-web project`): a fullstack
   parallel build where Claude planned, Gemini built the UI, and Codex built the
   backend in isolated worktrees. Three robust patterns: parallel fullstack needs
   an interface-first contract phase; worktree-init syntax must be normalized
@@ -72,7 +72,7 @@ harvested from the real multi-agent cycles, not a speculative full framework.
 ## Why Now
 
 - **auto-harness is already the workspace this governs.** The patterns are not
-  hypothetical — they recurred across PlanAtlas and `central-city-web` multi-agent
+  hypothetical — they recurred across a multi-agent planning project and `a municipal-web project` multi-agent
   cycles, with concrete failures (lane/file-list mismatch; cross-LLM worktree-init
   failures; planner not auto-loading project learnings).
 - **The cost of prose-only lanes scales with agent count.** Each added executing

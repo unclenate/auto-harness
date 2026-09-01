@@ -10,7 +10,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 **Author:** @unclenate
 **Date:** 2026-06-10
 **Origin:** `docs/product/Digital-Twin-Seed.txt` (a recurring digital-twin / scenario-runtime
-pattern across active projects) + a TerraSim repository review that surfaced reusable
+pattern across active projects) + a partner-repository review that surfaced reusable
 twin-governance primitives.
 
 ---
@@ -30,8 +30,8 @@ serious, extensible first slice that fits the existing architecture exactly.
 This is not a speculative module. The municipal-twinning R&D is drawing interest from the
 **real-estate development** sector, and the through-line is a **planning-lifecycle product**:
 *build planning models that can be transformed into operational digital twins.* Multiple
-downstream projects (Central City / Foundation OS, an AI-datacenter operations twin, civic
-planning portals, healthcare/FHIR agentic workflows, TerraSim-style geospatial simulation) are
+downstream projects (a municipal / civic planning platform, a datacenter-operations twin, civic
+planning portals, healthcare/FHIR agentic workflows, partner geospatial-simulation twins) are
 expected to rely on this research and its organizational governance to **move fast and
 accurately**. The module's job is to give those projects an externally-anchored governance
 contract they can adopt off the shelf, rather than each re-deriving provenance / uncertainty /
@@ -234,7 +234,7 @@ The overlay composes **with** subject-matter domains and **with** other manageme
 | Healthcare patient-agent twin | `domains/healthcare-fhir` | `digital-twin` + `privacy-by-design` |
 | AI-datacenter ops twin | *(none yet)* | `digital-twin` + `architectures/event-driven` |
 | Civic planning portal | *(none yet)* | `digital-twin` + `privacy-by-design` |
-| TerraSim geospatial sim | *(future geospatial domain)* | `digital-twin` |
+| a partner geospatial simulation | *(future geospatial domain)* | `digital-twin` |
 
 The **built-environment stack** — `aec-iso19650-im` × `digital-twin` × `privacy-by-design`,
 governed by the Gemini Principles — is the lead scenario for the municipal + real-estate market,

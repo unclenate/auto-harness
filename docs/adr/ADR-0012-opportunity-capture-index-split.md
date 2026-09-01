@@ -25,7 +25,7 @@ candidate.
 
 In practice, consumers naturally evolve their `README.md` to include an
 **organizational index of current candidates** — cluster headings ("Foundational
-architecture re-examination", "Central City domain research findings") and
+architecture re-examination", "municipal-planning domain research findings") and
 grouped `OPP-NNNN` line items. The companion rule cannot distinguish a
 record-structure change from an index update — both look like README edits.
 Every cluster-heading addition trips the ADR requirement.

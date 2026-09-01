@@ -13,12 +13,12 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 **Context sources:**
 
 - `docs/superpowers/specs/2026-05-25-managed-fleet-delivery-posture-design.md` — the design
-- Brownfield onboarding of `fortify-ansible/ansible-internal` (an Ansible IaC fleet repo) surfaced the gap
+- Brownfield onboarding of `an IaC fleet repo` (an Ansible IaC fleet repo) surfaced the gap
 
 ## Context
 
 The four existing delivery postures all assume the project ships an app or a
-distributable. Onboarding `ansible-internal` — an Ansible repo that operates a
+distributable. Onboarding `the-IaC-fleet-repo` — an Ansible repo that operates a
 live 8-host fleet but ships no product of its own — had no good fit:
 
 - `prototype` waives operational burden a live fleet cannot waive.

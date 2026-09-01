@@ -171,6 +171,21 @@ DENYLIST=(
   "toast-mcp"
 )
 
+# Local gitignored denylist (OPP-0048 mechanism 2): additional consumer/project
+# names loaded from `.knowledge-redaction-denylist` if present. This keeps the
+# sensitive names OUT of the public tree (the file is gitignored) while still
+# giving a local pre-commit safety net. One extended-regex pattern per line;
+# blank lines and `#` comments are skipped. CI on a fresh clone will not have the
+# file (by design — the names must not be committed); this is a local guard.
+LOCAL_DENYLIST_FILE=".knowledge-redaction-denylist"
+if [[ -f "$LOCAL_DENYLIST_FILE" ]]; then
+  while IFS= read -r line || [[ -n "$line" ]]; do
+    [[ -z "$line" ]] && continue
+    [[ "$line" =~ ^[[:space:]]*# ]] && continue
+    DENYLIST+=("$line")
+  done < "$LOCAL_DENYLIST_FILE"
+fi
+
 # ----------------------------------------------------------------------
 # Load exemption patterns from .knowledge-redaction-ignore (if present)
 # ----------------------------------------------------------------------

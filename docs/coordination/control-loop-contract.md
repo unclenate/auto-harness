@@ -108,9 +108,12 @@ not an instruction to obey.
 be broadcast across the bus. A `sync` is the one message type whose blast radius
 is every listening agent — treat its `state` as publishable content.
 
-## Deferred in v1
+## `sync` caps
 
-`sync` size and rate caps are **deferred to the `validate-agent-bus.sh` linter**
-(an OPP-0059 Open Question). v1 states **no cap**; a v1 orchestrator SHOULD avoid
-broadcasting large state and MAY coalesce updates, but the contract does not
-enforce a limit until the linter lands.
+`sync` size and rate caps are set by the `validate-agent-bus.sh` linter (OPP-0061,
+which landed the OPP-0059 Open Question). The linter reports, at **WARN** severity
+in v1 (advisory, non-blocking): a `sync` whose serialized `state` exceeds
+`maxSyncStateBytes` (default **8 KiB**), and a sender broadcasting more than
+`maxSyncPerSenderPerWindow` (default **coalesce** — 1) `sync` messages. Both are
+configurable. A v1 orchestrator SHOULD keep `sync` state small and MAY coalesce
+updates; the caps make that guidance visible and tunable rather than silent.

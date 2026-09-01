@@ -1,0 +1,3 @@
+{"type":"dispatch","id":"x1","from":"s","to":"w","tier_ceiling":3,"ts":"2026-09-01T00:00:00Z","payload":{"task":"t"}}
+{"type":"ack","id":"x1","from":"w","to":"s","tier_ceiling":3,"ts":"2026-09-01T00:00:01Z","payload":{}}
+{"type":"done","id":"x1","from":"w","to":"s","tier_ceiling":3,"ts":"2026-09-01T00:00:02Z","payload":{}}

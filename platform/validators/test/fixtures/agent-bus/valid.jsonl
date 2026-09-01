@@ -1,0 +1,14 @@
+{"type":"dispatch","id":"t1","from":"supervisor","to":"worker","tier_ceiling":3,"ts":"2026-09-01T00:00:00Z","payload":{"task":"list files"}}
+{"type":"ack","id":"t1","from":"worker","to":"supervisor","tier_ceiling":3,"ts":"2026-09-01T00:00:01Z","payload":{}}
+{"type":"progress","id":"t1","from":"worker","to":"supervisor","tier_ceiling":3,"ts":"2026-09-01T00:00:02Z","payload":{"note":"scanning"}}
+{"type":"done","id":"t1","from":"worker","to":"supervisor","tier_ceiling":3,"ts":"2026-09-01T00:00:03Z","payload":{"result":"a.txt b.txt"}}
+{"type":"dispatch","id":"t2","from":"supervisor","to":"reviewer","tier_ceiling":2,"ts":"2026-09-01T00:00:04Z","payload":{"task":"review the diff"}}
+{"type":"ack","id":"t2","from":"reviewer","to":"supervisor","tier_ceiling":2,"ts":"2026-09-01T00:00:05Z","payload":{}}
+{"type":"verdict","id":"t2","from":"reviewer","to":"supervisor","tier_ceiling":2,"ts":"2026-09-01T00:00:06Z","payload":{"decision":"approve","rationale":"scoped and tested"}}
+{"type":"dispatch","id":"t3","from":"supervisor","to":"worker","tier_ceiling":3,"ts":"2026-09-01T00:00:07Z","payload":{"task":"build","deadline":1790000000}}
+{"type":"ack","id":"t3","from":"worker","to":"supervisor","tier_ceiling":3,"ts":"2026-09-01T00:00:08Z","payload":{}}
+{"type":"block","id":"t3","from":"worker","to":"supervisor","tier_ceiling":3,"ts":"2026-09-01T00:00:09Z","payload":{"reason":"missing dep"}}
+{"type":"dispatch","id":"t3","from":"supervisor","to":"worker","tier_ceiling":3,"ts":"2026-09-01T00:00:10Z","payload":{"task":"build (retry)"}}
+{"type":"ack","id":"t3","from":"worker","to":"supervisor","tier_ceiling":3,"ts":"2026-09-01T00:00:11Z","payload":{}}
+{"type":"done","id":"t3","from":"worker","to":"supervisor","tier_ceiling":3,"ts":"2026-09-01T00:00:12Z","payload":{"result":"built"}}
+{"type":"sync","id":"","from":"worker","to":"*","tier_ceiling":0,"ts":"2026-09-01T00:00:13Z","payload":{"state":{"phase":"idle"}}}

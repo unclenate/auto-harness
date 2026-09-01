@@ -59,9 +59,13 @@ does not police them.
 
 Half-enforced (reference-tool genre). The contracts + `validate-companions`
 (a contract change needs an ADR or change-log entry) are **Enforced**; the
-message schema, lifecycle, and `tier_ceiling` semantics are honored by adapters
-and confirmed at review — **Asserted-only** in v1 until the deferred
-`validate-agent-bus.sh` linter checks a live cycle.
+message schema, lifecycle, and `tier_ceiling` semantics are now **checkable**
+by the `validate-agent-bus.sh` conformance linter (OPP-0061) — an operator runs
+it (`--scan-file`) against a live `.coordination/bus/` session, and its
+correctness is CI-proven against committed fixtures. That moves those checks
+from Asserted-only to **Half-enforced**: a checking mechanism exists (its own
+correctness gated), though no per-PR gate fires over a live bus (there is no
+committed bus artifact to gate).
 
 ## Landed since v1
 

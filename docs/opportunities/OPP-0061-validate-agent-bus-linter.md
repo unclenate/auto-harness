@@ -6,7 +6,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0061 — `validate-agent-bus.sh`: a contract-conformance linter for the agent-coordination bus
 
-**Status:** proposed
+**Status:** accepted
 **Owner:** @unclenate · **Created/Updated:** 2026-09-01
 **Confidence:** high (design; the check-set is a direct transcription of a shipped, stable contract)
 **Parent:** PRD-0039 / management/agent-coordination (promotes OPP-0059)
@@ -83,6 +83,13 @@ WARN-vs-ENFORCE in v1.
 
 ## Open questions (biases to resolve at ratification)
 
+> **Ratified 2026-09-01 — accepted as proposed.** Q1: caps 8 KiB / coalesce at
+> **WARN** in v1 (advisory, non-blocking). Q2: **ERROR** on structural breaches
+> (orphan response, double-terminal, response-before-ack, bad envelope/payload),
+> **WARN** on soft signals (Tier ≥ 4 dispatch, `sync` caps). Q3: JSONL
+> `--scan-file` only in v1; the live-`.coordination/`-tree walker is deferred.
+> Implemented in the same change as this acceptance.
+
 - **Q1 — `sync` cap values + severity.** Are 8 KiB / coalesce sensible, and should v1 WARN (recommended,
   honors "no cap in v1" continuity) or hard-ENFORCE?
 - **Q2 — lifecycle strictness.** Reject an orphan/double-terminal as an ERROR, or WARN? Recommendation:
@@ -105,8 +112,12 @@ linter); a non-Claude live acceptance run of the linter against a real cross-ven
 
 ## Disposition
 
-Half-day-scoped once Q1–Q3 are ratified (the check-set is a mechanical transcription of a stable contract;
-the pattern mirrors `validate-observation-hygiene`'s `--scan-file` + fixtures). Ships OPP → implementation
-without a PRD (design contract = this OPP), consistent with the harness's cadence for a single self-contained
-validator. Promotion note: on acceptance, flip this record and the OPP-0059 candidate stub's
-"`validate-agent-bus.sh` deferred" line.
+**Accepted and implemented 2026-09-01** (OPP → implementation without a PRD, per the harness cadence for a
+single self-contained validator; design contract = this OPP). Delivered in the accepting change:
+`platform/validators/validate-agent-bus.sh` (`--scan-file` mode implementing the full check-set above), a
+committed fixture corpus (`platform/validators/test/fixtures/agent-bus/`: a valid transcript incl. a
+`block`→retry, plus per-violation invalid fixtures and a `sync`-cap WARN fixture) with a
+`TestValidateAgentBus` self-test in the integration harness, the §10 reclassification (Asserted-only →
+Half-enforced) in the module README and `control-loop-contract.md` (`sync` caps now stated, not deferred),
+and the coupled `validators 26 → 27` count propagation. Deferred to their own records as listed in Scope
+(live-tree walker, `--watch`, the `.acked`/`.sent` symlink residual, a non-Claude live acceptance run).

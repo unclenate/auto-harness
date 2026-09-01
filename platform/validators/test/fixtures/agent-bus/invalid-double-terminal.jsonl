@@ -1,0 +1,4 @@
+{"type":"dispatch","id":"d1","from":"s","to":"w","tier_ceiling":3,"ts":"2026-09-01T00:00:00Z","payload":{"task":"t"}}
+{"type":"ack","id":"d1","from":"w","to":"s","tier_ceiling":3,"ts":"2026-09-01T00:00:01Z","payload":{}}
+{"type":"done","id":"d1","from":"w","to":"s","tier_ceiling":3,"ts":"2026-09-01T00:00:02Z","payload":{"result":"a"}}
+{"type":"done","id":"d1","from":"w","to":"s","tier_ceiling":3,"ts":"2026-09-01T00:00:03Z","payload":{"result":"b"}}

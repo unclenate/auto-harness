@@ -2843,3 +2843,64 @@ class TestValidateLaneIntegrity < Minitest::Test
     assert_equal 1, readonly, "readOnlyFiles change must fail"
   end
 end
+
+# ---------------------------------------------------------------------------
+# validate-agent-bus.sh
+# Contract-conformance linter for the agent-coordination bus (OPP-0061). A
+# --scan-file linter over a bus-transcript JSONL. Bus messages are runtime and
+# gitignored, so committed FIXTURES are the CI enforcement surface: these tests
+# prove the linter accepts a valid transcript and rejects each violation class.
+# ---------------------------------------------------------------------------
+AGENT_BUS_FIXTURES = File.expand_path("fixtures/agent-bus", File.dirname(__FILE__))
+
+class TestValidateAgentBus < Minitest::Test
+  def scan(name)
+    run_validator("validate-agent-bus.sh", "--scan-file", File.join(AGENT_BUS_FIXTURES, name))
+  end
+
+  def test_valid_transcript_passes
+    out, err, code = scan("valid.jsonl")
+    assert_equal 0, code, "valid transcript should pass. stderr: #{err}"
+    assert_match(/✓/, out)
+  end
+
+  def test_missing_payload_key_fails
+    out, _err, code = scan("invalid-missing-payload-key.jsonl")
+    assert_equal 1, code
+    assert_match(/payload missing/, out)
+  end
+
+  def test_orphan_response_fails
+    _out, _err, code = scan("invalid-orphan-response.jsonl")
+    assert_equal 1, code
+  end
+
+  def test_double_terminal_fails
+    out, _err, code = scan("invalid-double-terminal.jsonl")
+    assert_equal 1, code
+    assert_match(/terminal/, out)
+  end
+
+  def test_bad_tier_ceiling_fails
+    out, _err, code = scan("invalid-bad-tier-ceiling.jsonl")
+    assert_equal 1, code
+    assert_match(/tier_ceiling/, out)
+  end
+
+  def test_bad_envelope_fails
+    out, _err, code = scan("invalid-bad-envelope.jsonl")
+    assert_equal 1, code
+    assert_match(/envelope field/, out)
+  end
+
+  def test_sync_cap_warns_but_passes
+    out, _err, code = scan("warn-sync-cap.jsonl")
+    assert_equal 0, code, "an over-cap sync is WARN, not ERROR, in v1"
+    assert_match(/WARN/, out)
+  end
+
+  def test_missing_arg_is_usage_error
+    _out, _err, code = run_validator("validate-agent-bus.sh", "--scan-file")
+    assert_equal 2, code
+  end
+end

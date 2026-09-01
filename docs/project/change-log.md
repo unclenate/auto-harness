@@ -11,6 +11,24 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-09-01 — Accept + implement OPP-0061: validate-agent-bus.sh conformance linter
+
+Flipped **OPP-0061** to **accepted** (Q1–Q3 ratified as proposed) and implemented it in the same change
+(OPP → implementation without a PRD). Delivered: `platform/validators/validate-agent-bus.sh` — a
+`--scan-file` linter over a bus-transcript JSONL implementing the full check-set (envelope shape, per-type
+payload keys, correlation-id rule, per-id lifecycle validity incl. the `block`→retry-same-id path,
+`tier_ceiling` sanity, `sync` shape) — plus a committed fixture corpus
+(`platform/validators/test/fixtures/agent-bus/`) and a `TestValidateAgentBus` self-test (8 cases). The
+`sync` caps the contract had deferred are now **set** at WARN in v1 (8 KiB state / coalesce, configurable);
+structural breaches are ERROR (exit 1), advisory caps/high-tier are WARN (exit 0), usage is exit 2. §10
+reclassification: the message-schema / lifecycle / `tier_ceiling` checks move **Asserted-only →
+Half-enforced** (a checking mechanism now exists, its correctness CI-fixture-proven), updated in the module
+README and `control-loop-contract.md`. Coupled `validators 26 → 27` (and help-tests 78 → 81) count
+propagation across how-to-read, diagrams, cover SVG, README, validators/README. Distillation lesson
+(partition linter checks ERROR-vs-WARN + a 0/1/2 exit so a deferred "no cap in v1" limit lands as advisory
+without breaking conformant history) in `shared-observations.md`. Deferred: the live-`.coordination/`-tree
+walker, a `--watch` daemon, the `.acked`/`.sent` symlink residual, a non-Claude live acceptance run.
+
 ## 2026-09-01 — File OPP-0061: validate-agent-bus.sh contract-conformance linter
 
 Filed **OPP-0061** (proposed), the design contract for the deferred agent-coordination bus linter

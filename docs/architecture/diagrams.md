@@ -68,7 +68,7 @@ flowchart TD
     end
 
     subgraph ENFORCE["Enforcement (CI)"]
-        Validators["<b>Validators</b><br/>26 scripts"]
+        Validators["<b>Validators</b><br/>27 scripts"]
         Validators -.reads.-> Manifest
         Validators -.reads.-> Required
         Validators -.reads.-> Companions
@@ -361,7 +361,7 @@ flowchart TD
     Write --> Headers["<b>Fill template headers</b><br/>bash .harness/platform/bootstrap/<br/>set-consumer-headers.sh"]
     Headers --> Config["Writes .harness-headers.yaml<br/>(owner_name, owner_email,<br/>year, spdx_license, project_name)"]
 
-    Config --> Validate["Run validator chain locally<br/>(26 validators)"]
+    Config --> Validate["Run validator chain locally<br/>(27 validators)"]
     Validate --> Pass{"All exit 0?"}
 
     Pass -->|"no"| Troubleshoot["See workflow/troubleshooting.md<br/>or harness-onboarding skill"]

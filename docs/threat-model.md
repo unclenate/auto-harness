@@ -223,12 +223,15 @@ should pin to tags (not branches) for production use.
 
 Future-work items relevant to threat coverage:
 
-- **Trust-tier enforcement validator** (highest priority; OPP candidate)
 - **Reproducible / signed releases** with attestation
 - **Co-maintainer model** to remove single-point-of-failure
 - **Dependency-pinning policy** documentation for consumer projects
-- **Skill content scanning** to flag agent-prompt-injection patterns
-  in skills shipped by the harness
+
+> **Shipped since this list was written (moved out per the file's own update rule):**
+> the **trust-tier enforcement validator** (`validate-trust-tier.sh`, PRD-0006 — see A5) and
+> **skill-content scanning** (`validate-skill-content.sh`, ADR-0017) both landed in Wave 5.
+> Their scope is PR-boundary/active-module, not runtime — see the A5 section for the honest
+> enforcement boundary.
 
 These are tracked in [`docs/opportunities/candidates.md`](opportunities/candidates.md)
 as they get filed.

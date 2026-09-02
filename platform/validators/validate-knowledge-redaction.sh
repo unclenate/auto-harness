@@ -236,17 +236,22 @@ for file in "${WATCHED_FILES[@]}"; do
   # Track the current new-file line number while walking the diff.
   # Hunk headers look like: @@ -OLD_START,OLD_LEN +NEW_START,NEW_LEN @@
   current_line=0
+  hdr_minus=0
   while IFS= read -r diff_line; do
+    # File-header pair detection BEFORE the case: a "+++ " line is the new-file header ONLY when it
+    # immediately follows the "--- " old-file header. Otherwise a diff line beginning "+++" is an
+    # ADDED CONTENT line whose text starts with "++" (the single "+" diff marker + "++…") and MUST be
+    # scanned — the previous broad `+++*` glob skipped exactly this, letting a confidential name on a
+    # line starting with "++" bypass the denylist.
+    if [[ "$diff_line" == "--- "* ]]; then hdr_minus=1; continue; fi
+    if [[ "$diff_line" == "+++ "* && "$hdr_minus" -eq 1 ]]; then hdr_minus=0; continue; fi
+    hdr_minus=0
     case "$diff_line" in
       @@*)
         # Parse the hunk header to extract the starting new-line number.
         if [[ "$diff_line" =~ \+([0-9]+) ]]; then
           current_line="${BASH_REMATCH[1]}"
         fi
-        continue
-        ;;
-      +++*)
-        # File header — skip without bumping line counter.
         continue
         ;;
       +*)

@@ -65,6 +65,35 @@ modules.each do |mod|
   end
 end
 
+# Cycle detection over the dependsOn graph. The presence check above passes a cyclic graph
+# (A → B → A, or a self-loop A → A) because every referenced id is in the active set — but a cycle
+# has no valid resolution/activation order. DFS with GRAY (on the current stack) → a GRAY successor
+# closes a cycle. Report each distinct cycle once.
+adjacency = {}
+modules.each { |m| adjacency[m["id"]] = Array(m["dependsOn"]).select { |d| id_map.key?(d) } }
+node_color = Hash.new(0)   # 0 = unvisited, 1 = on stack, 2 = done
+dfs_stack = []
+reported_cycles = []
+visit = lambda do |node|
+  node_color[node] = 1
+  dfs_stack.push(node)
+  Array(adjacency[node]).each do |dep|
+    if node_color[dep] == 1
+      cycle = dfs_stack[dfs_stack.index(dep)..] + [dep]
+      key = cycle.sort.join(",")
+      unless reported_cycles.include?(key)
+        reported_cycles << key
+        errors << "dependency cycle detected: #{cycle.join(' → ')}"
+      end
+    elsif node_color[dep] == 0
+      visit.call(dep)
+    end
+  end
+  dfs_stack.pop
+  node_color[node] = 2
+end
+adjacency.keys.each { |n| visit.call(n) if node_color[n] == 0 }
+
 expected_type = {
   "core" => "core",
   "stacks" => "stack",

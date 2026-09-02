@@ -11,6 +11,22 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-09-02 — File OPP-0062: A2A Agent-Card descriptor layer + `tier_ceiling` extension
+
+Filed **OPP-0062** (proposed, design-only) — a follow-on to PRD-0039/OPP-0060 proposing to align the
+agent-coordination bus's ad-hoc per-agent descriptor layer to the **A2A Agent Card** (identity / skills /
+capabilities / securitySchemes) **without changing the transport or the control schema**: the file bus
+stays (A2A binds only to HTTP/gRPC — no local/stdio/file binding) and `tier_ceiling` is modelled as a named
+Agent Card **extension** (no standard equivalent — the Layer-4 governance gap). The 7 message types are
+annotated to A2A task states (no wire change); `sync` has no A2A equivalent and stays bespoke.
+**Field-reported by a coordinator session in a live multi-agent consumer deployment and independently
+re-derived here** (credited generically; next-free number re-derived vs main; redaction re-scrubbed). The
+external-spec claims (ACP→A2A merger, no-local-binding, Agent Card fields) are held **pending primary-source
+confirmation** and the A2A v1.0 date is **not cited normatively** (secondary sources conflict) — resolving
+these + the four open questions gates any advance to `accepted`. Indexed in candidates.md, docs/README.md,
+SUMMARY.md. Distillation lesson (bind the overlapping layer to an emerged standard; declare the parts it
+can't express as labelled extensions) in `shared-observations.md`.
+
 ## 2026-09-02 — ACP reference-proxy hardening: close four permission-seam defeats (audit PR-4)
 
 Fixes four confirmed defects in the ACP governance proxy (`platform/agents/acp/reference-proxy/`,

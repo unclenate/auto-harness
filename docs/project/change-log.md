@@ -25,10 +25,14 @@ different token from the fleet host of the same name and was left untouched. Rec
 `validate-knowledge-redaction.sh` so the names give a local pre-commit signal without ever living in the
 public tree, and `.gitignore`d the untracked do-not-publish working dirs (`.agents/`,
 `project-status-2026-08-04/`, the seed brief, the held-drafts memo) that a `git add -A` could have
-published. **Git history still contains the names** — a separate `filter-repo` history purge is planned and
-gated on explicit maintainer authorization (it force-pushes rewritten public history). Broadening the
-redaction scan beyond the two watched files, and the validator diff-header/scan-set fixes, are tracked to
-the validator-hardening pass.
+published. **Git history retains the names, by decision.** The repo has been public for ~3 months with a
+fork and released tags (`v0.6.0`) reachable to the leaked commits, so a `filter-repo` rewrite could not
+recall what was already cloned / forked / cached, while breaking every consumer `.harness` submodule pin,
+the fork, and the release tag — maximum disruption for a fraction of the benefit. The exposed data is
+treated as disclosed: the working-tree redaction + the going-forward gitignored denylist are the
+remediation; any infra-side attention for the fleet hostnames is a separate, out-of-repo track. Broadening
+the redaction scan beyond the two watched files, and the validator diff-header / scan-set fixes, are tracked
+to the validator-hardening pass.
 
 ## 2026-09-01 — Accept + implement OPP-0061: validate-agent-bus.sh conformance linter
 

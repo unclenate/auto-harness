@@ -550,11 +550,16 @@ Auto-harness is mounted at \`${MOUNT_PATH}/\` as a git submodule.
 - Validators: \`${MOUNT_PATH}/platform/validators/\`
 - Skills (symlinked): \`.agents/skills/\` and \`.claude/skills/\`
 
-Update the submodule to pull in upstream improvements:
+Update the harness by pinning a released version tag (recommended — do NOT track the \`main\` tip):
 
 \`\`\`
-git submodule update --remote ${MOUNT_PATH}
+cd ${MOUNT_PATH} && git fetch --tags && git checkout <version-tag>   # e.g. v0.6.0
+cd - && git add ${MOUNT_PATH} && git commit -m 'chore: bump harness to <version-tag>'
 \`\`\`
+
+\`git submodule update --remote\` tracks the \`main\` branch tip — fine for a throwaway spike, but an
+upstream force-push or a broken \`main\` then lands in your project unreviewed. Pin a tag for anything
+you depend on (see the threat model's S4).
 "
 
 handle_harness_md() {
@@ -646,10 +651,11 @@ packs declared in \`harness.manifest.yaml\`.
 
 ### Keeping the harness up to date
 
-Periodically run \`git submodule update --remote ${MOUNT_PATH}\` to pick up harness
-improvements (new modules, validator fixes, new compositions). Review the
-diff and commit. See \`${MOUNT_PATH}/platform/workflow/maintenance-operations.md\`
-for the full upgrade workflow.
+Periodically bump the harness to a newer **released tag** (\`cd ${MOUNT_PATH} && git fetch --tags &&
+git checkout <version-tag>\`) to pick up harness improvements (new modules, validator fixes, new
+compositions). Review the diff and commit. Prefer a pinned tag over \`--remote\` (which tracks the
+\`main\` tip unreviewed). See \`${MOUNT_PATH}/platform/workflow/maintenance-operations.md\` for the full
+upgrade workflow.
 
 ${AGENTS_MARKER_END}
 EOF

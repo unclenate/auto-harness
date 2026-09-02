@@ -55,9 +55,47 @@ DEFAULT_POLICY = {
 
 READABLE_KINDS = {"read", "search", "think"}
 
+# Shell metacharacters that can chain, redirect, or substitute a second command. If any appears in an
+# execute command, its safe-looking head no longer bounds what actually runs, so the command is NOT
+# eligible for the benign lowering below.
+_SHELL_METACHAR = re.compile(r"[;&|`$(){}<>]|\n")
+
+# The command HEAD must be a recognized test/lint/build runner for the benign lowering to Tier 1 to
+# apply. Anchored at the start so a dangerous command that merely *mentions* "test"/"build" further
+# along (e.g. `rm -rf dist # run test`) cannot lower its own tier.
+_BENIGN_EXECUTE_HEAD = re.compile(
+    r"^\s*(?:"
+    r"pytest|jest|ruff|eslint|tox|mypy|"
+    r"go\s+test|cargo\s+test|"
+    r"npm\s+(?:run\s+)?(?:test|lint|build)|"
+    r"yarn\s+(?:test|lint|build)|"
+    r"pnpm\s+(?:run\s+)?(?:test|lint|build)|"
+    r"make\s+(?:test|lint|build)"
+    r")\b"
+)
+
+
+def _has_shell_metachar(command):
+    return bool(_SHELL_METACHAR.search(command or ""))
+
+
+def _benign_execute_head(command):
+    return bool(_BENIGN_EXECUTE_HEAD.match(command or ""))
+
 
 def _matches_any(path, patterns):
     return any(re.search(p, path) for p in patterns)
+
+
+def _command_targets_entrypoint(command, patterns):
+    # The governance_entrypoints regexes are PATH-anchored (`^HARNESS\.md$`) — right for matching a
+    # location, wrong for a command string where the entrypoint appears as a substring
+    # (`sed -i … HARNESS.md`). De-anchor each and substring-search the command.
+    for p in patterns:
+        core = p.replace("(^|/)", "").lstrip("^").rstrip("$")
+        if core and re.search(core, command):
+            return True
+    return False
 
 
 def classify(kind, path="", command="", sensitive_paths=None, policy=None):
@@ -74,15 +112,31 @@ def classify(kind, path="", command="", sensitive_paths=None, policy=None):
     tier = policy["kinds"].get(kind, policy["kinds"]["other"])["tier"]
 
     if kind == "execute" and command:
-        # The command determines the tier (test/build LOWER it to 1; install → 4;
-        # deploy → 5), defaulting to the baseline only when no rule matches. When
-        # several rules match, the riskiest (highest) wins.
-        matched = [t for t, pattern in policy["command_rules"] if re.search(pattern, command)]
-        if matched:
-            tier = max(matched)
+        # The execute baseline is a FLOOR. A matched rule may RAISE the tier (install → 4, deploy → 5);
+        # it may LOWER the command to Tier 1 ONLY when the command is wholly a recognized safe
+        # invocation — its head is a test/lint/build runner AND it carries no shell metacharacters
+        # that could chain a second command. The previous `tier = max(matched)` REPLACED the baseline,
+        # so a match of the Tier-1 rule anywhere in the string (a comment, a chained command) dropped
+        # a destructive command to auto-approvable Tier 1 (`rm -rf dist # run test`).
+        baseline = tier
+        raised = [t for t, pattern in policy["command_rules"]
+                  if t > baseline and re.search(pattern, command)]
+        if raised:
+            tier = max(raised)
+        elif _benign_execute_head(command) and not _has_shell_metachar(command):
+            tier = 1
+        # else: stays at the baseline (an un-anchored or chained "benign" match never lowers)
     if kind == "fetch" and _publishes(command):
         tier = max(tier, 3)
-    if kind in ("edit", "move", "delete") and path and _matches_any(path, policy["governance_entrypoints"]):
+    # Governance entrypoints: a WRITE-capable operation on an entrypoint path — OR an execute whose
+    # command string targets one (e.g. `sed -i s/x/y/ HARNESS.md`) — is Tier 5, regardless of the
+    # agent's self-declared kind. The previous `kind in (edit, move, delete)` gate let a self-declared
+    # `execute` edit an entrypoint without ever hitting this rule. (A genuine read is exempt; a write
+    # that lies about its kind is the inherent ACP self-declaration limitation, documented in README.)
+    entrypoint_hit = bool(path) and _matches_any(path, policy["governance_entrypoints"])
+    if kind == "execute" and command:
+        entrypoint_hit = entrypoint_hit or _command_targets_entrypoint(command, policy["governance_entrypoints"])
+    if entrypoint_hit and kind not in READABLE_KINDS:
         tier = 5
     if path and _matches_any(path, sensitive_paths):
         tier = min(tier + 1, 5)
@@ -221,4 +275,32 @@ def load_policy(path):
             merged[key].update(val)
         else:
             merged[key] = val
+    _assert_tighten_only(merged)
+    return merged
+
+
+def _assert_tighten_only(merged, base=None):
+    """Enforce the tier-policy.yaml "may tighten, never loosen" rule IN CODE (it was only a comment).
+
+    A consumer override may RAISE a kind's baseline tier or ADD an allow_always ban; it may never
+    LOWER a tier or LIFT a ban. A loosening override is rejected rather than silently accepted.
+    """
+    base = base or DEFAULT_POLICY
+    for k, spec in base["kinds"].items():
+        m = (merged.get("kinds") or {}).get(k, {})
+        mt = m.get("tier")
+        if mt is not None and mt < spec["tier"]:
+            raise SystemExit(
+                "reference-proxy: policy override loosens kind %r (tier %r < default %r); "
+                "overrides may only tighten." % (k, mt, spec["tier"]))
+        if spec.get("allow_always") is False and m.get("allow_always") is not False and "allow_always" in m:
+            raise SystemExit(
+                "reference-proxy: policy override re-enables allow_always for kind %r; a ban may not "
+                "be lifted." % k)
+    for t, spec in base["tiers"].items():
+        m = (merged.get("tiers") or {}).get(t, {})
+        if spec.get("allow_always") is False and "allow_always" in (m.get("options") or []):
+            raise SystemExit(
+                "reference-proxy: policy override adds allow_always to tier %r where the default bans "
+                "it; overrides may only tighten." % t)
     return merged

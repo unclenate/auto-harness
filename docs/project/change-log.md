@@ -11,6 +11,10 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-09-02 — CI + bootstrap hardening: pin the supply chain, least-privilege the token, govern the off-switches (audit PR-5)
+
+Closes the audit's supply-chain / CI-hardening findings (authorized `.github/` change). **`.github/workflows/harness.yml`:** every third-party action pinned to an immutable commit SHA (`actions/checkout` and `ruby/setup-ruby`, tag in a comment) — was floating major tags; `markdownlint-cli2` pinned to `@0.23.2`; a top-level `permissions: contents: read` (least privilege — no job writes); `persist-credentials: false` on every checkout; and a new **`python-tests` job** wires the previously-uncovered reference Python into CI (the ACP governance-proxy engine, the dreaming orchestrator, the agent-coordination bus — audit RT-09). **`install.sh`:** the consumer update guidance now recommends pinning a **released tag**, not `git submodule update --remote` (which tracks the `main` tip unreviewed — the S4 contradiction). **Kernel `base/module.yaml`:** the four validator **exemption files** (`.skill-content-ignore`, `.publication-boundary-ignore`, `.knowledge-redaction-ignore`, `.doc-reference-ignore`) are now `sensitivePaths` + companion-triggered — silencing a security validator now warrants the same review as editing a governance entrypoint (was an unowned kill-switch). Distillation (a control's off-switch must be governed as tightly as the control) in `shared-observations.md`. **Deferred:** anchoring the ignore-file *exemption regexes* themselves (a validator change) and branch-protection/ruleset confirmation (out-of-repo, `gh api`).
+
 ## 2026-09-02 — File OPP-0062: A2A Agent-Card descriptor layer + `tier_ceiling` extension
 
 Filed **OPP-0062** (proposed, design-only) — a follow-on to PRD-0039/OPP-0060 proposing to align the

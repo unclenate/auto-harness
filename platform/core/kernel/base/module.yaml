@@ -28,6 +28,12 @@ sensitivePaths:
     patterns:
       - ^\.github/workflows/
       - ^scripts/
+  - description: Validator exemption files — an ignore file silences a security validator (skill-content, publication-boundary, knowledge-redaction, doc-reference), so editing one is a governance change that warrants the same review as a governance entrypoint, not a config tweak (audit 2026-09-01)
+    patterns:
+      - ^\.skill-content-ignore$
+      - ^\.publication-boundary-ignore$
+      - ^\.knowledge-redaction-ignore$
+      - ^\.doc-reference-ignore$
 companionRules:
   - description: Governance changes require governance rationale or operating-model update
     triggerPaths:
@@ -37,6 +43,10 @@ companionRules:
       - ^\.github/CODEOWNERS$
       - ^\.github/workflows/
       - ^scripts/
+      - ^\.skill-content-ignore$
+      - ^\.publication-boundary-ignore$
+      - ^\.knowledge-redaction-ignore$
+      - ^\.doc-reference-ignore$
     requiredAny:
       - ^docs/adr/ADR-
       - ^docs/operating-principles\.md$

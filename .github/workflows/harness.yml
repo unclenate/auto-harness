@@ -8,6 +8,12 @@ on:
   push:
     branches: [main]
 
+# Least privilege: the whole workflow only reads the repo. No job here writes to the repo,
+# publishes, or needs any other scope, so the GITHUB_TOKEN is restricted to contents:read
+# (sweep H-2). Raise per-job only if a future job genuinely needs more.
+permissions:
+  contents: read
+
 jobs:
   validators:
     name: Validators
@@ -17,11 +23,12 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest]
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
+          persist-credentials: false
 
-      - uses: ruby/setup-ruby@v1
+      - uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1
         with:
           ruby-version: "3.3"
 
@@ -182,9 +189,11 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest]
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
 
-      - uses: ruby/setup-ruby@v1
+      - uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1
         with:
           ruby-version: "3.3"
 
@@ -214,9 +223,11 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest]
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
 
-      - uses: ruby/setup-ruby@v1
+      - uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1
         with:
           ruby-version: "3.3"
 
@@ -238,7 +249,9 @@ jobs:
     name: Shellcheck
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
 
       - name: Install shellcheck
         run: sudo apt-get update && sudo apt-get install -y shellcheck
@@ -257,10 +270,12 @@ jobs:
     name: Markdownlint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
 
       - name: Install markdownlint-cli2
-        run: npm install -g markdownlint-cli2
+        run: npm install -g markdownlint-cli2@0.23.2
 
       # Config lives at .markdownlint-cli2.jsonc at repo root. Rule
       # rationale (which rules are enabled / disabled and why) is in
@@ -273,9 +288,11 @@ jobs:
     name: Sample Project Validation
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
 
-      - uses: ruby/setup-ruby@v1
+      - uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1
         with:
           ruby-version: "3.3"
 
@@ -328,3 +345,19 @@ jobs:
             bash platform/validators/validate-trust-tier.sh "$sample/harness.manifest.yaml" "$sample"
             echo "::endgroup::"
           done
+
+  python-tests:
+    name: Python Reference Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      # Reference Python (dependency-free stdlib) now runs in CI (audit RT-09): the ACP
+      # governance-proxy policy engine, the dreaming orchestrator, and the agent-coordination bus.
+      - name: ACP reference-proxy tests
+        run: cd platform/agents/acp/reference-proxy && python3 -m unittest discover
+      - name: Dreaming reference tests
+        run: cd reference/dreaming && python3 -m unittest discover
+      - name: Agent-coordination reference tests
+        run: cd reference/agent-coordination && python3 -m unittest discover -p 'test_*.py'

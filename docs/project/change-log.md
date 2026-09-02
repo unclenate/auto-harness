@@ -11,6 +11,20 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-09-02 — Resolve the three-way Tier-3 authorization contradiction (Direction 2)
+
+Fixes the audit's headline finding: `README.md`, the `harness-governance` skill, and `AGENTS.md` gave three
+different Tier-3 (git-writing) authorizations ("None" / "Yes, with care" / "Requires explicit instruction").
+Per maintainer decision (Direction 2), the derived tables now state the **kernel model** uniformly — Tier 3
+is authorized within the agent's ceiling, PR review gates the merge, and the human-authorization gate proper
+is at **Tier 4** — and this repo's **operational tightening** (explicit human instruction before any commit /
+push / PR; merges to `main` always maintainer-named) is stated **once**, as a deliberate tightening, in
+`AGENTS.md`'s Operating-discipline note, with a pointer from the skill's Gotchas so an agent loading it sees
+the stricter stance. The kernel's own design is unchanged (it already places the gate at Tier 4 and permits
+the operator to lower the ceiling). Governance-entrypoint (`AGENTS.md`) companion satisfied by an
+operating-principles §3 entry distilling the rule: a derived table states the shared MODEL; a deployment
+policy is a separate, singly-sourced layer, never a different value in a model cell.
+
 ## 2026-09-02 — Doc honesty: align enforcement claims with what the validators actually check (audit PR-2)
 
 Second remediation from the 2026-09-01 adversarial audit — the harness's own docs overclaimed what its

@@ -244,13 +244,16 @@ Every action an agent can take is classified into one of six tiers:
 | 0 | Read-only | Read files, search, inspect git history | None |
 | 1 | Local analysis | Run tests, builds, linters | None |
 | 2 | Workspace mutation | Edit files, create artifacts, scaffold docs | None |
-| 3 | Git-writing | Commit, push to feature branches | None |
-| 4 | Environment-altering | Run migrations, install deps, change env vars | Human direction required |
-| 5 | Remote / production | Deploy, production migrations, secrets rotation | Human direction + second sign-off |
+| 3 | Git-writing | Commit, push to feature branches, open PRs | PR review before merge |
+| 4 | Environment-altering | Run migrations, install deps, change env vars | Explicit human direction (per action) |
+| 5 | Remote / production | Deploy, production migrations, secrets rotation | Explicit human direction + second sign-off |
 
 Agents may always operate at a lower tier than their adapter declares. They may never
-self-elevate. This model is the kernel — it applies regardless of which other modules
-are active.
+self-elevate. This table is the kernel **model** — the human-authorization gate is at
+Tier 4; Tier 3 is authorized within the agent's ceiling, with PR review standing before a
+merge. A deploying operator may run a **tighter** stance (this repo requires explicit
+instruction before any Tier-3 git-writing — see `AGENTS.md`); that is an operational
+tightening of this model, not a change to it.
 
 ### Module System
 

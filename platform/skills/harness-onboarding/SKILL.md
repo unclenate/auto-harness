@@ -396,6 +396,12 @@ bash $PLATFORM/validators/validate-placeholders.sh .
 
 # Step 6 — Agent pack (only if agents/claude-code or agents/generic-llm is active)
 bash $PLATFORM/validators/validate-agent-pack.sh harness.manifest.yaml .
+
+# Step 7 — Security validators (always run these; they gate prompt-injection + trust posture)
+bash $PLATFORM/validators/validate-skill-content.sh harness.manifest.yaml .
+bash $PLATFORM/validators/validate-trust-tier.sh harness.manifest.yaml .
+bash $PLATFORM/validators/validate-sensitive-paths.sh
+# knowledge-redaction + publication-boundary also run in the full CI chain (see ci-integration.md)
 ```
 
 For each MISSING artifact identified in Step 3, note which validator will catch it and at what phase it should be re-enabled. Indicate what "green" means at the lite stage (Steps 1–2 pass) vs. the full compliance stage (all validators pass).
@@ -638,7 +644,9 @@ Run all validators locally: all should exit 0.
 **Phase 4 — CI gate**
 Wire validators to CI per `platform/workflow/ci-integration.md`.
 Install `harness-governance` skill: `cp -r platform/skills/harness-governance .agents/skills/` (or `.claude/skills/` for Claude Code).
-All validators passing in CI = **Harness Ready**.
+All validators passing in CI **plus at least one human reviewer besides the bootstrapper** having
+reviewed the harness = **Harness Ready** (the second-human gate is part of the kernel's definition —
+see `platform/core/kernel/base/lifecycle-controls.md`; CI-green alone is *not* Harness Ready).
 
 ---
 

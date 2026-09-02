@@ -11,6 +11,22 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-09-02 — Doc honesty: align enforcement claims with what the validators actually check (audit PR-2)
+
+Second remediation from the 2026-09-01 adversarial audit — the harness's own docs overclaimed what its
+validators enforce (a §10 failure turned inward). Fixes: the README `validate-trust-tier.sh` row now says
+**PR-boundary declaration-coherence** and states plainly that it does not prevent session-level
+self-elevation (honor-code) and does not ceiling-check a module that omits `maxTier`; `threat-model.md`
+moved the shipped **trust-tier** and **skill-content** validators out of "Mitigations Not Yet Deployed"
+(per the file's own update rule); and the onboarding skill restored the kernel's **second-human-review**
+gate to the "Harness Ready" definition (CI-green alone is not Harness Ready) and added the security
+validators (skill-content, trust-tier, sensitive-paths) to its runbook. **Deferred to your decision:** the
+three-way Tier-3 authorization contradiction — kernel + README + SKILL frame Tier 3 as PR-gated autonomy
+(human-authorization gate at Tier 4), while AGENTS.md tightens it to "requires explicit instruction";
+reconciling direction is an operating-policy call. Distillation lesson (a framework's descriptions of its
+own enforcement are an unguarded claim surface that drifts toward overclaiming — §10 applied inward) in
+`shared-observations.md`.
+
 ## 2026-09-01 — Security: redact leaked consumer/project names + fleet topology from the tracked tree
 
 Priority-one remediation from the 2026-09-01 adversarial audit: private partner-project names and a client's

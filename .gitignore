@@ -26,3 +26,13 @@ __pycache__/
 # into a sample project's .claude/drafts/ (consumer runtime state, not reference).
 # In a real consumer project the global .claude/ ignore already covers this.
 platform/examples/sample-projects/*/.claude/drafts/
+
+# --- Redaction / do-not-publish safety (security review 2026-09-01) ---
+# Local gitignored redaction denylist (names must never be committed; OPP-0048 mechanism 2).
+.knowledge-redaction-denylist
+# Untracked working directories that hold private/session state and must never be
+# published by an accidental `git add -A` (surfaced by the 2026-09-01 adversarial audit).
+.agents/
+project-status-2026-08-04/
+docs/superpowers/specs/2026-06-09-digital-twin-seed-brief.md
+docs/superpowers/specs/2026-08-31-memo-response-held-drafts.md

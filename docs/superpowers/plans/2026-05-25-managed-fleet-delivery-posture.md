@@ -2,13 +2,13 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Add a fifth auto-harness delivery posture, `delivery/managed-fleet`, for teams that operate configuration managing a live host fleet, and adopt it in the `ansible-internal` consumer.
+**Goal:** Add a fifth auto-harness delivery posture, `delivery/managed-fleet`, for teams that operate configuration managing a live host fleet, and adopt it in the `the-IaC-fleet-repo` consumer.
 
-**Architecture:** A new `module.yaml` profile + compiled README, three `docs/ops/` templates, and same-commit catalog propagation across 5 docs (README, SUMMARY, discovery-to-composition, harness-onboarding SKILL, templates/README). Recorded via ADR-0015 + change-log. The consumer (`ansible-internal`) then flips its manifest and creates the three artifacts. Validation is by the existing shell validators — there is no unit-test framework; "tests" are validator runs with expected pass/fail.
+**Architecture:** A new `module.yaml` profile + compiled README, three `docs/ops/` templates, and same-commit catalog propagation across 5 docs (README, SUMMARY, discovery-to-composition, harness-onboarding SKILL, templates/README). Recorded via ADR-0015 + change-log. The consumer (`the-IaC-fleet-repo`) then flips its manifest and creates the three artifacts. Validation is by the existing shell validators — there is no unit-test framework; "tests" are validator runs with expected pass/fail.
 
 **Tech Stack:** YAML profiles, Markdown templates/docs, Bash validators (`validate-module-graph.sh`, `validate-required-artifacts.sh`, `validate-companions.sh`, `validate-catalog-counts.sh`, `validate-placeholders.sh`), Ruby 3.0+.
 
-**Working location:** auto-harness repo, mounted at `.harness/`, on branch `feature/managed-fleet-delivery` (already created; spec committed as `6707f53`). Paths below are relative to the auto-harness repo root (`.harness/`) **except Task 7**, which operates in the `ansible-internal` parent repo. The consumer reads the submodule working tree directly, so adoption is testable before the auto-harness branch merges.
+**Working location:** auto-harness repo, mounted at `.harness/`, on branch `feature/managed-fleet-delivery` (already created; spec committed as `6707f53`). Paths below are relative to the auto-harness repo root (`.harness/`) **except Task 7**, which operates in the `the-IaC-fleet-repo` parent repo. The consumer reads the submodule working tree directly, so adoption is testable before the auto-harness branch merges.
 
 **Spec:** `docs/superpowers/specs/2026-05-25-managed-fleet-delivery-posture-design.md`
 
@@ -525,12 +525,12 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 **Context sources:**
 
 - `docs/superpowers/specs/2026-05-25-managed-fleet-delivery-posture-design.md` — the design
-- Brownfield onboarding of `fortify-ansible/ansible-internal` (an Ansible IaC fleet repo) surfaced the gap
+- Brownfield onboarding of `an IaC fleet repo` (an Ansible IaC fleet repo) surfaced the gap
 
 ## Context
 
 The four existing delivery postures all assume the project ships an app or a
-distributable. Onboarding `ansible-internal` — an Ansible repo that operates a
+distributable. Onboarding `the-IaC-fleet-repo` — an Ansible repo that operates a
 live 8-host fleet but ships no product of its own — had no good fit:
 
 - `prototype` waives operational burden a live fleet cannot waive.
@@ -571,7 +571,7 @@ at criticality ≥ medium.
 In `docs/project/change-log.md`, add a new row at the TOP of the entries table (above the `2026-05-17` row), matching the existing `| date | category | description | rationale | author | refs |` format:
 
 ```
-| 2026-05-25 | Scope | Added `delivery/managed-fleet` posture: a fifth delivery overlay for teams that operate configuration managing a live host fleet (production blast radius, no external app/distributable). Requires `docs/ops/{fleet-inventory,change-control,config-rollback}.md`; conflicts only with `prototype`; companion rule fires on fleet-topology changes (inventory host files, `host_vars/`). Ships three `templates/ops/` templates and the overlay README. Propagated across README.md, SUMMARY.md, discovery-to-composition.md, harness-onboarding SKILL.md, and templates/README.md. NOT added to HARNESS.md Active Modules (auto-harness does not self-adopt it). Same pass fixes pre-existing drift: SKILL.md internal-platform required-artifacts and README.md missing self-hosted-oss in the delivery row. | Brownfield onboarding of `fortify-ansible/ansible-internal` surfaced a posture gap: an IaC fleet repo fits none of prototype/production-saas/internal-platform/self-hosted-oss. managed-fleet names the shape and governs its operational risks (uncontrolled apply to live hosts, undocumented topology, no rollback path). R&D pass on `feature/managed-fleet-delivery` for maintainer review before merge. | @unclenate | ADR-0015 |
+| 2026-05-25 | Scope | Added `delivery/managed-fleet` posture: a fifth delivery overlay for teams that operate configuration managing a live host fleet (production blast radius, no external app/distributable). Requires `docs/ops/{fleet-inventory,change-control,config-rollback}.md`; conflicts only with `prototype`; companion rule fires on fleet-topology changes (inventory host files, `host_vars/`). Ships three `templates/ops/` templates and the overlay README. Propagated across README.md, SUMMARY.md, discovery-to-composition.md, harness-onboarding SKILL.md, and templates/README.md. NOT added to HARNESS.md Active Modules (auto-harness does not self-adopt it). Same pass fixes pre-existing drift: SKILL.md internal-platform required-artifacts and README.md missing self-hosted-oss in the delivery row. | Brownfield onboarding of `an IaC fleet repo` surfaced a posture gap: an IaC fleet repo fits none of prototype/production-saas/internal-platform/self-hosted-oss. managed-fleet names the shape and governs its operational risks (uncontrolled apply to live hosts, undocumented topology, no rollback path). R&D pass on `feature/managed-fleet-delivery` for maintainer review before merge. | @unclenate | ADR-0015 |
 ```
 
 - [ ] **Step 3: Verify the companion rule for governance entrypoints is satisfied**
@@ -628,10 +628,10 @@ Expected: `✓` and exit 0.
 
 ---
 
-### Task 7: Adopt `managed-fleet` in `ansible-internal` (consumer)
+### Task 7: Adopt `managed-fleet` in `the-IaC-fleet-repo` (consumer)
 
-> **Location change:** this task runs in the `ansible-internal` parent repo
-> (`/Users/unclenate/fortify-ansible/ansible-internal`), NOT the submodule. The
+> **Location change:** this task runs in the `the-IaC-fleet-repo` parent repo
+> (`<local-fleet-repo-checkout>`), NOT the submodule. The
 > consumer reads the submodule working tree, which is on `feature/managed-fleet-delivery`,
 > so the new module is already visible.
 
@@ -660,7 +660,7 @@ to:
 - [ ] **Step 2: Verify manifest + graph still pass**
 
 ```bash
-cd /Users/unclenate/fortify-ansible/ansible-internal
+cd <local-fleet-repo-checkout>
 bash .harness/platform/validators/validate-manifest.sh harness.manifest.yaml
 bash .harness/platform/validators/validate-module-graph.sh harness.manifest.yaml
 ```
@@ -671,8 +671,8 @@ Expected: both `✓`, exit 0.
 
 Fill the three templates with real content (placeholders replaced):
 
-- `docs/ops/fleet-inventory.md` — seed the host table from the README "Production Fleet Overview" (hermes/calypso/pandora/athos/db-athos/bdits01/sba-us-lax/sbb-us-lax with roles); authoritative source = `inventory/production/hosts.yml`.
-- `docs/ops/change-control.md` — seed the apply gate from `docs/operations/deployment-checklist.md`; dry-run command `ansible-playbook -i inventory/production/hosts.yml playbooks/site.yml --check`; canary `--check --limit calypso`.
+- `docs/ops/fleet-inventory.md` — seed the host table from the README "Production Fleet Overview" (the production host fleet with roles); authoritative source = `inventory/production/hosts.yml`.
+- `docs/ops/change-control.md` — seed the apply gate from `docs/operations/deployment-checklist.md`; dry-run command `ansible-playbook -i inventory/production/hosts.yml playbooks/site.yml --check`; canary `--check --limit <canary-host>`.
 - `docs/ops/config-rollback.md` — seed the snapshot/restore steps from `docs/operations/config-extraction.md` and `scripts/extract-configs.sh`.
 
 Replace ALL `[[...]]` placeholders with real values (owner: Nate DiNiro, nate@bdits.io; YEAR 2026; SPDX `MIT OR Apache-2.0`).
@@ -682,7 +682,7 @@ Replace ALL `[[...]]` placeholders with real values (owner: Nate DiNiro, nate@bd
 Temporarily test required-artifacts by pointing the validator at the manifest with the override still in place (it will report "disabled"), then prove the files exist and are placeholder-free:
 
 ```bash
-cd /Users/unclenate/fortify-ansible/ansible-internal
+cd <local-fleet-repo-checkout>
 ls docs/ops/fleet-inventory.md docs/ops/change-control.md docs/ops/config-rollback.md
 bash .harness/platform/validators/validate-placeholders.sh .
 ```
@@ -696,7 +696,7 @@ In `harness.manifest.yaml`, the `disabledValidations: [required-artifacts]` over
 - [ ] **Step 6: Commit (parent repo)**
 
 ```bash
-cd /Users/unclenate/fortify-ansible/ansible-internal
+cd <local-fleet-repo-checkout>
 git add harness.manifest.yaml docs/ops/fleet-inventory.md docs/ops/change-control.md docs/ops/config-rollback.md
 git commit -m "harness: adopt delivery/managed-fleet; add fleet ops artifacts"
 ```
@@ -714,7 +714,7 @@ git commit -m "harness: adopt delivery/managed-fleet; add fleet ops artifacts"
 - Catalog propagation (5 docs) + internal-platform drift fix → Task 4 ✓
 - ADR + change-log → Task 5 ✓
 - Validation (incl. negative conflict test, companion intent) → Tasks 1, 6 ✓
-- ansible-internal adoption → Task 7 ✓
+- the-IaC-fleet-repo adoption → Task 7 ✓
 - Spec's "HARNESS.md not updated" deviation → captured in Task 4 note + ADR (Task 5) ✓
 - Spec's catalog-counts-extension follow-up → recorded as out-of-scope in ADR ✓
 

@@ -21,7 +21,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 Digital-twin / scenario-runtime patterns recur across active projects (municipal twinning,
 real-estate planning, AI-datacenter operations, civic portals, healthcare agentic workflows,
-TerraSim-style geospatial simulation). A TerraSim review exposed reusable governance primitives.
+partner geospatial-simulation twins). A partner-project review exposed reusable governance primitives.
 auto-harness should encode these as reusable governance rather than project-local advice.
 
 The placement question is genuine: is this a subject-matter **domain** (like `healthcare-*`,

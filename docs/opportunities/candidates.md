@@ -595,7 +595,7 @@ The multi-agent analog of the module declare-then-enforce contract.
   `forbiddenCommands` / `prMode`) + a lane-vs-diff lint validator + a conflict
   protocol + an idempotent worktree runbook (wedge candidates); cross-agent
   memory-bus auto-load, interface-first contract-stub, and project-specific rules
-  deferred. Harvest the schema from real PlanAtlas / `central-city-web` lane specs.
+  deferred. Harvest the schema from real a multi-agent planning project / `a municipal-web project` lane specs.
 
 ### Delivery-cost & unit-economics governance (2026-06-15)
 

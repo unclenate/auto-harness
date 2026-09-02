@@ -8,13 +8,13 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 > Status: proposed (awaiting maintainer review)
 > Author: @unclenate
 > Date: 2026-05-25
-> Sub-project: **G1** of the Fortify24x7 multi-stack hosting program (see "Program context")
+> Sub-project: **G1** of the the fleet operator multi-stack hosting program (see "Program context")
 
 ---
 
 ## Program context (why this exists)
 
-Fortify24x7 is evolving `ansible-internal` from a WordPress-fleet Ansible repo into
+the fleet operator is evolving `the-IaC-fleet-repo` from a WordPress-fleet Ansible repo into
 a **multi-stack hosting orchestrator**: WordPress today, static/headless React/Next.js
 next, via a Bastion "Build Foundry" that compiles client apps and syncs static assets
 to hardened edge hosts. The full program decomposes into six sub-projects:
@@ -29,7 +29,7 @@ to hardened edge hosts. The full program decomposes into six sub-projects:
 | G2 | governance | Stack/architecture absorptions (`stacks/ansible`, polyglot node, static-edge, staged-rollout testing, lint-baseline) | F2–F4 |
 
 Build order: **G1 → F1 → F2 → F3 → F4 → G2**. G1 leads because every other piece is
-built under a delivery posture, and `ansible-internal` needs a fleet-shaped posture for
+built under a delivery posture, and `the-IaC-fleet-repo` needs a fleet-shaped posture for
 its own harness conformance *regardless* of which client stacks are added. Each
 sub-project gets its own spec → plan → implementation cycle. **This spec covers G1 only.**
 
@@ -132,7 +132,7 @@ compiledFragments:
 
 ### New templates (`platform/templates/ops/`)
 
-| Template | Purpose | Seed in ansible-internal |
+| Template | Purpose | Seed in the-IaC-fleet-repo |
 | -------- | ------- | ------------------------ |
 | `fleet-inventory.md` | Host → role → OS → purpose → authoritative-source table | README.md "Production Fleet Overview" table |
 | `change-control.md` | Maintenance windows, who approves, the dry-run-before-apply gate, staged rollout (`--check --limit` then expand) | `docs/operations/deployment-checklist.md` |
@@ -154,7 +154,7 @@ For `managed-fleet` that means editing, in the same commit:
 6. `platform/templates/README.md` — register the three new `ops/` templates.
 7. `docs/project/change-log.md` — a `Scope` entry, and **ADR-0015** documenting the new posture and the gap it closes.
 
-### ansible-internal adoption (the consumer side)
+### the-IaC-fleet-repo adoption (the consumer side)
 
 After the posture exists upstream and the submodule is updated:
 
@@ -177,7 +177,7 @@ After the posture exists upstream and the submodule is updated:
 
 - **Companion-rule false negatives.** `validate-companions` matches changed paths; it cannot distinguish a *new* host_vars file (real topology change) from an edit to an existing one. Matching any `host_vars/` change is an intentional over-trigger (safe direction — asks for a record when in doubt).
 - **Catalog drift.** Propagation is manual across 6 files; the `internal-platform` drift this spec fixes is evidence the process is fallible. Extending `validate-catalog-counts.sh` to diff the SKILL.md prose tables against `module.yaml` is filed as a separate maintenance item.
-- **Submodule workflow.** This is an auto-harness change consumed by ansible-internal via the `.harness` submodule. Implementation happens on a feature branch in the auto-harness repo (per the `feature/agentic-interfaces-rnd` convention); ansible-internal adoption is a separate commit after `git submodule update`.
+- **Submodule workflow.** This is an auto-harness change consumed by the-IaC-fleet-repo via the `.harness` submodule. Implementation happens on a feature branch in the auto-harness repo (per the `feature/agentic-interfaces-rnd` convention); the-IaC-fleet-repo adoption is a separate commit after `git submodule update`.
 
 ---
 

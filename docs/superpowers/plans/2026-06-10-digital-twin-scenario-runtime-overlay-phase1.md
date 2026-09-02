@@ -67,9 +67,9 @@ governance locally — provenance, world/scenario/run-state separation, model/ag
 run logs, uncertainty disclosure, publication boundaries, and "don't overclaim the maturity"
 discipline. The harness has no reusable machinery for it.
 
-The recurrence is concrete: municipal / civic twinning, a Central City / Foundation OS planning
-substrate, an AI-datacenter operations twin, healthcare/FHIR agentic workflows, civic planning
-portals, and TerraSim-style geospatial simulation. The municipal-twinning R&D is now drawing
+The recurrence is concrete: municipal / civic twinning, a a municipal / civic planning platform planning
+substrate, a datacenter-operations twin, healthcare/FHIR agentic workflows, civic planning
+portals, and partner geospatial-simulation twins. The municipal-twinning R&D is now drawing
 real-estate-development interest, and the through-line is a **planning-lifecycle product**: build
 planning models that can be *transformed* into operational digital twins. Multiple projects are
 expected to rely on this research and its organizational governance to move fast and accurately.
@@ -108,8 +108,8 @@ before public or high-impact outputs.
 
 ## Candidate consumers
 
-Central City / Foundation OS · AI-Datacenter Operations Twin · municipal / civic planning portals
-· real-estate-development planning twins · healthcare/FHIR agentic workflows · TerraSim-style
+a municipal / civic planning platform · a datacenter-operations twin · municipal / civic planning portals
+· real-estate-development planning twins · healthcare/FHIR agentic workflows · a partner geospatial-twin project-style
 geospatial simulation · other scenario-driven agentic systems.
 
 ## Proposed shape (specified in PRD-0023)
@@ -134,9 +134,9 @@ geospatial simulation · other scenario-driven agentic systems.
 - Not an event-sourcing mandate, a mandated ontology, or an operational-control-loop framework in
   v1.
 
-## TerraSim-derived lessons
+## Partner-project-derived lessons
 
-A TerraSim repository review surfaced the reusable primitives above. The lesson is the primitives,
+A partner-repository review surfaced the reusable primitives above. The lesson is the primitives,
 not the product: serious twin-like systems need governed scenario manifests, world/scenario/run
 separation, provenance, registries, run logs, uncertainty reporting, publication boundaries,
 golden scenarios, and review gates — independent of any one simulation stack.
@@ -203,7 +203,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 Digital-twin / scenario-runtime patterns recur across active projects (municipal twinning,
 real-estate planning, AI-datacenter operations, civic portals, healthcare agentic workflows,
-TerraSim-style geospatial simulation). A TerraSim review exposed reusable governance primitives.
+partner geospatial-simulation twins). A partner-project review exposed reusable governance primitives.
 auto-harness should encode these as reusable governance rather than project-local advice.
 
 The placement question is genuine: is this a subject-matter **domain** (like `healthcare-*`,

@@ -149,28 +149,49 @@ if [[ "${1:-}" == "--scan-file" ]]; then
 target  = ARGV[0]
 verbose = ARGV[1] == "1"
 
+# Each: [id, regex, label, scope]. scope :phrase → matched against the whitespace-NORMALIZED whole
+# text, so a phrase split across newlines (or markdown-wrapped) cannot bypass it. scope :line →
+# matched per line (anchored role headers; zero-width / bidi char classes). Role headers are
+# case-insensitive with an optional post-colon separator (was /^System:\s/ — missed "system:",
+# "SYSTEM:", and "System:do").
 DENYLIST = [
-  ["P01", /ignore\s+previous\s+instructions/i,                 "ignore-previous-instructions"],
-  ["P02", /treat\s+as\s+Tier\s+[0-5]/i,                        "treat-as-Tier"],
-  ["P03", /always\s+operates?\s+at\s+Tier/i,                   "always-operates-at-Tier"],
-  ["P04", /skip\s+(?:the\s+)?validator/i,                      "skip-the-validator"],
-  ["P05", /supersedes?\s+harness-governance/i,                 "supersedes-harness-governance"],
-  ["P06", /^System:\s/,                                        "System-role-header"],
-  ["P07", /^User:\s/,                                          "User-role-header"],
-  ["P08", /^Assistant:\s/,                                     "Assistant-role-header"],
-  ["P09", /[​‌‍﻿]/,                                            "zero-width-char"],
-  ["P10", /[‪-‮⁦-⁩]/,                                          "bidi-override-char"]
+  ["P01", /ignore\s+previous\s+instructions/i,                 "ignore-previous-instructions", :phrase],
+  ["P02", /treat\s+as\s+Tier\s+[0-5]/i,                        "treat-as-Tier",                :phrase],
+  ["P03", /always\s+operates?\s+at\s+Tier/i,                   "always-operates-at-Tier",      :phrase],
+  ["P04", /skip\s+(?:the\s+)?validator/i,                      "skip-the-validator",           :phrase],
+  ["P05", /supersedes?\s+harness-governance/i,                 "supersedes-harness-governance",:phrase],
+  ["P06", /^\s*System:\s*/i,                                   "System-role-header",           :line],
+  ["P07", /^\s*User:\s*/i,                                     "User-role-header",             :line],
+  ["P08", /^\s*Assistant:\s*/i,                                "Assistant-role-header",        :line],
+  ["P09", /[​‌‍﻿]/,                                            "zero-width-char",              :line],
+  ["P10", /[‪-‮⁦-⁩]/,                                          "bidi-override-char",           :line]
 ].freeze
+PHRASE_DENYLIST = DENYLIST.select { |t| t[3] == :phrase }.freeze
+LINE_DENYLIST   = DENYLIST.select { |t| t[3] == :line }.freeze
+
+# Scan one source's text: LINE patterns per line (keeps line numbers), PHRASE patterns against the
+# whitespace-normalized whole text (catches cross-line splits). Returns [id, label, lineno_or_nil,
+# excerpt] hits; lineno nil means the phrase was found in the normalized whole text.
+def scan_source_text(text)
+  hits = []
+  text.split("\n").each_with_index do |line, i|
+    LINE_DENYLIST.each do |pid, re, label, _|
+      hits << [pid, label, i + 1, line] if re.match?(line)
+    end
+  end
+  normalized = text.gsub(/\s+/, " ")
+  PHRASE_DENYLIST.each do |pid, re, label, _|
+    hits << [pid, label, nil, normalized] if re.match?(normalized)
+  end
+  hits
+end
 
 hits = 0
-File.readlines(target).each_with_index do |raw, idx|
-  line = raw.chomp
-  DENYLIST.each do |pid, re, label|
-    next unless re.match?(line)
-    excerpt = line.length > 100 ? "#{line[0, 100]}…" : line
-    warn "✗ #{target}:#{idx + 1}: #{pid} (#{label}) matched in: #{excerpt}"
-    hits += 1
-  end
+scan_source_text(File.read(target)).each do |pid, label, lineno, excerpt|
+  loc = lineno ? "#{target}:#{lineno}" : "#{target}:(cross-line)"
+  ex = excerpt.length > 100 ? "#{excerpt[0, 100]}…" : excerpt
+  warn "✗ #{loc}: #{pid} (#{label}) matched in: #{ex}"
+  hits += 1
 end
 
 if hits > 0
@@ -223,28 +244,51 @@ active_modules = HarnessRegistry.active_modules(platform_root, manifest)
 # v1 denylist — each entry is [id, regex, suggested_fix_hint]. Pattern
 # sources are cited inline per FR-002 + PRD-0015 Technical Constraints
 # (safety-security-sweep §3 Recommendation 2 is the canonical source).
+# [id, regex, remediation-hint, scope]. scope :phrase → matched against the whitespace-NORMALIZED
+# whole text (a phrase split across newlines / markdown-wrapped cannot bypass it); :line → matched
+# per line (anchored role headers, char classes). Role headers are case-insensitive with an optional
+# post-colon separator (was /^System:\s/ — missed "system:", "SYSTEM:", "System:do").
 DENYLIST = [
   ["P01", /ignore\s+previous\s+instructions/i,
-   "rephrase to avoid the injection-canonical phrase 'ignore previous instructions'"],
+   "rephrase to avoid the injection-canonical phrase 'ignore previous instructions'", :phrase],
   ["P02", /treat\s+as\s+Tier\s+[0-5]/i,
-   "rephrase tier reference — direct tier-assignment phrasing is V4 attack-surface"],
+   "rephrase tier reference — direct tier-assignment phrasing is V4 attack-surface", :phrase],
   ["P03", /always\s+operates?\s+at\s+Tier/i,
-   "rephrase tier reference — 'always operates at Tier N' is V4 attack-surface"],
+   "rephrase tier reference — 'always operates at Tier N' is V4 attack-surface", :phrase],
   ["P04", /skip\s+(?:the\s+)?validator/i,
-   "rephrase — 'skip the validator' phrasing is direct V2 bypass instruction"],
+   "rephrase — 'skip the validator' phrasing is direct V2 bypass instruction", :phrase],
   ["P05", /supersedes?\s+harness-governance/i,
-   "rephrase authority claim — 'supersedes harness-governance' is V4/V6 attack-surface"],
-  ["P06", /^System:\s/,
-   "rephrase or escape — '^System:' at line start is a role-prompt header (V2)"],
-  ["P07", /^User:\s/,
-   "rephrase or escape — '^User:' at line start is a role-prompt header (V2)"],
-  ["P08", /^Assistant:\s/,
-   "rephrase or escape — '^Assistant:' at line start is a role-prompt header (V2)"],
+   "rephrase authority claim — 'supersedes harness-governance' is V4/V6 attack-surface", :phrase],
+  ["P06", /^\s*System:\s*/i,
+   "rephrase or escape — 'System:' at line start is a role-prompt header (V2)", :line],
+  ["P07", /^\s*User:\s*/i,
+   "rephrase or escape — 'User:' at line start is a role-prompt header (V2)", :line],
+  ["P08", /^\s*Assistant:\s*/i,
+   "rephrase or escape — 'Assistant:' at line start is a role-prompt header (V2)", :line],
   ["P09", /[​‌‍﻿]/,
-   "remove zero-width characters (U+200B/200C/200D/FEFF) — invisible injection vector"],
+   "remove zero-width characters (U+200B/200C/200D/FEFF) — invisible injection vector", :line],
   ["P10", /[‪-‮⁦-⁩]/,
-   "remove Unicode bidirectional override marks — invisible-reorder injection vector"]
+   "remove Unicode bidirectional override marks — invisible-reorder injection vector", :line]
 ].freeze
+PHRASE_DENYLIST = DENYLIST.select { |t| t[3] == :phrase }.freeze
+LINE_DENYLIST   = DENYLIST.select { |t| t[3] == :line }.freeze
+
+# Scan one source's text: LINE patterns per line (keeps line numbers); PHRASE patterns against the
+# whitespace-normalized whole text (catches cross-line splits). Returns [id, hint, lineno_or_nil,
+# excerpt]; a nil lineno means the phrase was found in the normalized whole text.
+def scan_source_text(text)
+  hits = []
+  text.split("\n").each_with_index do |line, i|
+    LINE_DENYLIST.each do |pid, re, hint, _|
+      hits << [pid, hint, i + 1, line] if re.match?(line)
+    end
+  end
+  normalized = text.gsub(/\s+/, " ")
+  PHRASE_DENYLIST.each do |pid, re, hint, _|
+    hits << [pid, hint, nil, normalized] if re.match?(normalized)
+  end
+  hits
+end
 
 # Load exemption patterns from .skill-content-ignore (if present).
 ignore_path = File.join(project_root, ".skill-content-ignore")
@@ -272,8 +316,7 @@ sources = []  # each: [label_for_error, [lines_with_index]]
 
 def push_text(sources, label, text)
   return unless text.is_a?(String) && !text.empty?
-  lines = text.split("\n").each_with_index.map { |l, i| [i + 1, l] }
-  sources << [label, lines]
+  sources << [label, text]  # whole text — scan_source_text does line + normalized-whole passes
 end
 
 def push_strings(sources, label, arr)
@@ -321,27 +364,37 @@ active_modules.each do |mod|
   end
 end
 
+# FR-001 addendum (audit 2026-09-01): always scan the root governance entrypoints + EVERY shipped
+# SKILL.md, independent of module activation. CLAUDE.md's own load order pulls AGENTS/HARNESS/TOOLS/
+# operating-principles into an agent's session at start, and any skill may be loaded on demand — so
+# scanning only active modules left the highest-value prompt-injection surface uncovered.
+already_scanned = sources.map { |lbl, _| lbl }
+fixed_targets = %w[AGENTS.md CLAUDE.md HARNESS.md TOOLS.md docs/operating-principles.md]
+                .map { |rel| File.join(project_root, rel) }
+fixed_targets += Dir.glob(File.join(platform_root, "skills", "*", "SKILL.md")).sort
+fixed_targets.each do |path|
+  next unless File.exist?(path)
+  next if already_scanned.include?(path)
+  push_text(sources, path, File.read(path))
+  already_scanned << path
+end
+
 # Scan.
 violations = 0
 exempted_count = 0
 
-sources.each do |label, lines|
-  lines.each do |lineno, content|
-    DENYLIST.each do |pid, re, hint|
-      next unless re.match?(content)
-      if line_exempted?(content, ignore_patterns)
-        exempted_count += 1
-        if verbose
-          excerpt = content.length > 100 ? "#{content[0, 100]}…" : content
-          warn "ℹ exempted: #{label}:#{lineno}: #{pid} match in: #{excerpt}"
-        end
-      else
-        excerpt = content.length > 100 ? "#{content[0, 100]}…" : content
-        warn "✗ #{label}:#{lineno}: #{pid} matched in: #{excerpt}"
-        warn "  → #{hint}"
-        warn "  → if pedagogical / documentary, add to .skill-content-ignore with justification"
-        violations += 1
-      end
+sources.each do |label, text|
+  scan_source_text(text).each do |pid, hint, lineno, content|
+    loc = lineno ? "#{label}:#{lineno}" : "#{label}:(cross-line)"
+    excerpt = content.length > 100 ? "#{content[0, 100]}…" : content
+    if line_exempted?(content, ignore_patterns)
+      exempted_count += 1
+      warn "ℹ exempted: #{loc}: #{pid} match in: #{excerpt}" if verbose
+    else
+      warn "✗ #{loc}: #{pid} matched in: #{excerpt}"
+      warn "  → #{hint}"
+      warn "  → if pedagogical / documentary, add to .skill-content-ignore with justification"
+      violations += 1
     end
   end
 end

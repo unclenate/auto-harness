@@ -11,6 +11,26 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-09-02 — Validator hardening: close four scanner bypasses (audit PR-3)
+
+Fixes four confirmed validator defects from the 2026-09-01 audit, none of which the green self-test suite
+caught. **`validate-skill-content.sh`:** (1) phrase patterns now also scan a whitespace-normalized whole
+text, so a phrase split across newlines / markdown-wrapped can no longer bypass the per-line match; (2)
+role-header patterns are case-insensitive with an optional post-colon separator (`/^\s*System:\s*/i` — was
+`/^System:\s/`, which missed `system:` and `System:do`); (3) the scan-set now always includes the root
+governance entrypoints (AGENTS/CLAUDE/HARNESS/TOOLS/operating-principles) + every shipped `SKILL.md`,
+independent of module activation — the surfaces an agent actually loads at session start. **`validate-
+knowledge-redaction.sh`:** a diff line is treated as a file header only when a real `---`/`+++` header pair
+(matched structurally with its trailing space), not the broad `+++*` glob — so an added line beginning `++` is now scanned (was skipped).
+**`validate-module-graph.sh`:** added dependsOn cycle detection (DFS; self-loops + multi-node cycles), which
+the presence-only check passed. **`validate-trust-tier.sh`:** a missing agent `maxTier` now warns instead of
+silently skipping the ceiling check. Regression tests added for the skill-content multi-line + role-header
+fixes; the redaction fix verified end-to-end (a `++`-prefixed name is now caught). **Deferred to their own
+records:** broadening the redaction *scan set* beyond the two watched files (false-positive risk), and the
+AH-ADV-04 maxTier ceiling-vs-floor *inversion* redesign (a semantic decision). Distillation lesson (a
+scanner's own parser/scope is an attack surface; one-canonical-line fixtures miss the evasions) in
+`shared-observations.md`.
+
 ## 2026-09-02 — Resolve the three-way Tier-3 authorization contradiction (Direction 2)
 
 Fixes the audit's headline finding: `README.md`, the `harness-governance` skill, and `AGENTS.md` gave three

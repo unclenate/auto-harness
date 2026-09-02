@@ -269,7 +269,15 @@ agent_mods = active_modules.select { |mod| (mod["type"] || "") == "agent" }
 agent_mods.each do |mod|
   display = mod["id"] || mod["__path"] || "(unknown agent)"
   max_tier = mod["maxTier"]
-  next if max_tier.nil?
+  if max_tier.nil?
+    # A missing maxTier previously SKIPPED the ceiling check silently — an agent pack could omit
+    # maxTier to bypass it entirely. Surface the omission (warn, not hard-fail: whether a missing
+    # ceiling should be an error, and whether maxTier is an upper ceiling vs a workload floor, is
+    # the AH-ADV-04 inversion redesign, tracked separately). No longer a silent no-op.
+    warn "⚠ #{display}: agent pack declares no maxTier — its trust-tier ceiling is unbounded and the ceiling check cannot run; declare an explicit maxTier"
+    warnings += 1
+    next
+  end
   unless VALID_TIERS.include?(max_tier)
     warn "✗ #{display}: maxTier #{max_tier.inspect} out of range (must be 0-5)"
     violations += 1

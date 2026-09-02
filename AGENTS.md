@@ -102,11 +102,21 @@ All agents operate within the kernel's six-tier action model:
 | 0 | Read-only inspection | Always permitted |
 | 1 | Local analysis (tests, builds, linters) | Always permitted |
 | 2 | Workspace mutation (file edits) | Default agent scope |
-| 3 | Git-writing (commits, branches) | Requires explicit instruction |
-| 4 | Environment-altering (installs, migrations) | Requires human authorization |
-| 5 | Remote/production (deploys, secrets) | Requires human authorization + named owner |
+| 3 | Git-writing (commits, branches, PRs) | Kernel default: authorized within ceiling — PR review gates the merge. **This repo tightens to: explicit instruction** (see below) |
+| 4 | Environment-altering (installs, migrations) | Requires explicit human authorization (per action) |
+| 5 | Remote/production (deploys, secrets) | Requires explicit human authorization + named owner + second sign-off |
 
 Default operating tier: **Tier 2** (workspace mutation).
+
+> **Operating discipline — this repo tightens Tier 3.** The kernel (`trust-model.md`)
+> authorizes Tier-3 git-writing *within the agent's ceiling*, with the **PR-review gate**
+> standing between a feature-branch commit and a merge — the human-authorization gate
+> proper is at **Tier 4**. This harness's maintainer runs a stricter stance: **wait for
+> explicit human instruction before any commit, push, or PR**, and **merges to `main`
+> always require the maintainer's explicit, PR-named authorization**. This is a deliberate
+> tightening, exercising the kernel's own rule that the operator may lower the ceiling for a
+> session — it is *not* a different tier model. The tables in README / the harness-governance
+> skill state the kernel model; this note is where the operational tightening lives.
 
 ---
 

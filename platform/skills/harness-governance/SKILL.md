@@ -32,6 +32,7 @@ human authorization, never self-elevation.
 
 **Gotchas:**
 
+- **Tier 3 operating discipline.** The table shows the kernel model — Tier-3 git-writing is authorized within the agent's ceiling, with PR review gating the merge (the human-authorization gate proper is Tier 4). **This repo runs a tighter stance: wait for explicit human instruction before any commit, push, or PR, and never merge to `main` without the maintainer's explicit, PR-named authorization** (see `AGENTS.md` → Operating discipline). "Yes, with care" is the kernel default, not a licence to git-write unprompted here.
 - Dependency installation (`npm install`, `pip install`, `uv sync`) is Tier 4 — even locally.
 - `supabase db push` against any non-local environment is Tier 4.
 - Any deploy command is Tier 5 regardless of how it is invoked.

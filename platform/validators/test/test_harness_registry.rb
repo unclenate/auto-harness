@@ -1329,3 +1329,50 @@ class TestExemptionOverbroad < Minitest::Test
     refute HarnessRegistry.exemption_pattern_overbroad?("[")
   end
 end
+
+# ---------------------------------------------------------------------------
+# agent_maxtier_status — the CORRECTED maxTier ceiling semantics (ADR-0020).
+# maxTier is an UPPER ceiling on the agent's autonomous reach (caps, never
+# grants). A ceiling BELOW the manifest workload is a valid least-privilege
+# choice, NOT a violation (that was the AH-ADV-04 inversion). The only
+# coherence violation is a ceiling below the agent's OWN declared tier, or an
+# out-of-range value.
+# ---------------------------------------------------------------------------
+class TestAgentMaxtierStatus < Minitest::Test
+  # The inversion fix: a ceiling far above the agent's own baseline is fine…
+  def test_high_ceiling_above_declared_is_ok
+    assert_equal :ok, HarnessRegistry.agent_maxtier_status(5, 2)
+  end
+
+  # …and a LOW ceiling (least privilege) is now ALSO ok — this is the case the
+  # old floor check wrongly failed when the manifest had a higher-tier module.
+  def test_low_ceiling_at_declared_is_ok
+    assert_equal :ok, HarnessRegistry.agent_maxtier_status(2, 2)
+  end
+
+  def test_ceiling_of_zero_with_no_declared_is_ok
+    assert_equal :ok, HarnessRegistry.agent_maxtier_status(0, nil)
+  end
+
+  def test_missing_declared_is_ok
+    assert_equal :ok, HarnessRegistry.agent_maxtier_status(3, nil)
+  end
+
+  # Coherence violation: a ceiling below the agent's OWN baseline operating
+  # tier — the agent can't routinely operate above its own cap.
+  def test_ceiling_below_declared_is_incoherent
+    assert_equal :below_declared, HarnessRegistry.agent_maxtier_status(1, 3)
+  end
+
+  def test_out_of_range_high
+    assert_equal :out_of_range, HarnessRegistry.agent_maxtier_status(6, 2)
+  end
+
+  def test_out_of_range_negative
+    assert_equal :out_of_range, HarnessRegistry.agent_maxtier_status(-1, nil)
+  end
+
+  def test_non_integer_is_out_of_range
+    assert_equal :out_of_range, HarnessRegistry.agent_maxtier_status("5", 2)
+  end
+end

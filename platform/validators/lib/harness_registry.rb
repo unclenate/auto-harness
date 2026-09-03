@@ -264,6 +264,31 @@ module HarnessRegistry
     false
   end
 
+  # Evaluate an agent pack's +max_tier+ ceiling under the corrected semantics
+  # (ADR-0020). `maxTier` is an UPPER ceiling on the agent's *autonomous* reach
+  # — it caps but never grants (the per-tier human-authorization gates at
+  # Tier 4/5 apply independently and are never satisfied by a high ceiling). A
+  # ceiling BELOW the manifest's highest workload tier is therefore NOT a
+  # violation: it is a valid least-privilege choice, and the higher-tier work
+  # simply falls to the human gate. (The old check asserted the inverse —
+  # `maxTier >= workload` — which failed the safe, low-ceiling configuration
+  # and pressured every agent to the maximum ceiling: the AH-ADV-04 inversion.)
+  #
+  # Returns a symbol:
+  #   :ok             — coherent
+  #   :out_of_range   — not an integer in 0..5
+  #   :below_declared — ceiling below the agent's OWN declared baseline tier
+  #                     (an agent cannot routinely operate above its own cap)
+  #
+  # The "ceiling below the manifest workload" case is NOT a status here — the
+  # caller surfaces it as an informational note, never a violation.
+  def self.agent_maxtier_status(max_tier, declared_tier)
+    return :out_of_range unless max_tier.is_a?(Integer) && (0..5).include?(max_tier)
+    return :below_declared if declared_tier.is_a?(Integer) && max_tier < declared_tier
+
+    :ok
+  end
+
   # Resolve a `platform/...`-style reference against the project root. Returns
   # true if the file (or, for trailing-slash refs, directory) exists on disk.
   def self.doc_reference_resolves?(path, project_root)

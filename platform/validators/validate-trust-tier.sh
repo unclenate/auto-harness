@@ -270,22 +270,40 @@ agent_mods.each do |mod|
   display = mod["id"] || mod["__path"] || "(unknown agent)"
   max_tier = mod["maxTier"]
   if max_tier.nil?
-    # A missing maxTier previously SKIPPED the ceiling check silently — an agent pack could omit
-    # maxTier to bypass it entirely. Surface the omission (warn, not hard-fail: whether a missing
-    # ceiling should be an error, and whether maxTier is an upper ceiling vs a workload floor, is
-    # the AH-ADV-04 inversion redesign, tracked separately). No longer a silent no-op.
+    # A missing maxTier SKIPS the ceiling check silently — an agent pack could omit maxTier to
+    # bypass it entirely. Surface the omission (warn, not hard-fail).
     warn "⚠ #{display}: agent pack declares no maxTier — its trust-tier ceiling is unbounded and the ceiling check cannot run; declare an explicit maxTier"
     warnings += 1
     next
   end
-  unless VALID_TIERS.include?(max_tier)
+
+  tier_block    = mod["tier"]
+  declared_tier = tier_block.is_a?(Hash) ? tier_block["declared"] : nil
+
+  # `maxTier` is an UPPER ceiling on the agent's autonomous reach — it caps but
+  # never grants (ADR-0020). The only violations are an out-of-range value or a
+  # ceiling below the agent's OWN declared baseline. A ceiling below the
+  # manifest workload is NOT a violation (see the informational note below).
+  case HarnessRegistry.agent_maxtier_status(max_tier, declared_tier)
+  when :out_of_range
     warn "✗ #{display}: maxTier #{max_tier.inspect} out of range (must be 0-5)"
     violations += 1
     next
-  end
-  if max_tier < max_active_tier
-    warn "✗ #{display}: agent maxTier = #{max_tier} but the active manifest requires tier #{max_active_tier} for some non-agent module"
+  when :below_declared
+    warn "✗ #{display}: agent maxTier = #{max_tier} is below the agent's own declared tier #{declared_tier} — a ceiling cannot sit beneath the agent's baseline operating tier"
     violations += 1
+    next
+  end
+
+  # Least-privilege is valid: an agent whose ceiling is below some non-agent
+  # module's workload simply defers that higher-tier work to the human gate
+  # (Tier 4/5 are human-authorized regardless — the ceiling never grants them).
+  # Surface it as INFORMATION so the deferral is visible, never as a failure.
+  # This is the corrected direction of the AH-ADV-04 inversion: the old check
+  # failed exactly this safe configuration and pressured every agent to the
+  # maximum ceiling.
+  if max_tier < max_active_tier
+    warn "ℹ #{display}: agent ceiling maxTier = #{max_tier} is below the manifest's highest non-agent tier #{max_active_tier}; that tier-#{max_active_tier} work requires human authorization — the ceiling caps the agent's autonomous reach, it does not grant the higher tier"
   end
 end
 

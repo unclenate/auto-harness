@@ -37,13 +37,13 @@ type proposes canonical-position revisions, and validator opt-outs name the cano
 position they were granted under.
 
 This is the **highest-leverage single addition** the harness can make against the failure
-class observed in `bdits/municipal-brain` — and likely the failure class that drives most
+class observed in `municipal-brain` — and likely the failure class that drives most
 long-running planning projects into the kind of incoherence-recovery cycle that
 reconciliation reviews are designed to catch only *after* the damage is done.
 
 ## Origin / Evidence
 
-- **Lived evidence — `bdits/municipal-brain` reconciliation, 2026-05-22.** Over roughly
+- **Lived evidence — `municipal-brain` reconciliation, 2026-05-22.** Over roughly
   six weeks the project accumulated a dozen planning documents that asserted three
   different wedges, three platform prices, two funding postures, three competitive maps,
   and three mutually exclusive answers to "which product is the platform." MB-REV-003
@@ -52,9 +52,9 @@ reconciliation reviews are designed to catch only *after* the damage is done.
   new artifact is written against Nate's latest thinking rather than against a fixed
   reference, and the superseded artifacts are never retired."* The fix was *"to ratify
   one canonical position and make every other document cite it"* — which the project did
-  by hand-rolling `docs/BDITS-000-canonical-position.md` (190 lines, the parent of the
-  entire reconciled corpus). See `bdits/municipal-brain` at commit `ff953c1`:
-  `docs/reviews/2026-05-22-project-alignment-audit.md` §§ 2, 9; `docs/BDITS-000-canonical-position.md`.
+  by hand-rolling `docs/CANON-000-canonical-position.md` (190 lines, the parent of the
+  entire reconciled corpus). See `municipal-brain` at commit `redacted`:
+  `docs/reviews/2026-05-22-project-alignment-audit.md` §§ 2, 9; `docs/CANON-000-canonical-position.md`.
 
 - **The harness should have caught this.** Every artifact municipal-brain authored was
   governed by auto-harness companion rules and validators. None of those rules check for
@@ -63,7 +63,7 @@ reconciliation reviews are designed to catch only *after* the damage is done.
   contract they were given; the contract didn't include the load-bearing concept.
 
 - **The hand-rolled fix is reproducible — and is structural evidence that the gap is
-  real.** BDITS-000 took roughly four hours of MB-REV-001/002/003 four-agent audit work +
+  real.** CANON-000 took roughly four hours of MB-REV-001/002/003 four-agent audit work +
   several hours of authorship to ratify. Every consumer project that runs long enough
   will hit the same drift; every one will either invent a hand-rolled equivalent or
   accept the incoherence. Making the artifact a harness primitive moves the work from
@@ -85,7 +85,7 @@ reconciliation reviews are designed to catch only *after* the damage is done.
 ## Why Now
 
 - **The failure class is producing real cost in real consumer projects today.** The
-  `bdits/municipal-brain` reconciliation is one data point but is unlikely to be the
+  `municipal-brain` reconciliation is one data point but is unlikely to be the
   last. Every long-running multi-document planning project the harness governs faces
   the same drift mechanic; the cost is hidden until reconciliation surfaces it. Filing
   the OPP now anchors the gap so it doesn't keep recurring undocumented.
@@ -143,7 +143,7 @@ thinking." Candidate sections:
 - **Update policy** (how this document gets revised; nothing supersedes it except a
   newer ratified version)
 
-`bdits/municipal-brain`'s BDITS-000 is one shape (190 lines, 10 sections). The PRD pass
+`municipal-brain`'s CANON-000 is one shape (190 lines, 10 sections). The PRD pass
 should generalize across project shapes — a single-product B2B SaaS, a research-pipeline
 project, an internal platform — without forcing a canon-shape mismatch.
 
@@ -304,8 +304,8 @@ update.
     intake-stale path is missing"* (Observation D)
   - *"Three positive patterns to promote to harness conventions"* (Observation E)
 
-- **Evidence repo:** `bdits/municipal-brain` at commit `ff953c1`. Key artifacts:
-  - `docs/BDITS-000-canonical-position.md` — the hand-rolled fix.
+- **Evidence repo:** `municipal-brain` at commit `redacted`. Key artifacts:
+  - `docs/CANON-000-canonical-position.md` — the hand-rolled fix.
   - `docs/reviews/2026-05-22-project-alignment-audit.md` — the four-lens audit that surfaced the gap.
   - `docs/reviews/2026-05-22-materials-alignment-review.md` — the M-1..M-4 remediation worked from this gap inward.
   - `docs/project/change-log.md` — the 2026-05-22 cluster of entries documenting the reconciliation.

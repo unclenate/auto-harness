@@ -625,7 +625,7 @@ how-to.
 
 **Status:** PRD-0007 specifies the v1 implementation; this diagram
 visualizes the contract. v0.6.0 release-marker (re-prioritized
-2026-05-24 ahead of PRD-0006 after `bdits/municipal-brain` field
+2026-05-24 ahead of PRD-0006 after `municipal-brain` field
 evidence).
 
 The canonical-position artifact is the single ratified north-star
@@ -713,7 +713,7 @@ work; this diagram shows what's wired up for v0.6.0.
 **Question:** *How does anchor-satellite OPP filing produce better PRD scoping?*
 
 A filing-time discipline that emerged from the
-`bdits/municipal-brain` reconciliation handoff: when a reconciliation
+`municipal-brain` reconciliation handoff: when a reconciliation
 or audit pass surfaces multiple related gaps, file the central gap
 as an *anchor* OPP and the dependent gaps as *satellite*
 observations. The structure makes the PRD pass more tractable because

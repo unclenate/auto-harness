@@ -756,7 +756,7 @@ here until distillation.
   app) and harvest the catalog gaps before real consumers hit them.
 - **Confidence:** medium-high — the pattern is supported by one strong
   instance (YouBase produced three independent catalog hits in one
-  pass) and one supporting analog (`bdits/municipal-brain` produced
+  pass) and one supporting analog (`municipal-brain` produced
   the canonical-position OPP and five sibling observations from its
   reconciliation handoff — also a not-self-dogfood discovery event).
   Generalization to "every brownfield pass yields ≥1 catalog gap"
@@ -828,9 +828,9 @@ here until distillation.
 
 - **Context:** Two consumer-filed issues in three days followed an identical
   shape: #24 (stale validator CLI signatures in `harness-governance` skill,
-  surfaced in `bdits/municipal-brain` after PRs #15/#22 changed validator
+  surfaced in `municipal-brain` after PRs #15/#22 changed validator
   surface) and #28 (companion-rule false-positive on README index edits,
-  also surfaced in `bdits/municipal-brain`). Both issues were filed with
+  also surfaced in `municipal-brain`). Both issues were filed with
   precise reproduction steps, a local workaround already in place, and 2–3
   proposed upstream resolutions with explicit tradeoffs. Both were
   merged within hours. Meanwhile, the scheduled-review cadence declared
@@ -1312,7 +1312,7 @@ here until distillation.
 
 ### Validator opt-out has no staleness pressure
 
-- **Context:** `bdits/municipal-brain`'s `harness.manifest.yaml` carried
+- **Context:** `municipal-brain`'s `harness.manifest.yaml` carried
   `disabledValidations: [required-artifacts]` and `requiredArtifacts: []`
   set 2026-05-13 "for the discovery phase." That opt-out persisted
   silently for 9+ days across multiple workflow cycles (firm-name sweep,
@@ -1321,9 +1321,9 @@ here until distillation.
   Phase 0 build-readiness without any harness mechanism nudging that
   the opt-out had outlived its rationale. Only an explicit
   human-driven materials-alignment review (MB-REV-002 § 4) caught it.
-  See `bdits/municipal-brain` at commit `ff953c1`:
+  See `municipal-brain` at commit `redacted`:
   `docs/reviews/2026-05-22-materials-alignment-review.md`, the
-  pre-repair `harness.manifest.yaml`, and the repair commit `ff953c1`.
+  pre-repair `harness.manifest.yaml`, and the repair commit `redacted`.
 - **Observation:** Validator opt-out (`overrides.disabledValidations`,
   empty `requiredArtifacts`) has no built-in staleness pressure. The
   harness honors the override correctly but provides no signal when
@@ -1351,18 +1351,18 @@ here until distillation.
 
 ### Opportunity-capture has no backlog-reconciliation trigger when the canonical direction changes
 
-- **Context:** `bdits/municipal-brain` filed OPP-0001 through OPP-0024
+- **Context:** `municipal-brain` filed OPP-0001 through OPP-0024
   between 2026-05-13 and 2026-05-18. The canonical direction then
-  changed substantially via the BDITS-000 ratification on 2026-05-22.
+  changed substantially via the CANON-000 ratification on 2026-05-22.
   After ratification, OPP-0020 was manually flagged superseded; OPPs
   0001..0018 (the bulk of the backlog) remained at `proposed` status
   with their original framing intact, but most of them no longer
   reference live concepts — the v4 platform thesis, the cycle-time
   wedge, and the Microsoft-first stack they presumed are all archived.
   The harness fired no rule on this state; the backlog drift sits as
-  silent inconsistency. See `bdits/municipal-brain` at commit
-  `ff953c1`: `docs/opportunities/OPP-00{01..18}-*.md` (framing predates
-  BDITS-000) vs. `docs/BDITS-000-canonical-position.md` (the new
+  silent inconsistency. See `municipal-brain` at commit
+  `redacted`: `docs/opportunities/OPP-00{01..18}-*.md` (framing predates
+  CANON-000) vs. `docs/CANON-000-canonical-position.md` (the new
   canonical reference).
 - **Observation:** The opportunity-capture module ships a per-record
   floor rule (audit-trail entry on each OPP edit) and a same-commit
@@ -1391,7 +1391,7 @@ here until distillation.
 
 ### No formal review / reconciliation artifact type — and the ad-hoc one proved high-value
 
-- **Context:** The `bdits/municipal-brain` reconciliation produced four
+- **Context:** The `municipal-brain` reconciliation produced four
   review artifacts in four days (MB-REV-001 plan-vs-call-record
   reconciliation; MB-REV-002 planning improvement review, four-lens;
   MB-REV-003 project alignment audit, four-lens; MB-REV-004 materials
@@ -1399,11 +1399,11 @@ here until distillation.
   with no harness template, no naming convention beyond a date-prefix,
   topic slug, and an `MB-REV-NNN` ID, and no companion rules.
   Despite the ad-hoc structure, MB-REV-001/002/003 directly drove the
-  BDITS-000 canonical position ratification, and MB-REV-004 produced
+  CANON-000 canonical position ratification, and MB-REV-004 produced
   the four remediation actions (M-1..M-4) that closed out the materials
   drift. They were the highest-value documents produced in the
-  reconciliation window after BDITS-000 itself. See `bdits/municipal-
-  brain` at commit `ff953c1`:
+  reconciliation window after CANON-000 itself. See `municipal-brain`
+  at commit `redacted`:
   `docs/reviews/2026-05-22-project-alignment-audit.md` (one example).
 - **Observation:** The harness has ADR / PRD / OPP / change-log /
   knowledge — five durable artifact types — but no formal *review*
@@ -1412,7 +1412,7 @@ here until distillation.
   commits to a course of action; a review surfaces gaps, scores
   artifacts against criteria, and proposes remediations. Without a
   formal review type, projects either (a) skip the audit step and let
-  drift accumulate (the failure mode `bdits/municipal-brain` hit
+  drift accumulate (the failure mode `municipal-brain` hit
   *before* MB-REV-001..004), or (b) invent the artifact ad-hoc (the
   failure mode it hit *after* — the reviews work but their place in
   the lifecycle is unowned).
@@ -1437,17 +1437,17 @@ here until distillation.
 
 ### Discovery-intake treats the intake as one-shot; canonical-direction-changed → intake-stale path is missing
 
-- **Context:** `bdits/municipal-brain`'s intake questionnaire was
+- **Context:** `municipal-brain`'s intake questionnaire was
   pre-filled three times in nine days. The 2026-05-13 first pre-fill
   was against the v4 stack + OPP-0001..0018. The 2026-05-21 second
   pre-fill wove in OPP-0019..0024 (filed since the first pre-fill). The
   2026-05-22 third pre-fill was a full re-pre-fill required because the
   second pass still carried v4 framing that the canonical position
-  (BDITS-000) had retired. Three pre-fill passes; the first two were
+  (CANON-000) had retired. Three pre-fill passes; the first two were
   architecturally trapped because when the canonical direction
   changed, the existing pre-fill became stale silently and the only
-  way to recover was to re-do the work. See `bdits/municipal-brain` at
-  commit `ff953c1`: `docs/discovery/intake-questionnaire.md` (current
+  way to recover was to re-do the work. See `municipal-brain` at
+  commit `redacted`: `docs/discovery/intake-questionnaire.md` (current
   third-pass state) + the three corresponding 2026-05-22 / 2026-05-21
   / 2026-05-13 change-log entries documenting each pass.
 - **Observation:** The `discovery-intake` module treats the intake-
@@ -1479,12 +1479,12 @@ here until distillation.
 
 ### Three positive patterns from a heavy-load reconciliation worth promoting to harness conventions
 
-- **Context:** The `bdits/municipal-brain` reconciliation ran roughly
+- **Context:** The `municipal-brain` reconciliation ran roughly
   11 commits in 4 days across two repos, multiple Cowork ↔ Claude Code
   handoffs, and a four-lens audit. Three patterns held up under load
   and are worth promoting from project-local habit to harness
-  convention, before they fade. See `bdits/municipal-brain` at commit
-  `ff953c1`: `docs/project/change-log.md` (entire 2026-05-22 cluster),
+  convention, before they fade. See `municipal-brain` at commit
+  `redacted`: `docs/project/change-log.md` (entire 2026-05-22 cluster),
   `docs/archive/ARCHIVE-INDEX.md`, and the post-reconciliation manifest
   state.
 - **Observation:** Three patterns:
@@ -3788,3 +3788,12 @@ here until distillation.
 - **Confidence:** high
 - **Severity:** governance-relevant
 - **Contributed by:** Claude Code (claude-opus-4-8[1m]), 2026-09-03 (satisfies the shared-observation audit-trail floor via the same-PR change-log entry; substantive connection — the bind-with-a-conformance-test + data-vs-logic-split reconciliation the ACP tier-policy fix embodies, distinct from the maxTier record which is about a single threshold's direction and the exemption-over-breadth record which is about a catch-all disabling a gate.)
+
+### Once a leaked identifier is already public, working-tree redaction is cosmetic — split the response: genericize only the SHARPEST tokens, and invest the real effort in PREVENTION scoped to the sensitive class
+
+- **Context:** A private org repo-path (`<org>/<repo>` form) + a commit hash + an org-named record id had leaked into ~50 lines across ~12 tracked design/knowledge docs (ADRs, OPPs, PRDs, the roadmap, the shared-observations base). The repo is public and has been forked and release-tagged, so — as an earlier redaction pass had already reasoned — a history rewrite cannot recall what is already cloned/cached, and even a full working-tree rewrite is **cosmetic**. Meanwhile the same denylist contained *public roadmap codenames* used legitimately as design context across hundreds of lines, so a naive "scan the whole tree for every denylist name" would drown real signal in false positives.
+- **Observation:** When the exposure is already public, effort spent rewriting the entire historical corpus buys near-zero marginal safety, while effort spent on PREVENTION (stopping the *next* leak) compounds. So split the response along two axes. (1) *Existing text* — genericize only the **sharpest identifying tokens** (the org path prefix, the commit hash, an org-named id), and leave the lower-signal narrative references (a project codename already documented elsewhere) rather than churn every line of ratified records. (2) *Prevention* — broaden the leak scanner, but scope the broadened scan to the **sensitive class** (private org / repo / project identifiers) and explicitly EXCLUDE the public codenames that legitimately appear in the design corpus; keep it diff-based (never re-flags the existing corpus) and WARN (surfaces for review without failing CI). The classes must be separated in the denylist itself, or the broadened scan is unusable from noise.
+- **Implication:** Triage a leak by whether it is still containable. If it is already public, do not equate "redact everything" with "safe" — that is motion, not risk reduction. Redact the highest-identifying tokens in place, and put the real investment into a scoped, diff-based, WARN-mode detector that stops re-introduction of the *private-class* identifiers going forward, distinct from names that are legitimate context. Reuse one scan routine across the strict (distillation-surface, full denylist) and broadened (design-corpus, sensitive-subset) passes so the two cannot drift — the same "don't keep two mirrors of one logic" discipline as the conformance-test record above.
+- **Confidence:** high
+- **Severity:** governance-relevant
+- **Contributed by:** Claude Code (claude-opus-4-8[1m]), 2026-09-03 (satisfies the PRD-0004 distillation rule fired by the redaction edits to ADR-0012 / OPP-0007 / OPP-0010 / OPP-0036 / PRD-0006 / PRD-0007; substantive connection — the cosmetic-redaction-vs-prevention triage and the sensitive-class-vs-codename scan split the redaction PR embodies, distinct from the exemption-over-breadth record which is about a catch-all disabling a gate rather than scoping what a scanner looks for.)

@@ -1242,3 +1242,90 @@ class TestChangedFilesBaseBranchValidation < Minitest::Test
     end
   end
 end
+
+# ---------------------------------------------------------------------------
+# exemption_pattern_overbroad? — the ignore-file catch-all guard.
+# A pattern is over-broad iff it matches every canary string. Governing the
+# exemption FILE (sensitivePaths + companion, #212) stops an unreviewed edit;
+# this stops a reviewed-but-blind pattern that would exempt everything.
+# ---------------------------------------------------------------------------
+class TestExemptionOverbroad < Minitest::Test
+  # The documented footguns from the 2026-09 audit.
+  def test_bare_dot_is_overbroad
+    assert HarnessRegistry.exemption_pattern_overbroad?(".")
+  end
+
+  def test_star_is_overbroad
+    assert HarnessRegistry.exemption_pattern_overbroad?(".*")
+  end
+
+  def test_plus_is_overbroad
+    assert HarnessRegistry.exemption_pattern_overbroad?(".+")
+  end
+
+  def test_caret_is_overbroad
+    assert HarnessRegistry.exemption_pattern_overbroad?("^")
+  end
+
+  def test_dollar_is_overbroad
+    assert HarnessRegistry.exemption_pattern_overbroad?("$")
+  end
+
+  def test_full_line_catchall_is_overbroad
+    assert HarnessRegistry.exemption_pattern_overbroad?("^.*$")
+  end
+
+  def test_empty_pattern_is_overbroad
+    assert HarnessRegistry.exemption_pattern_overbroad?("")
+  end
+
+  # Equivalent forms a structural denylist of literal catch-alls would MISS —
+  # the behavioral canary test catches them because it uses the real engine.
+  def test_char_class_any_is_overbroad
+    assert HarnessRegistry.exemption_pattern_overbroad?("[\\s\\S]")
+  end
+
+  def test_alternation_with_wildcard_is_overbroad
+    # "x|." — the "." branch matches any char, so it matches every canary.
+    assert HarnessRegistry.exemption_pattern_overbroad?("x|.")
+  end
+
+  def test_bounded_quantifier_catchall_is_overbroad
+    assert HarnessRegistry.exemption_pattern_overbroad?(".{0,}")
+  end
+
+  # Real, narrow exemptions currently shipped in main's ignore files — MUST NOT
+  # be flagged (a false positive here would break the harness's own CI).
+  def test_anchored_path_is_narrow
+    refute HarnessRegistry.exemption_pattern_overbroad?("^platform/validators/validate-publication-boundary\\.sh$")
+  end
+
+  def test_prefix_path_is_narrow
+    refute HarnessRegistry.exemption_pattern_overbroad?("^documentation-audit-2026-05-27/")
+  end
+
+  def test_dir_anchor_is_narrow
+    refute HarnessRegistry.exemption_pattern_overbroad?("^docs/adr$")
+  end
+
+  def test_phrase_is_narrow
+    refute HarnessRegistry.exemption_pattern_overbroad?("prompt-injection patterns like")
+  end
+
+  def test_denylist_term_is_narrow
+    refute HarnessRegistry.exemption_pattern_overbroad?("toast-mcp")
+  end
+
+  # A moderately broad but non-total single char-class must NOT be flagged
+  # (it fails at least one canary), so legitimate coarse exemptions survive.
+  def test_single_class_lowercase_is_narrow
+    # "[a-z]" fails on "Q", "7", "-" → not a total catch-all.
+    refute HarnessRegistry.exemption_pattern_overbroad?("[a-z]")
+  end
+
+  # Invalid regex is not this guard's concern (callers handle RegexpError) —
+  # it must not raise, and must report not-overbroad.
+  def test_invalid_regex_is_not_overbroad
+    refute HarnessRegistry.exemption_pattern_overbroad?("[")
+  end
+end

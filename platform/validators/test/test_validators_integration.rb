@@ -2928,3 +2928,77 @@ class TestValidateAgentBus < Minitest::Test
     assert_equal 2, code
   end
 end
+
+# ---------------------------------------------------------------------------
+# Exemption over-breadth guard — WIRING tests. The guard LOGIC is unit-tested
+# in test_harness_registry.rb (HarnessRegistry.exemption_pattern_overbroad?);
+# these confirm each ignore-file validator actually invokes it and fails closed
+# (exit 2) on a catch-all pattern that would blind the gate. The pattern-level
+# dual of #212's file-level off-switch governance.
+# ---------------------------------------------------------------------------
+class TestExemptionOverbroadWiring < Minitest::Test
+  REPO_ROOT = File.expand_path("../..", SCRIPT_DIR) # …/auto-harness
+
+  def test_placeholders_overbroad_glob_fails_closed
+    skip "ripgrep (rg) not installed" unless RG_AVAILABLE
+    Dir.mktmpdir do |tmp|
+      File.write(File.join(tmp, ".placeholder-ignore"), "**\n")
+      File.write(File.join(tmp, "README.md"), "clean\n")
+      _out, err, code = run_validator("validate-placeholders.sh", tmp)
+      assert_equal 2, code, "over-broad glob '**' must fail closed. stderr: #{err}"
+      assert_match(/over-broad glob/, err)
+    end
+  end
+
+  def test_placeholders_narrow_glob_passes
+    skip "ripgrep (rg) not installed" unless RG_AVAILABLE
+    Dir.mktmpdir do |tmp|
+      File.write(File.join(tmp, ".placeholder-ignore"), "vendor/**\n")
+      File.write(File.join(tmp, "README.md"), "clean\n")
+      _out, _err, code = run_validator("validate-placeholders.sh", tmp)
+      assert_equal 0, code, "a glob with a literal segment must pass"
+    end
+  end
+
+  def test_doc_references_overbroad_regex_fails_closed
+    Dir.mktmpdir do |tmp|
+      File.write(File.join(tmp, ".doc-reference-ignore"), ".*\n")
+      _out, err, code = run_validator("validate-doc-references.sh", tmp)
+      assert_equal 2, code, "over-broad regex '.*' must fail closed. stderr: #{err}"
+      assert_match(/over-broad exemption pattern/, err)
+    end
+  end
+
+  def test_knowledge_redaction_overbroad_regex_fails_closed
+    # Guard runs after cd, before the git-state checks — no git tree needed.
+    Dir.mktmpdir do |tmp|
+      File.write(File.join(tmp, ".knowledge-redaction-ignore"), ".\n")
+      _out, err, code = run_validator("validate-knowledge-redaction.sh", tmp, "main")
+      assert_equal 2, code, "over-broad regex '.' must fail closed. stderr: #{err}"
+      assert_match(/over-broad exemption pattern/, err)
+    end
+  end
+
+  def test_publication_boundary_overbroad_regex_fails_closed
+    skip "git not installed" unless GIT_AVAILABLE
+    Dir.mktmpdir do |tmp|
+      system("git -C #{tmp} init -q && git -C #{tmp} config user.email t@t.t && git -C #{tmp} config user.name t")
+      File.write(File.join(tmp, ".publication-boundary-ignore"), ".*\n")
+      File.write(File.join(tmp, "a.md"), "clean\n")
+      system("git -C #{tmp} add -A")
+      _out, err, code = run_validator("validate-publication-boundary.sh", tmp)
+      assert_equal 2, code, "over-broad regex '.*' must fail closed. stderr: #{err}"
+      assert_match(/over-broad exemption pattern/, err)
+    end
+  end
+
+  def test_skill_content_overbroad_regex_fails_closed
+    Dir.mktmpdir do |tmp|
+      FileUtils.cp(File.join(REPO_ROOT, "harness.manifest.yaml"), File.join(tmp, "harness.manifest.yaml"))
+      File.write(File.join(tmp, ".skill-content-ignore"), ".*\n")
+      _out, err, code = run_validator("validate-skill-content.sh", File.join(tmp, "harness.manifest.yaml"), tmp)
+      assert_equal 2, code, "over-broad regex '.*' must fail closed. stderr: #{err}"
+      assert_match(/over-broad exemption pattern/, err)
+    end
+  end
+end

@@ -106,12 +106,29 @@ if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
   exit 0
 fi
 
+# Reject an over-broad exemption pattern (".", ".*", "^", …) that would match
+# every path and blind the gate. Uses the same grep -E engine the patterns are
+# applied with, against five disjoint canary strings (mirrors
+# HarnessRegistry.EXEMPTION_CANARIES) — a pattern matching all five is a
+# catch-all. The pattern-level dual of #212's file-level off-switch governance.
+_exemption_overbroad() {
+  local pat="$1" c
+  for c in 'z' 'Q' '7' '-' 'the quick brown fox'; do
+    printf '%s' "${c}" | grep -qE -- "${pat}" || return 1
+  done
+  return 0
+}
+
 # Load path-regex exemptions
 IGNORE_FILE="${PROJECT_ROOT}/.publication-boundary-ignore"
 IGNORES=()
 if [[ -f "${IGNORE_FILE}" ]]; then
   while IFS= read -r line; do
     [[ -z "${line}" || "${line}" == \#* ]] && continue
+    if _exemption_overbroad "${line}"; then
+      echo "✗ .publication-boundary-ignore: over-broad exemption pattern '${line}' matches every canary string — it would exempt all files and defeat the gate. Narrow it to the specific path(s) you mean." >&2
+      exit 2
+    fi
     IGNORES+=("${line}")
   done < "${IGNORE_FILE}"
 fi

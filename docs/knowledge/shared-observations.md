@@ -3688,3 +3688,40 @@ here until distillation.
 - **Confidence:** high
 - **Severity:** governance-relevant
 - **Contributed by:** Claude Code (claude-opus-4-8[1m]), 2026-09-02 (satisfies the PRD-0004 distillation rule fired by modifying the kernel `base/module.yaml` sensitivePaths; substantive connection — the off-switch-must-be-governed-as-tightly-as-the-control principle the CI/bootstrap hardening embodies, distinct from the scanner-parser and presentation-vs-enforcement observations which are about the gate's own logic rather than its disable path.)
+
+### Governing an exemption file's existence (review) is necessary but not sufficient — the validator must also reject a pattern that is itself a catch-all, and reject it BEHAVIORALLY (does it match a diverse canary corpus?) not by a denylist of forms, which equivalent regexes defeat
+
+- **Context:** #212 put the four validator exemption files (`.skill-content-ignore`,
+  `.publication-boundary-ignore`, `.knowledge-redaction-ignore`, `.doc-reference-ignore`) under
+  kernel `sensitivePaths` + a companion, so editing one now needs governance review. But review
+  governs the file's *existence and diff*; it does not stop a *reviewed* pattern that is itself a
+  catch-all. Five ignore-file validators (skill-content, publication-boundary, knowledge-redaction,
+  doc-references via `grep -qE` / `Regexp#match?`; placeholders via an `rg --glob` exclude) each
+  applied every loaded pattern directly — so a single `.`, `.*`, `^`, `$` (or a `**` glob) exempts
+  *everything* and silently blinds that gate, and "matches everything" is exactly the line a
+  reviewer is most likely to wave through as a formatting nit.
+- **Observation:** The off-switch principle has a second layer below the file. Governing the file
+  (review) closes the *unreviewed-edit* path; it does not close the *reviewed-but-blind-pattern*
+  path — the validator itself must reject an over-broad exemption. And the rejection must be
+  **behavioral, not structural**: a denylist of catch-all *forms* (`.`, `.*`, `^`, `.+`, `^.*$`) is
+  defeated by the unbounded equivalent forms (`x|.`, `.{0,}`, `[\s\S]`, `[^\x00]`) — the
+  exemption-parser is itself an attack surface (the scanner-parser lesson, applied to the exemption
+  side). The robust test runs each pattern through the **same engine the validator applies it
+  with**, against a small corpus of deliberately-disjoint canary strings (lower / upper / digit /
+  punctuation / multiword, no shared substring): a pattern matching *every* canary cannot be
+  selecting anything specific, so it is a catch-all → fail closed (exit 2, a config error). A
+  narrow, legitimate exemption fails at least one canary and passes. Globs get the simpler
+  structural check (a glob with no literal path segment — `^[*/]+$` — is over-broad) because glob
+  catch-alls have few forms.
+- **Implication:** When you govern a control's off-switch, govern both its *existence* (review) and
+  its *content* (the validator rejects a self-defeating configuration). For an exemption/allowlist
+  mechanism specifically: reject a pattern that would exempt everything, and detect over-breadth by
+  BEHAVIOR (does it match a diverse canary corpus through the real match engine?) not by
+  enumerating dangerous literal forms — the same "test the real behavior, not a spoofable
+  structural proxy" discipline as the scanner-parser and diff-header observations. Verify the guard
+  against the *already-shipped* exemption patterns first: a false positive there breaks your own CI.
+  Completes the off-switch observation above at the pattern layer — the file is governed AND a blind
+  pattern is now rejected.
+- **Confidence:** high
+- **Severity:** governance-relevant
+- **Contributed by:** Claude Code (claude-opus-4-8[1m]), 2026-09-03 (satisfies the shared-observation audit-trail floor via the same-PR change-log entry; substantive connection — the exemption-pattern over-breadth guard the PR adds across the five ignore-file validators, completing the #212 off-switch-governance principle at the pattern layer and applying the scanner-parser "test behavior not structure" lesson to the exemption side, distinct from the file-governance record which stops the unreviewed edit rather than the reviewed-but-blind pattern.)

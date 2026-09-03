@@ -242,6 +242,28 @@ module HarnessRegistry
     Array(patterns).any? { |pattern| Regexp.new(pattern).match?(path) }
   end
 
+  # Canary corpus for exemption over-breadth detection. Five deliberately
+  # disjoint strings — no shared substring, spanning lowercase / uppercase /
+  # digit / punctuation / multiword — so the ONLY regexes matching all five are
+  # positional or wildcard catch-alls (".", ".*", "^", "$", "[\\s\\S]", …). A
+  # narrow, specific exemption fails at least one canary.
+  EXEMPTION_CANARIES = ["z", "Q", "7", "-", "the quick brown fox"].freeze
+
+  # True if +pattern+ (a String regex) is an over-broad catch-all — it matches
+  # EVERY canary, so it would exempt everything and silently blind the
+  # validator whose ignore-file it lives in. This is the behavioral counterpart
+  # to #212's file-level governance (sensitivePaths + companion): that stops an
+  # unreviewed edit to the off-switch; this stops a reviewed-but-blind pattern.
+  # It uses the real Regexp engine, so equivalent forms a structural denylist
+  # would miss ("x|.", ".{0,}") are caught. Invalid regex is not this guard's
+  # concern (callers handle RegexpError separately) → returns false.
+  def self.exemption_pattern_overbroad?(pattern)
+    re = Regexp.new(pattern.to_s)
+    EXEMPTION_CANARIES.all? { |canary| re.match?(canary) }
+  rescue RegexpError
+    false
+  end
+
   # Resolve a `platform/...`-style reference against the project root. Returns
   # true if the file (or, for trailing-slash refs, directory) exists on disk.
   def self.doc_reference_resolves?(path, project_root)

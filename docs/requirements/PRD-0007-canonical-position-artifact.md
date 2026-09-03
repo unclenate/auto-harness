@@ -44,7 +44,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
   - *"No formal review/reconciliation artifact type — and the ad-hoc one proved high-value"* (C) — **bundled into v1**
   - *"Discovery-intake treats the intake as one-shot; canonical-direction-changed → intake-stale path is missing"* (D) — **deferred to follow-up OPP**
   - *"Three positive patterns from a heavy-load reconciliation worth promoting to harness conventions"* (E) — **split out of v1 (2026-06-26)**; orthogonal to canonical-position, moves to a separate follow-up (a future operating-principle § 13)
-- Field-evidence repo: `bdits/municipal-brain` at commit `ff953c1` — see OPP-0007 § Related for the specific artifacts that motivated the OPP
+- Field-evidence repo: `municipal-brain` at commit `redacted` — see OPP-0007 § Related for the specific artifacts that motivated the OPP
 - Related operating-principles: § 5 (Self-Governance), § 7 (Align File Boundaries with Change-Class Boundaries — the principle that motivates the FR-006 split), § 8 (Prefer Text Representations), § 9 (Split Design from Implementation — this PRD is the design contract; a separate PR implements)
 - Visual reference: **none in v1.** The citation + ratification + review-artifact composition is described in prose (FR-003–FR-005); a catalog diagram is deferred to avoid the diagram-count cascade. *(The draft anticipated a "Diagram 10" that was never created.)*
 
@@ -57,7 +57,7 @@ the single ratified north-star that every other artifact must cite
 and that cannot drift.** Decisions, framings, and assumptions
 accumulate across artifacts as independent snapshots of evolving
 thinking, with no fixed reference they all align to. The result,
-observed end-to-end in `bdits/municipal-brain`: artifacts drift apart,
+observed end-to-end in `municipal-brain`: artifacts drift apart,
 the project loses its own ground truth, and recovery requires a
 hand-rolled "canonical position" doc + a multi-day reconciliation.
 

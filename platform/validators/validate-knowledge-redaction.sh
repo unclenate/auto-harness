@@ -196,6 +196,19 @@ DENYLIST=(
   "toast-mcp"
 )
 
+# Sensitive-class subset for the BROADENED design-corpus scan (below). These are
+# private org / repo / project identifiers that must never appear in the tracked
+# tree at all. It deliberately EXCLUDES the public roadmap codenames
+# (Tula / OpenEMR / YouBase), which legitimately appear across OPPs / PRDs / the
+# roadmap as design context — scanning the design corpus for those would flag
+# hundreds of legitimate references. Gitignored names (loaded below) are all
+# private and are added to this set too.
+SENSITIVE_DENYLIST=(
+  "bdits/"          # private org repo-path prefix (e.g. bdits/<repo>)
+  "municipal-brain"
+  "toast-mcp"
+)
+
 # Local gitignored denylist (OPP-0048 mechanism 2): additional consumer/project
 # names loaded from `.knowledge-redaction-denylist` if present. This keeps the
 # sensitive names OUT of the public tree (the file is gitignored) while still
@@ -208,6 +221,7 @@ if [[ -f "$LOCAL_DENYLIST_FILE" ]]; then
     [[ -z "$line" ]] && continue
     [[ "$line" =~ ^[[:space:]]*# ]] && continue
     DENYLIST+=("$line")
+    SENSITIVE_DENYLIST+=("$line")
   done < "$LOCAL_DENYLIST_FILE"
 fi
 
@@ -239,24 +253,27 @@ line_exempted() {
 }
 
 # ----------------------------------------------------------------------
-# Scan added lines per watched file
+# Scan added lines against a pattern set (WARN; honors line_exempted).
+# Appends to the global total_hits. Shared by the strict watched-file scan
+# (full denylist, incl. codenames) and the broadened design-corpus scan
+# (sensitive-class tokens only).
 # ----------------------------------------------------------------------
 
 total_hits=0
 total_files_scanned=0
 
-for file in "${WATCHED_FILES[@]}"; do
-  # Skip files that don't exist (consumer project may not have them).
-  if [[ ! -f "$file" ]]; then
-    continue
-  fi
-  total_files_scanned=$((total_files_scanned + 1))
+scan_added_lines() {
+  local file="$1" label="$2"
+  shift 2
+  local -a patterns=("$@")
+  [[ -f "$file" ]] || return 0
 
   # Get the unified diff for this file vs base. --unified=0 minimizes
   # context (we only want added lines). git might return non-zero
   # exit when no diff exists or the file is unchanged — that's fine.
+  local diff_output current_line hdr_minus diff_line content pattern short
   diff_output="$(git diff --unified=0 "$BASE_BRANCH"...HEAD -- "$file" 2>/dev/null || true)"
-  [[ -z "$diff_output" ]] && continue
+  [[ -z "$diff_output" ]] && return 0
 
   # Track the current new-file line number while walking the diff.
   # Hunk headers look like: @@ -OLD_START,OLD_LEN +NEW_START,NEW_LEN @@
@@ -282,16 +299,13 @@ for file in "${WATCHED_FILES[@]}"; do
       +*)
         # An added line. Strip the leading `+`.
         content="${diff_line:1}"
-        # Check denylist
-        for pattern in "${DENYLIST[@]}"; do
+        for pattern in "${patterns[@]}"; do
           if echo "$content" | grep -qE -- "$pattern"; then
             if line_exempted "$content"; then
-              # Exempted — bump line counter and continue.
-              :
+              :   # Exempted.
             else
-              # Surface the hit.
               short="$(printf '%s' "$content" | cut -c1-120)"
-              echo "⚠ $file:$current_line: consumer-name '$pattern' in new line: $short" >&2
+              echo "⚠ $file:$current_line: $label '$pattern' in new line: $short" >&2
               total_hits=$((total_hits + 1))
             fi
             break
@@ -310,6 +324,33 @@ for file in "${WATCHED_FILES[@]}"; do
         ;;
     esac
   done <<< "$diff_output"
+}
+
+# Strict scan: the two knowledge-distillation surfaces against the FULL denylist
+# (codenames included — a distilled lesson should never name a consumer even by
+# a public codename).
+for file in "${WATCHED_FILES[@]}"; do
+  [[ -f "$file" ]] || continue
+  total_files_scanned=$((total_files_scanned + 1))
+  scan_added_lines "$file" "consumer-name" "${DENYLIST[@]}"
+done
+
+# Broadened scan (WARN): the design / publication corpus against the
+# SENSITIVE-class tokens only. Catches a FUTURE re-introduction of a private
+# org / repo / project identifier (`bdits/`-style paths, municipal-brain,
+# toast-mcp, gitignored names) into an ADR / OPP / PRD / diagram / roadmap. It
+# deliberately does NOT scan for the public roadmap codenames, which
+# legitimately appear here. Diff-based, so the existing corpus is never
+# re-flagged; WARN, so a hit surfaces for review without failing CI.
+BROADENED_FILES=()
+while IFS= read -r _bf; do
+  [[ -n "$_bf" ]] && BROADENED_FILES+=("$_bf")
+done < <(git ls-files 'docs/adr/*.md' 'docs/opportunities/*.md' 'docs/requirements/*.md' \
+                      'docs/architecture/diagrams.md' 'docs/roadmap.md' 2>/dev/null)
+
+for file in "${BROADENED_FILES[@]:-}"; do
+  [[ -n "$file" ]] || continue
+  scan_added_lines "$file" "sensitive-name" "${SENSITIVE_DENYLIST[@]}"
 done
 
 # ----------------------------------------------------------------------
@@ -319,11 +360,11 @@ done
 if [[ "$total_hits" -gt 0 ]]; then
   echo "" >&2
   if [[ "$BLOCK" -eq 1 ]]; then
-    echo "✗ Knowledge-redaction validation failed: $total_hits consumer-name hit(s) in new lines (--block enabled)." >&2
+    echo "✗ Knowledge-redaction validation failed: $total_hits redaction hit(s) in new lines (--block enabled)." >&2
     echo "  Either rephrase to anonymize, exempt via .knowledge-redaction-ignore, or remove --block." >&2
     exit 1
   else
-    echo "ℹ Knowledge-redaction surfaced $total_hits consumer-name hit(s) in new lines (WARN posture; not failing CI)." >&2
+    echo "ℹ Knowledge-redaction surfaced $total_hits redaction hit(s) in new lines (WARN posture; not failing CI)." >&2
     echo "  Reviewers should verify each hit is intentional doctrine, not unredacted leakage." >&2
     echo "  Pass --block to escalate to hard fail." >&2
     # WARN posture — exit 0 even with hits.
@@ -334,6 +375,6 @@ fi
 if [[ "$total_files_scanned" -eq 0 ]]; then
   echo "✓ Knowledge-redaction validation passed (no watched files present in this project)."
 else
-  echo "✓ Knowledge-redaction validation passed (no consumer-name hits in new lines across $total_files_scanned watched file(s))."
+  echo "✓ Knowledge-redaction validation passed (no redaction hits in new lines across $total_files_scanned watched file(s) + the broadened design corpus)."
 fi
 exit 0

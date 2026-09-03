@@ -97,7 +97,7 @@ remedy to structural enforcement).
   structural improvements with one of the largest leakage-pathway
   closures.
 - **The denylist is bounded and known.** Today's consumer corpus
-  (Tula, OpenEMR, YouBase, `bdits/municipal-brain`) is small enough
+  (Tula, OpenEMR, YouBase, `municipal-brain`) is small enough
   to enumerate as v1 denylist entries. Future consumers get added as
   they onboard. The maintenance cost is bounded.
 - **Wave 1's `validate-list-completeness.sh` pattern applies.**

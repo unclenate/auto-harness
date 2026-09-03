@@ -7,8 +7,12 @@ Pure, dependency-free logic that turns an ACP tool call into a trust tier and a
 trust tier into the ``session/request_permission`` option set the proxy is allowed
 to offer. The canonical declarative policy lives in ``../tier-policy.yaml``; the
 DEFAULT_POLICY below mirrors it so the reference proxy runs with zero external
-files or dependencies. A consumer may pass an override loaded from
-``.acp/policy.yaml`` (see ``load_policy``).
+files or dependencies. ``test_policy.py``'s conformance test binds the two on
+every data-expressible field so they cannot silently drift; the hardening
+*logic* (benign-head lowering, shell-metachar exclusion, command-targets-
+entrypoint, floor-not-replace) is engine-owned and intentionally not expressible
+as YAML data. A consumer may pass an override loaded from ``.acp/policy.yaml``
+(see ``load_policy``).
 
 The two public entry points are :func:`classify` and :func:`options_for`, composed
 by :func:`rewrite_permission_request`.
@@ -45,9 +49,13 @@ DEFAULT_POLICY = {
         r"^HARNESS\.md$", r"^AGENTS\.md$", r"^CLAUDE\.md$",
         r"^\.github/workflows/", r"(^|/)\.env", r"(^|/)secrets?/",
     ],
-    # execute command classification (first match wins, highest tier applied).
+    # execute command RAISE rules (tier 4/5). The execute baseline (tier 3) is a
+    # FLOOR — a matched rule may only RAISE it; the highest match wins. Tier-1
+    # LOWERING is NOT a rule here: it is engine-owned logic (_BENIGN_EXECUTE_HEAD
+    # + _has_shell_metachar) so a raise-rule substring cannot lower a destructive
+    # command. tier-policy.yaml `escalation.command.rules` is bound to this list
+    # by test_policy.py's conformance test.
     "command_rules": [
-        (1, r"\b(test|lint|eslint|ruff|build)\b|(pytest|jest|go test|cargo test)"),
         (4, r"\b(install|add|sync)\b|migrat|docker (build|run)"),
         (5, r"deploy|kubectl|terraform apply|\bprod\b|secret(s)? (rotate|set)|helm (install|upgrade)"),
     ],

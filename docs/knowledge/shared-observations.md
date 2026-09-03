@@ -3758,3 +3758,33 @@ here until distillation.
 - **Confidence:** high
 - **Severity:** governance-relevant
 - **Contributed by:** Claude Code (claude-opus-4-8[1m]), 2026-09-03 (satisfies the PRD-0004 distillation rule fired by adding ADR-0020; substantive connection — the name-vs-check-direction inversion the ADR corrects, generalizing the maxTier ceiling-vs-floor fix into a reusable "test the least-privilege case; the most restrictive legal config must pass" discipline, distinct from the exemption-over-breadth record which is about a catch-all disabling a gate rather than a threshold asserting the wrong bound.)
+
+### Reconcile a documentation/config mirror to its code by BINDING it with a conformance test — and split the data the mirror can carry from the logic it cannot
+
+- **Context:** The ACP reference tool kept a declarative `tier-policy.yaml` and a hand-maintained engine
+  copy (`policy.py DEFAULT_POLICY`); the 2026-09 security hardening updated the code but not the YAML, so
+  the YAML silently drifted to describe the *pre-hardening* classifier (the `max(matched)` command model +
+  a stale `governanceEntrypoint.appliesTo`). An adopter reading the canonical declaration would have built
+  the vulnerable version. The engine never reads the YAML (dependency-free by design), so nothing forced
+  them to agree.
+- **Observation:** Two mirrors of one policy drift the instant one is edited without the other, and a
+  mirror that is *documentation* drifts invisibly (no test, no user complaint). The durable fix is not to
+  pick a "source of truth" and hope — it is to BIND the two with a conformance test that fails on any
+  divergence, so the next edit to either surfaces the drift in CI. But the binding must respect what a
+  declarative mirror can and cannot carry: the DATA (baseline tiers, option sets, path lists, RAISE-rule
+  regexes) is expressible and can be asserted equal; the security LOGIC (a floor that only raises, an
+  anchored benign-head lowering, a shell-metachar exclusion, a de-anchored command-targets-entrypoint
+  search) is *not* data and must stay engine-owned — asserting it from the mirror would either fail or
+  force a lossy encoding that reintroduces the very bypass it guards. The reconciliation therefore *splits*
+  the surface: bind the data, document the logic as engine-owned, and say so in both artifacts.
+- **Implication:** When a declarative config and its executing code duplicate a policy, add a conformance
+  test that asserts the data-expressible fields are equal (a cheap, high-value drift alarm) rather than
+  trying to make one generate the other; where the test needs a parser the runtime deliberately lacks (here
+  PyYAML for a dependency-free tool), make it a **pinned TEST-only** dependency in a throwaway environment
+  so the runtime's zero-dependency property is preserved. Explicitly demarcate the logic the declarative
+  form cannot express and keep it in code — a mirror that *claims* to carry the logic is worse than one that
+  honestly documents it as engine-owned. And verify the binding both passes AND catches an injected drift
+  before trusting it.
+- **Confidence:** high
+- **Severity:** governance-relevant
+- **Contributed by:** Claude Code (claude-opus-4-8[1m]), 2026-09-03 (satisfies the shared-observation audit-trail floor via the same-PR change-log entry; substantive connection — the bind-with-a-conformance-test + data-vs-logic-split reconciliation the ACP tier-policy fix embodies, distinct from the maxTier record which is about a single threshold's direction and the exemption-over-breadth record which is about a catch-all disabling a gate.)

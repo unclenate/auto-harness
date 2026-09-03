@@ -11,6 +11,30 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-09-03 — Reconcile the ACP `tier-policy.yaml` with the engine (bind + fix drift)
+
+Closes the deferred ACP residual from audit PR-4 (#210): `platform/agents/acp/tier-policy.yaml` had
+drifted from the reference engine (`reference-proxy/policy.py` `DEFAULT_POLICY`) and now **described the
+pre-hardening classifier** — its `escalation.command` still said "match the command string, highest tier
+wins" (the `max(matched)` model #201/#210 removed) with a Tier-1 lowering *rule*, and its
+`governanceEntrypoint.appliesTo` was `[edit, move, delete]`, omitting the kind-independent
+execute-command-targeting escalation #210 added. An adopter reading the YAML would have built the
+vulnerable version. **Fix (scope: bind + fix drift):** the YAML's `command` section is rewritten to the
+engine's floor model (baseline is a FLOOR; only the tier-4/5 RAISE regexes, matched byte-for-byte to
+`DEFAULT_POLICY["command_rules"]`), with the Tier-1 lowering documented as engine-owned *logic*
+(`benignExecuteLowering`, `engineOwned: true`) not a data rule; `governanceEntrypoint.appliesTo` now
+includes `execute` and documents command-string targeting. The engine's dead Tier-1 `command_rules` entry
+(vestigial post-#210 — the raise-loop only considers tiers above the baseline) is removed. A **conformance
+test** (`test_policy.py::TestPolicyYamlConformance`) now binds the two on every data-expressible field
+(baseline tiers, tier option-sets + `allow_always` bans, governance-entrypoint paths, RAISE rules,
+sensitive-path bump), so the mirror can no longer silently drift; PyYAML is a **pinned test-only**
+dependency, installed into a throwaway venv in the CI Python job so the reference runtime stays
+dependency-free stdlib. The hardening *logic* stays engine-owned (not YAML-expressible), documented in the
+YAML prose and the reference README (residual note updated). 23 → 29 ACP tests; verified the conformance
+test both passes and catches an injected drift. Distillation (reconcile a doc/config mirror to code by
+binding it with a conformance test, and split the data it can carry from the logic it cannot) in
+`shared-observations.md`. Companion for the `.github/workflows/` edit satisfied by this entry.
+
 ## 2026-09-03 — Correct the agent `maxTier` ceiling semantics: caps, never grants (AH-ADV-04; ADR-0020)
 
 Fixes the deferred AH-ADV-04 inversion. `validate-trust-tier.sh` asserted an agent pack's `maxTier` must

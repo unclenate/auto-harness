@@ -355,8 +355,14 @@ jobs:
           persist-credentials: false
       # Reference Python (dependency-free stdlib) now runs in CI (audit RT-09): the ACP
       # governance-proxy policy engine, the dreaming orchestrator, and the agent-coordination bus.
-      - name: ACP reference-proxy tests
-        run: cd platform/agents/acp/reference-proxy && python3 -m unittest discover
+      # The ACP suite additionally binds tier-policy.yaml to the engine's DEFAULT_POLICY via a
+      # conformance test that needs a YAML parser — PyYAML is a pinned TEST-only dependency,
+      # installed into a throwaway venv so the reference runtime stays dependency-free stdlib.
+      - name: ACP reference-proxy tests (with tier-policy conformance)
+        run: |
+          python3 -m venv /tmp/acp-testvenv
+          /tmp/acp-testvenv/bin/pip install --quiet pyyaml==6.0.2
+          cd platform/agents/acp/reference-proxy && /tmp/acp-testvenv/bin/python -m unittest discover
       - name: Dreaming reference tests
         run: cd reference/dreaming && python3 -m unittest discover
       - name: Agent-coordination reference tests

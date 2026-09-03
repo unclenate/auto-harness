@@ -3725,3 +3725,36 @@ here until distillation.
 - **Confidence:** high
 - **Severity:** governance-relevant
 - **Contributed by:** Claude Code (claude-opus-4-8[1m]), 2026-09-03 (satisfies the shared-observation audit-trail floor via the same-PR change-log entry; substantive connection — the exemption-pattern over-breadth guard the PR adds across the five ignore-file validators, completing the #212 off-switch-governance principle at the pattern layer and applying the scanner-parser "test behavior not structure" lesson to the exemption side, distinct from the file-governance record which stops the unreviewed edit rather than the reviewed-but-blind pattern.)
+
+### A governance control whose NAME denotes a bound and whose CHECK asserts the opposite bound silently pressures the unsafe choice — the name, the model doc, and the direction of the assertion must agree
+
+- **Context:** `validate-trust-tier.sh` validated an agent pack's `maxTier` — named a
+  "ceiling," described in the kernel model as a ceiling, and mirrored by the inter-agent bus's
+  `tier_ceiling` ("caps but never grants") — by asserting `maxTier >= max_active_tier` (the highest
+  non-agent workload tier) and *failing* a shortfall. That is a **lower**-bound assertion on a
+  control named for an **upper** bound. On the harness's own manifest (kernel = tier 5) the only
+  passing value was `maxTier: 5` — the maximum ceiling — so all three shipped agent packs declare
+  exactly that, and an operator could not express a *restricted* agent (`maxTier: 2`) without a
+  validation error. (AH-ADV-04; fixed in ADR-0020.)
+- **Observation:** The inversion is not cosmetic — it changes which configuration the gate rewards.
+  A ceiling exists to let an operator *lower* an agent's autonomous reach; a check that fails a low
+  ceiling forecloses exactly that and pressures every agent to the maximum. The tell was that the
+  safe, restrictive choice produced a red build. When a control's name and model say "upper bound"
+  (a cap) but its check says "at least" (a floor), the check wins in practice and the control does
+  the opposite of its stated purpose. The fix restores the direction: `maxTier` caps but never
+  grants (the per-tier human gates at Tier 4/5 apply independently); a ceiling below the workload is
+  a valid least-privilege choice that defers that work to the human gate (informational, not a
+  failure); the only violation is a ceiling below the agent's own declared baseline — a genuinely
+  ceiling-shaped coherence check.
+- **Implication:** For any governed threshold, check that the NAME, the model prose, and the
+  DIRECTION of the validator's assertion all agree — and sanity-test with the least-privilege case:
+  **does the most restrictive legal configuration pass?** If tightening a control produces a
+  violation, the check is inverted. Derive the "most conservative" direction from the safety goal
+  (under-privilege defers to a human, which is strictly safer; over-privilege is the risk), not from
+  a capability-adequacy intuition ("the agent must be *able* to do the work" is not a safety
+  property — the human gate covers the shortfall). When the validator itself is not fixture-testable,
+  centralize the decision in a pure, unit-tested helper so the corrected direction is locked by
+  tests.
+- **Confidence:** high
+- **Severity:** governance-relevant
+- **Contributed by:** Claude Code (claude-opus-4-8[1m]), 2026-09-03 (satisfies the PRD-0004 distillation rule fired by adding ADR-0020; substantive connection — the name-vs-check-direction inversion the ADR corrects, generalizing the maxTier ceiling-vs-floor fix into a reusable "test the least-privilege case; the most restrictive legal config must pass" discipline, distinct from the exemption-over-breadth record which is about a catch-all disabling a gate rather than a threshold asserting the wrong bound.)

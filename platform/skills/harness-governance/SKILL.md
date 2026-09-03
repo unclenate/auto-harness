@@ -153,8 +153,15 @@ A few signature notes worth highlighting:
   (0–5; rationale required for ≥3); computes inferred tier from
   `sensitivePaths` regexes against representative production-shape
   sample paths; asserts `declared >= inferred`. For agent modules,
-  validates `maxTier` and asserts it ≥ the highest active non-agent
-  tier. Per PRD-0006 / ADR-0017 Wave 5.1. The harness's own kernel
+  `maxTier` is an upper **ceiling** on the agent's autonomous reach — it
+  caps but never grants (the Tier 4/5 human gates apply independently);
+  the validator asserts it is in range and **not below the agent's own
+  declared tier**, and emits an *informational* note (not a failure) when
+  the ceiling sits below the manifest's highest non-agent tier — that
+  higher-tier work defers to the human gate. Per ADR-0020, which corrects
+  the earlier inverted `maxTier ≥ workload` rule (it failed the safe
+  low-ceiling configuration and pressured agents to the maximum ceiling).
+  Per PRD-0006 / ADR-0017 Wave 5.1. The harness's own kernel
   declares tier 5 (governs CI workflows + governance entrypoints); the
   cross-cutting "declared tier 5 requires criticality high/critical"
   rule counts only *consumer-selected* modules — the universal kernel

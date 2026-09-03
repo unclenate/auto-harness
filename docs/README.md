@@ -61,6 +61,7 @@ Accepted; supersession is recorded by status flip + a new ADR.
 | [0017](adr/ADR-0017-safety-hardening-roadmap.md) | Safety Hardening Roadmap | Accepted |
 | [0018](adr/ADR-0018-privacy-by-default-posture.md) | Privacy-by-Default Posture | Accepted |
 | [0019](adr/ADR-0019-digital-twin-scenario-runtime-overlay.md) | Adopt Digital Twin / Scenario Runtime as a Management Overlay | Accepted |
+| [0020](adr/ADR-0020-agent-maxtier-ceiling-semantics.md) | Agent `maxTier` is an Upper Ceiling (Caps, Never Grants) | Accepted |
 
 ---
 

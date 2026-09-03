@@ -143,11 +143,18 @@ As of Wave 5.1 (PRD-0006 / ADR-0017), the trust-tier model is
   FR-002). Highest match wins. The validator asserts
   `declared >= inferred` — a module cannot declare a lower tier than
   the paths it governs would imply.
-- **Agent-pack ceiling.** Each active agent module's `maxTier` is
-  validated against the highest declared/inferred tier of any active
-  non-agent module. An agent pack whose max-tier ceiling is below the
-  active manifest's highest non-agent tier fails (an under-capacity
-  agent paired with a higher-tier workload is a misconfiguration).
+- **Agent-pack ceiling.** Each active agent module's `maxTier` is an
+  *upper ceiling* on the agent's autonomous reach — it **caps but never
+  grants** (the per-tier human-authorization gates at Tier 4/5 apply
+  independently and are never satisfied by a high ceiling). The validator
+  asserts the ceiling is in range (0–5) and not below the agent's own
+  declared baseline tier. A ceiling *below* the manifest's highest
+  non-agent tier is a valid **least-privilege** choice, not a failure —
+  that higher-tier work simply defers to the human gate (the validator
+  emits an informational note so the deferral is visible). See
+  **ADR-0020**: the earlier rule inverted this, asserting `maxTier ≥`
+  the workload and thereby failing the safe low-ceiling configuration
+  and pressuring every agent to the maximum ceiling.
 - **Cross-cutting criticality.** When any active module declares
   tier 5, `project.criticality` must be in {high, critical} —
   *unless* `project.maturity == platform`. Platform-maturity projects

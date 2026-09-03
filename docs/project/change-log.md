@@ -11,6 +11,25 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-09-03 — Correct the agent `maxTier` ceiling semantics: caps, never grants (AH-ADV-04; ADR-0020)
+
+Fixes the deferred AH-ADV-04 inversion. `validate-trust-tier.sh` asserted an agent pack's `maxTier` must
+be **≥** the manifest's highest non-agent tier — a *lower*-bound (floor) check on a control named for an
+*upper* bound (a ceiling). Because the harness's own kernel is tier 5, the only passing value was
+`maxTier: 5` (the maximum), so all three shipped agent packs declare it and an operator could not express a
+restricted agent (`maxTier: 2`) without a validation error — the least-privilege choice failed the check.
+**Corrected semantics (ADR-0020):** `maxTier` is an upper ceiling on the agent's autonomous reach — it caps
+but never grants (the Tier 4/5 human gates apply independently). The validator now asserts range (0–5) and
+`maxTier ≥ the agent's own declared tier` (a real ceiling-coherence check), removes the `< max_active_tier`
+violation, and emits an **informational note** (not a failure) when the ceiling sits below the workload —
+that higher-tier work defers to the human gate. The decision is centralized in a unit-tested
+`HarnessRegistry.agent_maxtier_status` helper (the validator is platform-root-fixed, not directly
+fixture-testable). Non-breaking: shipped packs keep `maxTier: 5` (5 ≥ 2, no note fires). Updated
+`trust-model.md`, `validators/README.md`, `harness-governance/SKILL.md`; ADR-0020 + index rows
+(`docs/README.md`, `SUMMARY.md`). Distillation (a control's name and the direction of its check must agree;
+sanity-test the least-privilege case) in `shared-observations.md`. **Deferred:** a "high ceiling requires
+rationale" policy (mirroring `tier.declared ≥ 3`), noted in the ADR.
+
 ## 2026-09-03 — Validator hardening: reject over-broad exemption patterns across the five ignore-file validators
 
 Closes the pattern-level residue #212 left open. #212 governed the exemption *files* (kernel

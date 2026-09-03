@@ -11,6 +11,25 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-09-03 — Validator hardening: reject over-broad exemption patterns across the five ignore-file validators
+
+Closes the pattern-level residue #212 left open. #212 governed the exemption *files* (kernel
+`sensitivePaths` + companion — an unreviewed edit now fails); this governs their *content*, because a
+*reviewed* pattern can still be a catch-all. All five ignore-file validators now reject an over-broad
+exemption at load time (fail closed, exit 2): the four regex consumers (`validate-skill-content.sh`,
+`validate-publication-boundary.sh`, `validate-knowledge-redaction.sh`, `validate-doc-references.sh`) via a
+new shared `HarnessRegistry.exemption_pattern_overbroad?` (Ruby) and a mirrored inline bash guard, and the
+glob consumer (`validate-placeholders.sh`) via a structural no-literal-segment check. Detection is
+**behavioral, not structural** — each pattern runs through the same match engine the validator applies it
+with, against five deliberately-disjoint canary strings; a pattern matching all five is a catch-all (`.`,
+`.*`, `^`, `$`, plus equivalent forms like `x|.` / `.{0,}` / `[\s\S]` that a form-denylist would miss).
+`validate-knowledge-redaction.sh`'s guard moved ahead of its git-state early-exit so a broken off-switch
+fails regardless of diff state. Verified against main's shipped exemption files (zero false positives).
+Tests: 17 registry unit cases (the evasion matrix + the real shipped patterns as negatives) + 6 wiring
+cases (each validator fails closed). No new validator, module, or catalog count (still 27). Distillation
+(govern the off-switch's *content* behaviorally, not just its file) in `shared-observations.md`. This
+closes the exemption-regex-anchoring item deferred in the PR-5 entry below.
+
 ## 2026-09-02 — CI + bootstrap hardening: pin the supply chain, least-privilege the token, govern the off-switches (audit PR-5)
 
 Closes the audit's supply-chain / CI-hardening findings (authorized `.github/` change). **`.github/workflows/harness.yml`:** every third-party action pinned to an immutable commit SHA (`actions/checkout` and `ruby/setup-ruby`, tag in a comment) — was floating major tags; `markdownlint-cli2` pinned to `@0.23.2`; a top-level `permissions: contents: read` (least privilege — no job writes); `persist-credentials: false` on every checkout; and a new **`python-tests` job** wires the previously-uncovered reference Python into CI (the ACP governance-proxy engine, the dreaming orchestrator, the agent-coordination bus — audit RT-09). **`install.sh`:** the consumer update guidance now recommends pinning a **released tag**, not `git submodule update --remote` (which tracks the `main` tip unreviewed — the S4 contradiction). **Kernel `base/module.yaml`:** the four validator **exemption files** (`.skill-content-ignore`, `.publication-boundary-ignore`, `.knowledge-redaction-ignore`, `.doc-reference-ignore`) are now `sensitivePaths` + companion-triggered — silencing a security validator now warrants the same review as editing a governance entrypoint (was an unowned kill-switch). Distillation (a control's off-switch must be governed as tightly as the control) in `shared-observations.md`. **Deferred:** anchoring the ignore-file *exemption regexes* themselves (a validator change) and branch-protection/ruleset confirmation (out-of-repo, `gh api`).

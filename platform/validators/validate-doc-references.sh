@@ -104,6 +104,16 @@ project_root     = File.expand_path(ARGV[0])
 ignore_file      = File.join(project_root, ".doc-reference-ignore")
 ignore_patterns  = HarnessRegistry.load_doc_reference_ignore(ignore_file)
 
+# Fail closed on an over-broad exemption (".", ".*", "^", …) that would exempt
+# every path and blind the scan — the pattern-level counterpart to #212's
+# file-level governance of the off-switch.
+ignore_patterns.each do |pat|
+  next unless HarnessRegistry.exemption_pattern_overbroad?(pat)
+
+  warn "✗ .doc-reference-ignore: over-broad exemption pattern #{pat.inspect} matches every canary string — it would exempt all paths and defeat the reference scan. Narrow it to the specific path(s) you mean."
+  exit 2
+end
+
 failures = []
 
 # ---------------------------------------------------------------------------

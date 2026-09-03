@@ -140,6 +140,31 @@ fi
 
 cd "$PROJECT_ROOT"
 
+# Reject an over-broad exemption pattern (".", ".*", "^", …) BEFORE any git
+# work — a broken off-switch should fail regardless of diff state (the other
+# ignore-file validators guard unconditionally too). Uses the same grep -E
+# engine the patterns are applied with, against five disjoint canary strings
+# (mirrors HarnessRegistry.EXEMPTION_CANARIES): a pattern matching all five is a
+# catch-all that would exempt everything. The pattern-level dual of #212's
+# file-level off-switch governance.
+_exemption_overbroad() {
+  local pat="$1" c
+  for c in 'z' 'Q' '7' '-' 'the quick brown fox'; do
+    printf '%s' "${c}" | grep -qE -- "${pat}" || return 1
+  done
+  return 0
+}
+if [[ -f ".knowledge-redaction-ignore" ]]; then
+  while IFS= read -r _ig_line || [[ -n "$_ig_line" ]]; do
+    [[ -z "$_ig_line" ]] && continue
+    [[ "$_ig_line" =~ ^[[:space:]]*# ]] && continue
+    if _exemption_overbroad "$_ig_line"; then
+      echo "✗ .knowledge-redaction-ignore: over-broad exemption pattern '${_ig_line}' matches every canary string — it would exempt all added lines and defeat the redaction scan. Narrow it to the specific line(s) you mean." >&2
+      exit 2
+    fi
+  done < ".knowledge-redaction-ignore"
+fi
+
 # Verify we're in a git repo.
 if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
   echo "✗ Not inside a git working tree: $PROJECT_ROOT" >&2

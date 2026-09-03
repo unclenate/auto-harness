@@ -41,6 +41,14 @@ EXCLUDES=()
 if [[ -f "${IGNORE_FILE}" ]]; then
   while IFS= read -r line; do
     [[ -z "${line}" || "${line}" == \#* ]] && continue
+    # Reject an over-broad glob with no literal path segment (only '*' and '/':
+    # "*", "**", "**/*", …) — it would exclude every file and blind the scan.
+    # A legitimate exclusion carries at least one literal segment ("platform/**",
+    # "*.tmp"). The glob dual of the regex over-breadth guard.
+    if [[ "${line}" =~ ^[*/]+$ ]]; then
+      echo "✗ .placeholder-ignore: over-broad glob '${line}' has no literal path segment — it would exclude every file from the scan. Use a glob that names the path(s) you mean." >&2
+      exit 2
+    fi
     EXCLUDES+=(--glob "!${line}")
   done < "${IGNORE_FILE}"
 fi

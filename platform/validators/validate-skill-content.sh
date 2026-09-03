@@ -304,6 +304,10 @@ if File.exist?(ignore_path)
       warn "✗ .skill-content-ignore: invalid regex on line #{raw.inspect}: #{e.message}"
       exit 2
     end
+    if HarnessRegistry.exemption_pattern_overbroad?(line)
+      warn "✗ .skill-content-ignore: over-broad exemption pattern #{line.inspect} matches every canary string — it would exempt all content and blind the scan. Narrow it to the specific phrase(s) you mean."
+      exit 2
+    end
   end
 end
 

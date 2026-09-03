@@ -143,6 +143,20 @@ remediation; any infra-side attention for the fleet hostnames is a separate, out
 the redaction scan beyond the two watched files, and the validator diff-header / scan-set fixes, are tracked
 to the validator-hardening pass.
 
+## 2026-09-01 — Roadmap currency pass: reflect the shipped coordination/protocol wave
+
+Brought `docs/roadmap.md`'s "Shipped since v0.5.0" section current — it had gone stale after the
+frontier-agent cluster. Added the **live agent coordination + protocol governance** wave now on `main`:
+`agents/acp` (Agent Client Protocol bridge, OPP-0056 / PRD-0037/0038, + the G6-by-design keyless
+`prev_hash` audit schema OPP-0057 / PRD-0040), `management/agent-coordination` (control-loop bus +
+non-native CLI adapter OPP-0060 + `validate-agent-bus.sh` OPP-0061), and `management/memory-consolidation`
+("dreaming", OPP-0058 / PRD-0041). Bumped the validator count 24 → 27 and listed the new governance
+validators (observation-hygiene, status-parity, list-completeness, agent-bus). **Verified against disk:**
+left the "Cybersec (PRD-0022) designed, not built" line unchanged — the tree has no `domains/cybersec-*`
+module and PRD-0022 is still `Proposed`, so the line is accurate (only the Phase-1 design docs merged;
+the module — Phase 2 — was never built). Release-version sequencing remains the maintainer's open task
+(untouched). No catalog counts or governed artifacts changed; a currency-only doc edit.
+
 ## 2026-09-01 — Accept + implement OPP-0061: validate-agent-bus.sh conformance linter
 
 Flipped **OPP-0061** to **accepted** (Q1–Q3 ratified as proposed) and implemented it in the same change

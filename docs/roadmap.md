@@ -59,7 +59,7 @@ the v0.5.0 tag. It is **not yet assigned to release tags** (a maintainer pass ow
 that). Summarized here so the roadmap reflects reality; several items below appear
 as "Planned" further down because that text predates their shipping.
 
-**Governance machinery (validators 8 → 24):**
+**Governance machinery (validators 8 → 27):**
 
 - Trust-tier enforcement — `validate-trust-tier.sh` (PRD-0006). Listed as "v0.7.0
   planned" below; **shipped.**
@@ -71,6 +71,12 @@ as "Planned" further down because that text predates their shipping.
   modules; a third governance axis distinct from trust tier and § 10.
 - `validate-lane-integrity.sh` (PRD-0025) — the `management/work-package` parallel
   multi-agent lane contract.
+- The knowledge-ledger + index-consistency validators — `validate-observation-hygiene.sh`
+  (PRD-0034 / OPP-0053, a diff-based ADR-0002 shape linter for shared observations),
+  `validate-status-parity.sh` (OPP-0054, OPP status reconciled across its index surfaces),
+  and `validate-list-completeness.sh` (OPP-0055, every catalog entity has its index rows).
+- `validate-agent-bus.sh` (OPP-0061) — a `--scan-file` contract-conformance linter for the
+  agent-coordination bus (envelope / lifecycle / `tier_ceiling` / `sync` caps), fixture-tested.
 
 **Deep-domain catalog (the § 12 skeleton, six instances):**
 
@@ -94,6 +100,24 @@ as "Planned" further down because that text predates their shipping.
   module-gated / predict-clean. Only the **code-cross-reference** half (declarations
   match running code) + companion rules remain deferred (gated on consumer code paths).
   The OPP-0027 anchor itself remains a conceptual umbrella (the satellites carry the value).
+
+**Live agent coordination + protocol governance:**
+
+- `agents/acp` — the **Agent Client Protocol** governance bridge (OPP-0056 / PRD-0037):
+  complementary layers (ACP = wire/mechanism, harness = policy), a trust-tier → `request_permission`
+  wedge, plus a reference governance proxy (PRD-0038) and the ACP-audit → knowledge-capture bridge
+  whose authoritative record is tamper-evident by design — a keyless SHA-256 `prev_hash` chain
+  (G6-by-design, zero key management; OPP-0057 / PRD-0040).
+- `management/agent-coordination` (OPP-0059 / PRD-0039) — the **live inter-agent control-loop &
+  cross-vendor bus**: a vendor-neutral 7-message control contract (`dispatch`/`ack`/`progress`/`done`/
+  `block`/`sync`/`verdict`, a `tier_ceiling` that caps-but-never-grants) split from a file inbox/outbox
+  transport seam, a Python-stdlib reference orchestrator, the non-native local-CLI adapter (OPP-0060,
+  Codex/Copilot/Grok), and the `validate-agent-bus.sh` conformance linter (OPP-0061). The runtime dual
+  of `work-package`'s static lane contract.
+- `management/memory-consolidation` (OPP-0058 / PRD-0041) — out-of-band **"dreaming"** memory
+  consolidation: a **propose-only** batch process mining cross-session transcripts into an
+  evidence-backed proposed knowledge-tree diff a human ratifies (Tier 2, writes a branch, never
+  merges — the machine proposes, the human is the trust anchor).
 
 **Doctrine:** operating-principles §§ 9 (Split Design from Implementation), 10
 (Classify Claims Before Enforcing Them), 11 (Privacy by Design), 12 (Author Deep

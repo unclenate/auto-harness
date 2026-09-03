@@ -6,6 +6,7 @@
 Run: python3 -m unittest discover -s platform/agents/acp/reference-proxy
 """
 
+import os
 import unittest
 
 import policy as pol
@@ -151,6 +152,68 @@ class TestAuditHardening(unittest.TestCase):
                 pol.load_policy(f.name)
         finally:
             os.unlink(f.name)
+
+
+class TestPolicyYamlConformance(unittest.TestCase):
+    """tier-policy.yaml must stay in lock-step with the engine's DEFAULT_POLICY.
+
+    The reference proxy runs on DEFAULT_POLICY (dependency-free); tier-policy.yaml
+    is the canonical human-facing declaration. This BINDS the two on every
+    data-expressible field so they can no longer drift silently — the #210 residual
+    was that the YAML had drifted to describe the pre-hardening classifier. The
+    hardening LOGIC (benign-head lowering, shell-metachar exclusion,
+    command-targets-entrypoint, floor-not-replace) is engine-owned and intentionally
+    NOT asserted here: it is not expressible as YAML data.
+
+    PyYAML is a TEST-only dependency; the runtime reference code never needs it.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        try:
+            import yaml
+        except ImportError:
+            raise unittest.SkipTest("PyYAML not installed; skipping tier-policy.yaml conformance")
+        path = os.path.join(os.path.dirname(__file__), "..", "tier-policy.yaml")
+        with open(path) as f:
+            cls.yml = yaml.safe_load(f)
+
+    def test_kind_baseline_tiers_match(self):
+        for kind, spec in pol.DEFAULT_POLICY["kinds"].items():
+            self.assertEqual(self.yml["kinds"][kind]["tier"], spec["tier"], kind)
+
+    def test_delete_allow_always_ban_matches(self):
+        # camelCase (YAML) ⇔ snake_case (engine); both must ban the blanket grant.
+        self.assertIs(self.yml["kinds"]["delete"].get("allowAlways"), False)
+        self.assertIs(pol.DEFAULT_POLICY["kinds"]["delete"].get("allow_always"), False)
+
+    def test_tier_option_sets_and_defaults_match(self):
+        for tier, spec in pol.DEFAULT_POLICY["tiers"].items():
+            y = self.yml["tiers"][str(tier)]
+            self.assertEqual(y["options"], spec["options"], tier)
+            self.assertEqual(y["default"], spec["default"], tier)
+            # allow_always ban: YAML `allowAlways: false` ⇔ engine `allow_always: False`
+            self.assertEqual(
+                y.get("allowAlways", True) is False,
+                spec.get("allow_always", True) is False,
+                "allow_always ban mismatch at tier %s" % tier,
+            )
+
+    def test_governance_entrypoints_match(self):
+        self.assertEqual(
+            self.yml["escalation"]["governanceEntrypoint"]["paths"],
+            pol.DEFAULT_POLICY["governance_entrypoints"],
+        )
+
+    def test_command_raise_rules_match(self):
+        yaml_rules = [(r["setTier"], r["match"])
+                      for r in self.yml["escalation"]["command"]["rules"]]
+        engine_rules = [tuple(r) for r in pol.DEFAULT_POLICY["command_rules"]]
+        self.assertEqual(yaml_rules, engine_rules)
+
+    def test_sensitive_path_bump_is_one(self):
+        # The engine does `min(tier + 1, 5)`; the YAML must declare the same +1.
+        self.assertEqual(self.yml["escalation"]["sensitivePath"]["bumpTierBy"], 1)
 
 
 if __name__ == "__main__":

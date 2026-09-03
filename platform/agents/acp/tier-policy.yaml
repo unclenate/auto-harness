@@ -41,9 +41,16 @@ escalation:
   sensitivePath:
     bumpTierBy: 1
     stripAllowAlways: true
-  # Editing/moving/deleting a governance entrypoint or a secrets path is Tier 5.
+  # A WRITE-capable operation on a governance entrypoint or secrets path is Tier 5.
+  # "Write-capable" = any kind that is NOT a pure read (read / search / think) —
+  # this INCLUDES `execute`, and includes an `execute` whose COMMAND STRING targets
+  # an entrypoint (e.g. `sed -i … HARNESS.md`), matched by de-anchoring these path
+  # regexes and searching the command. A self-declared `execute` can therefore no
+  # longer edit an entrypoint without hitting this rule (the pre-2026-09 gap); a
+  # genuine read is exempt. `paths` is bound to policy.py `governance_entrypoints`
+  # by the conformance test.
   governanceEntrypoint:
-    appliesTo: [edit, move, delete]
+    appliesTo: [edit, move, delete, execute]   # any non-read kind; execute also via command-string targeting
     setTier: 5
     paths:
       - ^HARNESS\.md$
@@ -56,16 +63,30 @@ escalation:
   publishes:
     appliesTo: [fetch]
     setTier: 3
-  # `execute` command inspection — match the command string, highest tier wins.
+  # `execute` command inspection. The execute baseline (tier 3) is a FLOOR: a
+  # matched rule below may only RAISE the tier (highest match wins), never lower
+  # it. These regexes are bound to policy.py DEFAULT_POLICY["command_rules"] by
+  # the conformance test in reference-proxy/test_policy.py.
   command:
     appliesTo: [execute]
+    baselineFloor: true
     rules:
-      - setTier: 1
-        match: '^(npm|yarn|pnpm) (test|run test)|(pytest|jest|go test|cargo test)|(lint|eslint|ruff)|(make )?build'
       - setTier: 4
-        match: '(npm|pip|uv|cargo|go|brew|apt) (install|add|sync)|migrat|docker (build|run)'
+        match: '\b(install|add|sync)\b|migrat|docker (build|run)'
       - setTier: 5
-        match: 'deploy|kubectl|terraform apply|prod|secret(s)? (rotate|set)|helm (install|upgrade)'
+        match: 'deploy|kubectl|terraform apply|\bprod\b|secret(s)? (rotate|set)|helm (install|upgrade)'
+  # Tier-1 LOWERING is engine-owned LOGIC, not a match rule: an execute drops to
+  # tier 1 only when its command HEAD is a recognized test/lint/build runner
+  # (anchored at the start) AND the command carries no shell metacharacter
+  # (; & | backtick $ ( ) { } < > or newline) that could chain a second command.
+  # A bare `match:` rule cannot express this and would reintroduce the pre-2026-09
+  # `max(matched)` bypass (a "test"/"build" substring in `rm -rf dist # run test`
+  # lowering a destructive command). See policy.py `_BENIGN_EXECUTE_HEAD` /
+  # `_has_shell_metachar`.
+  benignExecuteLowering:
+    appliesTo: [execute]
+    toTier: 1
+    engineOwned: true
   # An edit that touches a companion-rule triggerPath surfaces the required companion
   # in the permission request title (the human decides with the consequence visible).
   companionSurfacing:

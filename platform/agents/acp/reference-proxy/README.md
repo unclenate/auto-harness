@@ -86,9 +86,16 @@ The classifier and policy loader were hardened after an adversarial review:
 - **The child agent is an unsandboxed `Popen` with the full parent environment.** The proxy mediates the
   permission *protocol*; it does not contain the process. Run the agent in a real sandbox with a scoped
   env and cwd.
-- **`tier-policy.yaml` is a mirror, not the effective source.** The engine runs on `DEFAULT_POLICY`; the
-  YAML's `escalation.*` schema is not yet read by the loader. Reconciling the declarative file with the
-  engine (drive one off the other) is a follow-on.
+- **`tier-policy.yaml` is a test-bound data mirror, not the runtime source.** The engine runs on the
+  embedded `DEFAULT_POLICY` (so the reference proxy stays dependency-free). `test_policy.py`'s
+  conformance test now **binds** the two on every data-expressible field — baseline tiers, tier option
+  sets and `allow_always` bans, governance-entrypoint paths, the command RAISE rules, and the
+  sensitive-path bump — so the YAML can no longer silently drift from the engine (the pre-2026-09 drift
+  had the YAML describing the un-hardened classifier). The hardening **logic** (benign-head lowering,
+  shell-metachar exclusion, command-targets-entrypoint, floor-not-replace) is engine-owned and is *not*
+  expressible as YAML data — the YAML documents it in prose. Making the YAML the *runtime* source
+  (loading it in place of `DEFAULT_POLICY`) would add a runtime YAML dependency and is a deliberate
+  non-goal for this reference.
 
 ## Scope & extension points
 

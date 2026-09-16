@@ -11,6 +11,24 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-09-16 — File OPP-0063: consumer-upgrade safety (compat affordances + layout-agnostic validators)
+
+Files OPP-0063 (`proposed`) capturing a five-finding consumer-upgrade report, field-reported across four
+consumer-repo upgrades from older pins to current `main` and **independently re-derived here against the real
+validators on disk** (per the peer-handoff verification discipline) before filing. One root cause: the
+harness's always-on structural validators assume its own dogfooded layout (repo-root `platform/`,
+`SUMMARY.md`, `docs/`) is the consumer's, and a breaking rename shipped with no compat affordance. Triaged
+defect-vs-deliberate-posture: **F2 is the load-bearing defect** — the `data/relational-postgres` →
+`data/relational-sql` rename (PRD-0033) deleted the old module id with no alias, crashing 9/14 validators for
+a consumer that actively selects it → proposes a one-release deprecation alias + BREAKING note. **F1**
+`validate-list-completeness` hard-codes a root `SUMMARY.md` (rejects a GitBook-from-`docs/` TOC); **F3**
+`validate-catalog-counts` misreads a `.harness/`-mount consumer as count-drift; **F4** `validate-placeholders`
+ISO-date arm over-matches legit date-format docs (`.placeholder-ignore` is the documented remedy); **F5**
+the existing `consumer-upgrade-runbook.md` needs augmenting for these break classes, not building anew.
+Design-only, no code change; disposition awaits a decision on four open questions. Index surfaces
+(`candidates.md`, `docs/README.md`, `SUMMARY.md`) and the PRD-0004 distillation observation updated in the
+same commit. No private consumer names/hostnames carried into any record.
+
 ## 2026-09-03 — Reconcile the ACP `tier-policy.yaml` with the engine (bind + fix drift)
 
 Closes the deferred ACP residual from audit PR-4 (#210): `platform/agents/acp/tier-policy.yaml` had

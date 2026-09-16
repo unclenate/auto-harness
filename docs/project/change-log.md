@@ -40,6 +40,23 @@ Design-only, no code change; disposition awaits a decision on four open question
 (`candidates.md`, `docs/README.md`, `SUMMARY.md`) and the PRD-0004 distillation observation updated in the
 same commit. No private consumer names/hostnames carried into any record.
 
+## 2026-09-16 — File OPP-0064: AntiGravity headless (`agy`) CLI — correct the stale "no headless CLI" claim + adapter
+
+Files OPP-0064 (`proposed`) from a peer field report that AntiGravity now ships a headless CLI (`agy`),
+**independently web-verified against AntiGravity's own headless documentation and the public
+`google-antigravity/antigravity-cli` issue tracker** before filing. The harness's agent-coordination docs use
+AntiGravity as the canonical "no headless CLI / IDE-only" example in ≥5 places — now **factually false**
+(`agy -p "<prompt>"` is a documented non-interactive mode). Triaged: **F1 (confirmed)** correct the stale
+claim (a §10-inward doc-honesty fix, like #207); **F2** add a third permission archetype (prompt-collapsing:
+a permission-prompt model that can't prompt headlessly collapses to deny-all/allow-all) to the adapter-contract
+taxonomy; **F3** judge headless success on OUTPUT not exit code — the docs say fail→non-zero but issue #408
+shows exit-0-empty when piped and #318 shows a non-TTY hang; **F4 (design-only, deferred)** an `agy` adapter
+branch in `cli_invokers.py` — but the peer's reported `--print=<task>` argv is **contradicted by the vendor's
+own docs** (space-separated `-p "<prompt>"`), and `--mode plan`/`--add-dir` are undocumented, so the argv must
+be resolved against a live `agy` run before implementation. Design-only, no code change; a verification table
+records the confirmed/contradicted/unconfirmed split. Index surfaces + PRD-0004 distillation observation in
+the same commit; the peer's do-not-publish draft was not used as a source, no private names carried in.
+
 ## 2026-09-03 — Redact the residual private org-path leak + broaden the knowledge-redaction scan (WARN)
 
 Closes the deferred redaction residual (audit PR-5 / #206) — scope: **redact the sharpest tokens + broaden

@@ -22,6 +22,24 @@ shipped reality. Flipped all four surfaces to `accepted` with the shipping-PR re
 on `main` before the flip (not a new acceptance decision — a reconciliation to a fait accompli). No code
 change. PRD-0004 distillation observation in the same commit.
 
+## 2026-09-16 — File OPP-0063: consumer-upgrade safety (compat affordances + layout-agnostic validators)
+
+Files OPP-0063 (`proposed`) capturing a five-finding consumer-upgrade report, field-reported across four
+consumer-repo upgrades from older pins to current `main` and **independently re-derived here against the real
+validators on disk** (per the peer-handoff verification discipline) before filing. One root cause: the
+harness's always-on structural validators assume its own dogfooded layout (repo-root `platform/`,
+`SUMMARY.md`, `docs/`) is the consumer's, and a breaking rename shipped with no compat affordance. Triaged
+defect-vs-deliberate-posture: **F2 is the load-bearing defect** — the `data/relational-postgres` →
+`data/relational-sql` rename (PRD-0033) deleted the old module id with no alias, crashing 9/14 validators for
+a consumer that actively selects it → proposes a one-release deprecation alias + BREAKING note. **F1**
+`validate-list-completeness` hard-codes a root `SUMMARY.md` (rejects a GitBook-from-`docs/` TOC); **F3**
+`validate-catalog-counts` misreads a `.harness/`-mount consumer as count-drift; **F4** `validate-placeholders`
+ISO-date arm over-matches legit date-format docs (`.placeholder-ignore` is the documented remedy); **F5**
+the existing `consumer-upgrade-runbook.md` needs augmenting for these break classes, not building anew.
+Design-only, no code change; disposition awaits a decision on four open questions. Index surfaces
+(`candidates.md`, `docs/README.md`, `SUMMARY.md`) and the PRD-0004 distillation observation updated in the
+same commit. No private consumer names/hostnames carried into any record.
+
 ## 2026-09-03 — Redact the residual private org-path leak + broaden the knowledge-redaction scan (WARN)
 
 Closes the deferred redaction residual (audit PR-5 / #206) — scope: **redact the sharpest tokens + broaden

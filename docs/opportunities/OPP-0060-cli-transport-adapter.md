@@ -6,7 +6,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0060 — Non-Native (Local-CLI) Transport Adapter for the Agent-Coordination Bus
 
-**Status:** proposed *(field-reported with a working, live-validated prototype; independently re-verified before filing — integration-smoke-tested against the frozen bus, redaction re-scrubbed)*
+**Status:** accepted *(shipped — reference-orchestrator port #198 + argv-injection hardening #201; originally field-reported with a working, live-validated prototype, independently re-verified before filing — integration-smoke-tested against the frozen bus, redaction re-scrubbed)*
 **Owner:** @unclenate · **Created/Updated:** 2026-08-31
 **Confidence:** high (design + live proof: a real non-Claude CLI completed a full bus round-trip)
 **Parent:** PRD-0039 / management/agent-coordination (promotes OPP-0059)

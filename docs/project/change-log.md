@@ -11,6 +11,17 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-09-24 — Reconcile OPP-0060 status: `proposed` → `accepted` (its code shipped #198/#201)
+
+Status-drift reconciliation. OPP-0060 (non-native local-CLI transport adapter) still read `proposed` across
+its record, `candidates.md`, `README.md`, and `SUMMARY.md`, but its implementation shipped and was hardened
+months ago — the reference-orchestrator port (#198) and the argv-flag-injection fix (#201) are both on `main`
+(`reference/agent-coordination/cli_invokers.py` etc.). `validate-status-parity` passed throughout because all
+four surfaces *agreed* on `proposed` — the validator checks agreement, never whether the status reflects
+shipped reality. Flipped all four surfaces to `accepted` with the shipping-PR references; verified the code is
+on `main` before the flip (not a new acceptance decision — a reconciliation to a fait accompli). No code
+change. PRD-0004 distillation observation in the same commit.
+
 ## 2026-09-03 — Redact the residual private org-path leak + broaden the knowledge-redaction scan (WARN)
 
 Closes the deferred redaction residual (audit PR-5 / #206) — scope: **redact the sharpest tokens + broaden

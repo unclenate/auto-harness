@@ -28,3 +28,10 @@ docs/requirements/PRD-0005-consumer-header-hygiene.md
 # ADR-0016/ADR-0017; committing the folder itself is tracked as a separate
 # follow-up.
 documentation-audit-2026-05-27/**
+# OPP-0063 documents the validate-placeholders date-arm finding (F4) and must quote
+# the literal pattern the validator enforces for the record to be precise — the token
+# mentions here are spec prose, not unfilled placeholders. This is F4's own documented
+# remedy applied to the record that describes it; re-evaluate if F4 is implemented
+# (a code-span-aware date arm would obviate this exemption). Same rationale as the
+# PRD-0005 exemption above.
+docs/opportunities/OPP-0063-consumer-upgrade-safety.md

@@ -22,6 +22,22 @@ shipped reality. Flipped all four surfaces to `accepted` with the shipping-PR re
 on `main` before the flip (not a new acceptance decision — a reconciliation to a fait accompli). No code
 change. PRD-0004 distillation observation in the same commit.
 
+## 2026-09-23 — File OPP-0065: govern the ruvnet/claude-flow (`ruflo`) runtime as a non-native adapter + positioning artifact
+
+Files OPP-0065 (`proposed`) capturing an integration assessment of `ruflo` (ruvnet/rUv), analyzed via three
+parallel research agents and **web-verified against ruflo's own repo/README/LICENSE/package.json**. Finding:
+`ruflo` is `claude-flow` rebranded — a **runtime** agent meta-harness (swarms, vector memory, federation,
+~210–314 MCP tools; MIT; ~daily alpha releases; single-owner), the LangGraph/CrewAI genre, the opposite of
+auto-harness's governance genre. Its trust/audit features are algorithmic/security, not human-ratified — so it
+is a governed **target**, not a competitor or a dependency. **Move 1:** govern it via the existing non-native
+CLI adapter (its headless CLI) + ACP bridge (its MCP server) under trust tiers — near-zero new primitives,
+dogfoods the Layer-4 thesis. **Move 2:** a positioning artifact (analog of OPP-0056). **Out of scope
+(anti-goal):** do NOT vendor/build-on ruflo (Node+WASM+web-server+LLM-keys would invert the dependency-free
+posture) or adopt its ADR/metaharness plugins (a weaker, algorithmic duplication of auto-harness's core); if
+pursued, govern a pinned version, never `main` (the OPP-0063 discipline). Design-only, no code or dependency
+change; disposition awaits a decision on four open questions. Index surfaces + PRD-0004 distillation
+observation in the same commit; no private names carried in.
+
 ## 2026-09-16 — File OPP-0063: consumer-upgrade safety (compat affordances + layout-agnostic validators)
 
 Files OPP-0063 (`proposed`) capturing a five-finding consumer-upgrade report, field-reported across four

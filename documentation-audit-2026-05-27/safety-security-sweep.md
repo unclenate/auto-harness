@@ -197,7 +197,7 @@ This dimension is the *no-hallucinated-guardrails* check, performed as a specifi
 
 The harness uses a knowledge-loop pattern: distillation, shared observations, cycle-end distillation, examples copied across consumers. The question is whether sensitive content from one project can leak into the framework's own published doctrine.
 
-**Consumer-name leakage into framework doctrine — medium severity.** Tula, OpenEMR, YouBase, and `bdits/municipal-brain` are repeatedly named in upstream-tracked files:
+**Consumer-name leakage into framework doctrine — medium severity.** Tula, OpenEMR, YouBase, and `municipal-brain` are repeatedly named in upstream-tracked files:
 
 - `docs/knowledge/shared-observations.md` cites Tula 15+ times, plus `github.com/unclenate/tula` URL fragments.
 - ADR-0013, PRD-0012, PRD-0009, PRD-0010 all reference `tula:docs/...` paths (paths *inside* the consumer's tree).

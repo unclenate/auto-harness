@@ -206,7 +206,7 @@ projects that combine both) closes the gap.
 - **Module is consumer-side dogfood only.** Auto-harness itself
   doesn't have a cryptographic-identity surface. The dogfood for
   this module is necessarily a consumer project (YouBase is the
-  obvious candidate; bdits/municipal-brain or another consumer
+  obvious candidate; municipal-brain or another consumer
   could be a second). Same caveat as OPP-0009.
 
 ### Open Questions

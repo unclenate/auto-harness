@@ -626,7 +626,7 @@ cite-the-evidence rule), not the extraction; composes with the OPP-0046 lane
   intake-vs-canonical-direction staleness) — now follow-up OPPs, joined by
   Observation E (reconciliation-load patterns → a future § 13). Identified
   as the highest-leverage single gap in the harness's artifact catalog by
-  the four-lens project alignment audit (MB-REV-003) of `bdits/municipal-brain`.
+  the four-lens project alignment audit (MB-REV-003) of `municipal-brain`.
 
 - [OPP-0050](OPP-0050-module-stability-tiers-parity.md) *(accepted
   2026-06-26; PRD-0027 ratifies the v1 wedge — `stability` field + always-on

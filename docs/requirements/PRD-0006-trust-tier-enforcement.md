@@ -406,7 +406,7 @@ The OPP-0006 open questions are resolved as follows:
 - Trust-tier enforcement v1 is a **MINOR bump** to v0.7.0 (additive
   schema, new validator; no breaking change). The original plan was
   v0.6.0, but the order was swapped 2026-05-24 after the OPP-0007
-  field evidence from `bdits/municipal-brain` proved a higher signal
+  field evidence from `municipal-brain` proved a higher signal
   than the audit-identified trust-tier gap. v0.6.0 now releases
   canonical-position (PRD-0007); trust-tier follows as v0.7.0.
 - The new `tier` field on `module.yaml` is documented in CHANGELOG.md

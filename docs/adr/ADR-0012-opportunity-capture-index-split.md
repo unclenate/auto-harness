@@ -12,7 +12,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 **Reviewers:** @unclenate
 **Context source:** GitHub issue #28 ("opportunity-capture: README rule fires
 on index updates; needs structural-vs-organizational distinction"), surfaced
-in `bdits/municipal-brain` while landing the second OPP batch.
+in `municipal-brain` while landing the second OPP batch.
 
 ## Context
 
@@ -30,7 +30,7 @@ grouped `OPP-NNNN` line items. The companion rule cannot distinguish a
 record-structure change from an index update — both look like README edits.
 Every cluster-heading addition trips the ADR requirement.
 
-This was first hit cleanly in `bdits/municipal-brain` when the second OPP
+This was first hit cleanly in `municipal-brain` when the second OPP
 batch (cluster headings for two new candidate groupings) landed against a
 tightened validator. The consumer's local workaround was a new
 `ADR-0002-opportunity-capture-index-update-policy.md` ratifying the
@@ -111,7 +111,7 @@ index-only diffs.
 
 Add a field to companion rules that lets a consumer point at a project-local
 ADR (by slug or path) which permanently satisfies the rule without further
-per-commit ADR work — codifying what `bdits/municipal-brain`'s ADR-0002 does
+per-commit ADR work — codifying what `municipal-brain`'s ADR-0002 does
 in spirit.
 
 - **Pro:** Lowest implementation lift. Closest to the workaround already in
@@ -147,7 +147,7 @@ The new `docs/opportunities/candidates.md` is additive (dogfooding the
 pattern with the existing three OPPs).
 
 **For consumers that added an index inside README.md** (e.g.,
-`bdits/municipal-brain`):
+`municipal-brain`):
 
 1. Create `docs/opportunities/candidates.md` from the template
    (`platform/templates/opportunity/candidates.md`).
@@ -160,7 +160,7 @@ pattern with the existing three OPPs).
    additions land in `candidates.md` and no longer trigger the rule.
 
 The local `ADR-0002-opportunity-capture-index-update-policy.md` workaround in
-`bdits/municipal-brain` can be retired after the migration commit, or kept as
+`municipal-brain` can be retired after the migration commit, or kept as
 historical context — either is fine; it stops being load-bearing.
 
 ## Consequences

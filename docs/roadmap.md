@@ -196,7 +196,7 @@ and FR-007's counts were recomputed against `main`. The rest shipped as specifie
 
 The v0.6.0 release-marker is the **canonical-position artifact** —
 the highest-leverage single addition identified by the
-`bdits/municipal-brain` reconciliation handoff. Auto-harness's
+`municipal-brain` reconciliation handoff. Auto-harness's
 management profiles produce a rich artifact set but lack a single
 ratified north-star that every other artifact must cite. v0.6.0
 introduces a new lightweight overlay module

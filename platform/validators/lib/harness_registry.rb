@@ -282,9 +282,16 @@ module HarnessRegistry
   #
   # The "ceiling below the manifest workload" case is NOT a status here — the
   # caller surfaces it as an informational note, never a violation.
-  def self.agent_maxtier_status(max_tier, declared_tier)
+  def self.agent_maxtier_status(max_tier, declared_tier, rationale = nil)
     return :out_of_range unless max_tier.is_a?(Integer) && (0..5).include?(max_tier)
     return :below_declared if declared_tier.is_a?(Integer) && max_tier < declared_tier
+
+    # A ceiling reaching the autonomously-actionable tiers (>= 3: git-writing and
+    # above) must carry a written justification, mirroring the tier.declared >= 3
+    # rationale rule (the ADR-0020 follow-on). The ceiling caps, never grants —
+    # but a broad ceiling left unjustified is precisely the drift ADR-0020's
+    # "watch" note flagged. A blank/whitespace rationale counts as missing.
+    return :missing_rationale if max_tier >= 3 && (rationale.nil? || rationale.to_s.strip.empty?)
 
     :ok
   end

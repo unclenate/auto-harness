@@ -10,6 +10,12 @@ summary: "OpenClaw operating pack. Declares workspace file requirements, maps ha
 tier:
   declared: 2
 maxTier: 5
+maxTierRationale: >-
+  OpenClaw maps harness tiers onto its own permission model and wires MCP developer
+  tools into governance, so the ceiling is left at the maximum to avoid capping
+  tier-4/5 tool operations a consumer may legitimately authorize; those stay
+  human-gated. Sensitive-path changes fire the pack's companion rules, and
+  per-dispatch tier_ceiling still bounds reach — the ceiling caps, never grants.
 dependsOn:
   - kernel/base
   - base

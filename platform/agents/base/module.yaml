@@ -8,6 +8,11 @@ summary: Cross-agent operating pack for trust tiers, stop conditions, and audit 
 tier:
   declared: 2
 maxTier: 5
+maxTierRationale: >-
+  Foundational cross-agent pack inherited by every consumer; the ceiling is left
+  at the maximum so it never caps a consumer's own higher-tier workload or
+  composition. Actual reach stays bounded by each dispatch's tier_ceiling and the
+  human-authorization gates at tiers 4–5 — the ceiling caps, it never grants.
 dependsOn:
   - kernel/base
 conflictsWith: []

@@ -11,6 +11,24 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-09-25 — Enforce "high maxTier requires rationale" (ADR-0020 follow-on)
+
+Implements the policy ADR-0020 tracked as a deferred follow-on: `validate-trust-tier` now requires an agent
+pack's `maxTier` ceiling to carry a `maxTierRationale` when it reaches the autonomously-actionable tiers
+(**>= 3**), exactly mirroring the existing `tier.declared >= 3` rationale rule — one coherent justification
+threshold across the trust model. The ceiling still caps and never grants (Tier 4/5 stay human-gated); this
+only forces a *written reason* for a broad ceiling, which is the drift ADR-0020's "watch" note flagged. Logic
+lives in the unit-tested `HarnessRegistry.agent_maxtier_status` helper (new `:missing_rationale` state; blank/
+whitespace counts as missing; a below-declared incoherence is still reported first). The three shipped packs
+(`base`, `generic-llm`, `openclaw`) all declare `maxTier: 5`, so each gains a `maxTierRationale` explaining why
+its ceiling is permissive (reusable/general-purpose packs whose real reach is bounded per-dispatch by
+`tier_ceiling` and the human gates). Also corrected the validator's stale header comments, which still
+described the pre-#214 inverted floor rule. Threshold `>= 3` per maintainer decision. 5 new helper tests
+(185 total, all green); trust-tier validation green on the harness's own manifest. Distillation observation in
+the same commit. Non-breaking for existing consumers only if their agent packs already carry a rationale at a
+>= 3 ceiling — a consumer with an unjustified broad ceiling will now see a validation error directing them to
+add one (the intended behavior).
+
 ## 2026-09-24 — Reconcile OPP-0060 status: `proposed` → `accepted` (its code shipped #198/#201)
 
 Status-drift reconciliation. OPP-0060 (non-native local-CLI transport adapter) still read `proposed` across

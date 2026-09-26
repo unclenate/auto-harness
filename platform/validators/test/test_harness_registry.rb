@@ -1340,8 +1340,9 @@ end
 # ---------------------------------------------------------------------------
 class TestAgentMaxtierStatus < Minitest::Test
   # The inversion fix: a ceiling far above the agent's own baseline is fine…
-  def test_high_ceiling_above_declared_is_ok
-    assert_equal :ok, HarnessRegistry.agent_maxtier_status(5, 2)
+  # …now that a ceiling >= 3 carries a maxTierRationale (the ADR-0020 follow-on).
+  def test_high_ceiling_above_declared_with_rationale_is_ok
+    assert_equal :ok, HarnessRegistry.agent_maxtier_status(5, 2, "reusable pack; ceiling left permissive, reach still human-gated")
   end
 
   # …and a LOW ceiling (least privilege) is now ALSO ok — this is the case the
@@ -1354,8 +1355,8 @@ class TestAgentMaxtierStatus < Minitest::Test
     assert_equal :ok, HarnessRegistry.agent_maxtier_status(0, nil)
   end
 
-  def test_missing_declared_is_ok
-    assert_equal :ok, HarnessRegistry.agent_maxtier_status(3, nil)
+  def test_missing_declared_with_rationale_is_ok
+    assert_equal :ok, HarnessRegistry.agent_maxtier_status(3, nil, "justified ceiling")
   end
 
   # Coherence violation: a ceiling below the agent's OWN baseline operating
@@ -1374,5 +1375,30 @@ class TestAgentMaxtierStatus < Minitest::Test
 
   def test_non_integer_is_out_of_range
     assert_equal :out_of_range, HarnessRegistry.agent_maxtier_status("5", 2)
+  end
+
+  # ADR-0020 follow-on: a ceiling reaching the autonomously-actionable tiers
+  # (>= 3) requires a written justification, mirroring the tier.declared >= 3 rule.
+  def test_high_ceiling_without_rationale_requires_one
+    assert_equal :missing_rationale, HarnessRegistry.agent_maxtier_status(5, 2, nil)
+  end
+
+  def test_ceiling_at_threshold_without_rationale_requires_one
+    assert_equal :missing_rationale, HarnessRegistry.agent_maxtier_status(3, nil, nil)
+  end
+
+  def test_blank_rationale_counts_as_missing
+    assert_equal :missing_rationale, HarnessRegistry.agent_maxtier_status(5, 2, "   ")
+  end
+
+  # Below the >= 3 threshold, no rationale is required (a low least-privilege ceiling).
+  def test_ceiling_below_threshold_needs_no_rationale
+    assert_equal :ok, HarnessRegistry.agent_maxtier_status(2, nil, nil)
+  end
+
+  # A structural incoherence (ceiling below the agent's own declared tier) is
+  # reported before the rationale requirement.
+  def test_below_declared_precedes_missing_rationale
+    assert_equal :below_declared, HarnessRegistry.agent_maxtier_status(3, 4, nil)
   end
 end

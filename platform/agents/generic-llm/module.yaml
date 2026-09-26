@@ -8,6 +8,13 @@ summary: Generic LLM agent pack for non-Claude tools that still need kernel-alig
 tier:
   declared: 2
 maxTier: 5
+maxTierRationale: >-
+  General-purpose pack for non-Claude LLM tools whose real capabilities vary; the
+  ceiling is left at the maximum rather than under-declaring for an unknown client,
+  so it never becomes the binding limit on a legitimately-composed higher-tier
+  workload. Reach is still gated per-dispatch by tier_ceiling and by the human
+  gates at 4–5 (caps, never grants) — consistent with this pack's reviewGate that
+  it must not claim permissions above what the kernel permits.
 dependsOn:
   - kernel/base
   - base

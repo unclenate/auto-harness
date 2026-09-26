@@ -31,9 +31,13 @@
 #        table below; highest match wins.
 #      - Assert declared >= inferred (no under-declaration).
 #      - Warn if declared is missing and inferred > 2.
-#   3. For each active agent module, validate maxTier (range 0–5).
-#      Assert agent maxTier >= max(declared|inferred) across all
-#      non-agent active modules.
+#   3. For each active agent module, validate maxTier (range 0–5) as an
+#      upper CEILING (caps, never grants; ADR-0020). Assert it is not below
+#      the agent's OWN declared tier (a ceiling beneath the baseline is
+#      incoherent), and require a `maxTierRationale` when the ceiling is >= 3
+#      (mirrors the tier.declared >= 3 rule). A ceiling below the manifest's
+#      highest non-agent workload is a valid least-privilege choice, surfaced
+#      as INFO (that higher-tier work defers to the human gate), never a failure.
 #   4. Cross-cutting: if any active *non-kernel* module's declared tier is
 #      5, require the manifest's project.criticality to be "high" or
 #      "critical" (catches "Tier 5 work on prototype" misconfigurations).
@@ -79,7 +83,10 @@ Behavior:
   (range 0–5; rationale required for ≥3) and computes the inferred tier
   from declared sensitivePaths via a built-in pattern table. Asserts no
   under-declaration (declared >= inferred). For agent modules, validates
-  `maxTier` and asserts it is at least the highest active-module tier.
+  `maxTier` as an upper ceiling (caps, never grants; ADR-0020): in range,
+  not below the agent's own declared tier, and carrying a `maxTierRationale`
+  when the ceiling is >= 3 (mirrors tier.declared >= 3). A ceiling below the
+  manifest workload is a valid least-privilege choice, surfaced as info.
 
 Inference patterns (production-shape paths force higher tier regardless
 of declaration):
@@ -284,13 +291,17 @@ agent_mods.each do |mod|
   # never grants (ADR-0020). The only violations are an out-of-range value or a
   # ceiling below the agent's OWN declared baseline. A ceiling below the
   # manifest workload is NOT a violation (see the informational note below).
-  case HarnessRegistry.agent_maxtier_status(max_tier, declared_tier)
+  case HarnessRegistry.agent_maxtier_status(max_tier, declared_tier, mod["maxTierRationale"])
   when :out_of_range
     warn "✗ #{display}: maxTier #{max_tier.inspect} out of range (must be 0-5)"
     violations += 1
     next
   when :below_declared
     warn "✗ #{display}: agent maxTier = #{max_tier} is below the agent's own declared tier #{declared_tier} — a ceiling cannot sit beneath the agent's baseline operating tier"
+    violations += 1
+    next
+  when :missing_rationale
+    warn "✗ #{display}: maxTier = #{max_tier} reaches the autonomously-actionable tiers (>= 3) and requires a `maxTierRationale` explaining why the ceiling is set this high (mirrors the tier.declared >= 3 rule; ADR-0020 follow-on — the ceiling caps, never grants, but a broad unjustified ceiling is the drift the ADR flagged)"
     violations += 1
     next
   end

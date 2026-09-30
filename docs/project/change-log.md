@@ -11,6 +11,21 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-09-30 — Confirm OPP-0062's external A2A claims against primary sources (+ correct AGNTCY)
+
+Resolves OPP-0062's open-question 4 (the primary-source precondition for advancing to `accepted`). Verified the
+external-spec claims against the a2a-protocol.org `latest` specification + the Linux Foundation A2A launch
+announcement: **A2A is network-transport only** (JSON-RPC/gRPC/HTTP+JSON, no local/stdio/file binding — the
+file bus stays); the **Agent Card** carries `name/description/url/provider/version/capabilities/skills/`
+`securitySchemes/security/extensions` (the `extensions` field supports `tier_ceiling`-as-extension); **signed
+Agent Cards** exist (spec §8.4, JWS); and **A2A v1.0.0 is the current released version** (resolving the
+March-vs-April date ambiguity). **One reported claim was REFUTED and corrected:** A2A did *not* archive
+AGNTCY — AGNTCY is a separate active LF project (Directory/Identity/Messaging/Observability) integrating A2A,
+a complementary layer, not something A2A absorbed. The ACP→A2A consolidation (2025-08-29, LF AI & Data) is
+strongly corroborated. **Design impact: none** — every confirmation upholds the design; the AGNTCY line was a
+provenance fix. OPP-0062 status stays `proposed` (acceptance remains the maintainer's call; the factual
+precondition is now cleared). Doc-only; distillation observation same commit.
+
 ## 2026-09-25 — Enforce "high maxTier requires rationale" (ADR-0020 follow-on)
 
 Implements the policy ADR-0020 tracked as a deferred follow-on: `validate-trust-tier` now requires an agent

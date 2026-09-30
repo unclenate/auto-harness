@@ -64,12 +64,32 @@ in-repo local fleet where the filesystem's own access control is the trust ancho
 **Field-reported 2026-09-02** by a coordinator session in a live multi-agent consumer deployment, with a
 secondary-source research pass behind the external-standard findings; **independently re-derived here** and
 credited generically. The design (descriptor-alignment-without-transport-change; `tier_ceiling` as an
-extension; `sync` stays bespoke) is corroborated by the harness's own protocol-landscape analysis. The
-**external-spec claims** — that A2A absorbed the former ACP (2025-08-29) and archived AGNTCY, that A2A has no
-local binding, and the exact Agent Card field set — are **carried as reported and MUST be confirmed against
-the primary sources** (the a2a-protocol.org specification, the Linux Foundation merger announcement, and the
-arXiv analysis) before this OPP advances to `accepted`. The **A2A v1.0 release date is deliberately not cited
-normatively** — secondary sources conflict (March vs April 2026); pin it to the official changelog first.
+extension; `sync` stays bespoke) is corroborated by the harness's own protocol-landscape analysis. The **external-spec claims were confirmed against primary sources 2026-09-30** (the
+[a2a-protocol.org](https://a2a-protocol.org/latest/specification/) `latest` specification + the Linux
+Foundation A2A launch announcement):
+
+- **A2A is network-transport only** — JSON-RPC (spec §9), gRPC (§10), HTTP+JSON/REST (§11), with **no
+  local / stdio / file binding**. ✅ Confirms the file inbox/outbox transport stays (A2A cannot carry the
+  local heterogeneous fleet).
+- **Agent Card fields** — `name`, `description`, `url`, `provider`, `version`, `capabilities`, `skills`,
+  `securitySchemes`, `security`, and **`extensions`**. ✅ The `extensions` field directly supports modelling
+  `tier_ceiling` as a named Agent Card extension (open question 2).
+- **Signed Agent Cards** exist — spec §8.4 "Agent Card Signing" (JWS). ✅
+- **A2A v1.0.0 is the current released version** (spec header: "Latest Released Version 1.0.0"). ✅ This
+  resolves the earlier March-vs-April-2026 date ambiguity — v1.0.0 is *released*, so cite the version, not a
+  contested date.
+- **REFUTED:** A2A did **not** "archive AGNTCY." AGNTCY is a *separate, active* Linux Foundation project
+  (Directory / Identity / SLIM Messaging / Observability) that is *integrating* A2A support — a complementary
+  interoperability layer above A2A, not something A2A absorbed. The earlier note was a secondary-source error;
+  corrected here.
+- **ACP → A2A consolidation** (IBM's Agent Communication Protocol, 2025-08-29, under LF AI & Data) is strongly
+  corroborated across consistent secondary sources; it is the "former ACP" this design targets — distinct from
+  the Agent *Client* Protocol naming collision (see [[project_protocol_layer_governance]]).
+
+**Design impact: none.** Every confirmation upholds the design (file-bus-stays, `tier_ceiling`-as-extension,
+`sync`-stays-bespoke), and the confirmed `extensions` field strengthens the extension approach; the AGNTCY
+line was a provenance correction only. This closes the primary-source precondition for advancing to
+`accepted` (that disposition remains the maintainer's call).
 
 ## Open questions
 
@@ -78,8 +98,10 @@ normatively** — secondary sources conflict (March vs April 2026); pin it to th
 2. **Extension shape** — an ad-hoc `x-tier-ceiling` field vs a formally registered A2A extension URI.
 3. **Lifecycle-alignment depth** — annotate the message types to A2A task states (documentation only) vs a
    deeper structural alignment of the full task lifecycle.
-4. **Primary-source confirmation** (see the provenance note) — resolve before ratification, especially the
-   A2A v1.0 date and the no-local-binding claim.
+4. **Primary-source confirmation** — ✅ **RESOLVED 2026-09-30** (see the provenance note): A2A v1.0.0 is
+   released, the no-local-binding claim is confirmed against the spec, the Agent Card `extensions` field is
+   confirmed, and the AGNTCY claim was corrected. Open questions 1–3 remain design choices for the acceptance
+   / PRD pass.
 
 ## Neighbors
 

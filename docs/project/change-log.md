@@ -11,6 +11,19 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-10-11 — File OPP-0066: `management/accessibility-standard` overlay (harness-native capture of issue #93)
+
+Files OPP-0066 (`proposed`) converting GitHub issue #93 into a first-class governed record. Accessibility is
+absent from the harness as a governed concern; the OPP proposes an opt-in `management/accessibility-standard`
+overlay modeled directly on `management/security-static-analysis` (sibling of `testing-standard`) for
+`web-app`/`agentic-ui` consumers: tool-neutral — the harness validates a `docs/quality/accessibility.md`
+declaration (target WCAG level; audit tool from axe/Lighthouse/pa11y/WAVE; scope; last-audited result) and
+binds UI-path changes to it via companion rule, while the audit itself runs in consumer CI (§10 Half-enforced,
+the same boundary as SAST); `validate-accessibility.sh` mirrors `validate-sast-coverage.sh`. Design-only, no
+code change; implementation (module + validator + template + the operating-principles §3 catalog propagation)
+is a follow-on PRD or OPP→impl pass, and closes issue #93 when it ships. Index surfaces + PRD-0004
+distillation observation in the same commit.
+
 ## 2026-09-30 — Confirm OPP-0062's external A2A claims against primary sources (+ correct AGNTCY)
 
 Resolves OPP-0062's open-question 4 (the primary-source precondition for advancing to `accepted`). Verified the

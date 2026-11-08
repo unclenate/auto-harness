@@ -242,24 +242,39 @@ module HarnessRegistry
     Array(patterns).any? { |pattern| Regexp.new(pattern).match?(path) }
   end
 
-  # Canary corpus for exemption over-breadth detection. Five deliberately
-  # disjoint strings — no shared substring, spanning lowercase / uppercase /
-  # digit / punctuation / multiword — so the ONLY regexes matching all five are
-  # positional or wildcard catch-alls (".", ".*", "^", "$", "[\\s\\S]", …). A
-  # narrow, specific exemption fails at least one canary.
-  EXEMPTION_CANARIES = ["z", "Q", "7", "-", "the quick brown fox"].freeze
+  # Canary corpus for exemption over-breadth detection — innocuous lines of
+  # ordinary content (prose, a path, a config-ish line) that carry NOTHING a
+  # legitimate exemption should ever target, and no known exemption anchor
+  # (consumer name, ADR/OPP/PRD id, shipped path, injection phrase). Together
+  # they span lowercase / uppercase / digit / space / hyphen / slash / colon /
+  # equals, so any regex that matches real content matches at least one line.
+  EXEMPTION_CANARIES = [
+    "the quarterly review covered three agenda items",
+    "Release 7 shipped on schedule with no blockers",
+    "notes/example-report.txt",
+    "summary: ready = yes"
+  ].freeze
 
-  # True if +pattern+ (a String regex) is an over-broad catch-all — it matches
-  # EVERY canary, so it would exempt everything and silently blind the
-  # validator whose ignore-file it lives in. This is the behavioral counterpart
-  # to #212's file-level governance (sensitivePaths + companion): that stops an
-  # unreviewed edit to the off-switch; this stops a reviewed-but-blind pattern.
-  # It uses the real Regexp engine, so equivalent forms a structural denylist
-  # would miss ("x|.", ".{0,}") are caught. Invalid regex is not this guard's
-  # concern (callers handle RegexpError separately) → returns false.
+  # True if +pattern+ (a String regex) is over-broad — it matches ANY line of
+  # the innocuous-content corpus, i.e. it would swallow a line of ordinary
+  # content and so exempt far more than any specific exemption should, silently
+  # blinding the validator whose ignore-file it lives in. This is the
+  # behavioral counterpart to #212's file-level governance (sensitivePaths +
+  # companion): that stops an unreviewed edit to the off-switch; this stops a
+  # reviewed-but-blind pattern. It uses the real Regexp engine, so equivalent
+  # forms a structural denylist would miss ("x|.", ".{0,}") are caught.
+  #
+  # Corrected model (scanner-hardening, 2026-11, finding #1). The prior model
+  # ("matches EVERY one of five disjoint single-char canaries") only caught
+  # literal universal catch-alls (".", ".*", "^", "$") and waved through the
+  # practical blinders — "[a-z]", "[A-Za-z]", "\\w", "\\d", a bare space — each
+  # of which fails a disjoint canary yet matches essentially all real content.
+  # A specific, anchored exemption ("^docs/adr$", "toast-mcp") matches no
+  # ordinary-content line and is still accepted. Invalid regex is not this
+  # guard's concern (callers handle RegexpError separately) → returns false.
   def self.exemption_pattern_overbroad?(pattern)
     re = Regexp.new(pattern.to_s)
-    EXEMPTION_CANARIES.all? { |canary| re.match?(canary) }
+    EXEMPTION_CANARIES.any? { |canary| re.match?(canary) }
   rescue RegexpError
     false
   end

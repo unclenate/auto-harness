@@ -160,9 +160,9 @@ DENYLIST = [
   ["P03", /always\s+operates?\s+at\s+Tier/i,                   "always-operates-at-Tier",      :phrase],
   ["P04", /skip\s+(?:the\s+)?validator/i,                      "skip-the-validator",           :phrase],
   ["P05", /supersedes?\s+harness-governance/i,                 "supersedes-harness-governance",:phrase],
-  ["P06", /^\s*System:\s*/i,                                   "System-role-header",           :line],
-  ["P07", /^\s*User:\s*/i,                                     "User-role-header",             :line],
-  ["P08", /^\s*Assistant:\s*/i,                                "Assistant-role-header",        :line],
+  ["P06", /^[[:space:]]*System:[[:space:]]*/i,                                   "System-role-header",           :line],
+  ["P07", /^[[:space:]]*User:[[:space:]]*/i,                                     "User-role-header",             :line],
+  ["P08", /^[[:space:]]*Assistant:[[:space:]]*/i,                                "Assistant-role-header",        :line],
   ["P09", /[​‌‍﻿]/,                                            "zero-width-char",              :line],
   ["P10", /[‪-‮⁦-⁩]/,                                          "bidi-override-char",           :line]
 ].freeze
@@ -179,7 +179,10 @@ def scan_source_text(text)
       hits << [pid, label, i + 1, line] if re.match?(line)
     end
   end
-  normalized = text.gsub(/\s+/, " ")
+  # [[:space:]] is Unicode-aware (includes NBSP U+00A0 and other Unicode
+  # spaces); plain \s is ASCII-only. Folding the wider class defeats
+  # Unicode-whitespace phrase-splitting evasion (scanner-hardening 2026-11).
+  normalized = text.gsub(/[[:space:]]+/, " ")
   PHRASE_DENYLIST.each do |pid, re, label, _|
     hits << [pid, label, nil, normalized] if re.match?(normalized)
   end
@@ -259,11 +262,11 @@ DENYLIST = [
    "rephrase — 'skip the validator' phrasing is direct V2 bypass instruction", :phrase],
   ["P05", /supersedes?\s+harness-governance/i,
    "rephrase authority claim — 'supersedes harness-governance' is V4/V6 attack-surface", :phrase],
-  ["P06", /^\s*System:\s*/i,
+  ["P06", /^[[:space:]]*System:[[:space:]]*/i,
    "rephrase or escape — 'System:' at line start is a role-prompt header (V2)", :line],
-  ["P07", /^\s*User:\s*/i,
+  ["P07", /^[[:space:]]*User:[[:space:]]*/i,
    "rephrase or escape — 'User:' at line start is a role-prompt header (V2)", :line],
-  ["P08", /^\s*Assistant:\s*/i,
+  ["P08", /^[[:space:]]*Assistant:[[:space:]]*/i,
    "rephrase or escape — 'Assistant:' at line start is a role-prompt header (V2)", :line],
   ["P09", /[​‌‍﻿]/,
    "remove zero-width characters (U+200B/200C/200D/FEFF) — invisible injection vector", :line],
@@ -283,7 +286,10 @@ def scan_source_text(text)
       hits << [pid, hint, i + 1, line] if re.match?(line)
     end
   end
-  normalized = text.gsub(/\s+/, " ")
+  # [[:space:]] is Unicode-aware (includes NBSP U+00A0 and other Unicode
+  # spaces); plain \s is ASCII-only. Folding the wider class defeats
+  # Unicode-whitespace phrase-splitting evasion (scanner-hardening 2026-11).
+  normalized = text.gsub(/[[:space:]]+/, " ")
   PHRASE_DENYLIST.each do |pid, re, hint, _|
     hits << [pid, hint, nil, normalized] if re.match?(normalized)
   end

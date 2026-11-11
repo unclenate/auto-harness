@@ -1244,10 +1244,19 @@ class TestChangedFilesBaseBranchValidation < Minitest::Test
 end
 
 # ---------------------------------------------------------------------------
-# exemption_pattern_overbroad? — the ignore-file catch-all guard.
-# A pattern is over-broad iff it matches every canary string. Governing the
-# exemption FILE (sensitivePaths + companion, #212) stops an unreviewed edit;
-# this stops a reviewed-but-blind pattern that would exempt everything.
+# exemption_pattern_overbroad? — the ignore-file over-breadth guard.
+# A pattern is over-broad iff it matches ANY line of an innocuous-content
+# canary corpus — ordinary prose / paths that carry nothing an exemption
+# should ever target. If a pattern would swallow a line of ordinary content,
+# it is too broad to be a safe exemption. Governing the exemption FILE
+# (sensitivePaths + companion, #212) stops an unreviewed edit; this stops a
+# reviewed-but-blind pattern that would exempt everything.
+#
+# This is the corrected model (scanner-hardening, 2026-11). The earlier model
+# ("matches EVERY one of five disjoint single-char canaries") only caught
+# literal universal catch-alls (., .*, ^, $) and WAVED THROUGH the practical
+# blinders — [a-z], [A-Za-z], \w, \d, a bare space — because each fails at
+# least one disjoint canary while still matching essentially all real content.
 # ---------------------------------------------------------------------------
 class TestExemptionOverbroad < Minitest::Test
   # The documented footguns from the 2026-09 audit.
@@ -1294,6 +1303,35 @@ class TestExemptionOverbroad < Minitest::Test
     assert HarnessRegistry.exemption_pattern_overbroad?(".{0,}")
   end
 
+  # The practical blinders the OLD all-disjoint-canary model missed (finding #1
+  # of the 2026-11 adversarial pass). Each matches essentially every real
+  # content line, so each would silently blind the scanner whose ignore-file it
+  # lives in — they MUST now be flagged.
+  def test_alpha_class_is_overbroad
+    assert HarnessRegistry.exemption_pattern_overbroad?("[A-Za-z]")
+  end
+
+  def test_lowercase_class_is_overbroad
+    # The regression anchor: the old model asserted this was "narrow".
+    assert HarnessRegistry.exemption_pattern_overbroad?("[a-z]")
+  end
+
+  def test_posix_alpha_is_overbroad
+    assert HarnessRegistry.exemption_pattern_overbroad?("[[:alpha:]]")
+  end
+
+  def test_word_class_is_overbroad
+    assert HarnessRegistry.exemption_pattern_overbroad?("\\w")
+  end
+
+  def test_digit_class_is_overbroad
+    assert HarnessRegistry.exemption_pattern_overbroad?("\\d")
+  end
+
+  def test_bare_space_is_overbroad
+    assert HarnessRegistry.exemption_pattern_overbroad?(" ")
+  end
+
   # Real, narrow exemptions currently shipped in main's ignore files — MUST NOT
   # be flagged (a false positive here would break the harness's own CI).
   def test_anchored_path_is_narrow
@@ -1314,13 +1352,6 @@ class TestExemptionOverbroad < Minitest::Test
 
   def test_denylist_term_is_narrow
     refute HarnessRegistry.exemption_pattern_overbroad?("toast-mcp")
-  end
-
-  # A moderately broad but non-total single char-class must NOT be flagged
-  # (it fails at least one canary), so legitimate coarse exemptions survive.
-  def test_single_class_lowercase_is_narrow
-    # "[a-z]" fails on "Q", "7", "-" → not a total catch-all.
-    refute HarnessRegistry.exemption_pattern_overbroad?("[a-z]")
   end
 
   # Invalid regex is not this guard's concern (callers handle RegexpError) —

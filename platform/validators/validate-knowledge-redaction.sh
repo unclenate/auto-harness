@@ -140,26 +140,34 @@ fi
 
 cd "$PROJECT_ROOT"
 
-# Reject an over-broad exemption pattern (".", ".*", "^", …) BEFORE any git
-# work — a broken off-switch should fail regardless of diff state (the other
-# ignore-file validators guard unconditionally too). Uses the same grep -E
-# engine the patterns are applied with, against five disjoint canary strings
-# (mirrors HarnessRegistry.EXEMPTION_CANARIES): a pattern matching all five is a
-# catch-all that would exempt everything. The pattern-level dual of #212's
-# file-level off-switch governance.
+# Reject an over-broad exemption pattern BEFORE any git work — a broken
+# off-switch should fail regardless of diff state (the other ignore-file
+# validators guard unconditionally too). Uses the same grep -E engine the
+# patterns are applied with, against a corpus of innocuous-content lines
+# (mirrors HarnessRegistry.EXEMPTION_CANARIES): a pattern matching ANY of them
+# would swallow real content and is too broad to be a safe exemption. Corrected
+# model (scanner-hardening, 2026-11): the prior "matches EVERY disjoint
+# single-char canary" test waved through char-class blinders ([A-Za-z], \w, a
+# bare space) that match all real lines yet fail a digit/punct canary. The
+# pattern-level dual of #212's file-level off-switch governance.
 _exemption_overbroad() {
   local pat="$1" c
-  for c in 'z' 'Q' '7' '-' 'the quick brown fox'; do
-    printf '%s' "${c}" | grep -qE -- "${pat}" || return 1
+  for c in 'the quarterly review covered three agenda items' \
+           'Release 7 shipped on schedule with no blockers' \
+           'notes/example-report.txt' \
+           'summary: ready = yes'; do
+    if printf '%s' "${c}" | grep -qE -- "${pat}"; then
+      return 0
+    fi
   done
-  return 0
+  return 1
 }
 if [[ -f ".knowledge-redaction-ignore" ]]; then
   while IFS= read -r _ig_line || [[ -n "$_ig_line" ]]; do
     [[ -z "$_ig_line" ]] && continue
     [[ "$_ig_line" =~ ^[[:space:]]*# ]] && continue
     if _exemption_overbroad "$_ig_line"; then
-      echo "✗ .knowledge-redaction-ignore: over-broad exemption pattern '${_ig_line}' matches every canary string — it would exempt all added lines and defeat the redaction scan. Narrow it to the specific line(s) you mean." >&2
+      echo "✗ .knowledge-redaction-ignore: over-broad exemption pattern '${_ig_line}' matches ordinary content — it would exempt real added lines and defeat the redaction scan. Narrow it to the specific line(s) you mean." >&2
       exit 2
     fi
   done < ".knowledge-redaction-ignore"

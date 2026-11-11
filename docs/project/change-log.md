@@ -35,6 +35,34 @@ corrected exemption-over-breadth guard model (PR #230) that the knowledge base s
 form. Deliberately left out of scope: ADR-0013's point-in-time "11 diagrams" count (append-only record) and one
 redaction-scope call (a maintainer decision).
 
+## 2026-11-08 — Scanner-hardening: close the exemption-canary over-breadth gap and the Unicode-whitespace phrase bypass
+
+Fixes two verified defects from the 2026-11 adversarial QA pass, both in the content-scanner surface.
+
+**(1) Exemption over-breadth guard waved through practical blinders.** `HarnessRegistry.exemption_pattern_overbroad?`
+(and its two `grep -E` shell mirrors in `validate-publication-boundary.sh` / `validate-knowledge-redaction.sh`)
+flagged a pattern as over-broad only when it matched *every* one of five disjoint single-char canaries
+(`z Q 7 - "the quick brown fox"`). A char-class blinder — `[a-z]`, `[A-Za-z]`, `\w`, `\d`, a bare space — matches
+essentially all real content yet fails a digit/punct canary, so it slipped the guard and could blind the
+skill-content / knowledge-redaction / publication-boundary / doc-references scanners via a one-line ignore file.
+**Corrected model:** a pattern is over-broad if it matches *any* line of an innocuous-content canary corpus
+(ordinary prose / a path / a config-ish line, carrying no exemption anchor). If an exemption would swallow a line
+of ordinary content it is too broad; a specific anchored exemption (`^docs/adr$`, `toast-mcp`) matches none and is
+still accepted. The prior model's own test asserting `[a-z]` was "narrow" is flipped. This repairs the behavioral
+off-switch-content governance introduced for #213.
+
+**(2) Unicode-whitespace bypassed the skill-content phrase denylist.** The injection-phrase normalizer used ASCII
+`\s`, so NBSP (U+00A0) and other Unicode spaces between words left phrases like "ignore previous instructions"
+unseen. Normalizer now folds the Unicode-aware `[[:space:]]`, and the role-header line patterns (P06–P08) widen
+`^\s*` to `^[[:space:]]*` for the same reason.
+
+Validators only; no governance-contract, posture, or module change — each guard stays BLOCK/fail-closed as declared.
+The harness's own anchored ignore files all still pass (dogfood green). Unit + integration coverage added: the
+char-class blinders in `test_harness_registry.rb`, cross-engine fail-closed wiring tests, an NBSP adversarial
+fixture (`p01-nbsp-separated.txt`), and explicit NBSP phrase/role-header regressions. No new ADR/OPP — a
+behavioral bug fix within existing ratified contracts (PRD-0015 / OPP-0033 for skill-content; #212/#213 for the
+exemption guard).
+
 ## 2026-10-11 — File OPP-0066: `management/accessibility-standard` overlay (harness-native capture of issue #93)
 
 Files OPP-0066 (`proposed`) converting GitHub issue #93 into a first-class governed record. Accessibility is

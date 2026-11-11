@@ -52,8 +52,8 @@ harness provides:
   a requirements change must be reflected in the change log or an ADR)
 - **Artifact requirements** — the files that must exist for a module to be considered active
   and governed (problem statement, ADRs, risk register, release checklist, etc.)
-- **Sensitive path governance** — patterns that trigger elevated human review when changed
-- **Validator chain** — twenty-seven shell scripts you run locally or in CI that enforce all of the above
+- **Sensitive path governance** — patterns that must be bound to a companion rule, so a change can't merge without its paired review artifact (the elevated human review itself is review-gated, not machine-forced)
+- **Validator chain** — twenty-seven shell scripts you run locally or in CI that enforce the structural and declaration-coherence rules above at the PR boundary (the trust-tier model is authoring/review discipline, not runtime-enforced — see the validator table for each check's boundary)
 - **Agent adapters** — `CLAUDE.md`, `AGENTS.md`, and `.claude/settings.json` shims that load
   the governance rules into agent context at session start
 
@@ -263,9 +263,9 @@ declares its governance contract. You compose them to match your project.
 | Family | Purpose | Examples |
 | ------ | ------- | ------- |
 | **Core** | Universal doctrine — always active | `kernel/base` |
-| **Stacks** | Language and framework adaptations | `node-typescript`, `python` |
-| **Architectures** | Deployment and interaction patterns | `web-app`, `api-service`, `event-driven`, `mcp-server`, `agent-observability`, `ai-foundry-target`, `intelligent-model-routing`, `agent-defense-in-depth` |
-| **Data** | Storage overlays | `relational-sql`, `document-store`, `object-storage` |
+| **Stacks** | Language and framework adaptations | `node-typescript`, `python`, `node-javascript`, `coffeescript` |
+| **Architectures** | Deployment and interaction patterns | `web-app`, `api-service`, `event-driven`, `agent-skill-pack`, `mcp-server`, `agentic-ui`, `agent-observability`, `ai-foundry-target`, `intelligent-model-routing`, `agent-defense-in-depth` |
+| **Data** | Storage overlays | `relational-sql`, `document-store`, `object-storage`, `browser-storage`, `embedded-key-value` |
 | **Delivery** | Lifecycle posture | `prototype`, `production-saas`, `internal-platform`, `self-hosted-oss`, `managed-fleet` |
 | **Management** | Product, project, program, knowledge, opportunity, and testing governance | `discovery-intake`, `interview-driven`, `product-lite`, `project-standard`, `program-lite`, `testing-standard`, `eval-gated-testing`, `knowledge-capture`, `opportunity-capture`, `security-static-analysis`, `privacy-by-design`, `digital-twin`, `work-package`, `canonical-position`, `agent-coordination`, `memory-consolidation` |
 | **Domains** | Vendor or specialist overlays | `supabase`, `web3`, `media-pipeline`, `gitbook`, `agentic-interfaces`, `cryptographic-identity`, `healthcare-fhir`, `healthcare-smart-on-fhir`, `aec-iso19650-im`, `aec-openbim-exchange`, `aec-iso19650-5-security`, `geospatial-foundation`, `geospatial-exchange`, `geospatial-bim-georeference` |
@@ -515,9 +515,9 @@ bash platform/validators/validate-required-artifacts.sh harness.manifest.yaml .
 cp -r platform/skills/harness-governance .agents/skills/
 ```
 
-**Step 6 — Wire CI and you're done.**
+**Step 6 — Wire CI to reach Bootstrap Complete.**
 
-The harness is Bootstrap Complete when all validators exit 0 and your CI is green.
+The harness is Bootstrap Complete when all validators exit 0 and your CI is green. That is not the same as *fully governed*: **Harness Ready** — the target state — additionally requires active ownership/review gates and at least one second-human review of the harness (see `platform/core/kernel/base/lifecycle-controls.md`).
 
 After adoption, the [Maintenance & Operations guide](platform/workflow/maintenance-operations.md) is the operator manual you return to for upgrades, audits, and lifecycle transitions.
 

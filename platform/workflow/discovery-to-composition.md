@@ -236,6 +236,21 @@ modules. Use it to populate `harness.manifest.yaml`.
 | Coordinating two or more agents *live* — dispatching work between sessions, broadcasting shared state, supervising for stalls? | `management/agent-coordination` (default-off; the runtime dual of the work-package lane — governs the channel via `docs/coordination/control-loop-contract.md` + `docs/coordination/adapter-contract.md`) |
 | Running many agent sessions and want cross-session patterns consolidated *out-of-band* into proposals a human promotes? | `management/memory-consolidation` (default-off, propose-only "dreaming"; declare the steering file in `docs/knowledge/dreaming-policy.yaml`; the out-of-band complement to in-band PRD-0004 distillation) |
 | Does the project have strategic positioning concerns (a wedge, a buyer, a thesis) that must stay coherent across many docs over time? | `management/canonical-position` (opt-in; one ratified `docs/canonical-position.md` every strategy-shaped artifact cites) |
+| Ships a Model Context Protocol (MCP) server as the product? (§8.3) | `architectures/mcp-server` |
+| In-product agentic surface — copilot, generative UI, or conversational-primary? (§8.3) | `domains/agentic-interfaces` (add `architectures/agentic-ui` only when the agent surface IS the topology, not a copilot bolted onto a web-app) |
+| Plain JavaScript, no TypeScript? (§8.1) | `stacks/node-javascript` |
+| Legacy CoffeeScript source? (§8.1) | `stacks/coffeescript` |
+| Browser-side persistence (IndexedDB / localStorage / OPFS)? (§8.1) | `data/browser-storage` |
+| Server-side embedded key-value store (LevelDB / LMDB / RocksDB / SQLite-as-KV)? (§8.1) | `data/embedded-key-value` |
+| Blockchain / smart-contract integration? (§8.1) | `domains/web3` |
+| Cryptographic keys, HD wallets, or DID/SSI identity (non-Ethereum)? (§8.1) | `domains/cryptographic-identity` |
+| Publishing human-navigable docs via GitBook? (§8.3) | `domains/gitbook` |
+| Formal test strategy with enforced coverage thresholds? (§8.4) | `management/testing-standard` |
+| Small team / hackathon-tier with a single monolithic PRD + plan? (§7.1) | `management/interview-driven` |
+| Agents emit OpenTelemetry traces as a first-class observable surface? (§8.3) | `architectures/agent-observability` |
+| Built to drop into an enterprise AI foundry (Azure / NVIDIA / Palantir / Bedrock / Vertex)? (§8.3) | `architectures/ai-foundry-target` |
+| Deliberate task→model routing (capability / cost / privacy)? (§8.3) | `architectures/intelligent-model-routing` |
+| Autonomous agents adopting defense-in-depth patterns? (§8.4) | `architectures/agent-defense-in-depth` |
 
 **Starter manifest for a project in discovery** (before stack is chosen):
 

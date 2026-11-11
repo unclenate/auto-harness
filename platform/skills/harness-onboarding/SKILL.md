@@ -496,6 +496,8 @@ Required artifacts: `HARNESS.md`, `AGENTS.md`, `docs/operating-principles.md`
 | ------ | ----------- |
 | `stacks/node-typescript` | `package.json` with TypeScript dependency, `tsconfig.json`, or `.nvmrc` found |
 | `stacks/python` | `pyproject.toml`, `requirements.txt`, `setup.py`, or `.python-version` found |
+| `stacks/node-javascript` | Node.js project without TypeScript — pre-TS codebase, Bun/Deno declining TS, or an ESM-only plain-JS choice |
+| `stacks/coffeescript` | Legacy project compiling `.coffee` to JavaScript (2010–2016 Node-era source language) |
 
 No required artifacts for either stack module. When both are activated, the project is
 polyglot — the manifest should reflect that, and `docs/architecture/overview.md` should
@@ -516,6 +518,8 @@ prefer separate manifests over a combined polyglot manifest.
 | `architectures/ai-foundry-target` | The project is built to drop into an enterprise AI foundry — Microsoft/Azure AI Foundry, NVIDIA, Palantir AIP, AWS Bedrock AgentCore, Google Vertex Agent Engine — and declares portable foundry-agnostic evidence (opt-in; v1 declarative) |
 | `architectures/intelligent-model-routing` | The project routes different tasks to different models deliberately (capability / cost / privacy / regulatory / deployment-context) — a task→model routing table is an architectural fact, not a chatbot setting (opt-in; v1 declarative) |
 | `architectures/agent-defense-in-depth` | The project runs autonomous agents and adopts Microsoft's four defense-in-depth patterns (scope-containment, least-permissions, human-in-the-loop on consequential actions, agent identity); composes with patient-facing health-agent safety in healthcare projects (opt-in; v1 declarative) |
+| `architectures/mcp-server` | The project ships a Model Context Protocol (MCP) server — governs the declared capability set, the per-tool consumer tier mapping, the prompt-injection surface, and transport/authorization posture (MCP 2025-06-18 spec) |
+| `architectures/agentic-ui` | The agentic surface IS the dominant topology — conversational-primary (the chat is the product), an MCP-host shell, or open-ended generative UI. For a copilot bolted onto a SaaS web-app use `architectures/web-app` + `domains/agentic-interfaces` instead |
 
 Required artifact (web-app / api-service / event-driven / agent-skill-pack):
 `docs/architecture/overview.md`. `agent-observability` instead requires
@@ -537,6 +541,8 @@ optional, required-by-convention when any autonomous action is declared).
 | `data/relational-sql` | `migrations/`, Prisma `schema.prisma`, Drizzle config, or Postgres connection string found | — |
 | `data/document-store` | MongoDB, Firestore, or DynamoDB client found | — |
 | `data/object-storage` | S3, GCS, R2, or Supabase Storage SDK found | — |
+| `data/browser-storage` | IndexedDB, localStorage, OPFS, or other in-browser persistence APIs found (tab-isolation / quota / user-clear-data semantics) | — |
+| `data/embedded-key-value` | Server-side embedded KV store (LevelDB, LMDB, RocksDB, SQLite-as-KV, Bun-KV, Deno-KV) — database as a library dependency, not a network service | — |
 
 Required artifact: `data/relational-sql` → `docs/database/migration-readiness.md`
 
@@ -604,6 +610,8 @@ Dependency: `management/program-lite` requires `management/project-standard`. `m
 | `domains/geospatial-foundation` | Spatial-reference substrate; activate when a project handles GIS / mapping data, survey data, or coordinates tied to the real world. Forces a CRS / datum / epoch / units declaration. | — | `docs/geospatial/spatial-reference-profile.md`, `docs/geospatial/dataset-inventory.md` |
 | `domains/geospatial-exchange` | OGC exchange formats/services (GeoJSON, GeoPackage, CityGML/CityJSON; WMS/WFS/WMTS, OGC API); publisher/consumer role axis + CRS-on-the-wire policy. | `domains/geospatial-foundation` | `docs/geospatial/exchange-profile.md` |
 | `domains/geospatial-bim-georeference` | BIM↔GIS georeferencing bridge; activate when pinning a Revit/IFC model to real-world coordinates (IfcMapConversion, survey point). First cross-family dependency. | `domains/geospatial-foundation`, `domains/aec-openbim-exchange` | `docs/geospatial/georeference-map.md` |
+| `domains/agentic-interfaces` | The product ships an in-product agentic interface — a copilot, generative UI, or conversational-primary surface — governing prompt-injection defense, action-approval gating, renderer contracts, and the agent-callable tool registry. Vendor-neutral. | — | `docs/agentic-interface/design.md`, `docs/agentic-interface/risk-register.md` |
+| `domains/cryptographic-identity` | The project handles cryptographic keys, derivation paths, or identity attestations — BIP32/BIP39 HD wallets, DID/SSI, key custody, signature schemes. Orthogonal to `domains/web3` (Ethereum-specific). | — | `docs/crypto/library-audit-log.md`, `docs/crypto/key-management-policy.md` |
 
 ---
 

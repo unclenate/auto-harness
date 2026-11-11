@@ -202,7 +202,7 @@ AI-tool packs and operating adapters.
 
 ## Validator Reference
 
-The twenty-six validator scripts and their shared Ruby library. CI wiring and troubleshooting live in the workflow sections above.
+The twenty-seven validator scripts and their shared Ruby library. CI wiring and troubleshooting live in the workflow sections above.
 
 * [Validators Overview](platform/validators/README.md)
 * [validate-manifest.sh](platform/validators/validate-manifest.sh)
@@ -229,6 +229,7 @@ The twenty-six validator scripts and their shared Ruby library. CI wiring and tr
 * [validate-twin-profile.sh](platform/validators/validate-twin-profile.sh)
 * [validate-scenario-manifest.sh](platform/validators/validate-scenario-manifest.sh)
 * [validate-lane-integrity.sh](platform/validators/validate-lane-integrity.sh)
+* [validate-agent-bus.sh](platform/validators/validate-agent-bus.sh)
 * [validate-publication-boundary.sh](platform/validators/validate-publication-boundary.sh)
 * [validate-module-stability.sh](platform/validators/validate-module-stability.sh)
 * [Shared Library: harness\_registry.rb](platform/validators/lib/harness_registry.rb)

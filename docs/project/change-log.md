@@ -11,6 +11,30 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-11-09 — Documentation-hardening pass: close audit-found overclaims, count drift, and module-catalog gaps
+
+Remediates an adversarial documentation audit (three parallel dimension passes — §10 overclaims, cross-doc /
+count drift, stale-refs / missing-docs). Documentation only; no code or validator behavior changes.
+(1) **Overclaims** — README no longer implies the trust-tier model is runtime-enforced or that a sensitive-path
+change auto-forces human review (both are PR-boundary / review-gated); the "Wire CI and you're done" step now
+names **Harness Ready** (the second-human gate) as the target state past Bootstrap Complete; operating-principles
+no longer asserts a pre-commit hook that does not ship (the validator is `--staged`-capable but no git hook is
+provisioned). (2) **Count drift** — validator count corrected to twenty-seven in `SUMMARY.md` and
+`platform/validators/README.md` (were twenty-six / twenty-five); the "18-/15-validator chain" prose in
+`session-shape.md` / `bootstrap-quickstart.md` corrected to the real 23-validator CI chain; `validate-agent-bus.sh`
+(shipped #204 / OPP-0061) added to the SUMMARY and validators-README inventories it was absent from.
+(3) **Module-catalog gaps** — the `harness-onboarding` catalog (which forbids selecting unlisted modules) and the
+`discovery-to-composition.md` Step 6 matrix were missing selectable modules a consumer could not otherwise map;
+added `mcp-server`, `agentic-ui`, `agentic-interfaces`, `cryptographic-identity`, `browser-storage`,
+`embedded-key-value`, `node-javascript`, `coffeescript` (plus discovery questions for `web3`, `gitbook`,
+`testing-standard`, `interview-driven`, and the frontier-agent architectures). Root cause: `validate-catalog-counts`
+checks numeric count-sites but not module *enumerations* or spelled-out numbers, so the CLAUDE.md module-propagation
+mirror is unenforced and drifted — an enumeration-aware validator (sibling of `validate-list-completeness` / OPP-0054)
+is recommended as a follow-on OPP. Distillation: a superseding observation in `shared-observations.md` records the
+corrected exemption-over-breadth guard model (PR #230) that the knowledge base still described in its defeated #213
+form. Deliberately left out of scope: ADR-0013's point-in-time "11 diagrams" count (append-only record) and one
+redaction-scope call (a maintainer decision).
+
 ## 2026-10-11 — File OPP-0066: `management/accessibility-standard` overlay (harness-native capture of issue #93)
 
 Files OPP-0066 (`proposed`) converting GitHub issue #93 into a first-class governed record. Accessibility is

@@ -70,7 +70,7 @@ declared reviews are mostly unfired.
 |---|---|---|---|
 | **Session start** | An agent or human begins a work session. | Skill load, `shared-observations.md` read, manifest read, framing-question prompt. | Agents load `harness-governance` / `harness-onboarding` skills; the heartbeat write-policy says read `shared-observations.md` on each heartbeat. |
 | **Work** | Active editing, building, analysis. | Trust-tier gating, inline validators run locally. | The trust-tier doctrine governs every action mid-work; validators are runnable locally before commit. |
-| **PR open** | A branch is pushed and a PR is opened. | Companion rules, the full validator chain, lint/shellcheck. | `validate-companions` + the 18-validator chain run in CI on every PR. |
+| **PR open** | A branch is pushed and a PR is opened. | Companion rules, the full validator chain, lint/shellcheck. | the 23-validator chain (including `validate-companions`) runs in CI on every PR. |
 | **PR merge** | A PR is squash-merged to `main`. | Cycle-end distillation, audit-trail satisfiers. | **The cycle-end distillation rule (PRD-0004) — the one fully-wired declared review.** |
 | **Post-merge** | Immediately after a merge lands on `main`. | Promotion scans, count/enumeration reconciliation, status reconciliation. | Mostly **unfired** — promotion of observations into operating-principles happens ad-hoc. |
 | **Periodic-review** | A cadence not tied to any single PR. | Scheduled CI audit, doctrine (§10) re-classification, back-pressure audit. | Mostly **unfired** — the §10 audit's "quarterly cap" trigger does not exist. |

@@ -302,7 +302,7 @@ The harness is **Bootstrap Complete** when the full validator chain exits 0 and 
     documented `regime: none` exemption is recorded); WARN-default, non-blocking unless `--block` flag set
 16. CI workflow is wired and green on the first PR
 
-The 15-validator chain is the same chain run on every commit in CI — see
+These validators are the Bootstrap-Complete checklist; CI runs the full chain on every PR — 23 validators, a superset of these — see
 [`AGENTS.md`](../../AGENTS.md) **Build and Test** for the canonical invocation order.
 New validators added to the kernel propagate here automatically as part of the
 structural-enforcement companion-rule.

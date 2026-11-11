@@ -11,6 +11,27 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-11-11 — Accept + implement OPP-0067: module-catalog parity as checks 8–9 of validate-list-completeness
+
+Accepts OPP-0067 **OPP-direct** (same PR as the filing) and ships the implementation. Disk-grounding the
+three biases the record flagged resolved them: the five catalog surfaces split by anchor convention —
+`discovery-to-composition.md` (54/54 full `<category>/<name>` slug) and `harness-onboarding/SKILL.md`
+(53/54 full slug) share a clean, unique slug anchor; `README.md`'s Module System table uses leaf names in
+category-grouped rows; `HARNESS.md` Active Modules is manifest-relative (a subset). The two surfaces #232
+actually hand-fixed are the two clean-slug ones, so this gates **those**: two checks appended to
+`validate-list-completeness.sh` (profile module → onboarding catalog + discovery matrix), full-slug-anchored
+and existence-guarded (a consumer lacking the platform-only surfaces is a vacuous no-op). Extended rather
+than new-validator → validator count unchanged (27); no catalog-count churn. The README leaf-in-category
+anchor and the `HARNESS.md` manifest-relative check are a documented deferred follow-on (README never
+drifted — 54/54 by leaf — so the deferral is low-risk). **Live fix:** grounding the SKILL.md check surfaced
+that `management/interview-driven` (a `beta` overlay on disk since 2026-06-26) was absent from the onboarding
+catalog — a shipped module unselectable by a conforming onboarding pass, a third drift instance #232 missed —
+so its catalog row was added in the same pass (SKILL.md → 54/54). Integration coverage: a complete-fixture
+pass exercising both surfaces + a drift test per surface + an absent-surfaces no-op test (18 list-completeness
+cases, all green; 554 live assertions). Validator/skill descriptions (`harness-governance` SKILL,
+`validators/README`) updated for accuracy; the PRD-0004 distillation observation extended with the OPP-direct
+resolution.
+
 ## 2026-11-10 — File OPP-0067: Module-Enumeration Parity Validator (the follow-on named by the #232 doc-hardening pass)
 
 Files OPP-0067 (`proposed`) converting the enumeration-aware-validator recommendation recorded in the

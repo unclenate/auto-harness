@@ -6,10 +6,10 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0067 — Module-Enumeration Parity Validator (gate the catalog mirror the propagation reflex can't enforce)
 
-**Status:** proposed
+**Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-11-10
-**Last Updated:** 2026-11-10
+**Last Updated:** 2026-11-11
 **Confidence:** high (the drift is field-proven — PR #232 hand-fixed an 8-module catalog lag that no validator caught; the gap is named in that PR's own change-log entry and in OPP-0055's "last uncovered surface" framing)
 
 ---
@@ -152,15 +152,46 @@ re-opens the same gap, and sets up the implementing pass. No external timing pre
 
 ## Disposition
 
-<!--
-Empty while Status: proposed. Populated when status flips to exploring,
-accepted, declined, or superseded.
--->
+**Accepted (2026-11-11), OPP-direct.** Disk-grounding the three biases against the live surfaces
+resolved them cleanly enough to implement in the same PR (the OPP-0055 pattern), with a principled
+scope split rather than a PRD:
+
+- **Bias 1 — which surfaces (resolved: the two clean-slug, proven-drift surfaces now; README + HARNESS.md
+  deferred).** The five surfaces split by anchor convention, measured on disk:
+  `discovery-to-composition.md` carries every module by full `<category>/<name>` slug (**54/54**),
+  `harness-onboarding/SKILL.md` likewise (**53/54** — see the live finding below), `SUMMARY.md` is already
+  gated, `README.md`'s Module System table lists modules by **leaf name inside category-grouped rows**
+  (slug 11/54, leaf 54/54), and `HARNESS.md` Active Modules is **manifest-relative** (a subset, the inverse
+  membership check). The two drift surfaces #232 actually hand-fixed are SKILL.md and the discovery matrix —
+  exactly the two that share the clean full-slug anchor — so gate those now. **README** (leaf-in-category
+  anchor, a different and fuzzier mechanism) and **HARNESS.md** (manifest-relative predicate) are a
+  documented follow-on; folding a heuristic leaf-match into the same pass would mix a certain check with an
+  uncertain one. README never actually drifted (54/54 by leaf), so the deferral carries low risk.
+- **Bias 2 — anchoring (resolved: full `<category>/<name>` slug).** Verified unique across all 54 profile
+  modules (`sort | uniq -d` empty), and it is the exact token both gated surfaces use — so a fixed-string
+  grep is both sufficient and safe (no prose-collision false-pass of the kind OPP-0055 guarded against,
+  because the slug form appears only in the enumeration, not in prose).
+- **Bias 3 — extension vs. new validator (resolved: extension).** Shipped as **checks 8–9 appended to
+  `validate-list-completeness.sh`** — the same always-on, BLOCK, recompute-and-diff species it already
+  embodies for the module→SUMMARY surface — with existence-guards so a consumer lacking the platform-only
+  surface files is a vacuous no-op. No new validator file → validator count unchanged (27) → no
+  catalog-count or inventory churn.
+
+**Live finding during implementation (a third drift instance, confirming the thesis).** Grounding the
+SKILL.md check surfaced that `management/interview-driven` — a `beta` overlay on disk since 2026-06-26 —
+was **absent from the onboarding catalog** (the management section listed 15 of 16 modules), i.e. a shipped
+module was unselectable by a conforming onboarding pass, undetected by #232. Fixed in the same PR by adding
+its catalog row (the implementing analog of #232 adding its eight), bringing SKILL.md to 54/54.
 
 ## Promotion
 
-<!--
-Empty until accepted. Then a link to PRD-NNNN (if a PRD is spawned to resolve
-the three open biases) or a direct implementing PR (if accepted OPP-direct with
-the biases resolved in the Disposition).
--->
+Implemented directly (OPP-direct, no PRD) in the same PR as this record:
+
+- Checks 8–9 appended to `platform/validators/validate-list-completeness.sh` (profile module →
+  `harness-onboarding/SKILL.md` + `discovery-to-composition.md`, full-slug-anchored, existence-guarded),
+  with integration coverage: a complete-fixture pass exercising both surfaces, a drift test per surface,
+  and an absent-surfaces no-op test.
+- The live `management/interview-driven` catalog gap fixed in `platform/skills/harness-onboarding/SKILL.md`.
+- **Deferred follow-on (README Module System table + HARNESS.md Active Modules):** a future OPP for the
+  leaf-in-category anchor and the manifest-relative membership check — the two surfaces this pass
+  deliberately scoped out.

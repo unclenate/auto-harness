@@ -47,12 +47,28 @@
 #   5. Template dirs   platform/templates/<subdir>/     → platform/templates/README.md
 #   6. Profile modules platform/profiles/**/module.yaml → SUMMARY.md
 #   7. Agent modules   platform/agents/*/module.yaml    → SUMMARY.md
+#   8. Module catalog  platform/profiles/**/module.yaml → platform/skills/harness-onboarding/SKILL.md
+#   9. Discovery matrix platform/profiles/**/module.yaml → platform/workflow/discovery-to-composition.md
 #
 # ADR/PRD/OPP → SUMMARY.md nav is anchored on the record's link-target PATH
 # (docs/<dir>/<filename>), NOT the bare record id: SUMMARY module descriptions
 # cite records in prose (e.g. "(PRD-0014)"), so a bare-id grep would match a
 # prose mention and pass with the nav row deleted. The relative path appears
 # only in the nav row's link target — one occurrence per record. Per OPP-0055.
+#
+# Checks 8–9 (per OPP-0067) reconcile the module-catalog mirror: the
+# CLAUDE.md propagation reflex requires every selectable profile module to
+# appear in the onboarding catalog (which forbids selecting an unlisted
+# module) and the discovery→composition decision matrix, yet no validator
+# gated either surface — PR #232 hand-fixed an 8-module lag they had both
+# accumulated. Each check anchors on the bare "<category>/<name>" module
+# slug (disk-verified unique across the 54 profile modules), the form both
+# surfaces use. Both surfaces are platform-only files, so each check is
+# guarded on the surface existing — a consumer without them is a no-op.
+# Scope note: the README Module System table (leaf-name-in-category rows) and
+# HARNESS.md Active Modules (manifest-relative, a subset) are the two
+# remaining mirror surfaces; they use different anchors and are a documented
+# OPP-0067 follow-on.
 #
 # Exit codes:
 #   0  every discovered entity is referenced in its canonical index file(s)
@@ -81,9 +97,10 @@ Arguments:
                 no docs/adr/), the corresponding check is a no-op.
 
 Behavior:
-  For each of seven checks (ADRs, PRDs, OPPs, compositions, template
-  subdirectories, profile modules, agent modules), discovers the on-disk entity set and
-  asserts each entity is referenced in its canonical index file(s).
+  For each of nine checks (ADRs, PRDs, OPPs, compositions, template
+  subdirectories, profile modules, agent modules, module catalog, discovery
+  matrix), discovers the on-disk entity set and asserts each entity is
+  referenced in its canonical index file(s).
 
   Index file definitions:
     ADRs   → docs/README.md + SUMMARY.md (nav)
@@ -93,6 +110,8 @@ Behavior:
     Templates    → platform/templates/README.md
     Profile modules → SUMMARY.md
     Agent modules   → SUMMARY.md
+    Module catalog  → platform/skills/harness-onboarding/SKILL.md (slug)
+    Discovery matrix → platform/workflow/discovery-to-composition.md (slug)
 
   The ADR/PRD/OPP → SUMMARY.md nav assertion is anchored on the record's
   link-target path (docs/<dir>/<filename>), which appears only in the nav
@@ -259,6 +278,39 @@ if [[ -d platform/agents ]]; then
     checks_run=$((checks_run + 1))
     assert_contains "SUMMARY.md" "$dir" "$dir" "agent module"
   done < <(find platform/agents -mindepth 2 -maxdepth 2 -name module.yaml | sort)
+fi
+
+# ----------------------------------------------------------------------
+# Check 8 — Profile modules → harness-onboarding catalog (OPP-0067)
+# ----------------------------------------------------------------------
+# The onboarding skill's module catalog forbids an onboarding agent from
+# selecting a module not listed in it, so a missing row makes a shipped
+# module unselectable (capability-suppressing, not cosmetic). Anchor on the
+# bare "<category>/<name>" slug the catalog rows use. Platform-only file →
+# guarded on existence (consumer no-op).
+onboarding_catalog="platform/skills/harness-onboarding/SKILL.md"
+if [[ -d platform/profiles && -f "$onboarding_catalog" ]]; then
+  while IFS= read -r mod; do
+    rel="${mod#platform/}"            # profiles/<category>/<name>/module.yaml
+    slug="${rel#profiles/}"           # <category>/<name>/module.yaml
+    slug="${slug%/module.yaml}"       # <category>/<name>
+    checks_run=$((checks_run + 1))
+    assert_contains "$onboarding_catalog" "$slug" "$slug" "module catalog"
+  done < <(find platform/profiles -name module.yaml | sort)
+fi
+
+# ----------------------------------------------------------------------
+# Check 9 — Profile modules → discovery→composition matrix (OPP-0067)
+# ----------------------------------------------------------------------
+discovery_matrix="platform/workflow/discovery-to-composition.md"
+if [[ -d platform/profiles && -f "$discovery_matrix" ]]; then
+  while IFS= read -r mod; do
+    rel="${mod#platform/}"
+    slug="${rel#profiles/}"
+    slug="${slug%/module.yaml}"
+    checks_run=$((checks_run + 1))
+    assert_contains "$discovery_matrix" "$slug" "$slug" "discovery matrix"
+  done < <(find platform/profiles -name module.yaml | sort)
 fi
 
 # ----------------------------------------------------------------------

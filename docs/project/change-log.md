@@ -11,6 +11,45 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-11-11 — Accept + implement OPP-0067: module-catalog parity as checks 8–9 of validate-list-completeness
+
+Accepts OPP-0067 **OPP-direct** (same PR as the filing) and ships the implementation. Disk-grounding the
+three biases the record flagged resolved them: the five catalog surfaces split by anchor convention —
+`discovery-to-composition.md` (54/54 full `<category>/<name>` slug) and `harness-onboarding/SKILL.md`
+(53/54 full slug) share a clean, unique slug anchor; `README.md`'s Module System table uses leaf names in
+category-grouped rows; `HARNESS.md` Active Modules is manifest-relative (a subset). The two surfaces #232
+actually hand-fixed are the two clean-slug ones, so this gates **those**: two checks appended to
+`validate-list-completeness.sh` (profile module → onboarding catalog + discovery matrix), full-slug-anchored
+and existence-guarded (a consumer lacking the platform-only surfaces is a vacuous no-op). Extended rather
+than new-validator → validator count unchanged (27); no catalog-count churn. The README leaf-in-category
+anchor and the `HARNESS.md` manifest-relative check are a documented deferred follow-on (README never
+drifted — 54/54 by leaf — so the deferral is low-risk). **Live fix:** grounding the SKILL.md check surfaced
+that `management/interview-driven` (a `beta` overlay on disk since 2026-06-26) was absent from the onboarding
+catalog — a shipped module unselectable by a conforming onboarding pass, a third drift instance #232 missed —
+so its catalog row was added in the same pass (SKILL.md → 54/54). Integration coverage: a complete-fixture
+pass exercising both surfaces + a drift test per surface + an absent-surfaces no-op test (18 list-completeness
+cases, all green; 554 live assertions). Validator/skill descriptions (`harness-governance` SKILL,
+`validators/README`) updated for accuracy; the PRD-0004 distillation observation extended with the OPP-direct
+resolution.
+
+## 2026-11-10 — File OPP-0067: Module-Enumeration Parity Validator (the follow-on named by the #232 doc-hardening pass)
+
+Files OPP-0067 (`proposed`) converting the enumeration-aware-validator recommendation recorded in the
+2026-11-09 doc-hardening entry into a first-class governed record. The selectable-module set on disk
+(`platform/profiles/**/module.yaml`) is mirrored into five catalog surfaces by the `CLAUDE.md` propagation
+reflex, but only one (`SUMMARY.md`) is machine-reconciled (`validate-list-completeness`, OPP-0055); the other
+four — `HARNESS.md` Active Modules, the README Module System table, `harness-onboarding/SKILL.md`, and
+`discovery-to-composition.md` Step 6 — drift silently. PR #232 is the field proof: the onboarding catalog,
+which *forbids* selecting a module not listed, showed 46/54, making eight shipped-and-selectable modules
+**unselectable** by a conforming onboarding pass — a capability regression, not a cosmetic doc lag. The OPP is
+the "mechanize the reconciliation" arm of operating-principles §3 applied to the module-catalog mirror, the
+enumeration sibling of `validate-status-parity` (status, OPP-0054) / `validate-list-completeness` (presence,
+OPP-0055) / `validate-catalog-counts` (counts). Filed **design-only**, no code change: three biases remain
+open (active-vs-available surface semantics — `HARNESS.md` is manifest-relative; per-surface slug anchoring;
+extension-vs-new-validator), so implementation is a follow-on PRD or OPP→impl pass. Index surfaces + the
+PRD-0004 distillation observation (allow-list drift is a capability regression; mirror severity is set by what
+the surface governs) in the same commit.
+
 ## 2026-11-09 — Documentation-hardening pass: close audit-found overclaims, count drift, and module-catalog gaps
 
 Remediates an adversarial documentation audit (three parallel dimension passes — §10 overclaims, cross-doc /

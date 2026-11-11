@@ -11,6 +11,24 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-11-10 — File OPP-0067: Module-Enumeration Parity Validator (the follow-on named by the #232 doc-hardening pass)
+
+Files OPP-0067 (`proposed`) converting the enumeration-aware-validator recommendation recorded in the
+2026-11-09 doc-hardening entry into a first-class governed record. The selectable-module set on disk
+(`platform/profiles/**/module.yaml`) is mirrored into five catalog surfaces by the `CLAUDE.md` propagation
+reflex, but only one (`SUMMARY.md`) is machine-reconciled (`validate-list-completeness`, OPP-0055); the other
+four — `HARNESS.md` Active Modules, the README Module System table, `harness-onboarding/SKILL.md`, and
+`discovery-to-composition.md` Step 6 — drift silently. PR #232 is the field proof: the onboarding catalog,
+which *forbids* selecting a module not listed, showed 46/54, making eight shipped-and-selectable modules
+**unselectable** by a conforming onboarding pass — a capability regression, not a cosmetic doc lag. The OPP is
+the "mechanize the reconciliation" arm of operating-principles §3 applied to the module-catalog mirror, the
+enumeration sibling of `validate-status-parity` (status, OPP-0054) / `validate-list-completeness` (presence,
+OPP-0055) / `validate-catalog-counts` (counts). Filed **design-only**, no code change: three biases remain
+open (active-vs-available surface semantics — `HARNESS.md` is manifest-relative; per-surface slug anchoring;
+extension-vs-new-validator), so implementation is a follow-on PRD or OPP→impl pass. Index surfaces + the
+PRD-0004 distillation observation (allow-list drift is a capability regression; mirror severity is set by what
+the surface governs) in the same commit.
+
 ## 2026-11-09 — Documentation-hardening pass: close audit-found overclaims, count drift, and module-catalog gaps
 
 Remediates an adversarial documentation audit (three parallel dimension passes — §10 overclaims, cross-doc /

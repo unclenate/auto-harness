@@ -11,6 +11,21 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-11-16 — File OPP-0069: tighten check 11 with the reverse direction (listed ⇒ active)
+
+Files OPP-0069 (`proposed`, design-only — no code change) capturing the micro-tightening OPP-0068's
+Disposition/Risks explicitly named. Check 11 (OPP-0068) gates `active ⇒ listed` — every module active in
+`harness.manifest.yaml` appears in `HARNESS.md` Active Modules. OPP-0069 proposes the reverse,
+`listed ⇒ active`: every module *listed* in the `HARNESS.md` table must be active in the manifest, so a
+module **deactivated** in the manifest but left in the doc can't silently overstate active governance —
+making the `HARNESS.md` ⇄ manifest pair a bidirectional set-equality. Filed proposed rather than
+OPP-direct because the drift is low-frequency and deliberate (deactivation is a rare intentional edit,
+unlike the add-a-module rot the available-catalog surfaces suffer — the #232 / `interview-driven` failure
+mode), so the maintainer may reasonably decline or defer; and because one real implementation bias remains
+(the reverse parser must anchor on the module column, not a whole-row backtick scan — the purpose column
+carries incidental backticks). Would extend check 11, no new validator (count stays 27). Index surfaces +
+PRD-0004 distillation observation in the same commit.
+
 ## 2026-11-16 — Accept + implement OPP-0068: complete the module-catalog mirror (checks 10–11 of validate-list-completeness)
 
 Closes the two surfaces OPP-0067 deferred, completing the five-surface module-catalog mirror the `CLAUDE.md`

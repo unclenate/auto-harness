@@ -11,6 +11,26 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-11-16 — Accept + implement OPP-0068: complete the module-catalog mirror (checks 10–11 of validate-list-completeness)
+
+Closes the two surfaces OPP-0067 deferred, completing the five-surface module-catalog mirror the `CLAUDE.md`
+propagation reflex names. Accepts OPP-0068 **OPP-direct** and ships both checks (the deferred follow-on is the
+same validator, so it builds cleanly on `main` now that #233 landed). **Check 10 — README Module System
+table:** an available-catalog surface, but one that lists modules by **leaf name** inside category-grouped
+rows, so it anchors on the backtick-bounded leaf (leaves disk-verified unique across the 54 profile modules),
+scopes the search to the family-row block, and degrades to a skip if that block is absent (copy-mode consumer
+safety). **Check 11 — HARNESS.md Active Modules:** the inverse of checks 8–10 — not "every disk module is
+cataloged" but **manifest-relative** parity, asserting every module active in `harness.manifest.yaml`'s
+`modules:` block is reflected in `HARNESS.md`; dependency-free awk extraction of the flat block, guarded on
+the `## Active Modules` section. Unlike the platform-only catalog checks, **check 11 runs for consumers too**
+(a consumer has both a manifest and a `HARNESS.md`), gating their active-module doc parity — the first of the
+module-catalog checks that is consumer-valuable rather than a consumer no-op. Forward direction only
+(active ⇒ listed); the reverse (a stale `HARNESS.md` row) is a noted later tightening. Extended the existing
+reconciler rather than new-validator → count stays 27; no catalog-count churn. Integration coverage: a
+complete-fixture pass exercising both surfaces + a drift test per surface + absent-surface no-op tests
+(README-without-table, HARNESS-without-Active-Modules). 620 live assertions. Validator/skill descriptions and
+the PRD-0004 distillation observation updated.
+
 ## 2026-11-11 — Accept + implement OPP-0067: module-catalog parity as checks 8–9 of validate-list-completeness
 
 Accepts OPP-0067 **OPP-direct** (same PR as the filing) and ships the implementation. Disk-grounding the

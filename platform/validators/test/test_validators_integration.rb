@@ -1655,8 +1655,15 @@ class TestValidateListCompleteness < Minitest::Test
                "schemaVersion: 1\n")
     File.write(File.join(root, "platform/compositions/README.md"),
                "| [test-comp.yaml](test-comp.yaml) | test |\n")
-    File.write(File.join(root, "README.md"),
-               "Compositions: [test-comp.yaml](platform/compositions/test-comp.yaml)\n")
+    # Root README.md — the composition link (check 4) PLUS the Module System
+    # table family row carrying the profile module's leaf (check 10, OPP-0068).
+    File.write(File.join(root, "README.md"), <<~MD)
+      Compositions: [test-comp.yaml](platform/compositions/test-comp.yaml)
+
+      | Family | Purpose | Examples |
+      | ------ | ------- | ------- |
+      | **Management** | governance | `test-mod` |
+    MD
 
     # Template subdirectory + directory-map row
     FileUtils.mkdir_p(File.join(root, "platform/templates/widget"))
@@ -1696,6 +1703,26 @@ class TestValidateListCompleteness < Minitest::Test
     FileUtils.mkdir_p(File.join(root, "platform/workflow"))
     File.write(File.join(root, "platform/workflow/discovery-to-composition.md"),
                "# Step 6\n\n| `management/test-mod` | pick when X |\n")
+
+    # Manifest + HARNESS.md active-module parity (check 11, OPP-0068): every
+    # module active in harness.manifest.yaml's `modules:` block must appear in
+    # HARNESS.md. Unlike checks 8-10 this runs for consumers too, so the
+    # complete fixture carries both files.
+    File.write(File.join(root, "harness.manifest.yaml"), <<~YAML)
+      schemaVersion: 1
+      modules:
+        management:
+          - test-mod
+    YAML
+    File.write(File.join(root, "HARNESS.md"), <<~MD)
+      # Harness
+
+      ## Active Modules
+
+      | Family | Module | Purpose |
+      |--------|--------|---------|
+      | Management | `test-mod` | test |
+    MD
   end
 
   def test_complete_fixture_passes
@@ -1830,6 +1857,76 @@ class TestValidateListCompleteness < Minitest::Test
       out, err, code = run_validator("validate-list-completeness.sh", tmp)
       assert_equal 0, code,
                    "absent catalog surfaces must be a vacuous no-op. stderr: #{err}"
+      assert_match(/✓/, out)
+    end
+  end
+
+  # --- Checks 10-11: README table + HARNESS.md parity (OPP-0068) -------------
+
+  def test_profile_module_missing_from_readme_table_fails
+    Dir.mktmpdir do |tmp|
+      write_complete_fixture(tmp)
+      # Family-row block present but the module's leaf is gone from it.
+      File.write(File.join(tmp, "README.md"), <<~MD)
+        Compositions: [test-comp.yaml](platform/compositions/test-comp.yaml)
+
+        | Family | Purpose | Examples |
+        | ------ | ------- | ------- |
+        | **Management** | governance | `other-mod` |
+      MD
+      _out, err, code = run_validator("validate-list-completeness.sh", tmp)
+      assert_equal 1, code, "module missing from README table must exit 1"
+      assert_match(%r{missing Module System table entry for management/test-mod}, err)
+    end
+  end
+
+  def test_readme_table_bare_leaf_in_prose_does_not_satisfy
+    # The leaf appears in README PROSE but not in the family-row block — the
+    # table-scoped, backtick-bounded anchor must still fail (no false-pass).
+    Dir.mktmpdir do |tmp|
+      write_complete_fixture(tmp)
+      File.write(File.join(tmp, "README.md"), <<~MD)
+        Compositions: [test-comp.yaml](platform/compositions/test-comp.yaml)
+
+        The test-mod overlay is discussed here in prose, with no table row.
+      MD
+      # No family-row block at all → check 10 degrades to a skip (consumer
+      # safety), so this must PASS — the prose mention neither satisfies nor
+      # false-fails. Documents the absent-block degradation explicitly.
+      out, _err, code = run_validator("validate-list-completeness.sh", tmp)
+      assert_equal 0, code, "absent family-row block must skip check 10, not fail"
+      assert_match(/✓/, out)
+    end
+  end
+
+  def test_active_module_missing_from_harness_md_fails
+    Dir.mktmpdir do |tmp|
+      write_complete_fixture(tmp)
+      # HARNESS.md has an Active Modules section but omits the active module.
+      File.write(File.join(tmp, "HARNESS.md"), <<~MD)
+        # Harness
+
+        ## Active Modules
+
+        | Family | Module | Purpose |
+        |--------|--------|---------|
+        | Management | `something-else` | test |
+      MD
+      _out, err, code = run_validator("validate-list-completeness.sh", tmp)
+      assert_equal 1, code, "manifest-active module missing from HARNESS.md must exit 1"
+      assert_match(/missing HARNESS.md active module row for test-mod/, err)
+    end
+  end
+
+  def test_harness_without_active_modules_section_is_noop
+    # Consumer-safety: a HARNESS.md with no "## Active Modules" section skips
+    # check 11 rather than false-failing every active module.
+    Dir.mktmpdir do |tmp|
+      write_complete_fixture(tmp)
+      File.write(File.join(tmp, "HARNESS.md"), "# Harness\n\nNo active-modules section here.\n")
+      out, err, code = run_validator("validate-list-completeness.sh", tmp)
+      assert_equal 0, code,
+                   "HARNESS.md without an Active Modules section must be a no-op. stderr: #{err}"
       assert_match(/✓/, out)
     end
   end

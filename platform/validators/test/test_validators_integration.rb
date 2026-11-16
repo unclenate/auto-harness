@@ -1685,6 +1685,17 @@ class TestValidateListCompleteness < Minitest::Test
       * [PRD-0001: Test](docs/requirements/PRD-0001-test.md)
       * [OPP-0001: Test](docs/opportunities/OPP-0001-test.md)
     MD
+
+    # Module-catalog surfaces (checks 8-9, OPP-0067): the profile module's bare
+    # "<category>/<name>" slug must appear in the onboarding catalog and the
+    # discovery→composition matrix. Both are platform-only files, so their
+    # checks are existence-guarded (see test_module_catalog_surfaces_absent_is_noop).
+    FileUtils.mkdir_p(File.join(root, "platform/skills/harness-onboarding"))
+    File.write(File.join(root, "platform/skills/harness-onboarding/SKILL.md"),
+               "# Catalog\n\n| `management/test-mod` | when | artifacts |\n")
+    FileUtils.mkdir_p(File.join(root, "platform/workflow"))
+    File.write(File.join(root, "platform/workflow/discovery-to-composition.md"),
+               "# Step 6\n\n| `management/test-mod` | pick when X |\n")
   end
 
   def test_complete_fixture_passes
@@ -1779,6 +1790,47 @@ class TestValidateListCompleteness < Minitest::Test
       _out, err, code = run_validator("validate-list-completeness.sh", tmp)
       assert_equal 1, code, "missing agent module row in SUMMARY.md must exit 1"
       assert_match(/missing agent module row for agents\/test-agent/, err)
+    end
+  end
+
+  # --- Checks 8-9: module-catalog mirror (OPP-0067) --------------------------
+
+  def test_profile_module_missing_from_onboarding_catalog_fails
+    Dir.mktmpdir do |tmp|
+      write_complete_fixture(tmp)
+      # Catalog present but the module's slug row is gone — the exact #232
+      # drift (a shipped module unlisted in the onboarding allow-list).
+      File.write(File.join(tmp, "platform/skills/harness-onboarding/SKILL.md"),
+                 "# Catalog\n\n(no module rows)\n")
+      _out, err, code = run_validator("validate-list-completeness.sh", tmp)
+      assert_equal 1, code, "module missing from onboarding catalog must exit 1"
+      assert_match(%r{missing module catalog row for management/test-mod}, err)
+    end
+  end
+
+  def test_profile_module_missing_from_discovery_matrix_fails
+    Dir.mktmpdir do |tmp|
+      write_complete_fixture(tmp)
+      File.write(File.join(tmp, "platform/workflow/discovery-to-composition.md"),
+                 "# Step 6\n\n(no decision rows)\n")
+      _out, err, code = run_validator("validate-list-completeness.sh", tmp)
+      assert_equal 1, code, "module missing from discovery matrix must exit 1"
+      assert_match(%r{missing discovery matrix row for management/test-mod}, err)
+    end
+  end
+
+  def test_module_catalog_surfaces_absent_is_noop
+    # Consumer-safety: a downstream project has no onboarding catalog or
+    # discovery matrix (platform-only files). Deleting them from the complete
+    # fixture must leave the run green — checks 8-9 are existence-guarded.
+    Dir.mktmpdir do |tmp|
+      write_complete_fixture(tmp)
+      FileUtils.rm_f(File.join(tmp, "platform/skills/harness-onboarding/SKILL.md"))
+      FileUtils.rm_f(File.join(tmp, "platform/workflow/discovery-to-composition.md"))
+      out, err, code = run_validator("validate-list-completeness.sh", tmp)
+      assert_equal 0, code,
+                   "absent catalog surfaces must be a vacuous no-op. stderr: #{err}"
+      assert_match(/✓/, out)
     end
   end
 

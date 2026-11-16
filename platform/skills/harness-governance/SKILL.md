@@ -179,6 +179,14 @@ A few signature notes worth highlighting:
   anchored on the record's link-target *path* (which appears only in the
   nav row), never the bare id (which SUMMARY descriptions cite in prose, so
   a bare-id grep would pass with the nav row deleted). Per OPP-0055.
+  Checks 8–9 (OPP-0067) extend it to the **module-catalog mirror**: every
+  profile module's `<category>/<name>` slug must appear in the
+  `harness-onboarding/SKILL.md` catalog (which forbids selecting an unlisted
+  module) and the `discovery-to-composition.md` Step-6 matrix — the two
+  full-slug surfaces #232 hand-reconciled. Both are platform-only files, so
+  each check is existence-guarded (consumer no-op). The README Module System
+  table (leaf-in-category) and `HARNESS.md` Active Modules (manifest-relative)
+  are a documented OPP-0067 follow-on.
 - **`validate-status-parity.sh`** takes only `[<project-root>]`.
   **Always-on** structural reconciler (like `validate-list-completeness`
   and `validate-catalog-counts`, not module-gated): for every

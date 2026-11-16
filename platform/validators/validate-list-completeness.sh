@@ -49,6 +49,8 @@
 #   7. Agent modules   platform/agents/*/module.yaml    → SUMMARY.md
 #   8. Module catalog  platform/profiles/**/module.yaml → platform/skills/harness-onboarding/SKILL.md
 #   9. Discovery matrix platform/profiles/**/module.yaml → platform/workflow/discovery-to-composition.md
+#  10. README table    platform/profiles/**/module.yaml → README.md Module System table (leaf)
+#  11. Active modules   harness.manifest.yaml modules:   → HARNESS.md Active Modules
 #
 # ADR/PRD/OPP → SUMMARY.md nav is anchored on the record's link-target PATH
 # (docs/<dir>/<filename>), NOT the bare record id: SUMMARY module descriptions
@@ -56,19 +58,20 @@
 # prose mention and pass with the nav row deleted. The relative path appears
 # only in the nav row's link target — one occurrence per record. Per OPP-0055.
 #
-# Checks 8–9 (per OPP-0067) reconcile the module-catalog mirror: the
-# CLAUDE.md propagation reflex requires every selectable profile module to
-# appear in the onboarding catalog (which forbids selecting an unlisted
-# module) and the discovery→composition decision matrix, yet no validator
-# gated either surface — PR #232 hand-fixed an 8-module lag they had both
-# accumulated. Each check anchors on the bare "<category>/<name>" module
-# slug (disk-verified unique across the 54 profile modules), the form both
-# surfaces use. Both surfaces are platform-only files, so each check is
-# guarded on the surface existing — a consumer without them is a no-op.
-# Scope note: the README Module System table (leaf-name-in-category rows) and
-# HARNESS.md Active Modules (manifest-relative, a subset) are the two
-# remaining mirror surfaces; they use different anchors and are a documented
-# OPP-0067 follow-on.
+# Checks 8–11 (OPP-0067 + OPP-0068) reconcile the module-catalog mirror the
+# CLAUDE.md propagation reflex names across five surfaces. 8–9 (OPP-0067)
+# anchor on the bare "<category>/<name>" slug both the onboarding catalog
+# (which forbids selecting an unlisted module) and the discovery→composition
+# matrix use — the two surfaces PR #232 hand-fixed an 8-module lag in.
+# 10–11 (OPP-0068) close the last two surfaces: check 10 reconciles the
+# README Module System table, which lists modules by LEAF name in
+# category-grouped rows (backtick-bounded leaf anchor — leaves are
+# disk-verified unique — scoped to the family-row block, skipped if that
+# block is absent); check 11 reconciles HARNESS.md Active Modules, which is
+# manifest-RELATIVE (a subset), asserting every module active in
+# harness.manifest.yaml is reflected in HARNESS.md. Checks 8–10 are
+# platform-only (consumer no-op); check 11 runs for consumers too (they have
+# a manifest + a HARNESS.md), gating their active-module doc parity.
 #
 # Exit codes:
 #   0  every discovered entity is referenced in its canonical index file(s)
@@ -97,10 +100,10 @@ Arguments:
                 no docs/adr/), the corresponding check is a no-op.
 
 Behavior:
-  For each of nine checks (ADRs, PRDs, OPPs, compositions, template
+  For each of eleven checks (ADRs, PRDs, OPPs, compositions, template
   subdirectories, profile modules, agent modules, module catalog, discovery
-  matrix), discovers the on-disk entity set and asserts each entity is
-  referenced in its canonical index file(s).
+  matrix, README table, active modules), discovers the entity set and asserts
+  each entity is referenced in its canonical index file(s).
 
   Index file definitions:
     ADRs   → docs/README.md + SUMMARY.md (nav)
@@ -112,6 +115,8 @@ Behavior:
     Agent modules   → SUMMARY.md
     Module catalog  → platform/skills/harness-onboarding/SKILL.md (slug)
     Discovery matrix → platform/workflow/discovery-to-composition.md (slug)
+    README table    → README.md Module System table (leaf, table-scoped)
+    Active modules  → HARNESS.md (manifest-active modules, parity)
 
   The ADR/PRD/OPP → SUMMARY.md nav assertion is anchored on the record's
   link-target path (docs/<dir>/<filename>), which appears only in the nav
@@ -311,6 +316,61 @@ if [[ -d platform/profiles && -f "$discovery_matrix" ]]; then
     checks_run=$((checks_run + 1))
     assert_contains "$discovery_matrix" "$slug" "$slug" "discovery matrix"
   done < <(find platform/profiles -name module.yaml | sort)
+fi
+
+# ----------------------------------------------------------------------
+# Check 10 — Profile modules → README Module System table (OPP-0068)
+# ----------------------------------------------------------------------
+# The README table lists modules by LEAF name inside category-grouped rows
+# (`| **Family** | purpose | `leaf`, `leaf`, ... |`). Anchor on the
+# backtick-bounded leaf (leaf names are unique across the 54 profile modules,
+# and the backticks prevent substring/prose false-matches). The search is
+# scoped to the family-row block, not the whole README; if that block is
+# absent (a copy-mode consumer whose README has a different shape), the check
+# degrades to a skip rather than false-failing every module — consistent with
+# the "absent index → no-op" contract.
+if [[ -d platform/profiles && -f README.md ]]; then
+  module_table_block="$(grep -E '^\| \*\*(Core|Stacks|Architectures|Data|Delivery|Management|Domains|Agents)\*\*' README.md || true)"
+  if [[ -n "$module_table_block" ]]; then
+    while IFS= read -r mod; do
+      rel="${mod#platform/}"
+      slug="${rel#profiles/}"; slug="${slug%/module.yaml}"   # <category>/<name>
+      leaf="${slug##*/}"
+      checks_run=$((checks_run + 1))
+      if ! grep -qF -- "\`$leaf\`" <<<"$module_table_block"; then
+        echo "✗ README.md: missing Module System table entry for $slug (leaf \`$leaf\`)" >&2
+        violations=$((violations + 1))
+      fi
+    done < <(find platform/profiles -name module.yaml | sort)
+  fi
+fi
+
+# ----------------------------------------------------------------------
+# Check 11 — Manifest-active modules → HARNESS.md Active Modules (OPP-0068)
+# ----------------------------------------------------------------------
+# Manifest-relative parity (the inverse of checks 8-10): every module declared
+# active in harness.manifest.yaml's `modules:` block must be reflected in
+# HARNESS.md's active-module source-of-truth doc. Unlike the platform-only
+# catalog checks, this runs for consumers too (they have a manifest + a
+# HARNESS.md). Dependency-free manifest extraction (the `modules:` block is a
+# flat `family: [- name]` structure). Guarded on the `## Active Modules`
+# section being present (skip if absent → consumer-safe).
+manifest_file="harness.manifest.yaml"
+if [[ -f "$manifest_file" && -f HARNESS.md ]] && grep -qE '^#+[[:space:]]+Active Modules' HARNESS.md; then
+  while IFS= read -r active_mod; do
+    [[ -n "$active_mod" ]] || continue
+    checks_run=$((checks_run + 1))
+    assert_contains "HARNESS.md" "$active_mod" "$active_mod" "HARNESS.md active module"
+  done < <(awk '
+      /^modules:/            { inblk=1; next }
+      inblk && /^[A-Za-z]/   { inblk=0 }
+      inblk && /^[[:space:]]*-[[:space:]]/ {
+          sub(/^[[:space:]]*-[[:space:]]*/, "");
+          sub(/[[:space:]]*#.*$/, "");
+          sub(/[[:space:]]+$/, "");
+          print
+      }
+    ' "$manifest_file" | sort -u)
 fi
 
 # ----------------------------------------------------------------------

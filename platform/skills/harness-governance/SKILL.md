@@ -179,14 +179,20 @@ A few signature notes worth highlighting:
   anchored on the record's link-target *path* (which appears only in the
   nav row), never the bare id (which SUMMARY descriptions cite in prose, so
   a bare-id grep would pass with the nav row deleted). Per OPP-0055.
-  Checks 8–9 (OPP-0067) extend it to the **module-catalog mirror**: every
-  profile module's `<category>/<name>` slug must appear in the
-  `harness-onboarding/SKILL.md` catalog (which forbids selecting an unlisted
-  module) and the `discovery-to-composition.md` Step-6 matrix — the two
-  full-slug surfaces #232 hand-reconciled. Both are platform-only files, so
-  each check is existence-guarded (consumer no-op). The README Module System
-  table (leaf-in-category) and `HARNESS.md` Active Modules (manifest-relative)
-  are a documented OPP-0067 follow-on.
+  Checks 8–11 (OPP-0067 + OPP-0068) extend it to the **module-catalog
+  mirror** across all five surfaces the `CLAUDE.md` reflex names. 8–9
+  (OPP-0067): every profile module's `<category>/<name>` slug must appear in
+  the `harness-onboarding/SKILL.md` catalog (which forbids selecting an
+  unlisted module) and the `discovery-to-composition.md` Step-6 matrix — the
+  two full-slug surfaces #232 hand-reconciled. 10–11 (OPP-0068) close the
+  last two: check 10 reconciles the README Module System table (modules by
+  **leaf** name in category rows — backtick-bounded leaf anchor, scoped to
+  the family-row block, skipped if that block is absent); check 11 reconciles
+  `HARNESS.md` Active Modules, which is **manifest-relative**, asserting
+  every module active in `harness.manifest.yaml` is reflected in `HARNESS.md`.
+  Checks 8–10 are platform-only (consumer no-op); **check 11 runs for
+  consumers too** (they have a manifest + a `HARNESS.md`), gating their
+  active-module doc parity.
 - **`validate-status-parity.sh`** takes only `[<project-root>]`.
   **Always-on** structural reconciler (like `validate-list-completeness`
   and `validate-catalog-counts`, not module-gated): for every

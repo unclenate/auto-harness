@@ -11,6 +11,27 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-11-17 — File OPP-0071 (proposed): anchor the module-catalog-mirror checks (8/9/11) to the enumeration
+
+Files **OPP-0071** (proposed, held at the gate) from an adversarial pass over the OPP-0067/0068/0069
+mechanization. Finding: checks 8/9/11 of `validate-list-completeness.sh` match with `assert_contains`'s
+unanchored, whole-file `grep -qF`, so each passes whenever the module slug (8/9) or bare name (11) appears
+**anywhere** in the target file — including prose — not when the capability-bearing catalog/active-module row
+is present, re-creating the OPP-0055 prose-masking false-negative the anchored checks (1–3) and the
+backtick-table-scoped check 10 were built to avoid. Mutation-test-verified against the live validator on `main`:
+deleting the `management/privacy-by-design` onboarding-catalog row — making the module unselectable, the exact
+capability regression check 8's comment names — passes 635/635 green because four prose mentions survive; the
+`HARNESS.md` `base`/`kernel/base` active rows mask the same way under check 11. 27 of 54 modules recur in prose.
+Two coupled § 3 doc-honesty gaps are now live on `main` since #238: refinement (a)'s claim the slug anchor is
+"unique to the enumeration per OPP-0055" is false on disk (the inverse-overclaim class #232 fixed, re-created in
+the principle layer), and refinement (c) ranks the machine-consumed allow-list highest-severity while check 8
+guarding it is the weakest of the five. The test suite has prose-resistance tests for every anchored check and
+none for 8/9/11. Proposed fix (design-only): row-anchor the three greps the way check 10 already does (reuse
+check 12's column extraction for check 11, making 11+12 a true column set-equality), add the three missing
+prose-resistance tests, and reconcile the § 3 claims — no count change (extends existing checks; stays 27).
+Check 10 and check 12 are correctly anchored and out of scope. This change-log entry is the audit-trail
+companion satisfier for the paired `docs/knowledge/shared-observations.md` distillation record.
+
 ## 2026-11-16 — Accept + implement OPP-0070: promote the module-catalog-mirror mechanization into operating-principles § 3
 
 Accepts OPP-0070 **OPP-direct** and makes the § 3 edits in the same PR (collapsing the OPP-0037 → § 10 two-PR

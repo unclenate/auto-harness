@@ -6,7 +6,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0070 — Promote the module-catalog-mirror mechanization into operating-principles § 3
 
-**Status:** proposed
+**Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-11-16
 **Last Updated:** 2026-11-16
@@ -103,13 +103,20 @@ they fade into the ledger's history. No external pressure.
 
 ## Disposition
 
-<!--
-Empty while Status: proposed. Populated when it flips to accepted / declined / superseded.
--->
+**Accepted (2026-11-16), OPP-direct.** The maintainer chose to implement the § 3 edits in the same PR as the
+acceptance (collapsing the OPP-0037 → § 10 two-PR recipe to one, since the scope was settled and the edit is
+prose-only). Both edits landed: line 63 reconciled to state the five-surface propagation is now
+machine-enforced by `validate-list-completeness.sh` checks 8–12 (closing the § 10-inward understatement), and
+the mirror-drift law bullet extended with the module-catalog mirror as its second worked instance carrying
+all three crystallized refinements (per-surface anchor + authorship; add-rot-vs-remove-rot asymmetry;
+govern-not-format severity). The § 3 "Last updated" trail records the promotion per the file's convention.
 
 ## Promotion
 
-<!--
-Empty until accepted. Then the half-day section-impl PR editing operating-principles.md § 3
-(lines 63 + 70), with its change-log / ADR companion.
--->
+Implemented directly (OPP-direct) in the same PR as this record:
+
+- `docs/operating-principles.md` § 3 — line 63 reconciled (propagation is machine-enforced), the mirror-drift
+  law extended with the module-catalog second instance + three refinements, and the § 3 "Last updated" trail
+  updated.
+- Companion satisfier for the `operating-principles.md` edit: a `docs/project/change-log.md` entry in the
+  same commit. No validator/code change (principle-layer prose only).

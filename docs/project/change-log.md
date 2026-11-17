@@ -11,6 +11,24 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-11-16 — Accept + implement OPP-0070: promote the module-catalog-mirror mechanization into operating-principles § 3
+
+Accepts OPP-0070 **OPP-direct** and makes the § 3 edits in the same PR (collapsing the OPP-0037 → § 10 two-PR
+recipe to one, since the scope was settled and the edit is prose-only). Two changes to
+`docs/operating-principles.md` § 3: **(1)** the active-module-catalog propagation bullet (line 63) is
+reconciled to state that the five-surface propagation is now **machine-enforced** by
+`validate-list-completeness.sh` checks 8–12 (OPP-0067/0068/0069), closing the § 10-inward **understatement**
+where the doc read the propagation as honor-system after we mechanized it (the inverse of the overclaim class #232
+fixed); **(2)** the mirror-drift law bullet is extended with the **module-catalog mirror as its second,
+richer worked instance** (alongside the status-parity one), carrying the three crystallized refinements — a
+multi-surface mirror mechanizes into a *family* of per-surface checks (each with its own anchor + authorship);
+a bidirectional mirror's two directions have *asymmetric drift-frequency by triggering-edit* (add-rot eager,
+remove-rot declinable); and a mirror's severity is set by *what its surface governs*, not its format
+(a machine-consumed allow-list drifting is a capability regression). The § 3 "Last updated" trail records the
+promotion per the file's own convention. No validator/code change — principle-layer prose only; this
+change-log entry is the companion satisfier for the `operating-principles.md` edit. Completes the
+destination-side promotion of the five per-PR `shared-observations.md` records this cycle produced.
+
 ## 2026-11-16 — File OPP-0070: promote the module-catalog-mirror mechanization into operating-principles § 3
 
 Files OPP-0070 (`proposed`, design-only — no code change) proposing the destination-side promotion of this

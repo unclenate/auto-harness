@@ -1920,7 +1920,7 @@ class TestValidateListCompleteness < Minitest::Test
 
   def test_harness_without_active_modules_section_is_noop
     # Consumer-safety: a HARNESS.md with no "## Active Modules" section skips
-    # check 11 rather than false-failing every active module.
+    # checks 11-12 rather than false-failing.
     Dir.mktmpdir do |tmp|
       write_complete_fixture(tmp)
       File.write(File.join(tmp, "HARNESS.md"), "# Harness\n\nNo active-modules section here.\n")
@@ -1928,6 +1928,33 @@ class TestValidateListCompleteness < Minitest::Test
       assert_equal 0, code,
                    "HARNESS.md without an Active Modules section must be a no-op. stderr: #{err}"
       assert_match(/✓/, out)
+    end
+  end
+
+  def test_harness_lists_inactive_module_fails
+    # Check 12 (reverse, listed ⇒ active, OPP-0069): a module LISTED in the
+    # HARNESS.md Active Modules table that is NOT active in the manifest (a
+    # stale row left after deactivation) must exit 1. The active module
+    # (test-mod) stays correctly listed, so only the stale `ghost-mod` row
+    # trips the reverse check. Also confirms the purpose column's incidental
+    # backticks don't cause false matches.
+    Dir.mktmpdir do |tmp|
+      write_complete_fixture(tmp)
+      File.write(File.join(tmp, "HARNESS.md"), <<~MD)
+        # Harness
+
+        ## Active Modules
+
+        | Family | Module | Purpose |
+        |--------|--------|---------|
+        | Management | `test-mod` | writes to `docs/thing/` |
+        | Management | `ghost-mod` | deactivated but left in the doc |
+      MD
+      _out, err, code = run_validator("validate-list-completeness.sh", tmp)
+      assert_equal 1, code, "a stale HARNESS.md row for an inactive module must exit 1"
+      assert_match(/Active Modules lists `ghost-mod` but it is not active/, err)
+      # test-mod is both active and listed, so it must NOT be reported.
+      refute_match(/lists `test-mod` but it is not active/, err)
     end
   end
 

@@ -179,23 +179,28 @@ A few signature notes worth highlighting:
   anchored on the record's link-target *path* (which appears only in the
   nav row), never the bare id (which SUMMARY descriptions cite in prose, so
   a bare-id grep would pass with the nav row deleted). Per OPP-0055.
-  Checks 8–11 (OPP-0067 + OPP-0068) extend it to the **module-catalog
-  mirror** across all five surfaces the `CLAUDE.md` reflex names. 8–9
-  (OPP-0067): every profile module's `<category>/<name>` slug must appear in
+  Checks 8–12 (OPP-0067 + OPP-0068 + OPP-0069, hardened by OPP-0071) extend it
+  to the **module-catalog mirror** across all five surfaces the `CLAUDE.md`
+  reflex names. Each anchors on the token **unique to the enumeration** (a
+  table cell), never a whole-file substring (OPP-0055 / OPP-0071) — a prose
+  mention or an in-row cross-reference cannot stand in for the row. 8–9
+  (OPP-0067): every profile module's `<category>/<name>` slug must appear as
+  the first backtick-bounded token of a table **cell** (after a `|` or `+`) in
   the `harness-onboarding/SKILL.md` catalog (which forbids selecting an
   unlisted module) and the `discovery-to-composition.md` Step-6 matrix — the
-  two full-slug surfaces #232 hand-reconciled. 10–12 (OPP-0068 + OPP-0069)
-  close the last surface: check 10 reconciles the README Module System table
+  two slug surfaces #232 hand-reconciled. 10–12 (OPP-0068 + OPP-0069) close the
+  last surface: check 10 reconciles the README Module System table
   (modules by **leaf** name in category rows — backtick-bounded leaf anchor,
   scoped to the family-row block, skipped if that block is absent); checks
   11–12 reconcile `HARNESS.md` Active Modules, which is **manifest-relative**,
-  as a **bidirectional set-equality** — check 11 asserts every module active
-  in `harness.manifest.yaml` is listed in `HARNESS.md` (active⇒listed), check
-  12 asserts every module listed in the `HARNESS.md` Active Modules table is
-  active in the manifest (listed⇒active, catching a stale row for a
-  deactivated module). Checks 8–10 are platform-only (consumer no-op);
-  **checks 11–12 run for consumers too** (they have a manifest + a
-  `HARNESS.md`), gating their active-module doc parity.
+  as a **bidirectional set-equality** over the Active-Modules module **column**
+  — check 11 asserts every module active in `harness.manifest.yaml` is a table
+  cell (active⇒listed, EXACT match so `base` can't mask via `kernel/base`),
+  check 12 asserts every table cell is active in the manifest (listed⇒active,
+  catching a stale row for a deactivated module); if no module-column cell
+  parses, 11–12 skip rather than false-fail. Checks 8–10 are platform-only
+  (consumer no-op); **checks 11–12 run for consumers too** (they have a
+  manifest + a `HARNESS.md`), gating their active-module doc parity.
 - **`validate-status-parity.sh`** takes only `[<project-root>]`.
   **Always-on** structural reconciler (like `validate-list-completeness`
   and `validate-catalog-counts`, not module-gated): for every

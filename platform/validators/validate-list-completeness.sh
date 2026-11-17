@@ -59,23 +59,32 @@
 # prose mention and pass with the nav row deleted. The relative path appears
 # only in the nav row's link target — one occurrence per record. Per OPP-0055.
 #
-# Checks 8–11 (OPP-0067 + OPP-0068) reconcile the module-catalog mirror the
-# CLAUDE.md propagation reflex names across five surfaces. 8–9 (OPP-0067)
-# anchor on the bare "<category>/<name>" slug both the onboarding catalog
-# (which forbids selecting an unlisted module) and the discovery→composition
-# matrix use — the two surfaces PR #232 hand-fixed an 8-module lag in.
-# 10–12 (OPP-0068 + OPP-0069) close the last surface: check 10 reconciles the
-# README Module System table, which lists modules by LEAF name in
-# category-grouped rows (backtick-bounded leaf anchor — leaves are
-# disk-verified unique — scoped to the family-row block, skipped if that
-# block is absent); checks 11–12 reconcile HARNESS.md Active Modules, which is
-# manifest-RELATIVE (a subset), as a BIDIRECTIONAL set-equality — check 11
-# (OPP-0068) asserts every module active in harness.manifest.yaml is listed in
-# HARNESS.md (active⇒listed), check 12 (OPP-0069) asserts every module listed
-# in the HARNESS.md Active Modules table is active in the manifest
-# (listed⇒active, catching a stale row for a deactivated module). Checks 8–10
-# are platform-only (consumer no-op); checks 11–12 run for consumers too (they
-# have a manifest + a HARNESS.md), gating their active-module doc parity.
+# Checks 8–12 (OPP-0067 / 0068 / 0069) reconcile the module-catalog mirror the
+# CLAUDE.md propagation reflex names across five surfaces. Each anchors on the
+# token UNIQUE TO THE ENUMERATION (never a whole-file substring — OPP-0055 /
+# OPP-0071): a prose sentence or an in-row cross-reference ("composes with
+# `slug`") must not stand in for the capability-bearing catalog row.
+#   8–9 (OPP-0067, hardened by OPP-0071): the "<category>/<name>" slug must
+#   appear as the first backtick-bounded token of a table CELL — preceded by a
+#   cell boundary `|` or a `+` multi-module separator — in the onboarding
+#   catalog (which forbids selecting an unlisted module) and the
+#   discovery→composition matrix (the two surfaces PR #232 hand-fixed an
+#   8-module lag in). Cell-anchored, not row-leading, because the discovery
+#   rubric lists modules in the answer column (sometimes `+`-joined).
+#   10 (OPP-0068): the README Module System table lists modules by LEAF name in
+#   category rows — backtick-bounded leaf anchor, leaves disk-verified unique,
+#   scoped to the family-row block, skipped if that block is absent.
+#   11–12 (OPP-0068 / 0069, hardened by OPP-0071): HARNESS.md Active Modules is
+#   manifest-RELATIVE (a subset), reconciled as a BIDIRECTIONAL set-equality
+#   over ONE extracted set — the module-column cells of the Active Modules
+#   table (field 3 under -F'|', backtick-filtered). Check 11 asserts every
+#   manifest-active module is a table cell (active⇒listed) by EXACT value
+#   match — so `base` no longer masks via `kernel/base` or a path mention;
+#   check 12 asserts every table cell is manifest-active (listed⇒active,
+#   catching a stale row for a deactivated module). If no module-column cell
+#   parses (a differently-shaped consumer HARNESS.md), 11–12 skip rather than
+#   false-fail. Checks 8–10 are platform-only (consumer no-op); checks 11–12
+#   run for consumers too (they have a manifest + a HARNESS.md).
 #
 # Exit codes:
 #   0  every discovered entity is referenced in its canonical index file(s)
@@ -152,6 +161,7 @@ cd "$PROJECT_ROOT"
 
 violations=0
 checks_run=0
+bt='`'   # a literal backtick, for grep -E patterns (avoids backtick-in-"" command substitution)
 
 # assert_contains FILE TOKEN HUMAN_ID LABEL
 #   Greps FILE for the fixed-string TOKEN. On miss, increments `violations`
@@ -166,6 +176,30 @@ assert_contains() {
   fi
   if ! grep -qF -- "$token" "$file"; then
     echo "✗ $file: missing $label row for $human_id" >&2
+    violations=$((violations + 1))
+  fi
+}
+
+# assert_cell_listed FILE SLUG LABEL
+#   Passes when SLUG appears as the first backtick-bounded token of a table
+#   cell — preceded by a cell boundary `|` or a `+` multi-module separator,
+#   then optional whitespace, then `` `SLUG` ``. This anchors on the
+#   ENUMERATION (a structured table listing), never a prose sentence or an
+#   in-cell cross-reference ("composes with `SLUG`"), closing the
+#   OPP-0055 / OPP-0071 prose-masking false-negative that an unanchored
+#   whole-file grep (assert_contains) allows: the capability-bearing catalog
+#   row must be present, not merely the slug somewhere in the file. SLUG is a
+#   `<category>/<name>` path (only `[a-z0-9-/]`, no regex metacharacters), so
+#   it is injected into the ERE pattern verbatim. Used by checks 8 and 9.
+assert_cell_listed() {
+  local file="$1" slug="$2" label="$3"
+  if [[ ! -f "$file" ]]; then
+    echo "✗ $label: index file missing: $file" >&2
+    violations=$((violations + 1))
+    return
+  fi
+  if ! grep -qE "(\||\+)[[:space:]]*${bt}${slug}${bt}" "$file"; then
+    echo "✗ $file: missing $label row for $slug (slug must be a table-cell listing, not a prose mention)" >&2
     violations=$((violations + 1))
   fi
 }
@@ -296,8 +330,11 @@ fi
 # The onboarding skill's module catalog forbids an onboarding agent from
 # selecting a module not listed in it, so a missing row makes a shipped
 # module unselectable (capability-suppressing, not cosmetic). Anchor on the
-# bare "<category>/<name>" slug the catalog rows use. Platform-only file →
-# guarded on existence (consumer no-op).
+# "<category>/<name>" slug as the first backtick-bounded cell of a catalog
+# table ROW (every module is listed as a row-leading cell), not a whole-file
+# substring — so a prose mention or an in-row cross-reference
+# ("composes with `slug`") can't mask a deleted catalog row (OPP-0071).
+# Platform-only file → guarded on existence (consumer no-op).
 onboarding_catalog="platform/skills/harness-onboarding/SKILL.md"
 if [[ -d platform/profiles && -f "$onboarding_catalog" ]]; then
   while IFS= read -r mod; do
@@ -305,13 +342,18 @@ if [[ -d platform/profiles && -f "$onboarding_catalog" ]]; then
     slug="${rel#profiles/}"           # <category>/<name>/module.yaml
     slug="${slug%/module.yaml}"       # <category>/<name>
     checks_run=$((checks_run + 1))
-    assert_contains "$onboarding_catalog" "$slug" "$slug" "module catalog"
+    assert_cell_listed "$onboarding_catalog" "$slug" "module catalog"
   done < <(find platform/profiles -name module.yaml | sort)
 fi
 
 # ----------------------------------------------------------------------
 # Check 9 — Profile modules → discovery→composition matrix (OPP-0067)
 # ----------------------------------------------------------------------
+# Same cell-listing anchor as check 8: the discovery rubric lists each module
+# as a backtick-bounded token in the "pick this" answer column (first in the
+# cell, or after a `+` multi-module separator). Anchoring on the cell boundary
+# rejects an in-cell cross-reference ("(composes with `slug`)") that an
+# unanchored grep would accept (OPP-0071).
 discovery_matrix="platform/workflow/discovery-to-composition.md"
 if [[ -d platform/profiles && -f "$discovery_matrix" ]]; then
   while IFS= read -r mod; do
@@ -319,7 +361,7 @@ if [[ -d platform/profiles && -f "$discovery_matrix" ]]; then
     slug="${rel#profiles/}"
     slug="${slug%/module.yaml}"
     checks_run=$((checks_run + 1))
-    assert_contains "$discovery_matrix" "$slug" "$slug" "discovery matrix"
+    assert_cell_listed "$discovery_matrix" "$slug" "discovery matrix"
   done < <(find platform/profiles -name module.yaml | sort)
 fi
 
@@ -374,36 +416,52 @@ if [[ -f "$manifest_file" && -f HARNESS.md ]] && grep -qE '^#+[[:space:]]+Active
       }
     ' "$manifest_file" | sort -u)"
 
-  # Check 11 (forward, active ⇒ listed): every manifest-active module appears
-  # in HARNESS.md.
-  while IFS= read -r active_mod; do
-    [[ -n "$active_mod" ]] || continue
-    checks_run=$((checks_run + 1))
-    assert_contains "HARNESS.md" "$active_mod" "$active_mod" "HARNESS.md active module"
-  done <<<"$manifest_active"
-
-  # Check 12 (reverse, listed ⇒ active, OPP-0069): every module LISTED in the
-  # HARNESS.md Active Modules table must be active in the manifest, so a module
-  # deactivated in the manifest but left in the doc can't silently overstate
-  # active governance (makes the pair a bidirectional set-equality). Extract
-  # the module name from column 2 of each table row — anchored on the module
-  # COLUMN (field 3 under `-F'|'`, since the leading pipe makes field 1 empty),
-  # filtered to rows whose module column contains a backtick, which skips the
-  # header and separator rows and ignores the purpose column's incidental
-  # backticks (e.g. `docs/knowledge/`). The section runs from the `Active
-  # Modules` heading to the next heading or horizontal rule.
-  while IFS= read -r listed_mod; do
-    [[ -n "$listed_mod" ]] || continue
-    checks_run=$((checks_run + 1))
-    if ! grep -qxF -- "$listed_mod" <<<"$manifest_active"; then
-      echo "✗ HARNESS.md: Active Modules lists \`$listed_mod\` but it is not active in $manifest_file (stale row / listed ⇒ active)" >&2
-      violations=$((violations + 1))
-    fi
-  done < <(awk '
+  # Modules LISTED in the HARNESS.md Active Modules table — extracted ONCE from
+  # the module COLUMN (field 3 under `-F'|'`, since the leading pipe makes
+  # field 1 empty), filtered to rows whose module column contains a backtick,
+  # which skips the header and separator rows and ignores the purpose column's
+  # incidental backticks (e.g. `docs/knowledge/`). The section runs from the
+  # `Active Modules` heading to the next heading or horizontal rule. Shared by
+  # checks 11 and 12 so the pair is a set-equality over ONE extracted set.
+  harness_listed="$(awk '
       /^#+[[:space:]]+Active Modules/                       { inblk=1; next }
       inblk && (/^#+[[:space:]]/ || /^---[[:space:]]*$/)    { inblk=0 }
       inblk && /^\|/                                        { print }
-    ' HARNESS.md | awk -F'|' '$3 ~ /`/ { col=$3; gsub(/[` ]/, "", col); print col }')
+    ' HARNESS.md | awk -F'|' '$3 ~ /`/ { col=$3; gsub(/[` ]/, "", col); print col }' | sort -u)"
+
+  # Consumer-safety / shape-robustness: if the Active Modules section exists but
+  # no module-column cell was extracted (a consumer whose HARNESS.md uses a
+  # different table shape), degrade to a skip rather than false-failing every
+  # active module — consistent with check 10's absent-block skip. The harness's
+  # own HARNESS.md parses, so its CI runs both directions live.
+  if [[ -n "$harness_listed" ]]; then
+    # Check 11 (forward, active ⇒ listed): every manifest-active module is a row
+    # in the HARNESS.md table — EXACT whole-value match against the extracted
+    # module column, never a substring of the whole doc. This closes the
+    # OPP-0071 mask where `base` matched inside `kernel/base` or a
+    # `platform/core/kernel/base/` path mention (unanchored assert_contains).
+    while IFS= read -r active_mod; do
+      [[ -n "$active_mod" ]] || continue
+      checks_run=$((checks_run + 1))
+      if ! grep -qxF -- "$active_mod" <<<"$harness_listed"; then
+        echo "✗ HARNESS.md: active module \`$active_mod\` (in $manifest_file) is not listed in the Active Modules table (active ⇒ listed)" >&2
+        violations=$((violations + 1))
+      fi
+    done <<<"$manifest_active"
+
+    # Check 12 (reverse, listed ⇒ active, OPP-0069): every module LISTED in the
+    # HARNESS.md Active Modules table must be active in the manifest — the other
+    # half of the set-equality, so a module deactivated in the manifest but left
+    # in the doc can't silently overstate active governance.
+    while IFS= read -r listed_mod; do
+      [[ -n "$listed_mod" ]] || continue
+      checks_run=$((checks_run + 1))
+      if ! grep -qxF -- "$listed_mod" <<<"$manifest_active"; then
+        echo "✗ HARNESS.md: Active Modules lists \`$listed_mod\` but it is not active in $manifest_file (stale row / listed ⇒ active)" >&2
+        violations=$((violations + 1))
+      fi
+    done <<<"$harness_listed"
+  fi
 fi
 
 # ----------------------------------------------------------------------

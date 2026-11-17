@@ -11,6 +11,31 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-11-17 — Accept + implement OPP-0071 OPP-direct: anchor the module-catalog-mirror checks (8/9/11) to the enumeration
+
+Accepts **OPP-0071 OPP-direct** and ships the fix in the same PR. `validate-list-completeness.sh` checks 8/9/11
+no longer use the unanchored whole-file `grep -qF` that let a prose mention or an in-row cross-reference stand in
+for a module's catalog row. **Checks 8/9:** a new `assert_cell_listed` helper requires the `<category>/<name>`
+slug to appear as the first backtick-bounded token of a table **cell** (after a `|` cell boundary or a `+`
+multi-module separator) — cell-anchored rather than row-leading because the discovery rubric lists modules in the
+answer column, sometimes `+`-joined. **Check 11:** now reuses check 12's module-column extraction and asserts an
+**exact** whole-value match against it, making checks 11+12 a true bidirectional set-equality over one extracted
+set and closing the `base` ⊂ `kernel/base` substring mask; if no module-column cell parses (a differently-shaped
+consumer `HARNESS.md`), 11–12 skip rather than false-fail. One discovery entry (`architectures/agentic-ui`,
+previously buried in a prose parenthetical) was **normalized to a structural `+` listing** so the anchor covers
+it — a selectable module should be listed, not merely mentioned. Added three prose-resistance tests (catalog
+prose/cross-reference, discovery cross-reference, HARNESS substring mask) plus a `+`-separator positive control;
+the four mutation deletions that previously passed 635/635 green now each fail, the single-mention control still
+fails, and the full suite is 282 runs / 1020 assertions / 0 failures (live validator 638; shellcheck clean). No
+validator count change — extends existing checks; **stays 27**. Checks 10 and 12 were already correctly anchored
+and untouched. Reconciled the governance docs the fix makes accurate: `docs/operating-principles.md` § 3
+refinement (a) now describes the real per-surface anchors and its "token unique to the enumeration" claim is
+**true-on-disk** rather than asserted (closing the inverse-overclaim OPP-0071 flagged), a new refinement (d)
+records *a mechanization is only as strong as its proven anchor*, and the § 3 "Last updated" trail + the
+`harness-governance` SKILL.md checks-8–12 description are updated. Distillation: a `shared-observations.md`
+implementation record (per-surface anchor shape, content-normalization-as-part-of-the-fix, shared extraction,
+decoy fixtures); this change-log entry is its audit-trail satisfier.
+
 ## 2026-11-17 — File OPP-0071 (proposed): anchor the module-catalog-mirror checks (8/9/11) to the enumeration
 
 Files **OPP-0071** (proposed, held at the gate) from an adversarial pass over the OPP-0067/0068/0069

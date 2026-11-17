@@ -237,7 +237,7 @@ modules. Use it to populate `harness.manifest.yaml`.
 | Running many agent sessions and want cross-session patterns consolidated *out-of-band* into proposals a human promotes? | `management/memory-consolidation` (default-off, propose-only "dreaming"; declare the steering file in `docs/knowledge/dreaming-policy.yaml`; the out-of-band complement to in-band PRD-0004 distillation) |
 | Does the project have strategic positioning concerns (a wedge, a buyer, a thesis) that must stay coherent across many docs over time? | `management/canonical-position` (opt-in; one ratified `docs/canonical-position.md` every strategy-shaped artifact cites) |
 | Ships a Model Context Protocol (MCP) server as the product? (§8.3) | `architectures/mcp-server` |
-| In-product agentic surface — copilot, generative UI, or conversational-primary? (§8.3) | `domains/agentic-interfaces` (add `architectures/agentic-ui` only when the agent surface IS the topology, not a copilot bolted onto a web-app) |
+| In-product agentic surface — copilot, generative UI, or conversational-primary? (§8.3) | `domains/agentic-interfaces` + `architectures/agentic-ui` (the latter only when the agent surface IS the topology, not a copilot bolted onto a web-app) |
 | Plain JavaScript, no TypeScript? (§8.1) | `stacks/node-javascript` |
 | Legacy CoffeeScript source? (§8.1) | `stacks/coffeescript` |
 | Browser-side persistence (IndexedDB / localStorage / OPFS)? (§8.1) | `data/browser-storage` |

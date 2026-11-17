@@ -6,7 +6,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0071 — Anchor the module-catalog-mirror checks (8/9/11) to the enumeration — close the prose-masking false-negative
 
-**Status:** proposed
+**Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-11-17
 **Last Updated:** 2026-11-17
@@ -125,13 +125,43 @@ doctrine). The evidence is fresh (adversarial pass this session), no external pr
 
 ## Disposition
 
-<!--
-Empty while Status: proposed. Populated when status flips to exploring,
-accepted, declined, or superseded.
--->
+**Accepted (2026-11-17), OPP-direct.** The maintainer accepted and implemented the fix in the same PR as the
+status flip (scope was small and well-understood, 0067/0068/0069 precedent). All three weak checks were
+hardened to anchor on the enumeration, the three missing prose-resistance tests were added, and the § 3 claims
+were reconciled — the design arm (harden, not walk back) was chosen, so refinement (a)'s "token unique to the
+enumeration" claim is now true-on-disk rather than asserted.
+
+Chosen anchors, per surface shape (the OPP-0055 discipline, verified by mutation test this time):
+
+- **Checks 8/9** — a new `assert_cell_listed` helper matches the slug only as the **first backtick-bounded
+  token of a table cell** (preceded by a cell boundary `|` or a `+` multi-module separator). Cell-anchored
+  rather than row-leading because the discovery rubric lists modules in the answer column, sometimes `+`-joined;
+  one discovery entry (`architectures/agentic-ui`, previously buried in a prose parenthetical) was normalized to
+  a structural `+` listing so the niche module is listed, not merely mentioned.
+- **Check 11** — now reuses check 12's own module-column extraction and asserts an **exact** whole-value match
+  against it (`grep -qxF`), making checks 11+12 a true bidirectional set-equality over one extracted set. This
+  closes the `base` ⊂ `kernel/base` substring mask. If no module-column cell parses (a differently-shaped
+  consumer `HARNESS.md`), 11–12 skip rather than false-fail (check-10-style degradation).
+
+**Mutation-test evidence (post-fix):** the four deletions that previously passed 635/635 green now each fail
+(`privacy-by-design` catalog row, `privacy-by-design` discovery row, `base` and `kernel/base` HARNESS rows);
+the single-mention control still fails as before. Full suite 282 runs / 1020 assertions / 0 failures (four new
+prose-resistance tests: catalog, discovery cross-reference, the `+`-separated positive control, and the
+HARNESS substring mask). Live validator 638 assertions green; shellcheck clean. No validator count change
+(extends existing checks; stays 27). Checks 10 and 12 were already correctly anchored and untouched.
 
 ## Promotion
 
-<!--
-Empty until accepted. Then OPP-direct impl note or a link to PRD-NNNN.
--->
+Implemented directly (OPP-direct) in the same PR as this record:
+
+- `platform/validators/validate-list-completeness.sh` — `assert_cell_listed` helper (checks 8/9); checks 11/12
+  rewritten as an exact set-equality over a shared `harness_listed` extraction; header reconciled.
+- `platform/validators/test/test_validators_integration.rb` — three new prose-resistance tests + one `+`
+  positive control; the check-11 message assertion updated.
+- `platform/workflow/discovery-to-composition.md` — `agentic-ui` normalized to a structural `+` listing.
+- `docs/operating-principles.md` § 3 — refinement (a) reconciled (anchors described accurately, claim now
+  true-on-disk), new refinement (d) added (a mechanization is only as strong as its *proven* anchor), "Last
+  updated" trail updated.
+- `platform/skills/harness-governance/SKILL.md` — checks 8–12 description reconciled.
+- Companion satisfiers: a `docs/knowledge/shared-observations.md` distillation record (fired by the OPP edit)
+  and a `docs/project/change-log.md` entry (its audit-trail satisfier).

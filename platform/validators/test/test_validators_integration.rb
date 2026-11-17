@@ -1846,6 +1846,64 @@ class TestValidateListCompleteness < Minitest::Test
     end
   end
 
+  def test_onboarding_catalog_slug_in_prose_does_not_satisfy
+    # OPP-0071: the slug appears in a prose sentence AND as an in-row
+    # cross-reference ("composes with `management/test-mod`"), but NOT as a
+    # row-leading catalog cell. The cell-anchored check 8 must still fail — a
+    # prose / cross-reference mention cannot stand in for the capability-bearing
+    # catalog row (the pre-fix whole-file substring grep false-passed here,
+    # which is how a deleted row for an in-prose module shipped unselectable).
+    Dir.mktmpdir do |tmp|
+      write_complete_fixture(tmp)
+      File.write(File.join(tmp, "platform/skills/harness-onboarding/SKILL.md"), <<~MD)
+        # Catalog
+
+        The `management/test-mod` overlay is discussed in this prose sentence.
+
+        | `other-mod` | composes with `management/test-mod` | artifacts |
+      MD
+      _out, err, code = run_validator("validate-list-completeness.sh", tmp)
+      assert_equal 1, code, "slug only in prose / cross-reference must not satisfy check 8"
+      assert_match(%r{missing module catalog row for management/test-mod}, err)
+    end
+  end
+
+  def test_discovery_matrix_cross_reference_does_not_satisfy
+    # OPP-0071: the slug appears only inside another row's answer cell as a
+    # parenthetical cross-reference ("(composes with `management/test-mod`)"),
+    # not as a cell-leading answer. The cell-anchored check 9 must fail.
+    Dir.mktmpdir do |tmp|
+      write_complete_fixture(tmp)
+      File.write(File.join(tmp, "platform/workflow/discovery-to-composition.md"), <<~MD)
+        # Step 6
+
+        | Some condition? | `other-mod` (composes with `management/test-mod`) |
+      MD
+      _out, err, code = run_validator("validate-list-completeness.sh", tmp)
+      assert_equal 1, code, "slug only as an in-cell cross-reference must not satisfy check 9"
+      assert_match(%r{missing discovery matrix row for management/test-mod}, err)
+    end
+  end
+
+  def test_discovery_matrix_plus_separated_listing_satisfies
+    # OPP-0071 positive control: a module listed after a `+` multi-module
+    # separator (`` `a` + `management/test-mod` ``) is a structural listing and
+    # MUST satisfy check 9 — the cell anchor accepts a boundary `|` OR a `+`, so
+    # a legitimate multi-module answer (and the normalized `agentic-ui` entry)
+    # is not false-failed.
+    Dir.mktmpdir do |tmp|
+      write_complete_fixture(tmp)
+      File.write(File.join(tmp, "platform/workflow/discovery-to-composition.md"), <<~MD)
+        # Step 6
+
+        | Always include | `other-mod` + `management/test-mod` |
+      MD
+      out, err, code = run_validator("validate-list-completeness.sh", tmp)
+      assert_equal 0, code, "a `+`-separated module listing must satisfy check 9. stderr: #{err}"
+      assert_match(/✓/, out)
+    end
+  end
+
   def test_module_catalog_surfaces_absent_is_noop
     # Consumer-safety: a downstream project has no onboarding catalog or
     # discovery matrix (platform-only files). Deleting them from the complete
@@ -1914,7 +1972,30 @@ class TestValidateListCompleteness < Minitest::Test
       MD
       _out, err, code = run_validator("validate-list-completeness.sh", tmp)
       assert_equal 1, code, "manifest-active module missing from HARNESS.md must exit 1"
-      assert_match(/missing HARNESS.md active module row for test-mod/, err)
+      assert_match(/active module `test-mod`.*is not listed in the Active Modules table/, err)
+    end
+  end
+
+  def test_harness_active_module_substring_does_not_satisfy
+    # OPP-0071: the active module's bare name appears only as a SUBSTRING of a
+    # longer module-column token (a sibling name / a path), never as its own
+    # cell value. Check 11's EXACT column set-equality (not a whole-file
+    # substring grep) must fail — this is the `base` ⊂ `kernel/base` mask that
+    # the pre-fix assert_contains false-passed.
+    Dir.mktmpdir do |tmp|
+      write_complete_fixture(tmp)
+      File.write(File.join(tmp, "HARNESS.md"), <<~MD)
+        # Harness
+
+        ## Active Modules
+
+        | Family | Module | Purpose |
+        |--------|--------|---------|
+        | Core | `kernel/test-mod` | `test-mod` appears only inside this longer token |
+      MD
+      _out, err, code = run_validator("validate-list-completeness.sh", tmp)
+      assert_equal 1, code, "active-module name only as a substring must not satisfy check 11"
+      assert_match(/active module `test-mod`.*is not listed in the Active Modules table/, err)
     end
   end
 

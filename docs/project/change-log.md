@@ -11,20 +11,26 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
-## 2026-11-17 — OPP-0072: audit capture settled by an account test
+## 2026-11-17 — OPP-0072: account-test observations and a second adversarial review
 
-Updates **OPP-0072** (still proposed) with the results of a test in an unused sandbox AWS account, run with the
-maintainer's authorization under a dedicated read-only role and torn down afterwards. The record's largest open
-risk was that audit capture for the AWS MCP Server could not be claimed from documentation alone.
+Updates **OPP-0072** (still proposed; confidence lowered to low) with a test in an unused sandbox AWS account
+and the findings of a four-reviewer adversarial pass run on the result. The test was authorized by the
+maintainer; its tool calls ran under a dedicated read-only role, setup and teardown ran as an administrator
+user, and the test resources were deleted.
 
-Findings: tool calls are recorded by CloudTrail as management events and need no event selector (AWS's sample
-record shows a data event; that reading is corrected); the submitted script and its result are redacted, so
-CloudTrail shows which identity called which tool and which AWS APIs ran, not what code was sent; each
-tool-call event lists downstream request IDs that join to ordinary API events carrying the MCP service
-principal, and the allow or deny outcome appears only there; the authenticated tool listing matches the
-unauthenticated one; IAM is enforced on the path. Two risks move to settled. Two narrower ones replace them:
-host-side capture of the script text is a PRD decision, and the test covered one region and the proxy path
-only. No design change to the proposal; no status change. Generalized in `docs/knowledge/shared-observations.md`.
+Observed: `aws___run_script` calls are recorded by CloudTrail as management events (AWS's sample shows a data
+event); the submitted script and its result are redacted; each event lists downstream request IDs that join to
+ordinary API events carrying the MCP service principal, and the allow or deny outcome appears only there; one
+of the four calls, to a read-only tool, left no record; the authenticated tool listing matches the
+unauthenticated one. AWS's documentation and the observed service disagree on four points, recorded in the OPP.
+
+The review corrected overstatements in the first write-up of the test and several factual claims in the
+record (the `call_aws` removal date, the number of metadata booleans, a false statement about
+`agents/openclaw`'s tier ceiling, and the sourcing of AWS's statements about its condition keys). It also found
+design defects, recorded in the OPP as findings to resolve before acceptance: the human write gate is not yet
+a gate; the allow-list rule fails open on actions AWS labels Read; the limits are implicit denies; and the
+validator cannot vouch for the deployed role. The proposal's eight parts are unchanged; no status change.
+Generalized in `docs/knowledge/shared-observations.md`.
 
 ## 2026-11-17 — File OPP-0072 (proposed): govern agent access to AWS through the AWS MCP Server
 

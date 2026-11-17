@@ -11,6 +11,24 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-11-16 — File OPP-0070: promote the module-catalog-mirror mechanization into operating-principles § 3
+
+Files OPP-0070 (`proposed`, design-only — no code change) proposing the destination-side promotion of this
+cycle's five `shared-observations.md` records into `operating-principles.md` § 3. The per-PR PRD-0004
+distillation was already satisfied (one record per PR #230/#233/#234/#235/#236, each CI-validated), but § 3
+— the durable principle layer — has not caught up to the mechanization it motivated and is now **understated
+about its own enforcement**: line 63 still states the five-surface module-catalog propagation as a manual
+"in the same pass" obligation when OPP-0067/0068/0069 mechanized it (checks 8–12, bidirectional), and line
+70's "mechanize the reconciliation" law cites only `validate-status-parity` while the module-catalog mirror
+is now a second, richer worked instance. The line-63 gap is the **inverse of the overclaim class #232 fixed**
+(§ 10 applied inward — the doc now under-states what the harness enforces). OPP-0070 proposes reconciling
+line 63 and extending line 70 with the three crystallized refinements (multi-surface mirror = a family of
+per-surface checks by anchor + authorship; bidirectional directions have asymmetric drift-frequency by
+triggering-edit; severity set by what the surface governs, not its format). Filed proposed, not OPP-direct,
+because § 3 is a governance entrypoint and promotion to it is maintainer-gated (the OPP-0037 → § 10 two-PR
+recipe: design-only OPP, then a half-day section-impl PR with its change-log/ADR companion). Index surfaces +
+PRD-0004 distillation observation in the same commit.
+
 ## 2026-11-16 — Accept + implement OPP-0069: check 12, the reverse HARNESS.md parity (listed ⇒ active)
 
 Accepts OPP-0069 **OPP-direct** and ships **check 12** of `validate-list-completeness.sh`, completing the

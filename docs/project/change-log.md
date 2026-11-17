@@ -11,6 +11,29 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-11-17 — File OPP-0072 (proposed): govern the AWS agent toolkit as a trust-tiered target
+
+Files **OPP-0072** (proposed, held at the gate) from a three-agent exploration of AWS's official
+[`agent-toolkit-for-aws`](https://github.com/aws/agent-toolkit-for-aws) and the harness's reference-tool
+machinery. The toolkit's core is the GA AWS **MCP Server** (reached via a local SigV4 proxy) exposing a generic
+**`call_aws`** tool over the entire AWS API (~15,000+ operations) plus a sandboxed `run_script` and doc tools —
+with **no in-band approval, consent, or write-gating** (`--read-only` filters whole tools, not operations; AWS
+delegates all read/write control to IAM/SCP). One `call_aws` door spans Tier 0 (`Describe*`) to Tier 5
+(`iam:CreateRole`), which is exactly the Layer-4 governance gap auto-harness fills. The OPP proposes a **binding,
+not a vendor** (Half-enforced § 10, dependency-free, pinned, never vendored — the OPP-0065 discipline): (1) a
+`domains/aws` provider-operations module (modeled on `domains/supabase`); (2) a **per-operation tier-policy**
+`aws-tier-policy.yaml` (ACP-style classify-then-posture — verb-prefix default + a high-risk override set forcing
+Tier 5 for IAM/KMS/secrets/org/billing/deploy and sensitive reads; caps-never-grants with IAM as the independent
+floor); (3) `validate-aws-posture.sh` (opt-in/predict-clean skeleton, count 27→28); (4) a `harness-aws` skill
+(IAM context-key least-privilege, CloudTrail + CloudWatch `AWS-MCP` audit plane, untrusted-data discipline); (5)
+agent-side `TOOLS.md` registration pointing at the tier-policy (dogfood); (6) a positioning artifact. Stays on
+the operate-against-AWS axis (`architectures/ai-foundry-target` already owns the `aws-bedrock-agentcore`
+deployment axis). **Design-only** — breadth > half-day, so acceptance promotes to a PRD + staged impl PRs, not
+OPP-direct; external-toolkit claims are marked **pending primary-source confirmation** (OPP-0062 discipline).
+Distillation: a `docs/knowledge/shared-observations.md` record (a generic "call any API" tool defeats per-tool
+tiering → govern by per-operation classification + audit-binding, Half-enforced); this change-log entry is its
+audit-trail satisfier.
+
 ## 2026-11-17 — Accept + implement OPP-0071 OPP-direct: anchor the module-catalog-mirror checks (8/9/11) to the enumeration
 
 Accepts **OPP-0071 OPP-direct** and ships the fix in the same PR. `validate-list-completeness.sh` checks 8/9/11

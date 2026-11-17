@@ -11,28 +11,32 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
-## 2026-11-17 — File OPP-0072 (proposed): govern the AWS agent toolkit as a trust-tiered target
+## 2026-11-17 — File OPP-0072 (proposed): govern agent access to AWS through the AWS MCP Server
 
-Files **OPP-0072** (proposed, held at the gate) from a three-agent exploration of AWS's official
-[`agent-toolkit-for-aws`](https://github.com/aws/agent-toolkit-for-aws) and the harness's reference-tool
-machinery. The toolkit's core is the GA AWS **MCP Server** (reached via a local SigV4 proxy) exposing a generic
-**`call_aws`** tool over the entire AWS API (~15,000+ operations) plus a sandboxed `run_script` and doc tools —
-with **no in-band approval, consent, or write-gating** (`--read-only` filters whole tools, not operations; AWS
-delegates all read/write control to IAM/SCP). One `call_aws` door spans Tier 0 (`Describe*`) to Tier 5
-(`iam:CreateRole`), which is exactly the Layer-4 governance gap auto-harness fills. The OPP proposes a **binding,
-not a vendor** (Half-enforced § 10, dependency-free, pinned, never vendored — the OPP-0065 discipline): (1) a
-`domains/aws` provider-operations module (modeled on `domains/supabase`); (2) a **per-operation tier-policy**
-`aws-tier-policy.yaml` (ACP-style classify-then-posture — verb-prefix default + a high-risk override set forcing
-Tier 5 for IAM/KMS/secrets/org/billing/deploy and sensitive reads; caps-never-grants with IAM as the independent
-floor); (3) `validate-aws-posture.sh` (opt-in/predict-clean skeleton, count 27→28); (4) a `harness-aws` skill
-(IAM context-key least-privilege, CloudTrail + CloudWatch `AWS-MCP` audit plane, untrusted-data discipline); (5)
-agent-side `TOOLS.md` registration pointing at the tier-policy (dogfood); (6) a positioning artifact. Stays on
-the operate-against-AWS axis (`architectures/ai-foundry-target` already owns the `aws-bedrock-agentcore`
-deployment axis). **Design-only** — breadth > half-day, so acceptance promotes to a PRD + staged impl PRs, not
-OPP-direct; external-toolkit claims are marked **pending primary-source confirmation** (OPP-0062 discipline).
-Distillation: a `docs/knowledge/shared-observations.md` record (a generic "call any API" tool defeats per-tool
-tiering → govern by per-operation classification + audit-binding, Half-enforced); this change-log entry is its
-audit-trail satisfier.
+Files **OPP-0072** (proposed, held at the gate). The record was rewritten on its filing branch, before merge,
+after a three-reviewer adversarial pass overturned the first draft. That draft proposed a `domains/aws` module
+with a per-operation tier-policy YAML built around a generic `call_aws` tool; the review found AWS had removed
+that tool on 2026-08-31, that nothing would have enforced the YAML (Asserted-only, not the Half-enforced it
+claimed), that its verb-prefix classification failed open, and that the module failed `validate-trust-tier.sh`
+on its own sensitive paths.
+
+The corrected proposal: AWS's official [`agent-toolkit-for-aws`](https://github.com/aws/agent-toolkit-for-aws)
+centers on the managed AWS MCP Server, whose only API-executing tool (`aws___run_script`) takes one free-form
+Python string. An agent host therefore sees opaque code and cannot classify operations, and AWS offers no
+per-call human approval. AWS does stamp requests made through the server with IAM context keys
+(`aws:ViaAWSMCPService`, `aws:CalledViaAWSMCP`). The OPP proposes a binding in the reference-tool posture of
+`agents/acp` (PRD-0037 / PRD-0038), anchored in IAM: an agents-family module `platform/agents/aws-mcp/`; a
+declared posture artifact; reference permission-boundary templates (default deny, allow-list from AWS's
+access-level metadata, a curated never-allow set, writes through a separate human-assumed role, one role per
+environment); flat tool tiering in which `aws___run_script` takes the tier of its credentials and is never
+lowered on script content; a conformance validator that checks the declared policy against the never-allow set;
+governed off-switches; and governance of what the toolkit installs on the agent side. The binding is
+Asserted-only until the conformance validator and its canary tests exist. **Design-only** — acceptance promotes
+to a PRD with staged implementation PRs. Several AWS behaviors remain unverified and are listed in the record.
+
+Distillation: a `docs/knowledge/shared-observations.md` record (opaque-code tools leave nothing to classify at
+the host seam; a policy file is a control only with an engine and a test; verify a vendor's live surface before
+designing against it). This change-log entry is its audit-trail satisfier.
 
 ## 2026-11-17 — Accept + implement OPP-0071 OPP-direct: anchor the module-catalog-mirror checks (8/9/11) to the enumeration
 

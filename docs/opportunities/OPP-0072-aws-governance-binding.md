@@ -4,56 +4,120 @@ SPDX-License-Identifier: MIT OR Apache-2.0
 Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 -->
 
-# OPP-0072 — Govern the AWS agent toolkit as a trust-tiered target: a `domains/aws` binding
+# OPP-0072 — Govern agent access to AWS through the AWS MCP Server: an IAM-anchored `agents/aws-mcp` binding
 
 **Status:** proposed
 **Owner:** @unclenate
 **Created:** 2026-11-17
 **Last Updated:** 2026-11-17
-**Confidence:** medium (the harness-side pattern is well-precedented — `domains/supabase` shape, `agents/acp` tier-policy seam, the reference-tool genre — and the governance gap is confirmed from AWS's own primary sources; medium not high because several external-toolkit behaviors are marked pending primary confirmation, and the per-operation classification of ~15,000 AWS actions is a heuristic whose default/override split needs a PRD to settle)
+**Confidence:** medium (the tool surface, IAM context keys, and audit events below were re-read from AWS's current documentation and a live tool listing on 2026-11-17, and the harness-side findings were checked against the validators on disk; medium not high because several AWS behaviors remain unverified — listed under Risks — and because there is no AWS consumer yet to test the contract against)
 
 ---
 
+## Revision note
+
+This record was rewritten before merge, on its filing branch, after a three-reviewer adversarial pass on the first draft. The first draft proposed a `domains/aws` module with a per-operation tier-policy YAML that classified each `service:Action` at the agent host. The review found that design unbuildable and unsafe:
+
+- **Its central tool no longer exists.** The first draft was built around a generic `call_aws` tool. AWS removed that tool on 2026-08-31. The draft's research relied on the May 2026 general-availability announcement, which is stale on the tool surface.
+- **Nothing would have enforced it.** No component in any realistic deployment reads a policy YAML. Under operating-principles § 10 that is Asserted-only, not the Half-enforced the draft claimed.
+- **Its classification model failed open.** A verb-prefix default left every unlisted verb without a tier and rated privilege escalation, sensitive reads, and audit-log tampering as approvable.
+- **It failed this repo's own validators.** The proposed `tier.declared: 3` fails `validate-trust-tier.sh` against the proposed sensitive paths, and a `domains/` module's path-regex machinery never sees a tool call.
+
+The design below replaces it. The thesis that AWS leaves per-action approval to the agent host survives; the mechanism changes from "classify at the host" to "enforce in IAM, prove by conformance."
+
 ## Thesis
 
-AWS now ships an official agent toolkit — [`aws/agent-toolkit-for-aws`](https://github.com/aws/agent-toolkit-for-aws) (Apache-2.0), whose core is the GA **AWS MCP Server** reached through a local SigV4 **MCP proxy** ([`aws/mcp-proxy-for-aws`](https://github.com/aws/mcp-proxy-for-aws)). It exposes a tiny fixed tool set over the *entire* AWS API: **`call_aws`** (any of AWS's ~15,000+ API operations), **`run_script`** (sandboxed server-side Python, no network, inherits the caller's IAM), and **`search_documentation` / `read_documentation`**. It authenticates with the caller's own IAM credentials and records every call to CloudTrail plus a CloudWatch `AWS-MCP` namespace.
+AWS ships an official agent toolkit, [`aws/agent-toolkit-for-aws`](https://github.com/aws/agent-toolkit-for-aws) (Apache-2.0), whose core is the managed **AWS MCP Server**. An agent that connects to it can act across AWS under the caller's own IAM credentials.
 
-**The toolkit delivers breadth and omits governance.** It has **no built-in approval, consent, write-gating, dry-run, or human-in-the-loop**: its `--read-only` flag filters whole tools (not individual API operations), and AWS's own guidance *deliberately pushes all read/write classification and approval down to IAM / SCP*. One generic `call_aws` tool therefore spans the full risk range — a Tier-0 `ec2:DescribeInstances` and a Tier-5 `iam:CreateRole` enter through the same door with no distinction the agent host can see without classifying the operation itself.
+### What the server exposes (verified 2026-11-17)
 
-**That omission is exactly the Layer-4 gap auto-harness exists to fill.** This OPP proposes a governance **binding** (not a vendor, not a runtime): govern the AWS toolkit as an external **target** via a declarative contract + reference material (Half-enforced per operating-principles § 10), dependency-free, against a **pinned** proxy version — the same genre posture the harness already uses for ACP (OPP-0056) and the ruflo runtime (OPP-0065, *"govern the target's execution; do not import its governance"*). The binding has six parts (full spec deferred to a PRD on acceptance):
+| Tool | Annotated read-only | What it does |
+| --- | --- | --- |
+| `aws___run_script` | no (marked destructive) | Runs a Python script server-side; the script calls AWS APIs through a `call_boto3` helper |
+| `aws___get_presigned_url` | no | Issues S3 upload and download URLs |
+| `aws___get_tasks` | yes | Reads the status of long-running tasks |
+| `aws___search_documentation` | yes | Searches AWS documentation |
+| `aws___read_documentation` | yes | Reads AWS documentation |
+| `aws___retrieve_skill` | yes | Fetches AWS-maintained skill instructions at runtime |
+| `aws___list_regions` | yes | Lists regions |
+| `aws___get_regional_availability` | yes | Reports service availability by region |
 
-1. **A `domains/aws` module** (provider-operations overlay, modeled on `domains/supabase`) — declares `tier.declared: 3` + rationale, `sensitivePaths` for IAM / IaC (`\.tf$`, CDK, CloudFormation/SAM) / `\.aws/credentials` / secrets / KMS / deploy configs (so `validate-trust-tier.sh`'s inference table polices under-declaration), a `companionRules` floor (AWS IAM/infra edits require a `docs/security/risk-register.md` entry or an ADR), a `requiredArtifact` `docs/aws/aws-posture.md`, and `recommendedSkills: [harness-aws, harness-tools]`.
+Three facts about this surface drive the design:
 
-2. **A per-operation tier-policy** — `platform/profiles/domains/aws/aws-tier-policy.yaml`, modeled on `platform/agents/acp/tier-policy.yaml`: a two-step declarative function that **classifies** an AWS `service:Action` to a trust tier (a verb-prefix default — `Describe|List|Get|Search` → Tier 0–1; `Create|Put|Update|Modify|Attach|Start|Run|Invoke` → Tier 4; `Delete|Terminate|Detach|Revoke|Disable` → Tier 4–5 — plus an explicit **high-risk override set** forcing Tier 5 regardless of verb: `iam:*`, privileged `sts:AssumeRole*`, `kms:*`, `secretsmanager:*`, SecureString `ssm:PutParameter`, `organizations:*`, `account:*`, billing/`ce:*`, `cloudformation:*`/`cloudcontrol:*` deploy, VPC/network teardown — and sensitive *reads* like `secretsmanager:GetSecretValue` / `sts:GetSessionToken`), then maps tier to the ACP-style posture ladder (Tier 0 auto; Tier 3 no `allow_always`; Tier 4 `requiresHumanAuthorization`; Tier 5 `blockAtSeam` + `routeTo`). The policy only *caps* an action's own tier; IAM stays the independent floor, the tier gate is the added human ceiling (caps-never-grants).
+- **`aws___run_script` is the only tool that executes AWS APIs, and its input is one free-form Python `code` string.** The agent host sees opaque code, not an operation name. The script can build its API calls dynamically, so static inspection of the code is defeatable. AWS's own `secret-safety` hook has an open bypass for this reason.
+- **AWS provides no per-call human approval and says so.** Its guidance for approval before sensitive use is to "configure client-side hooks or permission rules in your MCP client." What AWS does provide is coarse: tool annotations, a proxy `--read-only` flag that removes every non-read-only tool (which today removes all AWS API access), an OAuth consent page, a profile allow-list, and one blocking hook shipped in the `aws-core` plugin.
+- **AWS stamps every downstream request made through the server with IAM context keys.** `aws:ViaAWSMCPService` is a Boolean, and `aws:CalledViaAWSMCP` carries the service principal (`aws-mcp.amazonaws.com`). Both are usable in identity policies and service control policies. The server defines no IAM actions of its own.
 
-3. **`validate-aws-posture.sh`** — the opt-in / predict-clean content-validator skeleton of `validate-sast-coverage.sh`: gated on the module being active (or `docs/aws/aws-posture.md` present), `--scan-file` mode, module-inactive → exit 0, shape/presence only. Asserts the posture doc's frontmatter (declared accounts/regions, a read/write default, an allowed-services or boundary mode, an IAM-context-key strategy, an approval-posture enum) and conformance-checks `aws-tier-policy.yaml`'s own shape. Validator count 27 → 28, propagated per the catalog discipline.
+### The gap
 
-4. **A `harness-aws` skill** — on-demand guidance: the tier-policy table; the **IAM context-key** least-privilege pattern (an IAM policy that lets a human role write but restricts the MCP-server call path to read-only, distinguishing agent calls from human calls); CloudTrail + CloudWatch `AWS-MCP` as the audit/verification plane; the untrusted-data discipline (`call_aws` results, `run_script` output, and AWS docs are untrusted input — no self-elevation); the Tier 4/5 human gate; and "pin the proxy, never vendor."
+Per-action control over what an agent may do in AWS exists only where the consumer writes IAM policy by hand. The agent host cannot supply it, because the host cannot see operations. Nothing connects a project's declared intent ("this agent reads metadata in the sandbox account and nothing else") to the policy that would make it true, and nothing checks the two against each other.
 
-5. **Agent-side registration (dogfood)** — a `TOOLS.md` entry for the AWS MCP tools whose tier mapping **points at `aws-tier-policy.yaml`** (flagged tier-variable, classified per operation — not a single per-tool tier), wired into an agent pack (`agents/openclaw` and/or `agents/claude-code`) under the existing reviewGate that tool entries declare explicit tier requirements and adapters claim no permission above the kernel.
+### The proposal
 
-6. **A positioning artifact** (OPP-0056 analog) framing the AWS MCP server as a governed target: auto-harness supplies the classification + approval + consent the toolkit pushes to IAM; govern a pinned version; bind CloudTrail/CloudWatch as the verification surface; do not vendor the proxy.
+Govern the AWS MCP Server as an external target, in the reference-tool posture `agents/acp` established ([PRD-0037](../requirements/PRD-0037-acp-governance-bridge.md), [PRD-0038](../requirements/PRD-0038-acp-governance-proxy-reference.md)): the harness ships a contract, reference material, and a conformance check, and does not vendor or run the toolkit. The binding has eight parts. Full specification is deferred to a PRD on acceptance.
 
-Scope guard: stay on the **operate-against-AWS** axis. `architectures/ai-foundry-target` + `validate-foundry-target.sh` already own `aws-bedrock-agentcore` as a *deployment-landing-zone* enum value — this OPP must not duplicate that axis.
+1. **An agents-family module, `platform/agents/aws-mcp/`.** The repo's taxonomy puts tool-seam governance under Agents ("AI-tool operating packs"); the only existing tier-policy lives in `platform/agents/acp/`. Governance of IaC and deploy file paths stays with `delivery/production-saas`, which already owns `^terraform/`, `^deploy/`, and `^infra/`. The module declares its trust tier honestly — expected to be 5, since it governs production-reaching operations — and the PRD must settle what that requires of a consumer's `project.criticality`.
+
+2. **A declared posture artifact, `docs/aws/aws-mcp-posture.md`.** Frontmatter declares: each AWS account with an environment class (sandbox, non-production, production); permitted regions; the connection path (OAuth direct or SigV4 proxy); the agent's role per environment; the separate human-assumed role used for writes; the proxy version pin where a proxy is used; and the toolkit plugins installed.
+
+3. **Enforcement anchored in IAM.** The harness ships reference policy templates for the agent role's permission boundary, conditioned on the MCP context keys:
+   - **Default deny.** Anything not positively allowed is denied, including actions AWS adds later.
+   - **Allow-list from AWS's own access-level metadata** (the Service Authorization Reference's List, Read, Write, Permissions management, and Tagging levels), pinned by snapshot. List-level actions are allowed. Read-level actions are allowed only for control-plane metadata, minus a curated set of secret-bearing and data-plane reads.
+   - **A curated never-allow set** on the agent role regardless of environment: permissions management, credential minting, role passing, compute launched with a role, resource-policy and cross-account sharing edits, audit-plane tampering (CloudTrail, Config, GuardDuty, log deletion), irreversible deletion, public exposure, spend commitments, and DNS and certificate changes.
+   - **Writes run through a separate human-assumed role.** That role assumption is the human gate for Tier 4 and Tier 5 work. The agent role cannot modify its own boundary or policies.
+   - **Environment is a first-class input.** One role per environment, with `aws:RequestedRegion` and `aws:ResourceAccount` conditions. An undeclared account or region is denied.
+
+4. **Flat tool tiering at the host.** The module declares a tier per tool, with no attempt to classify script content:
+   - `aws___run_script` takes the tier of the credentials it runs under. The default is Tier 5. It is lowered only when the posture declares a credential path whose policy has passed the conformance check as read-only, and never on the basis of what the script appears to do.
+   - `aws___get_presigned_url` is a data-movement path and is tiered as a write.
+   - The documentation, skill, region, and task tools are Tier 0, and their output is untrusted input.
+
+5. **A conformance validator, `validate-aws-mcp-posture.sh`.** Opt-in and requiredArtifact-gated, modeled on `validate-foundry-target.sh`. It asserts the posture frontmatter's shape, and it checks the policy document the posture names (committed in the consumer's repo) against the never-allow set: every action in the set must be denied for the agent role. A second, operator-run mode checks the deployed role using IAM policy simulation, in the way `validate-agent-bus.sh` is operator-run against live state.
+
+6. **Governed off-switches.** The module's sensitive paths cover the things that can disable the control: the posture document, the policy document, and MCP client configuration (`.mcp.json`, `.claude/settings*.json`, `.cursor/mcp.json`, `.vscode/mcp.json`), where an edit could add a second ungoverned AWS server, change the profile, or unpin the proxy. A companion rule requires a risk-register entry or an ADR when they change. The posture must also state that shell access to the `aws` CLI uses the same restricted role, since the context-key conditions apply only to calls made through the MCP server.
+
+7. **Governance of what the toolkit installs on the agent side.** The toolkit is more than a server. Its plugins install hooks; one plugin sends opt-in telemetry; its rules files and the server's own instructions tell the agent to prefer the MCP tools over Bash for AWS work; `aws___retrieve_skill` pulls AWS-updatable instructions at runtime; `aws configure agent-toolkit` installs skills globally into every detected agent's configuration; and some plugins bind to other endpoints with a different authentication model. The module treats all of this as untrusted input: declared in the posture, pinned where pinning is possible, reviewed on change, and unable to alter tier posture.
+
+8. **A `harness-aws` skill and templates.** The skill carries the tool tiers, the two-role model, the untrusted-input rules, and the audit plane. Templates live under `platform/templates/aws/` (posture, policy skeletons, risk register), plus an AWS entry in the consumer-facing `platform/templates/tools.md`. The repo-root `TOOLS.md` is not changed: this repo has no AWS surface, and that file's own rule is to list only tools active in the project.
+
+### What makes the § 10 label honest
+
+The binding is **Asserted-only** until part 5 exists. It becomes **Half-enforced** when the conformance validator ships with these tests:
+
+- A canary corpus: a fixed set of known-dangerous actions that must be denied by any conforming agent policy. The safe configuration must pass and each canary must fail a policy that allows it.
+- A default-deny test: an action absent from the pinned access-level snapshot is treated as denied, and a snapshot bump fails CI until new actions are triaged.
+- A test that `aws___run_script` is never assigned a lower tier on the basis of script content.
+- Fixtures for a malformed or missing policy document resolving to failure, not to a pass.
+
+IAM is the enforcement point; the harness's contribution is the declared posture, the reference policy, and the check that the two agree.
 
 ## Origin / Evidence
 
-- **Three-agent exploration this session (2026-11-17).** Primary external sources: the [toolkit repo](https://github.com/aws/agent-toolkit-for-aws), the [AWS GA announcement](https://aws.amazon.com/blogs/aws/the-aws-mcp-server-is-now-generally-available), the [MCP proxy repo](https://github.com/aws/mcp-proxy-for-aws), and PyPI. Established: the toolkit is an umbrella (managed remote MCP server + local proxy + on-demand skills + per-domain plugins), `call_aws` is a generic "any AWS API" tool (AWS cites 15,000+ operations), there is **no in-band approval/write-gate**, and the audit plane is CloudTrail + a CloudWatch `AWS-MCP` namespace.
-- **Codebase precedents (reuse, do not reinvent):** `platform/profiles/domains/supabase/module.yaml` (provider-overlay shape); `platform/agents/acp/tier-policy.yaml` + `platform/agents/acp/module.yaml` (the declarative classify-then-posture seam, Half-enforced); [`OPP-0065`](OPP-0065-govern-ruflo-runtime.md) (govern-the-target-don't-vendor-it); [`OPP-0056`](OPP-0056-agent-client-protocol-governance-bridge.md) (reference-tool positioning); `platform/validators/validate-sast-coverage.sh` + `validate-trust-tier.sh` + `validate-agent-bus.sh` (the opt-in validator + reference-linter patterns); `TOOLS.md` + `platform/skills/harness-tools/SKILL.md` + `harness-mcp/SKILL.md` (per-tool tier registry).
-- **The governance thesis this instantiates:** the Layer-4 position (human-ratified policy + human-approval gate the runtime layer "cannot express"). The AWS toolkit is a near-perfect worked target — maximal breadth, zero native governance.
+- **First research pass and adversarial review (2026-11-17).** Three exploration agents produced the first draft; three review agents then re-derived the AWS facts from primary sources, checked the design against this repo's validators, and red-teamed the classification model. The revision note above summarizes what they overturned.
+- **Primary sources read for this revision:** the [toolkit repository](https://github.com/aws/agent-toolkit-for-aws) (file tree, plugin manifests, MCP configuration, hooks, rules files); the [proxy repository](https://github.com/aws/mcp-proxy-for-aws) (argument handling, tool filter, changelog); the [AWS user guide for the toolkit](https://docs.aws.amazon.com/agent-toolkit/latest/userguide/) (tool reference, IAM, logging, multi-account access); and an unauthenticated tool listing from the server's public endpoint.
+- **Evidence that `call_aws` was removed:** the live tool listing and the current tool reference do not include it; the proxy changelog records replacing its tests with `run_script` tests; and an open issue in the toolkit repository quotes the server's "has been removed" error. No AWS announcement of the removal was found.
+- **Evidence from this repo:** `validate-trust-tier.sh` infers Tier 5 from a `\.tf$` or secrets pattern and fails a lower declared tier; `platform/agents/acp/` pairs its policy file with a reference engine, a conformance test, and two accepted PRDs; `delivery/production-saas` already governs IaC paths; `architectures/ai-foundry-target` already owns `aws-bedrock-agentcore` as a deployment landing zone.
+- **Related proposals:** [OPP-0065](OPP-0065-govern-ruflo-runtime.md) (proposed, not yet built) names the anti-goals this binding also observes — do not take on the target's runtime footprint, and do not import its governance plugins. [OPP-0062](OPP-0062-a2a-agent-card-descriptor-layer.md) set the practice of marking external claims pending until confirmed.
 
 ## Why Now
 
-The AWS MCP Server reached GA and the toolkit is AWS's official **consolidation point** — the older `awslabs/mcp` servers are named predecessors folding in over time, so binding to this umbrella now tracks where AWS agent tooling is centralizing rather than a transient library. Agents are increasingly pointed at AWS, and the no-governance gap is live the moment a consumer wires the server in. The binding reuses existing harness machinery (trust tiers, the reference-tool genre, the opt-in validator skeleton) at near-zero new primitives. No external pressure or deadline.
+AWS has named this toolkit the successor to the AWS Labs MCP servers and recommends moving to it, so it is where AWS agent tooling is consolidating. Its surface is also moving quickly: the tool the first draft was designed around was removed within four months of general availability, and a local proxy became optional in July 2026. A binding that anchors in IAM and declared posture, rather than in the shape of any one tool, is the kind that survives that churn. There is no external deadline.
 
 ## Risks / Open Questions
 
-- **Half-enforced, not Enforced — be honest in § 10 terms.** The harness cannot force the AWS MCP server to honor the tier gate; it *declares* the classification and binds the audit plane (CloudTrail), while the host/proxy/IAM enforce at runtime — exactly the ACP seam posture. The positioning and skill must state this plainly; overclaiming "enforced AWS governance" would be the very doc-honesty failure OPP-0071 just corrected elsewhere.
-- **Per-operation classification is a heuristic.** A verb-prefix default mis-classifies both directions — sensitive *reads* (`secretsmanager:GetSecretValue`, `sts:GetSessionToken`, `s3:GetObject` on a secret bucket) and benign *writes* (`Tag*`, `cloudwatch:PutMetricData`). The design must treat the classifier as a **default with an explicit override set**, keep IAM as the independent floor, and leave the WARN-vs-BLOCK posture and the enforced-vs-declarative boundary to the PRD. The 15,000-operation surface cannot be exhaustively curated — this is a boundary-plus-overrides design, not an allow-list.
-- **`run_script` is tier-indeterminate.** It can call any AWS API server-side via boto3 under the caller's IAM, so it can do anything `call_aws` can — it cannot be statically classified. Default it to a high tier (Tier 4 floor, Tier 5 if the credentials can reach override services) or require a read-only credential path; open question for the PRD.
-- **External-toolkit claims pending primary confirmation (verify before any impl binds to them):** whether `--read-only` blocks write *operations* inside `call_aws` or only hides whole tools (sources lean tool-level only → assume IAM is the real control); STS/AssumeRole handling via the proxy; the regional-endpoint set (us-east-1 confirmed, others inconsistent); the lineage to `awslabs/aws-api-mcp-server` (functionally parallel, not stated). Follow the OPP-0062 discipline: mark pending, confirm against AWS docs, do not cite normatively until verified.
-- **Module shape: single vs family.** Start with one `domains/aws` module; a later split into `aws-core` / `aws-iam` / `aws-data` is a noted follow-on, not this scope.
-- **Dependency-free posture.** Govern a pinned proxy version; never vendor the proxy or import the toolkit's plugins/skills as harness governance (OPP-0065 footprint-inversion + duplication-pocket anti-goals).
+- **No AWS consumer exists yet.** Operating-principles § 9 says to ship a contract and validate it against real adoption before building enforcement on it. The PRD should stage the posture contract and reference policies first, and the validator second.
+- **Unverified AWS behaviors (confirm before any implementation depends on them):**
+  - Whether the MCP context keys survive transitive calls (for example, a Lambda function invoked through the server making its own calls). One third-party report says they do not.
+  - Whether the server's CloudTrail events, which are data events (`eventSource` `aws-mcp.amazonaws.com`, `CallReadOnlyTool` and `CallReadWriteTool`), require explicit trail configuration to be captured.
+  - Whether an authenticated tool listing differs from the unauthenticated one.
+  - Whether the Service Authorization Reference is machine-readable and complete enough to drive the allow-list without large manual gaps. AWS's access levels are also known to be imperfect: some secret-bearing reads are labeled Read, which is why the curated set in part 3 is needed.
+  - The specific action names in the never-allow set, which were drafted from memory during review and must be checked against current AWS documentation.
+- **The managed server cannot be pinned.** A proxy version can be pinned; the server changes underneath every client, as the `call_aws` removal showed. The OAuth direct path has no proxy and no `--read-only` flag. The binding must not depend on any one tool's shape, and the posture should record the tool listing it was last verified against.
+- **Hosts without a permission hook.** A headless agent has no prompt to answer. On such hosts the IAM boundary is the only control, which is the reason it is the anchor.
+- **Trust-tier consequences for consumers.** If the module declares Tier 5, `validate-trust-tier.sh` may require `project.criticality` of `high` or `critical`; no current sample project has that. The PRD must confirm how the rule treats agent-family modules and add a sample project if needed.
+- **Registration surface.** A new validator, skill, and template directory touch roughly twenty count and enumeration surfaces across the repo, several of them governance entrypoints whose edits require an ADR or an operating-principles update. The PRD must enumerate them; the first draft named two.
+- **Prompt injection.** AWS-returned content (tags, log lines, object contents, documentation, retrieved skills) is attacker-influenceable model input. The IAM boundary limits the damage a successful injection can do; it does not prevent the injection. Whether the harness can require more than a skill-level discipline here is open.
+- **Scope of the family.** Other AWS-managed MCP servers (EKS, ECS) carry the same context keys with different service principals. Whether one module covers them or each gets its own is left to the PRD.
 
 ## Disposition
 
@@ -65,6 +129,7 @@ accepted, declined, or superseded — on acceptance, a pointer to the spawned PR
 ## Promotion
 
 <!--
-Empty until accepted. Then a link to PRD-NNNN (breadth > half-day → PRD, not
-OPP-direct), whose staged impl PRs build parts 1–6 above, each held at the gate.
+Empty until accepted. Then a link to PRD-NNNN. The breadth is well over a
+half-day, so acceptance promotes to a PRD with staged implementation PRs,
+each held at the merge gate.
 -->

@@ -6,7 +6,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0069 — Tighten check 11: flag a stale HARNESS.md Active Modules row (listed ⇒ active)
 
-**Status:** proposed
+**Status:** accepted
 **Owner:** @unclenate
 **Created:** 2026-11-16
 **Last Updated:** 2026-11-16
@@ -84,13 +84,25 @@ check-11 context is fresh, so it is not lost; implementation can wait for the ma
 
 ## Disposition
 
-<!--
-Empty while Status: proposed. Populated when it flips to accepted / declined / superseded.
--->
+**Accepted (2026-11-16), OPP-direct.** The maintainer chose to implement rather than defer. The one open
+bias (column-anchoring) resolved cleanly against the live table: extract the module name from **field 3
+under `awk -F'|'`** (the leading pipe makes field 1 empty, so family = field 2, module = field 3), and
+**filter to rows whose module column contains a backtick** — which simultaneously skips the header
+(`| Family | Module | … |`) and separator (`|---|---|`) rows and ignores the purpose column's incidental
+backticks, since only the real module rows carry a backtick-quoted name in column 3. The section is bounded
+from the `## Active Modules` heading to the next heading **or horizontal rule**. Disk-verified: the live
+`HARNESS.md` ⇄ manifest pair is in perfect bidirectional parity (9 listed = 9 active, both set-difference
+directions empty). Posture BLOCK and the consumer-safe guard are inherited from check 11; the implementing
+change ships in the same PR as this record.
 
 ## Promotion
 
-<!--
-Empty until accepted. Then a direct implementing PR (OPP-direct, if the column-anchoring bias is
-resolved in the Disposition) or a pointer to a PRD.
--->
+Implemented directly (OPP-direct, no PRD) in the same PR as this record:
+
+- **Check 12** appended to `platform/validators/validate-list-completeness.sh` (listed ⇒ active): within
+  check 11's shared guard, extract the HARNESS.md Active Modules table's column-2 module names
+  (backtick-filtered) and assert each is in the manifest's active set (computed once, shared with the
+  forward pass). On a stale row it fails with a message naming the offending module and the manifest
+  ("Active Modules lists the module but it is not active in the manifest / listed ⇒ active").
+- Integration coverage: the complete fixture now exercises both directions; a reverse-drift test
+  (`ghost-mod` listed but not active → exit 1) plus the existing absent-section no-op.

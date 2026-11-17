@@ -11,6 +11,24 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-11-16 — Accept + implement OPP-0069: check 12, the reverse HARNESS.md parity (listed ⇒ active)
+
+Accepts OPP-0069 **OPP-direct** and ships **check 12** of `validate-list-completeness.sh`, completing the
+`HARNESS.md` ⇄ `harness.manifest.yaml` parity as a bidirectional set-equality. Where check 11 (OPP-0068)
+asserts `active ⇒ listed`, check 12 asserts `listed ⇒ active`: every module named in the `HARNESS.md`
+Active Modules table must be active in the manifest, so a module deactivated in the manifest but left in
+the doc can no longer silently overstate active governance. The one open bias (column-anchoring) resolved
+cleanly: extract the module name from **field 3 under `awk -F'|'`** (leading pipe empties field 1) and
+**filter to rows whose module column contains a backtick** — which skips the header and separator rows and
+ignores the purpose column's incidental backticks in one stroke, since only real module rows carry a
+backtick-quoted name in column 2. The reverse pass shares check 11's guard and its once-computed active set,
+and runs for consumers too. Disk-verified: the live pair is in perfect bidirectional parity (9 listed = 9
+active). Integration coverage: the complete fixture exercises both directions + a reverse-drift test
+(`ghost-mod` listed but inactive → exit 1); 23 list-completeness cases, 0 failures; 632 live assertions.
+Extended the existing reconciler → count stays 27. Validator/skill descriptions updated; OPP-0069 flipped to
+accepted with status surfaces reconciled; PRD-0004 distillation observation (the backtick-filter table-column
+extraction idiom) in the same commit.
+
 ## 2026-11-16 — File OPP-0069: tighten check 11 with the reverse direction (listed ⇒ active)
 
 Files OPP-0069 (`proposed`, design-only — no code change) capturing the micro-tightening OPP-0068's

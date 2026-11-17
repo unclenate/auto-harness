@@ -50,7 +50,8 @@
 #   8. Module catalog  platform/profiles/**/module.yaml → platform/skills/harness-onboarding/SKILL.md
 #   9. Discovery matrix platform/profiles/**/module.yaml → platform/workflow/discovery-to-composition.md
 #  10. README table    platform/profiles/**/module.yaml → README.md Module System table (leaf)
-#  11. Active modules   harness.manifest.yaml modules:   → HARNESS.md Active Modules
+#  11. Active modules   harness.manifest.yaml modules:   → HARNESS.md Active Modules (active⇒listed)
+#  12. Active modules   HARNESS.md Active Modules table  → harness.manifest.yaml (listed⇒active)
 #
 # ADR/PRD/OPP → SUMMARY.md nav is anchored on the record's link-target PATH
 # (docs/<dir>/<filename>), NOT the bare record id: SUMMARY module descriptions
@@ -63,15 +64,18 @@
 # anchor on the bare "<category>/<name>" slug both the onboarding catalog
 # (which forbids selecting an unlisted module) and the discovery→composition
 # matrix use — the two surfaces PR #232 hand-fixed an 8-module lag in.
-# 10–11 (OPP-0068) close the last two surfaces: check 10 reconciles the
+# 10–12 (OPP-0068 + OPP-0069) close the last surface: check 10 reconciles the
 # README Module System table, which lists modules by LEAF name in
 # category-grouped rows (backtick-bounded leaf anchor — leaves are
 # disk-verified unique — scoped to the family-row block, skipped if that
-# block is absent); check 11 reconciles HARNESS.md Active Modules, which is
-# manifest-RELATIVE (a subset), asserting every module active in
-# harness.manifest.yaml is reflected in HARNESS.md. Checks 8–10 are
-# platform-only (consumer no-op); check 11 runs for consumers too (they have
-# a manifest + a HARNESS.md), gating their active-module doc parity.
+# block is absent); checks 11–12 reconcile HARNESS.md Active Modules, which is
+# manifest-RELATIVE (a subset), as a BIDIRECTIONAL set-equality — check 11
+# (OPP-0068) asserts every module active in harness.manifest.yaml is listed in
+# HARNESS.md (active⇒listed), check 12 (OPP-0069) asserts every module listed
+# in the HARNESS.md Active Modules table is active in the manifest
+# (listed⇒active, catching a stale row for a deactivated module). Checks 8–10
+# are platform-only (consumer no-op); checks 11–12 run for consumers too (they
+# have a manifest + a HARNESS.md), gating their active-module doc parity.
 #
 # Exit codes:
 #   0  every discovered entity is referenced in its canonical index file(s)
@@ -100,10 +104,11 @@ Arguments:
                 no docs/adr/), the corresponding check is a no-op.
 
 Behavior:
-  For each of eleven checks (ADRs, PRDs, OPPs, compositions, template
+  For each of twelve checks (ADRs, PRDs, OPPs, compositions, template
   subdirectories, profile modules, agent modules, module catalog, discovery
-  matrix, README table, active modules), discovers the entity set and asserts
-  each entity is referenced in its canonical index file(s).
+  matrix, README table, and HARNESS.md active-module parity in both
+  directions), discovers the entity set and asserts each entity is referenced
+  in its canonical index file(s).
 
   Index file definitions:
     ADRs   → docs/README.md + SUMMARY.md (nav)
@@ -116,7 +121,7 @@ Behavior:
     Module catalog  → platform/skills/harness-onboarding/SKILL.md (slug)
     Discovery matrix → platform/workflow/discovery-to-composition.md (slug)
     README table    → README.md Module System table (leaf, table-scoped)
-    Active modules  → HARNESS.md (manifest-active modules, parity)
+    Active modules  → HARNESS.md ⇄ manifest (bidirectional set-equality)
 
   The ADR/PRD/OPP → SUMMARY.md nav assertion is anchored on the record's
   link-target path (docs/<dir>/<filename>), which appears only in the nav
@@ -357,11 +362,8 @@ fi
 # section being present (skip if absent → consumer-safe).
 manifest_file="harness.manifest.yaml"
 if [[ -f "$manifest_file" && -f HARNESS.md ]] && grep -qE '^#+[[:space:]]+Active Modules' HARNESS.md; then
-  while IFS= read -r active_mod; do
-    [[ -n "$active_mod" ]] || continue
-    checks_run=$((checks_run + 1))
-    assert_contains "HARNESS.md" "$active_mod" "$active_mod" "HARNESS.md active module"
-  done < <(awk '
+  # Active set, extracted once from the flat `modules:` block.
+  manifest_active="$(awk '
       /^modules:/            { inblk=1; next }
       inblk && /^[A-Za-z]/   { inblk=0 }
       inblk && /^[[:space:]]*-[[:space:]]/ {
@@ -370,7 +372,38 @@ if [[ -f "$manifest_file" && -f HARNESS.md ]] && grep -qE '^#+[[:space:]]+Active
           sub(/[[:space:]]+$/, "");
           print
       }
-    ' "$manifest_file" | sort -u)
+    ' "$manifest_file" | sort -u)"
+
+  # Check 11 (forward, active ⇒ listed): every manifest-active module appears
+  # in HARNESS.md.
+  while IFS= read -r active_mod; do
+    [[ -n "$active_mod" ]] || continue
+    checks_run=$((checks_run + 1))
+    assert_contains "HARNESS.md" "$active_mod" "$active_mod" "HARNESS.md active module"
+  done <<<"$manifest_active"
+
+  # Check 12 (reverse, listed ⇒ active, OPP-0069): every module LISTED in the
+  # HARNESS.md Active Modules table must be active in the manifest, so a module
+  # deactivated in the manifest but left in the doc can't silently overstate
+  # active governance (makes the pair a bidirectional set-equality). Extract
+  # the module name from column 2 of each table row — anchored on the module
+  # COLUMN (field 3 under `-F'|'`, since the leading pipe makes field 1 empty),
+  # filtered to rows whose module column contains a backtick, which skips the
+  # header and separator rows and ignores the purpose column's incidental
+  # backticks (e.g. `docs/knowledge/`). The section runs from the `Active
+  # Modules` heading to the next heading or horizontal rule.
+  while IFS= read -r listed_mod; do
+    [[ -n "$listed_mod" ]] || continue
+    checks_run=$((checks_run + 1))
+    if ! grep -qxF -- "$listed_mod" <<<"$manifest_active"; then
+      echo "✗ HARNESS.md: Active Modules lists \`$listed_mod\` but it is not active in $manifest_file (stale row / listed ⇒ active)" >&2
+      violations=$((violations + 1))
+    fi
+  done < <(awk '
+      /^#+[[:space:]]+Active Modules/                       { inblk=1; next }
+      inblk && (/^#+[[:space:]]/ || /^---[[:space:]]*$/)    { inblk=0 }
+      inblk && /^\|/                                        { print }
+    ' HARNESS.md | awk -F'|' '$3 ~ /`/ { col=$3; gsub(/[` ]/, "", col); print col }')
 fi
 
 # ----------------------------------------------------------------------

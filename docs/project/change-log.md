@@ -11,6 +11,25 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-11-17 — OPP-0072: third revision of the design
+
+Redrafts **OPP-0072** (still proposed; confidence still low) to answer the second adversarial review. The
+second revision allowed whatever AWS labels List or Read, relied on implicit denies, gated writes on a person
+assuming a role, and checked a committed policy with a canary list. The third revision changes four things:
+
+- The allow-list is inverted: only actions a person has reviewed are allowed, inside services the posture
+  declares. AWS's access-level label proposes candidates and admits nothing.
+- The limits are explicit denies: a service ceiling and an agent deny set that hold against grants made from
+  the resource side.
+- No write role is connected to the agent. Writes go through a reviewed pipeline or a specified human-assumed
+  role, and the agent's environment may resolve only the agent role.
+- The policy is generated and the validator compares; it does not interpret IAM policy. Lowering the tier of
+  `aws___run_script` needs declared isolation, a current live-check attestation, and host script capture.
+
+Enforcement is now labeled per part. The design is untested: no policy has been generated and nothing has been
+run under the proposed role, and the record lists what a repeat account test must cover. No status change;
+index rows updated to match. Generalized in `docs/knowledge/shared-observations.md`.
+
 ## 2026-11-17 — OPP-0072: account-test observations and a second adversarial review
 
 Updates **OPP-0072** (still proposed; confidence lowered to low) with a test in an unused sandbox AWS account

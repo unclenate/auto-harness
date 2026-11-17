@@ -10,7 +10,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 **Owner:** @unclenate
 **Created:** 2026-11-17
 **Last Updated:** 2026-11-17
-**Confidence:** medium (the tool surface, IAM context keys, and audit events below were re-read from AWS's current documentation and a live tool listing on 2026-11-17, and the harness-side findings were checked against the validators on disk; a follow-up verification pass the same day settled the allow-list data source, the never-allow action names, the limits of AWS's MCP condition keys, and the trust-tier mechanics; medium not high because audit capture can only be settled by testing in a real AWS account, and because there is no AWS consumer yet to test the contract against)
+**Confidence:** medium (the tool surface, IAM context keys, and audit events below were re-read from AWS's current documentation and a live tool listing on 2026-11-17, and the harness-side findings were checked against the validators on disk; a follow-up verification pass the same day settled the allow-list data source, the never-allow action names, the limits of AWS's MCP condition keys, and the trust-tier mechanics; a test in a sandbox AWS account the same day settled what CloudTrail records and compared the authenticated tool listing; medium not high because that test covered one region and the proxy path only, and because there is no AWS consumer yet to test the contract against)
 
 ---
 
@@ -118,12 +118,26 @@ AWS has named this toolkit the successor to the AWS Labs MCP servers and recomme
 - **Trust-tier consequence for consumers.** Read from `validate-trust-tier.sh`; resolved by a low baseline and ceiling, with the criticality check moved to the posture validator (parts 1 and 5).
 - **STS and assumed-role support.** Supported by the server and proxy. The agent role denies role assumption.
 
+### Settled by a test in a sandbox AWS account (2026-11-17)
+
+One trail, one read-only role, and four tool calls through the server by way of the SigV4 proxy (version 1.8.0) in `us-east-1`: three `aws___run_script` calls (an identity read, a list, and a write the role does not allow) and one `aws___list_regions` call. The test resources were deleted afterwards.
+
+- **Tool calls are recorded as management events.** Each `aws___run_script` call produced a `CallReadWriteTool` event from `aws-mcp.amazonaws.com` with `eventType` `AwsMcpEvent` and `eventCategory` `Management`. The events appeared in Event history and were delivered to S3 by a trail with default management-event logging. No data-event selector was needed, and none exists: CloudTrail's published list of data-event resource types has no entry for the AWS MCP Server. This corrects the earlier reading of AWS's sample record, which shows the category as `Data`.
+- **The submitted script is not recorded.** The event names the tool, but the tool arguments, the request metadata, and the result are each replaced with a redaction placeholder. A unique marker placed in each script appeared nowhere in Event history or the delivered log files.
+- **The downstream calls are recorded and can be joined.** Each tool-call event lists its downstream requests by API name, region, and request ID, and each request ID matched an ordinary CloudTrail event for that call. Those events carry the agent role as the identity and `aws-mcp.amazonaws.com` in `invokedBy`, `sourceIPAddress`, and `userAgent`.
+- **The outcome lives on the downstream event only.** The denied write appeared as `AccessDenied` on its own event. The tool-call event for it carried no error code, and all three tool-call events were marked `readOnly` false, including the two whose scripts only read.
+- **The authenticated tool listing matches the unauthenticated one.** The same eight tools, with `aws___run_script` the only one that executes AWS APIs.
+- **IAM is enforced on this path.** Both reads succeeded as the read-only role and the write was refused.
+
+So CloudTrail can serve as the verification plane for which identity called which tool and which AWS APIs ran with what result. It cannot show what code was submitted.
+
 ### Still open
 
-- **Audit capture cannot be claimed yet.** AWS's sample record for a tool call is a data event (`eventSource` `aws-mcp.amazonaws.com`, `eventName` `CallReadWriteTool`), and data events are not in Event history or a default trail. AWS documents no resource type or event selector for capturing them, and the API reference its logging page links to does not resolve. One AWS blog post says downstream calls carry the server's principal in `invokedBy`, `sourceIPAddress`, and `userAgent`; the user guides do not. Whether the submitted script is recorded in full is shown only by a comment in one sample. Until this is tested in a real account, the binding must not describe CloudTrail as its verification plane. This needs an AWS account to settle.
+- **The script text has no AWS-side record.** A consumer that needs the submitted code for review or forensics must capture it at the host before the call is sent, and the posture should say whether it does. The PRD decides whether the binding requires this or only declares it.
+- **Limits of the account test.** One account, one region, one day, and the proxy path only; the OAuth direct path was not exercised. The `aws___list_regions` call left no event in Event history or the delivered logs within twelve minutes, so tools that execute no AWS API may go unrecorded; this was not followed up. The event shape is undocumented in any API reference and can change server-side.
 - **No AWS consumer exists yet.** Operating-principles § 9 says to ship a contract and validate it against real adoption before building enforcement on it. The PRD should stage the posture contract and reference policies first, and the validator second.
 - **The curated read-deny set is unbuilt.** The appendix seeds it; the sweep of 9,838 Read and List actions is PRD work, and it must be repeated when the snapshot changes. Two service files changed the day before the snapshot was taken.
-- **The managed server cannot be pinned.** A proxy version can be pinned; the server changes underneath every client, as the `call_aws` removal showed, and the OAuth direct path has no proxy and no `--read-only` flag. The binding does not depend on any one tool's shape, and the posture records the tool listing it was last verified against. An authenticated tool listing has not been compared with the unauthenticated one.
+- **The managed server cannot be pinned.** A proxy version can be pinned; the server changes underneath every client, as the `call_aws` removal showed, and the OAuth direct path has no proxy and no `--read-only` flag. The binding does not depend on any one tool's shape, and the posture records the tool listing it was last verified against.
 - **What the script tool can reach.** AWS documents no restriction on which services a script may call and no completeness guarantee for the `api_calls` list in its response. The design assumes a script can call anything the role allows and treats `api_calls` as informational.
 - **Hosts without a permission hook.** A headless agent has no prompt to answer. On such hosts the agent role is the only control, which is the reason it is the anchor.
 - **Registration surface.** A new validator, skill, and template directory touch roughly twenty count and enumeration surfaces across the repo, several of them governance entrypoints whose edits require an ADR or an operating-principles update. The PRD must enumerate them.

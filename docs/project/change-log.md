@@ -11,6 +11,21 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-11-17 — OPP-0072: audit capture settled by an account test
+
+Updates **OPP-0072** (still proposed) with the results of a test in an unused sandbox AWS account, run with the
+maintainer's authorization under a dedicated read-only role and torn down afterwards. The record's largest open
+risk was that audit capture for the AWS MCP Server could not be claimed from documentation alone.
+
+Findings: tool calls are recorded by CloudTrail as management events and need no event selector (AWS's sample
+record shows a data event; that reading is corrected); the submitted script and its result are redacted, so
+CloudTrail shows which identity called which tool and which AWS APIs ran, not what code was sent; each
+tool-call event lists downstream request IDs that join to ordinary API events carrying the MCP service
+principal, and the allow or deny outcome appears only there; the authenticated tool listing matches the
+unauthenticated one; IAM is enforced on the path. Two risks move to settled. Two narrower ones replace them:
+host-side capture of the script text is a PRD decision, and the test covered one region and the proxy path
+only. No design change to the proposal; no status change. Generalized in `docs/knowledge/shared-observations.md`.
+
 ## 2026-11-17 — File OPP-0072 (proposed): govern agent access to AWS through the AWS MCP Server
 
 Files **OPP-0072** (proposed, held at the gate). The record was rewritten on its filing branch, before merge,

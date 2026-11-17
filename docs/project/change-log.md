@@ -11,6 +11,35 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-11-17 — File OPP-0072 (proposed): govern agent access to AWS through the AWS MCP Server
+
+Files **OPP-0072** (proposed, held at the gate). The record was rewritten on its filing branch, before merge,
+after a three-reviewer adversarial pass overturned the first draft. That draft proposed a `domains/aws` module
+with a per-operation tier-policy YAML built around a generic `call_aws` tool; the review found AWS had removed
+that tool on 2026-08-31, that nothing would have enforced the YAML (Asserted-only, not the Half-enforced it
+claimed), that its verb-prefix classification failed open, and that the module failed `validate-trust-tier.sh`
+on its own sensitive paths.
+
+The corrected proposal: AWS's official [`agent-toolkit-for-aws`](https://github.com/aws/agent-toolkit-for-aws)
+centers on the managed AWS MCP Server, whose only API-executing tool (`aws___run_script`) takes one free-form
+Python string. An agent host therefore sees opaque code and cannot classify operations, and AWS offers no
+per-call human approval. AWS's MCP condition keys mark only requests made through the server, not CLI, SDK or
+shell use of the same credentials, so they are a backstop and not the anchor. The OPP proposes a binding in the
+reference-tool posture of `agents/acp` (PRD-0037 / PRD-0038), anchored in a dedicated agent role with
+unconditional limits: an agents-family module `platform/agents/aws-mcp/`; a
+declared posture artifact; reference permission-boundary templates (default deny, allow-list from AWS's
+access-level metadata, a curated never-allow set, writes through a separate human-assumed role, one role per
+environment); flat tool tiering in which `aws___run_script` takes the tier of its credentials and is never
+lowered on script content; a conformance validator that checks the declared policy against the never-allow set;
+governed off-switches; and governance of what the toolkit installs on the agent side. The binding is
+Asserted-only until the conformance validator and its canary tests exist. **Design-only** — acceptance promotes
+to a PRD with staged implementation PRs. A same-day verification pass settled the allow-list data source, the never-allow action names, the limits of
+the condition keys and the trust-tier mechanics; audit capture remains unverified and needs a real AWS account.
+
+Distillation: a `docs/knowledge/shared-observations.md` record (opaque-code tools leave nothing to classify at
+the host seam; a policy file is a control only with an engine and a test; verify a vendor's live surface before
+designing against it). This change-log entry is its audit-trail satisfier.
+
 ## 2026-11-17 — Accept + implement OPP-0071 OPP-direct: anchor the module-catalog-mirror checks (8/9/11) to the enumeration
 
 Accepts **OPP-0071 OPP-direct** and ships the fix in the same PR. `validate-list-completeness.sh` checks 8/9/11

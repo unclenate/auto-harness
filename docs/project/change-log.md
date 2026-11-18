@@ -11,6 +11,63 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-11-18 — Redaction scan gains a cloud-identifier class (BLOCK): AWS account ids and ARNs
+
+Extends `validate-knowledge-redaction.sh` with a third pattern class ahead of any work against a live
+cloud account. The two existing classes are **corpus**-based — they guard a list of known consumer names.
+Evidence harvested from a cloud account leaks through a channel no name list can cover: a 12-digit account
+id or an ARN identifies the account and names its resources **without ever naming the consumer**, and there
+is no name to list in advance. OPP-0072 is the forcing case — its account-test observations are written into
+OPP and PRD records, and the record itself notes that a denied call's error text carried a queue name.
+
+**Posture is BLOCK, unconditionally — the deliberate asymmetry.** The name classes stay WARN (a consumer
+codename has legitimate uses in doctrine, which is why OPP-0036 shipped warn-then-redact). A live account id
+or customer ARN has no legitimate doctrine use, so it fails with or without `--block`. Every documented
+placeholder form is allow-listed by value, so example policies still write freely:  AWS's published example
+account ids (the `1234…` and repeated-quad families, all-zeros), AWS-owned policy ARNs
+(`arn:aws:iam::aws:policy/…`, public identifiers rather than customer data), and template tokens (`<…>`,
+`${…}`, `[[…]]`, `PLACEHOLDER`, `ACCOUNT_ID`, `AWS::AccountId`). The escape hatch for a judged-safe
+identifier is the existing `.knowledge-redaction-ignore`.
+
+**Scope widened to the design corpus.** The class is scanned on the two watched knowledge files *and* on
+ADR / OPP / PRD / diagrams / roadmap, because harvested account evidence lands in opportunity records, not
+only in the knowledge ledger. The name classes' split (full denylist on knowledge files, sensitive-only on
+the corpus) is unchanged.
+
+**Four design decisions worth recording, three of them found by testing rather than reasoning.**
+(1) **Anchored, per-token matching.** The account-id pattern requires a non-digit on both sides, so a
+13+-digit run — a millisecond epoch — is not a hit; an unanchored `[0-9]{12}` would match inside any longer
+number and make the class unusable. This is OPP-0071's anchoring lesson applied at the token level.
+(2) **The ARN pattern captures the whole ARN, not its prefix.** A prefix-only match was the first
+implementation and it false-positived on AWS-owned policy ARNs and template ARNs, because the matched token
+carried no context for the placeholder filter to judge. Caught by a scratch fixture pass before the unit
+tests were written. (3) **The ARN pattern requires the full ARN *shape*, not the recognizable prefix.** The
+first corrected version matched `arn:aws:` plus any non-whitespace, which fired on prose that *discusses*
+ARNs — including this change's own distillation entry, caught by the validator's dogfood test. A bare
+partition prefix carries no account id and no resource name and is structurally incapable of leaking, so the
+pattern now demands partition / service / region / account / resource. The class must point at identifiers,
+not at vocabulary; the fix belonged in the pattern, not in the prose. (4) **Bare `example` is deliberately
+NOT allow-listed.** A real bucket or queue can carry the word, so allow-listing it would launder a live
+resource name; the class fails closed and the author writes the template form instead. Placeholder judgement
+is made per matched **token**, never per line, so a documented example sitting beside a live identifier
+cannot shield it.
+
+Thirteen tests added, covering both directions, the two laundering shapes, and the prose-prefix case. Each new guard was
+mutation-verified against the live validator: unanchoring the account-id pattern, reverting the ARN pattern
+to prefix-only, letting a placeholder stop the search, re-adding bare `example`, and disabling the blocking
+exit each break exactly the test that guards them (1, 2, 1, 1 and 7 failures respectively). Full suite 295
+runs / 1061 assertions / 0 failures; `bash -n` clean (shellcheck runs in CI — not installed locally, and
+installing it is Tier 4). **No validator count change — extends an existing validator; stays 27.**
+Reconciled the two surfaces that described the old behaviour (`platform/validators/README.md`, the
+`harness-governance` SKILL.md bullet) and the dogfood test's stated contract, which previously claimed the
+validator "must always exit 0" — now true only of the name classes. Distillation: a `shared-observations.md`
+record on corpus-based vs pattern-based leak channels and placeholder laundering; this entry is its
+audit-trail satisfier.
+
+Not done here, and flagged rather than assumed: this guards what reaches the **repo**, not what reaches
+**model context** during a session, and it does not address the authorization question for touching a
+customer account at all.
+
 ## 2026-11-17 — OPP-0072: third revision of the design
 
 Redrafts **OPP-0072** (still proposed; confidence still low) to answer the second adversarial review. The

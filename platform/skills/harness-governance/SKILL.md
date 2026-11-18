@@ -223,9 +223,23 @@ A few signature notes worth highlighting:
   `docs/operating-principles.md` against a built-in denylist of
   consumer-name patterns (Tula, OpenEMR, YouBase, municipal-brain,
   toast-mcp). Lines matching `.knowledge-redaction-ignore` regex
-  patterns are exempted. **Default posture: WARN** — surfaces hits on
-  stderr but exits 0 (reviewers eyeball in CI logs). `--block` flag
-  escalates hits to exit 1. Per OPP-0036 / ADR-0017 Wave 5.5. When run
+  patterns are exempted. **Default posture: WARN** for those name
+  classes — surfaces hits on stderr but exits 0 (reviewers eyeball in
+  CI logs); the `--block` flag escalates them to exit 1. Per OPP-0036 /
+  ADR-0017 Wave 5.5. A third **cloud-identifier** class (OPP-0048
+  lineage, forced by OPP-0072's account test) is **BLOCK
+  unconditionally** and additionally scans the design corpus (ADR /
+  OPP / PRD / diagrams / roadmap): a 12-digit AWS account id or an ARN
+  in any partition identifies the account and names its resources
+  *without naming the consumer*, so a name denylist cannot cover it and
+  there is nothing to list in advance. The asymmetry is deliberate — a
+  codename has legitimate doctrine uses, a live identifier has none.
+  Matching is per-**token** and anchored (a 13+-digit run is not an
+  account id); AWS's documented example account ids, AWS-owned policy
+  ARNs, and template tokens are allow-listed by value, while bare
+  `example` is not (a real bucket can carry the word, so it fails
+  closed and the author writes `<bucket-name>` instead). A placeholder
+  elsewhere on the line cannot shield a real identifier beside it. When run
   outside a git working tree or against a base branch that doesn't
   exist locally (shallow CI checkout, dogfood from a non-PR context),
   the validator exits 0 cleanly with an informational message rather

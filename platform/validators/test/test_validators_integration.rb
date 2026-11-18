@@ -2602,10 +2602,216 @@ class TestValidateKnowledgeRedaction < Minitest::Test
     # observation (which may legitimately cite consumer names), the
     # WARN posture lets it pass with stderr surface.
     out, err, code = run_validator("validate-knowledge-redaction.sh", HARNESS_ROOT, "main")
-    # The dogfood must always exit 0 under default WARN posture, even
-    # if the current feature branch has hits.
+    # The dogfood must exit 0 under default WARN posture even if the
+    # current feature branch has name-class hits. It does NOT grant the
+    # cloud-identifier class a pass: that class blocks unconditionally,
+    # so this assertion also proves the harness's own new lines carry no
+    # live account id or ARN — the dogfood of the guard itself.
     assert_equal 0, code,
                  "Harness's own state must pass under WARN posture. stderr: #{err}\nstdout: #{out}"
+  end
+
+  # -------------------------------------------------------------------------
+  # Cloud-identifier class (2026-11, OPP-0048 lineage / OPP-0072 forcing case).
+  #
+  # The name classes above guard a corpus of KNOWN names. An account id or an
+  # ARN harvested from a live cloud account leaks the customer's identity and
+  # resource names without ever naming the consumer, so this class is
+  # pattern-based and BLOCK-posture: a codename has legitimate doctrine uses,
+  # a live identifier has none. These tests pin both directions — it must fire
+  # on real identifiers (including two laundering shapes) and must NOT fire on
+  # documented placeholders or on a longer digit run.
+  # -------------------------------------------------------------------------
+
+  def test_cloud_account_id_blocks_without_block_flag
+    # The asymmetry: no --block needed. A 12-digit account id fails outright.
+    with_git_fixture(
+      watched_file: "docs/knowledge/shared-observations.md",
+      baseline: "# Existing\n",
+      new_line: "- the agent role in account 847263910055 was read-only.",
+    ) do |tmp|
+      _out, err, code = run_validator("validate-knowledge-redaction.sh", tmp, "main")
+      assert_equal 1, code, "a live account id must fail without --block. stderr: #{err}"
+      assert_match(/cloud-identifier match '847263910055'/, err)
+    end
+  end
+
+  def test_cloud_customer_arn_blocks
+    with_git_fixture(
+      watched_file: "docs/knowledge/shared-observations.md",
+      baseline: "# Existing\n",
+      new_line: "- arn:aws:sqs:us-east-1:847263910055:acme-payments-live carried the name.",
+    ) do |tmp|
+      _out, err, code = run_validator("validate-knowledge-redaction.sh", tmp, "main")
+      assert_equal 1, code, "a customer ARN must fail. stderr: #{err}"
+      assert_match(/cloud-identifier match/, err)
+    end
+  end
+
+  def test_cloud_arn_in_design_corpus_blocks
+    # Harvested account evidence lands in OPP / PRD records, not only in the
+    # knowledge files, so the design corpus is scanned for this class too.
+    with_git_fixture(
+      watched_file: "docs/opportunities/OPP-9999-cloud-fixture.md",
+      baseline: "# OPP\n",
+      new_line: "- observed arn:aws:iam::847263910055:role/agent-reader in the trail.",
+    ) do |tmp|
+      _out, err, code = run_validator("validate-knowledge-redaction.sh", tmp, "main")
+      assert_equal 1, code, "an ARN in an OPP record must fail. stderr: #{err}"
+      assert_match(%r{OPP-9999-cloud-fixture\.md}, err)
+    end
+  end
+
+  def test_cloud_non_aws_partition_arn_blocks
+    # GovCloud / China partitions are the same leak with a different prefix.
+    with_git_fixture(
+      watched_file: "docs/knowledge/shared-observations.md",
+      baseline: "# Existing\n",
+      new_line: "- arn:aws-us-gov:iam::847263910055:role/reader was in scope.",
+    ) do |tmp|
+      _out, err, code = run_validator("validate-knowledge-redaction.sh", tmp, "main")
+      assert_equal 1, code, "a GovCloud ARN must fail. stderr: #{err}"
+    end
+  end
+
+  def test_cloud_documented_example_account_ids_pass
+    # AWS publishes these; a design doc may write them freely. Without this
+    # allow-list the class would be unusable for writing example policies.
+    ["123456789012", "111122223333", "000000000000"].each do |acct|
+      with_git_fixture(
+        watched_file: "docs/knowledge/shared-observations.md",
+        baseline: "# Existing\n",
+        new_line: "- the generated policy targets account #{acct}.",
+      ) do |tmp|
+        out, err, code = run_validator("validate-knowledge-redaction.sh", tmp, "main")
+        assert_equal 0, code,
+                     "documented example account #{acct} must pass. stderr: #{err}"
+        assert_match(/✓/, out)
+      end
+    end
+  end
+
+  def test_cloud_aws_owned_policy_arn_passes
+    # arn:aws:iam::aws:policy/... is a public AWS identifier, not customer data.
+    with_git_fixture(
+      watched_file: "docs/knowledge/shared-observations.md",
+      baseline: "# Existing\n",
+      new_line: "- the role carried arn:aws:iam::aws:policy/ReadOnlyAccess.",
+    ) do |tmp|
+      out, err, code = run_validator("validate-knowledge-redaction.sh", tmp, "main")
+      assert_equal 0, code, "an AWS-managed policy ARN must pass. stderr: #{err}"
+      assert_match(/✓/, out)
+    end
+  end
+
+  def test_cloud_template_arn_passes
+    with_git_fixture(
+      watched_file: "docs/knowledge/shared-observations.md",
+      baseline: "# Existing\n",
+      new_line: "- the deny on arn:aws:s3:::<bucket-name>/* holds.",
+    ) do |tmp|
+      out, err, code = run_validator("validate-knowledge-redaction.sh", tmp, "main")
+      assert_equal 0, code, "a template-form ARN must pass. stderr: #{err}"
+      assert_match(/✓/, out)
+    end
+  end
+
+  def test_cloud_account_id_pattern_is_anchored_against_longer_runs
+    # An unanchored [0-9]{12} matches inside any longer number — a millisecond
+    # epoch, a long numeric id — which would make the class unusable. The
+    # OPP-0071 anchoring lesson at the token level.
+    with_git_fixture(
+      watched_file: "docs/knowledge/shared-observations.md",
+      baseline: "# Existing\n",
+      new_line: "- the event at 1763412000000 ms left no record.",
+    ) do |tmp|
+      out, err, code = run_validator("validate-knowledge-redaction.sh", tmp, "main")
+      assert_equal 0, code, "a 13-digit run must not read as an account id. stderr: #{err}"
+      assert_match(/✓/, out)
+    end
+  end
+
+  def test_cloud_placeholder_cannot_shield_a_real_identifier_on_same_line
+    # Laundering shape 1: the scan evaluates each matched TOKEN, so a
+    # documented example beside a live id must not launder the line.
+    with_git_fixture(
+      watched_file: "docs/knowledge/shared-observations.md",
+      baseline: "# Existing\n",
+      new_line: "- account 123456789012 in docs, but the live one was 847263910055.",
+    ) do |tmp|
+      _out, err, code = run_validator("validate-knowledge-redaction.sh", tmp, "main")
+      assert_equal 1, code,
+                   "a placeholder must not shield a real id on the same line. stderr: #{err}"
+      assert_match(/847263910055/, err)
+    end
+  end
+
+  def test_cloud_example_named_real_resource_still_blocks
+    # Laundering shape 2: bare `example` is deliberately NOT allow-listed,
+    # because a real bucket can carry the word. Fails closed — the author
+    # reaches for the template form instead.
+    with_git_fixture(
+      watched_file: "docs/knowledge/shared-observations.md",
+      baseline: "# Existing\n",
+      new_line: "- read arn:aws:s3:::example-corp-prod-data during the pass.",
+    ) do |tmp|
+      _out, err, code = run_validator("validate-knowledge-redaction.sh", tmp, "main")
+      assert_equal 1, code,
+                   "an `example`-named real resource must still fail. stderr: #{err}"
+    end
+  end
+
+  def test_cloud_hit_is_counted_once_per_line
+    # The account-id pattern also matches inside an ARN. Counting every
+    # pattern would double-report one identifier and make the total
+    # meaningless, so a line yields exactly one hit.
+    with_git_fixture(
+      watched_file: "docs/knowledge/shared-observations.md",
+      baseline: "# Existing\n",
+      new_line: "- arn:aws:iam::847263910055:role/agent-reader was assumed.",
+    ) do |tmp|
+      _out, err, code = run_validator("validate-knowledge-redaction.sh", tmp, "main")
+      assert_equal 1, code
+      assert_match(/failed: 1 cloud-identifier hit\(s\)/, err,
+                   "one identifier on one line must count once. stderr: #{err}")
+    end
+  end
+
+  def test_cloud_arn_prefix_in_prose_passes
+    # Found by the dogfood test against this very change: doctrine that
+    # DISCUSSES ARNs writes the bare `arn:aws:` prefix, which carries no
+    # account id and no resource name and so cannot leak. The pattern
+    # requires the full ARN shape (service, region, account, resource) for
+    # exactly this reason — the class must point at identifiers, not at
+    # vocabulary.
+    with_git_fixture(
+      watched_file: "docs/knowledge/shared-observations.md",
+      baseline: "# Existing\n",
+      new_line: "- the guard matches an ARN by its `arn:aws:` prefix shape, per partition.",
+    ) do |tmp|
+      out, err, code = run_validator("validate-knowledge-redaction.sh", tmp, "main")
+      assert_equal 0, code,
+                   "prose discussing the arn:aws: prefix must not fire. stderr: #{err}"
+      assert_match(/✓/, out)
+    end
+  end
+
+  def test_cloud_hit_exemptable_via_ignore_file
+    # The escape hatch: a human who has judged an identifier safe to publish
+    # exempts the line, same mechanism the name classes use.
+    with_git_fixture(
+      watched_file: "docs/knowledge/shared-observations.md",
+      baseline: "# Existing\n",
+      new_line: "- the published sandbox account 847263910055 is intentionally named.",
+    ) do |tmp|
+      File.write(File.join(tmp, ".knowledge-redaction-ignore"),
+                 "# Approved: published sandbox account\npublished sandbox account 847263910055\n")
+      system("git add -A && git commit -q -m exempt")
+
+      out, err, code = run_validator("validate-knowledge-redaction.sh", tmp, "main")
+      assert_equal 0, code, "an exempted cloud identifier must pass. stderr: #{err}"
+      assert_match(/✓/, out)
+    end
   end
 end
 

@@ -51,6 +51,24 @@ Distillation: a `shared-observations.md` record on unsatisfiable gates inverting
 treating a reported-but-absent authorization as evidence about the gate rather than the operator, and on
 verifying that a one-field change achieves its stated purpose. No validator or count surfaces affected.
 
+**Amended the same day — the decision is only half-applied, and the ADR now says so.** `main` is gated by
+**two** independent GitHub systems: classic branch protection (changed) and the repository ruleset `Default`
+(id `16503818`, `enforcement: active`, target `~DEFAULT_BRANCH`), whose own `pull_request` rule still
+declares `required_approving_review_count: 1` (unchanged). GitHub applies the most restrictive, so PR #245 —
+the PR carrying this ADR — passed all eleven checks and was still `BLOCKED` / `REVIEW_REQUIRED`. The § 10
+label for ADR-0021's Decision is therefore **Asserted-only** until the ruleset is changed to match. The
+error is worth naming because it is this repo's own recurring class: the change was verified by **reading
+back the field written**, not by **attempting the gated action** — a read-back confirms a write, never an
+outcome. ADR-0021 gains an Implementation status section, a two-surface Watch condition, and a restore
+recipe carrying the full pre-change protection state (the session-local backup file is not durable).
+
+**Also found, and left open:** the same ruleset enforces `required_signatures`. The maintainer's commits
+verify (`3f53adc`); agent-authored commits in this session do not (`0a158e0` is unsigned, and the working
+copy has no `user.signingkey`), so an agent-authored PR cannot satisfy that rule either — independently of
+the review question, and arguably a stronger reason to retain a bypass path than the rule ADR-0021 retires.
+Decision deferred to the maintainer: configure signing for agent commits, relax the rule for them, or accept
+an administrator merge per agent-authored PR.
+
 ## 2026-11-18 — Redaction scan gains a cloud-identifier class (BLOCK): AWS account ids and ARNs
 
 Extends `validate-knowledge-redaction.sh` with a third pattern class ahead of any work against a live

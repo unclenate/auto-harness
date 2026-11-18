@@ -67,7 +67,10 @@ exactly the habit the control exists to prevent.
 
 **The merge gate on `main` is the required status-check set, not code-owner
 review.** `required_approving_review_count` is set to `0` and
-`require_code_owner_reviews` to `false`. All ten required status checks, the
+`require_code_owner_reviews` to `false` **on every surface that enforces it** —
+classic branch protection *and* the repository ruleset targeting the default
+branch. See Implementation status below: at the time of writing only the
+classic-protection half is applied. All ten required status checks, the
 up-to-date-branch requirement (`strict`), required conversation resolution, and
 the force-push and deletion prohibitions are retained unchanged.
 
@@ -90,6 +93,52 @@ require the maintainer's explicit, PR-named authorization. What changed is
 single-maintainer repository, and pretending otherwise produced the bypass
 habit. It lives in the operating discipline, and CI enforces the mechanical
 floor beneath it.
+
+## Implementation status (as of 2026-11-18)
+
+**The decision above is accepted; it is only partly applied. `main` is gated by
+two independent GitHub systems, and the change was made to one of them.**
+
+| Surface | Requires approving review | State |
+| ------- | ------------------------- | ----- |
+| Classic branch protection | `required_approving_review_count: 0`, `require_code_owner_reviews: false` | **applied** |
+| Repository ruleset `Default` (id `16503818`, `enforcement: active`, target `~DEFAULT_BRANCH`) | `required_approving_review_count: 1` | **not applied — still blocking** |
+
+GitHub applies the **most restrictive** of classic protection and any active
+ruleset, so the ruleset re-imposes exactly the requirement this ADR retires.
+PR #245 — the PR carrying this ADR — passed all eleven checks and still reported
+`mergeStateStatus: BLOCKED` / `reviewDecision: REVIEW_REQUIRED`. Until the
+ruleset's `pull_request` rule is changed to match, this ADR's Decision section
+describes an intent, not the live configuration, and the § 10 honest label for
+it is **Asserted-only**.
+
+The error that produced this gap is worth naming precisely, because it is the
+same class the Negative consequences warn about: the change was verified by
+**reading back the field that had been written**, not by **attempting the gated
+action**. A field read-back confirms a write; only the blocked merge attempt
+confirms an outcome. Where two enforcement systems can overlap, a read-back of
+one is not evidence about the gate.
+
+### Second requirement found at the same time: signed commits
+
+The same ruleset carries a `required_signatures` rule. The maintainer's own
+commits satisfy it (PR #244's squash `3f53adc` verifies). Agent-authored commits
+in this session do not — `0a158e0` is `unsigned`, and the working copy has no
+`user.signingkey` configured — so an agent-authored PR cannot satisfy this rule
+either, independently of the review question. This is arguably a **stronger**
+reason to keep a bypass path than the review rule this ADR retires, and it is
+left as an open decision rather than resolved here: configure signing for
+agent commits, relax the rule for them, or accept an administrator merge per
+agent-authored PR.
+
+### Restore recipe
+
+The pre-change classic-protection state, should the review requirement need
+reinstating: `required_approving_review_count: 1`,
+`require_code_owner_reviews: true`, `dismiss_stale_reviews: true`,
+`require_last_push_approval: false`, with `10` required status-check contexts,
+`strict: true`, `enforce_admins: false`, conversation resolution `true`, force pushes
+`blocked`, deletions `blocked`.
 
 ## Consequences
 
@@ -130,6 +179,11 @@ floor beneath it.
   bypass now means a *required check* was overridden, which is a materially
   more serious act than the one this ADR retires. Each occurrence belongs in
   `docs/project/change-log.md` with its reason.
+- **Two enforcement surfaces drifting apart.** Classic branch protection and
+  the repository ruleset are independent and the most restrictive wins. Any
+  future change to the merge gate must be made on both and then verified by
+  attempting the gated action, never by reading back the field that was
+  written. A ruleset added later re-imposes whatever it declares, silently.
 - **Required-check drift.** Checks are now the only mechanical gate, so a new
   CI job that is not added to the ten required contexts silently fails to
   gate. Adding a job to `.github/workflows/harness.yml` should be paired with

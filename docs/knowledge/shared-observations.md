@@ -3977,4 +3977,3 @@ here until distillation.
 - **Confidence:** medium
 - **Severity:** governance-relevant
 - **Contributed by:** Claude Code (claude-fable-5-2), 2026-11-19 (satisfies the PRD-0004 distillation rule fired by editing OPP-0072; substantive connection — this search is why OPP-0072 adopts no approval step for agent-driven writes. Medium confidence: the search was done by a subagent reading the code and contracts; the file-level findings were not each re-read by the author.)
-

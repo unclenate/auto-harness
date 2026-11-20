@@ -6,11 +6,11 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0062 — A2A Agent-Card descriptor layer + `tier_ceiling` extension for the agent-coordination bus
 
-**Status:** proposed
-**Owner:** @unclenate · **Created/Updated:** 2026-09-02
+**Status:** deferred
+**Owner:** @unclenate · **Created:** 2026-09-02 · **Updated:** 2026-11-19
 **Confidence:** high (the descriptor-layer alignment is sound and low-risk); medium (the exact extension
 shape is a review choice, and the external-spec facts below are from a secondary-source research pass and
-must be confirmed against the primaries before this advances)
+must be confirmed against the primaries before this advances). **Deferred 2026-11-19:** a review found the 2026-09-30 confirmation below partly wrong and the premise not on disk; see the Disposition and the hold review at the end of this record
 **Parent:** PRD-0039 / OPP-0060 (`management/agent-coordination`)
 
 ## Thesis
@@ -114,7 +114,22 @@ line was a provenance correction only. This closes the primary-source preconditi
 
 ## Disposition
 
-Design-only, `proposed`. Advancing to `accepted` requires the primary-source confirmations above and a
+**Deferred by the maintainer, 2026-11-19**, on the hold review at the end of this record. As filed: design-only; advancing to `accepted` requires the primary-source confirmations above and a
 decision on the four open questions. Implementation (Agent Card schema + the `tier_ceiling` extension +
 the descriptor validation) would be a subsequent PRD or a scoped OPP → implementation pass, reconciled
 against the current bus schema and the `validate-agent-bus.sh` conformance linter (OPP-0061).
+
+## Hold review (2026-11-19)
+
+A review before the acceptance decision checked this record against the repo and against A2A's primary sources (the `a2aproject/A2A` repository, read 2026-11-19). The body above is left as filed; these findings are against it.
+
+- **There are no bus descriptors to align.** The thesis says PRD-0039 shipped ad-hoc prose per-agent descriptors. The two coordination contracts and the module contain none. What exists is an adapter `capabilities` operation and a tier argument on the reference runner. An Agent Card would be a new artifact, not an alignment.
+- **The field list is the older card shape.** In the current schema there is no top-level `url` (it is per entry in `supportedInterfaces`), `security` is `securityRequirements`, and `extensions` is a field of `capabilities`, not of the card. `supportedInterfaces` is required, so a card for a local agent with no A2A endpoint is either invalid or declares a binding the bus does not implement.
+- **An ad-hoc extension field is not a spec mechanism.** Extensions are entries with a URI and parameters and may not add fields to core structures, which rules out one of the two shapes in open question 2.
+- **"No field for a file transport" is wrong as worded.** The binding identifier is an open string and the spec defines custom bindings, though a custom binding must implement the core operations. Two upstream proposals for a stdio binding are open, so the local-transport question is unsettled.
+- **The released version is 1.0.1**, not 1.0.0.
+- **The citation for "no protocol expresses a tier ceiling" does not support it.** The cited paper's text does not contain the words tier or ceiling. The point itself appears to hold on a reading of the card schema, which has no such field.
+- **A card ceiling would duplicate an existing one.** Each agent's ceiling already lives in its `module.yaml` (`maxTier`, ADR-0020); the record does not say how the two would be reconciled.
+- **No consumer reads cards**, and this repo does not activate agent-coordination.
+
+Revisit when a stdio binding is accepted upstream or a consumer needs to publish cards. The record should be corrected against the then-current spec before it is reconsidered.

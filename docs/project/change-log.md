@@ -68,6 +68,16 @@ Not done here, and flagged rather than assumed: this guards what reaches the **r
 **model context** during a session, and it does not address the authorization question for touching a
 customer account at all.
 
+## 2026-11-19 — OPP-0062 and OPP-0066 deferred
+
+The maintainer deferred two parked proposals after a review of each. **OPP-0062** (A2A Agent Card descriptor
+layer): the bus has no descriptors to align, the record's confirmed field list is the older card shape, one
+citation does not support its claim, and no consumer reads cards. **OPP-0066** (accessibility overlay): the
+design is sound, but the overlay it copies has no adoption and no consumer has committed to this one; a wrong
+module path in the record was corrected. Each record carries a hold review and the condition for revisiting.
+Status changed from proposed to deferred on all index surfaces. Generalized in
+`docs/knowledge/shared-observations.md`.
+
 ## 2026-11-19 — OPP-0072: write path and starter read set decided
 
 Two maintainer decisions recorded in **OPP-0072** (still proposed). The write path stays as the third revision

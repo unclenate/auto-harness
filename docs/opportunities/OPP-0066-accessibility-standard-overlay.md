@@ -6,8 +6,8 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 
 # OPP-0066 — `management/accessibility-standard` overlay (WCAG conformance gate for web-app / agentic-ui)
 
-**Status:** proposed
-**Owner:** @unclenate · **Created/Updated:** 2026-10-11
+**Status:** deferred
+**Owner:** @unclenate · **Created:** 2026-10-11 · **Updated:** 2026-11-19
 **Confidence:** high (the gap is real and the implementation pattern is a proven template — `security-static-analysis`); medium (the exact declaration fields + recommended-tool set are review choices)
 **Source:** GitHub issue #93 (filed 2026-06-02) — harness-native capture
 **Parent / model:** OPP-0035 / PRD-0016 (`management/security-static-analysis`); sibling of `testing-standard`
@@ -17,7 +17,7 @@ Part of auto-harness — see LICENSE-MIT and LICENSE-APACHE at repository root.
 Accessibility is effectively **absent from the harness as a governed concern** — a repo-wide search finds it
 only as a single weak release-checklist line ("documentation accessible and renders correctly") and an
 incidental intake-questionnaire mention. No module, validator, skill, or companion rule. Yet for any
-`architectures/web-app` or `domains/agentic-ui` consumer shipping to the public, **WCAG conformance is a real
+`architectures/web-app` or `architectures/agentic-ui` consumer shipping to the public, **WCAG conformance is a real
 launch gate** — exactly the kind of structural quality commitment the harness already models for tests
 (`testing-standard`) and static analysis (`security-static-analysis`).
 
@@ -52,12 +52,12 @@ placeholder fields (the harness's `[[…]]` fill-before-commit convention).
 
 ## Scope & disposition
 
-Design-only, `proposed`. Implementation (the `module.yaml` + `validate-accessibility.sh` +
+**Deferred by the maintainer, 2026-11-19**, on the hold review at the end of this record. As filed: design-only. Implementation (the `module.yaml` + `validate-accessibility.sh` +
 `validate-accessibility`-chain entry + template + the mandatory catalog propagation to `SUMMARY.md` /
 `docs/README.md` module table / `harness-onboarding` SKILL / `discovery-to-composition.md` per operating-
 principles § 3) is a follow-on PRD or a direct OPP→implementation pass — half-day-scoped because it is a
-near-mechanical copy of the SAST overlay. Advancing to `accepted` is the maintainer's call. Closes GitHub
-issue #93 when it ships.
+near-mechanical copy of the SAST overlay. Advancing to `accepted` is the maintainer's call. Issue #93 was
+closed on 2026-10-16 by the PR that filed this record; nothing has shipped, and this record is the tracker.
 
 ## Open questions
 
@@ -75,7 +75,7 @@ issue #93 when it ships.
 - **OPP-0035 / PRD-0016** (`security-static-analysis`) — the direct model; this is the same declare-validate /
   consumer-CI-enforces pattern applied to accessibility.
 - **`testing-standard`** — the other member of the consumer-declared quality-gate overlay family.
-- **`architectures/web-app` / `domains/agentic-ui`** — the consumers this overlay serves.
+- **`architectures/web-app` / `architectures/agentic-ui`** — the consumers this overlay serves.
 
 ## Provenance
 
@@ -84,3 +84,16 @@ filed as an OPP so the design is a first-class governed record on the catalog su
 corroborated by the shipped `security-static-analysis` precedent — no new enforcement mechanism is invented,
 only a new declaration contract instantiated from the existing quality-gate-overlay template. No external
 claims pending; no private names in this record.
+
+## Hold review (2026-11-19)
+
+A review before the acceptance decision checked this record against the repo and W3C's current pages. The design is sound and the external facts are current (WCAG 2.2 is the current Recommendation, with levels A, AA and AAA). It is deferred for want of a consumer, and these points should be settled before it is reconsidered.
+
+- **No adoption evidence for the pattern it copies.** `management/security-static-analysis` is not activated by this repo's manifest. Operating-principles § 9 argues against cloning an unadopted declare-only overlay until a consumer commits to activating this one.
+- **The sketch's sensitive path is not self-covered.** Issue #93 had a second companion rule (a change to the declaration requires a change-log entry, ADR, or PRD). The sketch keeps the sensitive path and drops that rule, which `validate-sensitive-paths` is expected to reject.
+- **Accessibility is not wholly absent.** The PRD template already carries a WCAG target placeholder in its UI section (`platform/templates/product/prd.md`); the declaration should bind to it or say why not.
+- **It differs from the issue without saying so**: field names, the validator name, the tool set, and an optional downgrade check.
+- **The propagation list predates the mirror checks.** Module-catalog propagation is now machine-enforced (OPP-0067 to OPP-0071), the enforced table is the root `README.md`, and the work is more than the half day estimated.
+- **What it would check.** The validator would check that a declaration is well formed, not that a product is accessible. Catalog prose should say so, and the audit date has no staleness bound.
+
+The module path `domains/agentic-ui` was corrected above to `architectures/agentic-ui`. Revisit when a consumer project will activate the overlay.

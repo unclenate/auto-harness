@@ -575,6 +575,7 @@ Open-source-cut metadata: license, contribution flow, community standards, and t
 * [ADR-0018: Privacy by Default Posture](docs/adr/ADR-0018-privacy-by-default-posture.md)
 * [ADR-0019: Adopt Digital Twin / Scenario Runtime as a Management Overlay](docs/adr/ADR-0019-digital-twin-scenario-runtime-overlay.md)
 * [ADR-0020: Agent maxTier is an Upper Ceiling (Caps, Never Grants)](docs/adr/ADR-0020-agent-maxtier-ceiling-semantics.md)
+* [ADR-0021: The Merge Gate on main Is CI, Not Code-Owner Review](docs/adr/ADR-0021-merge-gate-posture.md)
 
 ### Product Requirements Documents (this project)
 

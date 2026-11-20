@@ -11,6 +11,64 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-11-18 — ADR-0021: the merge gate on `main` is CI, not code-owner review (+ the PR #244 administrator bypass, recorded)
+
+Files and accepts **ADR-0021**. Branch protection on `main` required one approving review from a code owner;
+`.github/CODEOWNERS` names `@unclenate` on `*` and specifically on `/platform/validators/` and
+`/docs/knowledge/`; `@unclenate` is the only maintainer; and GitHub does not permit a PR's author to approve
+their own PR. The three together made every maintainer-authored PR structurally unmergeable through the
+normal path.
+
+**Recording the bypass this surfaced.** PR #244 (`harden(validators)`: cloud-identifier redaction class,
+merged `3f53adc`) passed all ten required checks and reported `BLOCKED` / `REVIEW_REQUIRED` with zero
+recorded reviews. The maintainer attempted an approval; GitHub recorded nothing, because author
+self-approval is not an action the platform offers. The merge completed via `gh pr merge --admin`, possible
+because `enforce_admins` is `false`. That bypass was explicitly authorized by the maintainer after the
+deadlock was explained, and this entry is the audit trail for it — owed from that merge and paid here.
+
+**The change.** `required_approving_review_count` 1 → **0** and `require_code_owner_reviews` true → **false**
+on `main`. All ten required status checks, `strict` (branch up to date), required conversation resolution,
+and the force-push and deletion prohibitions are retained unchanged — verified field-by-field against a
+pre-change snapshot of the full protection object, which showed those two fields as the only differences.
+`CODEOWNERS` is deliberately untouched: `@unclenate` is still auto-requested on every PR, now advisory
+rather than blocking, so restoring the requirement is one setting flip once a second reviewer exists.
+
+**Why not the literal one-field change.** Dropping the count to 0 while leaving `require_code_owner_reviews`
+set keeps GitHub demanding a CODEOWNERS approval on any PR touching an owned path, independent of the count —
+the deadlock would have survived while the configuration read as resolved. Recorded in the ADR as a rejected
+alternative, not a silent widening of scope.
+
+**What this does not change.** `AGENTS.md`'s operating discipline is untouched and now carries the whole
+pre-merge human gate: explicit human instruction before any commit, push, or PR, and explicit PR-named
+authorization for every merge to `main`. The kernel's `reviewGates` line ("validator success never replaces
+ownership review") remains correct guidance for consumers, who typically have more than one maintainer; the
+ADR is the record that the platform repository cannot mechanically honour it while it has exactly one. The
+tradeoff is stated plainly in the ADR: required checks are now load-bearing, so a CI coverage gap is a merge-
+gate gap, and any future `--admin` merge means a *required check* was overridden — materially more serious
+than the gate this retires, and itself a change-log event.
+
+Distillation: a `shared-observations.md` record on unsatisfiable gates inverting into routine bypass, on
+treating a reported-but-absent authorization as evidence about the gate rather than the operator, and on
+verifying that a one-field change achieves its stated purpose. No validator or count surfaces affected.
+
+**Amended the same day — the decision is only half-applied, and the ADR now says so.** `main` is gated by
+**two** independent GitHub systems: classic branch protection (changed) and the repository ruleset `Default`
+(id `16503818`, `enforcement: active`, target `~DEFAULT_BRANCH`), whose own `pull_request` rule still
+declares `required_approving_review_count: 1` (unchanged). GitHub applies the most restrictive, so PR #245 —
+the PR carrying this ADR — passed all eleven checks and was still `BLOCKED` / `REVIEW_REQUIRED`. The § 10
+label for ADR-0021's Decision is therefore **Asserted-only** until the ruleset is changed to match. The
+error is worth naming because it is this repo's own recurring class: the change was verified by **reading
+back the field written**, not by **attempting the gated action** — a read-back confirms a write, never an
+outcome. ADR-0021 gains an Implementation status section, a two-surface Watch condition, and a restore
+recipe carrying the full pre-change protection state (the session-local backup file is not durable).
+
+**Also found, and left open:** the same ruleset enforces `required_signatures`. The maintainer's commits
+verify (`3f53adc`); agent-authored commits in this session do not (`0a158e0` is unsigned, and the working
+copy has no `user.signingkey`), so an agent-authored PR cannot satisfy that rule either — independently of
+the review question, and arguably a stronger reason to retain a bypass path than the rule ADR-0021 retires.
+Decision deferred to the maintainer: configure signing for agent commits, relax the rule for them, or accept
+an administrator merge per agent-authored PR.
+
 ## 2026-11-18 — Redaction scan gains a cloud-identifier class (BLOCK): AWS account ids and ARNs
 
 Extends `validate-knowledge-redaction.sh` with a third pattern class ahead of any work against a live

@@ -62,6 +62,7 @@ Accepted; supersession is recorded by status flip + a new ADR.
 | [0018](adr/ADR-0018-privacy-by-default-posture.md) | Privacy-by-Default Posture | Accepted |
 | [0019](adr/ADR-0019-digital-twin-scenario-runtime-overlay.md) | Adopt Digital Twin / Scenario Runtime as a Management Overlay | Accepted |
 | [0020](adr/ADR-0020-agent-maxtier-ceiling-semantics.md) | Agent `maxTier` is an Upper Ceiling (Caps, Never Grants) | Accepted |
+| [0021](adr/ADR-0021-merge-gate-posture.md) | The Merge Gate on `main` Is CI, Not Code-Owner Review | Accepted |
 
 ---
 

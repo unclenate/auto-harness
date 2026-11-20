@@ -91,7 +91,7 @@ A review before the acceptance decision checked this record against the repo and
 
 - **No adoption evidence for the pattern it copies.** `management/security-static-analysis` is not activated by this repo's manifest. Operating-principles § 9 argues against cloning an unadopted declare-only overlay until a consumer commits to activating this one.
 - **The sketch's sensitive path is not self-covered.** Issue #93 had a second companion rule (a change to the declaration requires a change-log entry, ADR, or PRD). The sketch keeps the sensitive path and drops that rule, which `validate-sensitive-paths` is expected to reject.
-- **Accessibility is not wholly absent.** The PRD template already carries a WCAG target field (`[[UI_WCAG_TARGET]]`); the declaration should bind to it or say why not.
+- **Accessibility is not wholly absent.** The PRD template already carries a WCAG target placeholder in its UI section (`platform/templates/product/prd.md`); the declaration should bind to it or say why not.
 - **It differs from the issue without saying so**: field names, the validator name, the tool set, and an optional downgrade check.
 - **The propagation list predates the mirror checks.** Module-catalog propagation is now machine-enforced (OPP-0067 to OPP-0071), the enforced table is the root `README.md`, and the work is more than the half day estimated.
 - **What it would check.** The validator would check that a declaration is well formed, not that a product is accessible. Catalog prose should say so, and the audit date has no staleness bound.

@@ -11,6 +11,17 @@ It is not a git commit log — it captures *decisions and their rationale*, not 
 
 ---
 
+## 2026-11-19 — OPP-0072: second account test; the ceiling becomes action-level
+
+A second test in the sandbox account, authorized by the maintainer, exercised the third revision's agent-role
+policy by hand. The explicit denies held against resource-policy and trust-policy grants, undeclared services,
+and another region. The test also confirmed the residual the record had stated: with a service-level ceiling,
+a resource policy naming the role's session granted unlisted actions even with a permissions boundary
+attached. Listing the reviewed actions in the ceiling closed it, so **OPP-0072** (still proposed) now makes the
+action ceiling the default and the service ceiling a fallback for read sets too large for one policy. Size
+limits were confirmed at 6,144 characters (managed) and 10,240 (inline role). The generator, validator,
+credential isolation, and write path remain untested. Generalized in `docs/knowledge/shared-observations.md`.
+
 ## 2026-11-18 — ADR-0021: the merge gate on `main` is CI, not code-owner review (+ the PR #244 administrator bypass, recorded)
 
 Files and accepts **ADR-0021**. Branch protection on `main` required one approving review from a code owner;
